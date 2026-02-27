@@ -160,7 +160,7 @@ exports[`multiple campaigns matches snapshot 1`] = `
               <a
                 class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
                 data-testid="back-link-bottom"
-                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+                href="/message-plans/edit-message-plan/d7afdc99-d55b-4f26-8442-2d10aea07346"
               >
                 Go back
               </a>
@@ -400,7 +400,7 @@ exports[`multiple campaigns renders errors when form is submitted in invalid sta
               <a
                 class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
                 data-testid="back-link-bottom"
-                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+                href="/message-plans/edit-message-plan/d7afdc99-d55b-4f26-8442-2d10aea07346"
               >
                 Go back
               </a>
@@ -570,7 +570,7 @@ exports[`single campaign matches snapshot 1`] = `
               <a
                 class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
                 data-testid="back-link-bottom"
-                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+                href="/message-plans/edit-message-plan/d7afdc99-d55b-4f26-8442-2d10aea07346"
               >
                 Go back
               </a>
@@ -777,7 +777,7 @@ exports[`single campaign renders errors when form is submitted in invalid state 
               <a
                 class="nhsuk-u-font-size-19 nhsuk-u-margin-left-3 nhsuk-u-padding-top-3 inline-block"
                 data-testid="back-link-bottom"
-                href="/message-plans/choose-templates/d7afdc99-d55b-4f26-8442-2d10aea07346"
+                href="/message-plans/edit-message-plan/d7afdc99-d55b-4f26-8442-2d10aea07346"
               >
                 Go back
               </a>

@@ -4,7 +4,7 @@ import {
   ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS,
 } from '../helpers/enum';
 import { test, expect } from '@playwright/test';
-import { RoutingChooseTemplatesPage } from 'pages/routing/choose-templates-page';
+import { RoutingEditMessagePlanPage } from 'pages/routing/edit-message-plan-page';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
 import { RoutingChooseNhsAppTemplatePage } from 'pages/routing/nhs-app/choose-nhs-app-template-page';
 import { RoutingChooseEmailTemplatePage } from 'pages/routing/email/choose-email-template-page';
@@ -173,7 +173,7 @@ function createTemplates(user: TestUser) {
   };
 }
 
-test.describe('Routing - Choose Templates page', () => {
+test.describe('Routing - Edit Message Plan page', () => {
   let messagePlans: ReturnType<typeof createRoutingConfigs>;
   let templates: ReturnType<typeof createTemplates>;
   let user: TestUser;
@@ -211,14 +211,14 @@ test.describe('Routing - Choose Templates page', () => {
         await createMessagePlanPage.nameField.fill(`Plan for ${label}`);
         await createMessagePlanPage.clickSubmit();
 
-        const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
+        const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
 
         await expect(page).toHaveURL(
           /\/templates\/message-plans\/choose-templates\//
         );
 
         const { messagePlanId } =
-          chooseTemplatesPage.getPathParametersFromCurrentPageUrl();
+          editMessagePlanPage.getPathParametersFromCurrentPageUrl();
 
         expect(messagePlanId).not.toBeUndefined();
 
@@ -227,15 +227,15 @@ test.describe('Routing - Choose Templates page', () => {
           clientId: user.clientId,
         });
 
-        chooseTemplatesPage.setPathParam('messagePlanId', messagePlanId!);
+        editMessagePlanPage.setPathParam('messagePlanId', messagePlanId!);
 
         const messagePlanChannels = messageOrder.split(',');
 
         for (const channel of allChannels) {
           const channelBlock =
-            chooseTemplatesPage.messagePlanChannel(channel).block;
+            editMessagePlanPage.messagePlanChannel(channel).block;
           const fallbackConditions =
-            chooseTemplatesPage.messagePlanChannel(channel).fallbackConditions;
+            editMessagePlanPage.messagePlanChannel(channel).fallbackConditions;
 
           if (messagePlanChannels.includes(channel)) {
             const channelIndexInPlan = messagePlanChannels.indexOf(channel);
@@ -246,7 +246,7 @@ test.describe('Routing - Choose Templates page', () => {
                 expectedChannelLabels[channel]
               );
               await expect(
-                chooseTemplatesPage.messagePlanChannel(channel).number
+                editMessagePlanPage.messagePlanChannel(channel).number
               ).toHaveText((channelIndexInPlan + 1).toString());
             });
 
@@ -254,7 +254,7 @@ test.describe('Routing - Choose Templates page', () => {
             if (channel === 'LETTER') {
               await test.step('letter channel displays section for fallback conditions and additional letter formats', async () => {
                 const alternativeLetterFormats =
-                  chooseTemplatesPage.alternativeLetterFormats();
+                  editMessagePlanPage.alternativeLetterFormats();
                 await expect(
                   alternativeLetterFormats.conditionalTemplates
                 ).toBeVisible();
@@ -295,7 +295,7 @@ test.describe('Routing - Choose Templates page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingChooseTemplatesPage(page).setPathParam(
+      page: new RoutingEditMessagePlanPage(page).setPathParam(
         'messagePlanId',
         routingConfigIds.valid
       ),
@@ -308,55 +308,55 @@ test.describe('Routing - Choose Templates page', () => {
     await assertNoBackLinks(props);
   });
 
-  test('loads the choose templates page for a message plan', async ({
+  test('loads the edit message plan page for a message plan', async ({
     page,
     baseURL,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam('messagePlanId', routingConfigIds.valid);
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.valid}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigIds.valid}`
     );
-    await expect(chooseTemplatesPage.pageHeading).toHaveText(
+    await expect(editMessagePlanPage.pageHeading).toHaveText(
       messagePlans.valid.name
     );
 
-    await expect(chooseTemplatesPage.editSettingsLink).toHaveText(
+    await expect(editMessagePlanPage.editSettingsLink).toHaveText(
       'Edit settings'
     );
-    await expect(chooseTemplatesPage.editSettingsLink).toHaveAttribute(
+    await expect(editMessagePlanPage.editSettingsLink).toHaveAttribute(
       'href',
       `/templates/message-plans/edit-message-plan-settings/${messagePlans.valid.id}`
     );
 
-    await expect(chooseTemplatesPage.routingConfigId).toHaveText(
+    await expect(editMessagePlanPage.routingConfigId).toHaveText(
       messagePlans.valid.id
     );
 
-    await expect(chooseTemplatesPage.campaignId).toHaveText(
+    await expect(editMessagePlanPage.campaignId).toHaveText(
       messagePlans.valid.campaignId
     );
 
     const messagePlanStatus =
-      await chooseTemplatesPage.messagePlanStatus.textContent();
+      await editMessagePlanPage.messagePlanStatus.textContent();
     expect(messagePlanStatus?.trim().toLowerCase()).toBe(
       messagePlans.valid.status.toLowerCase()
     );
 
-    const channelBlocks = await chooseTemplatesPage.channelBlocks.all();
+    const channelBlocks = await editMessagePlanPage.channelBlocks.all();
     expect(channelBlocks.length).toBe(messagePlans.valid.cascade.length);
 
-    await expect(chooseTemplatesPage.moveToProductionButton).toHaveText(
+    await expect(editMessagePlanPage.moveToProductionButton).toHaveText(
       'Move to production'
     );
-    await expect(chooseTemplatesPage.saveAndCloseButton).toHaveText(
+    await expect(editMessagePlanPage.saveAndCloseButton).toHaveText(
       'Save and close'
     );
-    await expect(chooseTemplatesPage.saveAndCloseButton).toHaveAttribute(
+    await expect(editMessagePlanPage.saveAndCloseButton).toHaveAttribute(
       'href',
       '/templates/message-plans'
     );
@@ -376,14 +376,14 @@ test.describe('Routing - Choose Templates page', () => {
     await createMessagePlanPage.nameField.fill('Test message plan');
     await createMessagePlanPage.clickSubmit();
 
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
 
     await expect(page).toHaveURL(
-      /\/templates\/message-plans\/choose-templates\//
+      /\/templates\/message-plans\/edit-message-plan\//
     );
 
     const { messagePlanId } =
-      chooseTemplatesPage.getPathParametersFromCurrentPageUrl();
+      editMessagePlanPage.getPathParametersFromCurrentPageUrl();
 
     expect(messagePlanId).not.toBeUndefined();
 
@@ -393,30 +393,30 @@ test.describe('Routing - Choose Templates page', () => {
     });
 
     await test.step('app channel with no template has only choose link', async () => {
-      await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();
-      await expect(chooseTemplatesPage.nhsApp.chooseTemplateLink).toBeVisible();
+      await expect(editMessagePlanPage.nhsApp.templateName).toBeHidden();
+      await expect(editMessagePlanPage.nhsApp.chooseTemplateLink).toBeVisible();
       await expect(
-        chooseTemplatesPage.nhsApp.chooseTemplateLink
+        editMessagePlanPage.nhsApp.chooseTemplateLink
       ).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-nhs-app-template/${messagePlanId}?lockNumber=0`
       );
-      await expect(chooseTemplatesPage.nhsApp.changeTemplateLink).toBeHidden();
-      await expect(chooseTemplatesPage.nhsApp.removeTemplateLink).toBeHidden();
+      await expect(editMessagePlanPage.nhsApp.changeTemplateLink).toBeHidden();
+      await expect(editMessagePlanPage.nhsApp.removeTemplateLink).toBeHidden();
     });
 
     await test.step('sms channel with no template has only choose link', async () => {
-      await expect(chooseTemplatesPage.sms.templateName).toBeHidden();
-      await expect(chooseTemplatesPage.sms.chooseTemplateLink).toBeVisible();
-      await expect(chooseTemplatesPage.sms.chooseTemplateLink).toHaveAttribute(
+      await expect(editMessagePlanPage.sms.templateName).toBeHidden();
+      await expect(editMessagePlanPage.sms.chooseTemplateLink).toBeVisible();
+      await expect(editMessagePlanPage.sms.chooseTemplateLink).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-text-message-template/${messagePlanId}?lockNumber=0`
       );
-      await expect(chooseTemplatesPage.sms.changeTemplateLink).toBeHidden();
-      await expect(chooseTemplatesPage.sms.removeTemplateLink).toBeHidden();
+      await expect(editMessagePlanPage.sms.changeTemplateLink).toBeHidden();
+      await expect(editMessagePlanPage.sms.removeTemplateLink).toBeHidden();
     });
 
-    await chooseTemplatesPage.nhsApp.clickChooseTemplateLink();
+    await editMessagePlanPage.nhsApp.clickChooseTemplateLink();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-nhs-app-template/${messagePlanId}?lockNumber=0`
@@ -429,19 +429,19 @@ test.describe('Routing - Choose Templates page', () => {
     page,
     baseURL,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam('messagePlanId', routingConfigIds.valid);
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
     await test.step('app channel with template has template name and change link', async () => {
-      await expect(chooseTemplatesPage.nhsApp.templateName).toHaveText(
+      await expect(editMessagePlanPage.nhsApp.templateName).toHaveText(
         templates.NHSAPP.name
       );
-      await expect(chooseTemplatesPage.nhsApp.changeTemplateLink).toBeVisible();
+      await expect(editMessagePlanPage.nhsApp.changeTemplateLink).toBeVisible();
       await expect(
-        chooseTemplatesPage.nhsApp.changeTemplateLink
+        editMessagePlanPage.nhsApp.changeTemplateLink
       ).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-nhs-app-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
@@ -449,16 +449,16 @@ test.describe('Routing - Choose Templates page', () => {
     });
 
     await test.step('email channel with no template has no name or change link', async () => {
-      await expect(chooseTemplatesPage.email.templateName).toBeHidden();
-      await expect(chooseTemplatesPage.email.changeTemplateLink).toBeHidden();
+      await expect(editMessagePlanPage.email.templateName).toBeHidden();
+      await expect(editMessagePlanPage.email.changeTemplateLink).toBeHidden();
     });
 
     await test.step('sms channel with template has template name and change link', async () => {
-      await expect(chooseTemplatesPage.sms.templateName).toHaveText(
+      await expect(editMessagePlanPage.sms.templateName).toHaveText(
         templates.SMS.name
       );
-      await expect(chooseTemplatesPage.sms.changeTemplateLink).toBeVisible();
-      await expect(chooseTemplatesPage.sms.changeTemplateLink).toHaveAttribute(
+      await expect(editMessagePlanPage.sms.changeTemplateLink).toBeVisible();
+      await expect(editMessagePlanPage.sms.changeTemplateLink).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-text-message-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
       );
@@ -466,15 +466,15 @@ test.describe('Routing - Choose Templates page', () => {
 
     await test.step('letter channel with no template selected has no name or change link', async () => {
       await expect(
-        chooseTemplatesPage.letter.standard.templateName
+        editMessagePlanPage.letter.standard.templateName
       ).toBeHidden();
 
       await expect(
-        chooseTemplatesPage.letter.standard.changeTemplateLink
+        editMessagePlanPage.letter.standard.changeTemplateLink
       ).toBeHidden();
     });
 
-    await chooseTemplatesPage.nhsApp.clickChangeTemplateLink();
+    await editMessagePlanPage.nhsApp.clickChangeTemplateLink();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/choose-nhs-app-template/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
@@ -487,50 +487,50 @@ test.describe('Routing - Choose Templates page', () => {
     page,
     baseURL,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam('messagePlanId', routingConfigIds.valid);
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
-    await expect(chooseTemplatesPage.nhsApp.templateName).toHaveText(
+    await expect(editMessagePlanPage.nhsApp.templateName).toHaveText(
       templates.NHSAPP.name
     );
-    await expect(chooseTemplatesPage.nhsApp.removeTemplateLink).toBeVisible();
+    await expect(editMessagePlanPage.nhsApp.removeTemplateLink).toBeVisible();
 
-    await expect(chooseTemplatesPage.email.removeTemplateLink).toBeHidden();
+    await expect(editMessagePlanPage.email.removeTemplateLink).toBeHidden();
 
-    await expect(chooseTemplatesPage.sms.templateName).toHaveText(
+    await expect(editMessagePlanPage.sms.templateName).toHaveText(
       templates.SMS.name
     );
-    await expect(chooseTemplatesPage.sms.removeTemplateLink).toBeVisible();
+    await expect(editMessagePlanPage.sms.removeTemplateLink).toBeVisible();
 
-    await chooseTemplatesPage.nhsApp.clickRemoveTemplateLink();
+    await editMessagePlanPage.nhsApp.clickRemoveTemplateLink();
 
     await expect(
-      chooseTemplatesPage.letter.standard.removeTemplateLink
+      editMessagePlanPage.letter.standard.removeTemplateLink
     ).toBeHidden();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.valid}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigIds.valid}`
     );
 
-    await expect(chooseTemplatesPage.nhsApp.templateName).toBeHidden();
-    await expect(chooseTemplatesPage.nhsApp.removeTemplateLink).toBeHidden();
-    await expect(chooseTemplatesPage.nhsApp.chooseTemplateLink).toBeVisible();
+    await expect(editMessagePlanPage.nhsApp.templateName).toBeHidden();
+    await expect(editMessagePlanPage.nhsApp.removeTemplateLink).toBeHidden();
+    await expect(editMessagePlanPage.nhsApp.chooseTemplateLink).toBeVisible();
   });
 
   test('user can choose alternative letter format options', async ({
     page,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam('messagePlanId', routingConfigIds.valid);
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
     const alternativeLetterFormats =
-      chooseTemplatesPage.alternativeLetterFormats();
+      editMessagePlanPage.alternativeLetterFormats();
 
     await expect(alternativeLetterFormats.conditionalTemplates).toBeVisible();
     await expect(alternativeLetterFormats.fallbackConditions).toBeVisible();
@@ -580,39 +580,39 @@ test.describe('Routing - Choose Templates page', () => {
     page,
     baseURL,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam('messagePlanId', routingConfigIds.validWithLetterTemplates);
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
     await test.step('standard letter channel with default template has template name and change link', async () => {
-      await expect(chooseTemplatesPage.letter.standard.templateName).toHaveText(
+      await expect(editMessagePlanPage.letter.standard.templateName).toHaveText(
         templates.LETTER.name
       );
 
       await expect(
-        chooseTemplatesPage.letter.standard.changeTemplateLink
+        editMessagePlanPage.letter.standard.changeTemplateLink
       ).toBeVisible();
 
       await expect(
-        chooseTemplatesPage.letter.standard.changeTemplateLink
+        editMessagePlanPage.letter.standard.changeTemplateLink
       ).toHaveAttribute(
         'href',
         `/templates/message-plans/choose-standard-english-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
       );
 
       await expect(
-        chooseTemplatesPage.letter.standard.removeTemplateLink
+        editMessagePlanPage.letter.standard.removeTemplateLink
       ).toBeVisible();
 
       await expect(
-        chooseTemplatesPage.letter.standard.chooseTemplateLink
+        editMessagePlanPage.letter.standard.chooseTemplateLink
       ).toBeHidden();
     });
 
     const alternativeLetterFormats =
-      chooseTemplatesPage.alternativeLetterFormats();
+      editMessagePlanPage.alternativeLetterFormats();
 
     await test.step('standard letter is followed by alternative formats', async () => {
       await expect(alternativeLetterFormats.conditionalTemplates).toBeVisible();
@@ -658,7 +658,7 @@ test.describe('Routing - Choose Templates page', () => {
       await otherLanguagesItem.clickRemoveTemplateLink();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.validWithLetterTemplates}`
+        `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigIds.validWithLetterTemplates}`
       );
 
       await expect(otherLanguagesItem.templateName).toBeHidden();
@@ -679,13 +679,13 @@ test.describe('Routing - Choose Templates page', () => {
     page,
     baseURL,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam('messagePlanId', routingConfigIds.valid);
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
-    await chooseTemplatesPage.clickSaveAndClose();
+    await editMessagePlanPage.clickSaveAndClose();
 
     await expect(page).toHaveURL(`${baseURL}/templates/message-plans`);
   });
@@ -694,22 +694,22 @@ test.describe('Routing - Choose Templates page', () => {
     page,
     baseURL,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam(
       'messagePlanId',
       routingConfigIds.withConditionalTemplateSelected
     );
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
     await test.step('initially no error summary is visible', async () => {
-      await expect(chooseTemplatesPage.errorSummary).toBeHidden();
+      await expect(editMessagePlanPage.errorSummary).toBeHidden();
     });
 
     await test.step('optional template (large print letter) is already selected', async () => {
       const alternativeLetterFormats =
-        chooseTemplatesPage.alternativeLetterFormats();
+        editMessagePlanPage.alternativeLetterFormats();
       const largePrintItem = alternativeLetterFormats.largePrint;
 
       await expect(largePrintItem.templateName).toHaveText(
@@ -718,14 +718,14 @@ test.describe('Routing - Choose Templates page', () => {
     });
 
     await test.step('clicking "Move to production" shows validation errors for all required channels', async () => {
-      await chooseTemplatesPage.clickMoveToProduction();
+      await editMessagePlanPage.clickMoveToProduction();
 
-      await expect(chooseTemplatesPage.errorSummaryHeading).toBeVisible();
-      await expect(chooseTemplatesPage.errorSummaryHint).toHaveText(
+      await expect(editMessagePlanPage.errorSummaryHeading).toBeVisible();
+      await expect(editMessagePlanPage.errorSummaryHint).toHaveText(
         'You must choose a template for each message.'
       );
 
-      const errorLinks = await chooseTemplatesPage.errorLinks.all();
+      const errorLinks = await editMessagePlanPage.errorLinks.all();
       expect(errorLinks.length).toBe(4);
 
       await expect(errorLinks[0]).toHaveText(
@@ -750,11 +750,11 @@ test.describe('Routing - Choose Templates page', () => {
     });
 
     await test.step('clicking an error link navigates to the relevant channel section', async () => {
-      const firstErrorLink = chooseTemplatesPage.errorLinks.first();
+      const firstErrorLink = editMessagePlanPage.errorLinks.first();
       await firstErrorLink.click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.withConditionalTemplateSelected}#channel-NHSAPP`
+        `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigIds.withConditionalTemplateSelected}#channel-NHSAPP`
       );
     });
   });
@@ -763,28 +763,28 @@ test.describe('Routing - Choose Templates page', () => {
     page,
     baseURL,
   }) => {
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
       page
     ).setPathParam('messagePlanId', routingConfigIds.noTemplatesSelected);
 
-    await chooseTemplatesPage.loadPage();
+    await editMessagePlanPage.loadPage();
 
     await test.step('clicking "Move to production" without templates shows validation errors', async () => {
-      await chooseTemplatesPage.clickMoveToProduction();
+      await editMessagePlanPage.clickMoveToProduction();
 
-      await expect(chooseTemplatesPage.errorSummaryHeading).toBeVisible();
-      await expect(chooseTemplatesPage.errorSummaryHint).toHaveText(
+      await expect(editMessagePlanPage.errorSummaryHeading).toBeVisible();
+      await expect(editMessagePlanPage.errorSummaryHint).toHaveText(
         'You must choose a template for each message.'
       );
 
-      const errorLinks = await chooseTemplatesPage.errorLinks.all();
+      const errorLinks = await editMessagePlanPage.errorLinks.all();
       expect(errorLinks.length).toBe(2);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
       await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
     });
 
     await test.step('selecting NHS App template', async () => {
-      await chooseTemplatesPage.nhsApp.clickChooseTemplateLink();
+      await editMessagePlanPage.nhsApp.clickChooseTemplateLink();
 
       await page.waitForURL(
         `${baseURL}/templates/message-plans/choose-nhs-app-template/${routingConfigIds.noTemplatesSelected}?lockNumber=0`
@@ -797,21 +797,21 @@ test.describe('Routing - Choose Templates page', () => {
       await chooseNhsAppTemplatePage.saveAndContinueButton.click();
 
       await page.waitForURL(
-        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.noTemplatesSelected}`
+        `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigIds.noTemplatesSelected}`
       );
     });
 
     await test.step('validation still shown after selecting only one template', async () => {
-      await chooseTemplatesPage.clickMoveToProduction();
-      await expect(chooseTemplatesPage.errorSummaryHeading).toBeVisible();
+      await editMessagePlanPage.clickMoveToProduction();
+      await expect(editMessagePlanPage.errorSummaryHeading).toBeVisible();
 
-      const errorLinks = await chooseTemplatesPage.errorLinks.all();
+      const errorLinks = await editMessagePlanPage.errorLinks.all();
       expect(errorLinks.length).toBe(1);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-EMAIL');
     });
 
     await test.step('selecting Email template', async () => {
-      await chooseTemplatesPage.email.clickChooseTemplateLink();
+      await editMessagePlanPage.email.clickChooseTemplateLink();
 
       await page.waitForURL(
         `${baseURL}/templates/message-plans/choose-email-template/${routingConfigIds.noTemplatesSelected}?lockNumber=1`
@@ -822,16 +822,16 @@ test.describe('Routing - Choose Templates page', () => {
       await chooseEmailTemplatePage.saveAndContinueButton.click();
 
       await page.waitForURL(
-        `${baseURL}/templates/message-plans/choose-templates/${routingConfigIds.noTemplatesSelected}`
+        `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigIds.noTemplatesSelected}`
       );
     });
 
     await test.step('validation clears and user can move to production', async () => {
-      await expect(chooseTemplatesPage.errorSummary).toBeHidden();
+      await expect(editMessagePlanPage.errorSummary).toBeHidden();
 
-      await chooseTemplatesPage.clickMoveToProduction();
+      await editMessagePlanPage.clickMoveToProduction();
 
-      await expect(chooseTemplatesPage.errorSummary).toBeHidden();
+      await expect(editMessagePlanPage.errorSummary).toBeHidden();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/get-ready-to-move/${routingConfigIds.noTemplatesSelected}`
@@ -841,11 +841,11 @@ test.describe('Routing - Choose Templates page', () => {
 
   test.describe('redirects to invalid message plan page', () => {
     test('when message plan cannot be found', async ({ page, baseURL }) => {
-      const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+      const editMessagePlanPage = new RoutingEditMessagePlanPage(
         page
       ).setPathParam('messagePlanId', routingConfigIds.notFound);
 
-      await chooseTemplatesPage.loadPage();
+      await editMessagePlanPage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -853,11 +853,11 @@ test.describe('Routing - Choose Templates page', () => {
     });
 
     test('when routing config ID is invalid', async ({ page, baseURL }) => {
-      const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+      const editMessagePlanPage = new RoutingEditMessagePlanPage(
         page
       ).setPathParam('messagePlanId', routingConfigIds.invalid);
 
-      await chooseTemplatesPage.loadPage();
+      await editMessagePlanPage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/invalid`
@@ -867,11 +867,11 @@ test.describe('Routing - Choose Templates page', () => {
 
   test.describe('redirects to preview message plan page', () => {
     test('when message plan is in production', async ({ page, baseURL }) => {
-      const chooseTemplatesPage = new RoutingChooseTemplatesPage(
+      const editMessagePlanPage = new RoutingEditMessagePlanPage(
         page
       ).setPathParam('messagePlanId', routingConfigIds.production);
 
-      await chooseTemplatesPage.loadPage();
+      await editMessagePlanPage.loadPage();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/preview-message-plan/${routingConfigIds.production}`

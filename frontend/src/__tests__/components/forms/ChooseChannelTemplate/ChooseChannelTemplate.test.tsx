@@ -184,7 +184,7 @@ describe('ChooseChannelTemplate', () => {
     expect(backLinks.length).toBeGreaterThan(0);
     expect(backLinks[0]).toHaveAttribute(
       'href',
-      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`
+      `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`
     );
   });
 

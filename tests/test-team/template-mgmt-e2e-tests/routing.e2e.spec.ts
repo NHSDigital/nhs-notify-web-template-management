@@ -9,7 +9,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import {
   RoutingChooseMessageOrderPage,
-  RoutingChooseTemplatesPage,
+  RoutingEditMessagePlanPage,
   RoutingCreateMessagePlanPage,
   RoutingMessagePlansPage,
   RoutingChooseOtherLanguageLetterTemplatePage,
@@ -168,7 +168,7 @@ test.describe('Routing', () => {
 
     const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     const messagePlansPage = new RoutingMessagePlansPage(page);
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
 
     await test.step('check initial template statuses', async () => {
       await messageTemplatesPage.loadPage();
@@ -210,7 +210,7 @@ test.describe('Routing', () => {
     });
 
     await test.step('add other language letter templates', async () => {
-      await chooseTemplatesPage.letter.language.chooseTemplateLink.click();
+      await editMessagePlanPage.letter.language.chooseTemplateLink.click();
 
       const chooseOtherLanguageTemplatesPage =
         new RoutingChooseOtherLanguageLetterTemplatePage(page);
@@ -247,7 +247,7 @@ test.describe('Routing', () => {
       await chooseOtherLanguageTemplatesPage.saveAndContinueButton.click();
 
       const otherLanguageNames =
-        chooseTemplatesPage.letter.language.templateNames;
+        editMessagePlanPage.letter.language.templateNames;
 
       await expect(otherLanguageNames).toHaveCount(2);
 
@@ -265,7 +265,7 @@ test.describe('Routing', () => {
     });
 
     await test.step('check draft message plan exists', async () => {
-      await chooseTemplatesPage.clickMessagePlansHeaderLink();
+      await editMessagePlanPage.clickMessagePlansHeaderLink();
 
       await expect(messagePlansPage.pageHeading).toBeVisible();
 
@@ -277,24 +277,24 @@ test.describe('Routing', () => {
 
     await test.step('add NHS App template', async () => {
       await selectTemplateRadio(
-        chooseTemplatesPage.nhsApp.chooseTemplateLink,
+        editMessagePlanPage.nhsApp.chooseTemplateLink,
         new RoutingChooseNhsAppTemplatePage(page),
         templates.NHSAPP,
-        chooseTemplatesPage.nhsApp.templateName
+        editMessagePlanPage.nhsApp.templateName
       );
     });
 
     await test.step('add Email template', async () => {
       await selectTemplateRadio(
-        chooseTemplatesPage.email.chooseTemplateLink,
+        editMessagePlanPage.email.chooseTemplateLink,
         new RoutingChooseEmailTemplatePage(page),
         templates.EMAIL,
-        chooseTemplatesPage.email.templateName
+        editMessagePlanPage.email.templateName
       );
     });
 
     await test.step('preview and add SMS template', async () => {
-      await chooseTemplatesPage.sms.chooseTemplateLink.click();
+      await editMessagePlanPage.sms.chooseTemplateLink.click();
 
       const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
         page
@@ -320,47 +320,47 @@ test.describe('Routing', () => {
 
       await chooseSmsTemplatePage.saveAndContinueButton.click();
 
-      await expect(chooseTemplatesPage.sms.templateName).toHaveText(
+      await expect(editMessagePlanPage.sms.templateName).toHaveText(
         templates.SMS.name
       );
     });
 
     await test.step('verify validation error for missing letter template', async () => {
-      await chooseTemplatesPage.clickMoveToProduction();
+      await editMessagePlanPage.clickMoveToProduction();
 
-      await expect(chooseTemplatesPage.errorSummaryList).toContainText([
+      await expect(editMessagePlanPage.errorSummaryList).toContainText([
         'You have not chosen a template for your fourth message',
       ]);
     });
 
     await test.step('add standard letter template', async () => {
       await selectTemplateRadio(
-        chooseTemplatesPage.letter.standard.chooseTemplateLink,
+        editMessagePlanPage.letter.standard.chooseTemplateLink,
         new RoutingChooseStandardLetterTemplatePage(page),
         templates.LETTER,
-        chooseTemplatesPage.letter.standard.templateName
+        editMessagePlanPage.letter.standard.templateName
       );
     });
 
     await test.step('add large print letter template', async () => {
       await selectTemplateRadio(
-        chooseTemplatesPage.letter.largePrint.chooseTemplateLink,
+        editMessagePlanPage.letter.largePrint.chooseTemplateLink,
         new RoutingChooseLargePrintLetterTemplatePage(page),
         templates.LARGE_PRINT_LETTER,
-        chooseTemplatesPage.letter.largePrint.templateName
+        editMessagePlanPage.letter.largePrint.templateName
       );
     });
 
     await test.step('remove large print letter template', async () => {
-      await chooseTemplatesPage.letter.largePrint.removeTemplateLink.click();
+      await editMessagePlanPage.letter.largePrint.removeTemplateLink.click();
 
       await expect(
-        chooseTemplatesPage.letter.largePrint.chooseTemplateLink
+        editMessagePlanPage.letter.largePrint.chooseTemplateLink
       ).toBeVisible();
     });
 
     await test.step('review and move to production', async () => {
-      await chooseTemplatesPage.clickMoveToProduction();
+      await editMessagePlanPage.clickMoveToProduction();
 
       const getReadyToMovePage = new RoutingGetReadyToMovePage(page);
 

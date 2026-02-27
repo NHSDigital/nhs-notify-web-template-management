@@ -256,7 +256,7 @@ exports[`ChooseTextMessageTemplate page renders sms template selection 1`] = `
               <a
                 class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
                 data-testid="back-link-bottom"
-                href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+                href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
               >
                 Go back
               </a>

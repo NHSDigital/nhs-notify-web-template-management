@@ -119,13 +119,13 @@ it('redirects to invalid if routing config is not found', async () => {
   );
 });
 
-it('redirects to choose-templates if routing config is in DRAFT', async () => {
+it('redirects to the edit message plan page if routing config is in DRAFT', async () => {
   const routingConfig = createRoutingConfig({ status: 'DRAFT' });
 
   await renderPage(routingConfig);
 
   expect(redirect).toHaveBeenCalledWith(
-    `/message-plans/choose-templates/${routingConfig.id}`,
+    `/message-plans/edit-message-plan/${routingConfig.id}`,
     RedirectType.replace
   );
 });

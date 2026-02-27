@@ -23,7 +23,7 @@ import { NHSNotifyFormErrorSummary } from '@atoms/NHSNotifyForm/ErrorSummary';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import copy from '@content/content';
-import { MessagePlanChooseTemplatesMoveToProductionForm } from '@forms/ChooseTemplates/MovetoProduction';
+import { EditMessagePlanMoveToProductionForm } from '@forms/ChooseTemplates/MovetoProduction';
 import { MessagePlanBlock } from '@molecules/MessagePlanBlock/MessagePlanBlock';
 import { MessagePlanChannelCard } from '@molecules/MessagePlanChannelCard/MessagePlanChannelCard';
 import {
@@ -51,13 +51,13 @@ import {
 
 import { moveToProduction, removeTemplateFromMessagePlan } from './actions';
 
-const content = copy.pages.chooseTemplatesForMessagePlan;
+const content = copy.pages.editMessagePlan;
 
 export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
+export default async function EditMessagePlanPage(props: MessagePlanPageProps) {
   const { routingConfigId } = await props.params;
 
   const messagePlan = await getRoutingConfig(routingConfigId);
@@ -267,7 +267,7 @@ export default async function ChooseTemplatesPage(props: MessagePlanPageProps) {
                 })}
               </MessagePlanChannelList>
 
-              <MessagePlanChooseTemplatesMoveToProductionForm
+              <EditMessagePlanMoveToProductionForm
                 messagePlanId={messagePlan.id}
               />
             </NHSNotifyFormProvider>

@@ -475,7 +475,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -962,7 +962,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -1211,7 +1211,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders auth
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -1656,7 +1656,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -2142,7 +2142,7 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -2587,7 +2587,7 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -2667,7 +2667,7 @@ exports[`ChooseLanguageLetterTemplates when there are no templates renders corre
             <a
               class="nhsuk-u-font-size-19"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>

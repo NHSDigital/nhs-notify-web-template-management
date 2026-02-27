@@ -91,7 +91,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
     );
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+      `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
       RedirectType.push
     );
   });
@@ -179,7 +179,7 @@ describe('chooseLanguageLetterTemplatesAction', () => {
     );
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+      `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
       RedirectType.push
     );
   });
