@@ -1,5 +1,5 @@
 import { getTemplate } from '@utils/form-actions';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function GET(
   _: NextRequest,
@@ -9,5 +9,5 @@ export async function GET(
 
   const template = await getTemplate(templateId);
 
-  return Response.json(template);
+  return NextResponse.json(template);
 }

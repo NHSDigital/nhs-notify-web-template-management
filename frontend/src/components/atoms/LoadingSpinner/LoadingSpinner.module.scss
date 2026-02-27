@@ -1,5 +1,3 @@
-@use 'nhsuk-frontend/packages/core/settings/colours' as colours;
-
 .nhsuk-loader {
   position: relative;
   text-align: center;
@@ -9,9 +7,9 @@
 
 .nhsuk-loader__spinner {
   animation: spin 2.5s linear infinite;
-  border: 10px solid colours.$color_nhsuk-grey-4;
+  border: 10px solid var(--nhsuk-border-colour);
   border-radius: 50%;
-  border-top: 10px solid colours.$color_nhsuk-blue;
+  border-top: 10px solid var(--nhsuk-blue-colour);
   display: inline-block;
   height: 120px;
   margin: auto;

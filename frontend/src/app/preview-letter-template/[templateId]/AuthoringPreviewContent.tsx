@@ -14,7 +14,7 @@ import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { getBasePath } from '@utils/get-base-path';
 
-const POLL_INTERVAL_MS = 3000;
+const POLL_INTERVAL_MS = 1500;
 
 type AuthoringPreviewContentProps = {
   template: AuthoringLetterTemplate;
@@ -40,9 +40,7 @@ export function AuthoringPreviewContent({
   const [latestTemplate, setLatestTemplate] =
     useState<AuthoringLetterTemplate>(template);
 
-  const isPolling =
-    latestTemplate.templateStatus === 'NOT_YET_SUBMITTED' &&
-    latestTemplate.files.initialRender?.status === 'PENDING';
+  const isPolling = latestTemplate.files.initialRender?.status === 'PENDING';
 
   useEffect(() => {
     if (!isPolling) return;
@@ -51,8 +49,9 @@ export function AuthoringPreviewContent({
 
     const pollTemplate = async () => {
       try {
+        // axios?
         const response = await fetch(
-          `${getBasePath()}/preview-letter-template/${template.id}`,
+          `${getBasePath()}/preview-letter-template/${template.id}/poll`,
           {
             cache: 'no-store',
           }
@@ -86,8 +85,8 @@ export function AuthoringPreviewContent({
     return <LoadingSpinner text={loadingText} />;
   }
 
-  const showRenderer =
-    latestTemplate.files.initialRender?.status === 'RENDERED';
+  const showRenderer = latestTemplate.files.initialRender.status === 'RENDERED';
+
   const showSubmitForm = latestTemplate.templateStatus === 'NOT_YET_SUBMITTED';
 
   return (

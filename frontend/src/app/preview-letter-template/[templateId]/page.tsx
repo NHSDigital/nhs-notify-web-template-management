@@ -55,9 +55,7 @@ export default async function PreviewLetterTemplatePage({
 
   // AUTHORING letter
   const showRenderer =
-    validatedTemplate.files.initialRender?.status === 'RENDERED' ||
-    (validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED' &&
-      validatedTemplate.files.initialRender?.status === 'PENDING');
+    validatedTemplate.files.initialRender.status === 'RENDERED';
 
   // TODO: CCM-13495
   // all of this might need to become a client component
