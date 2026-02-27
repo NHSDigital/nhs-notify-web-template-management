@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.911.0",
-    "@aws-sdk/client-sns": "3.911.0",
-    "@aws-sdk/util-dynamodb": "3.911.0",
+    "@aws-sdk/client-dynamodb": "3.995.0",
+    "@aws-sdk/client-sns": "3.995.0",
+    "@aws-sdk/util-dynamodb": "3.995.0",
     "@nhsdigital/nhs-notify-event-schemas-template-management": "*",
     "nhs-notify-backend-client": "^0.0.1",
     "nhs-notify-web-template-management-utils": "^0.0.1",
