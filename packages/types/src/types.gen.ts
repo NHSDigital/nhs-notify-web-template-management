@@ -6,7 +6,7 @@ export type ClientOptions = {
 
 export type AuthoringLetterFiles = {
   docxTemplate: VersionedFileDetails;
-  initialRender?: RenderDetails;
+  initialRender: RenderDetails;
   longFormRender?: PersonalisedRenderDetails;
   shortFormRender?: PersonalisedRenderDetails;
 };

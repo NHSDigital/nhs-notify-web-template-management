@@ -359,19 +359,20 @@ describe('templateClient', () => {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
 
-      const filesWithVersions: AuthoringLetterFiles = {
+      const files: AuthoringLetterFiles = {
         docxTemplate: {
           fileName: docxFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
+        initialRender: { status: 'PENDING' },
       };
 
       const dataWithFiles: CreateUpdateTemplate & {
         files: AuthoringLetterFiles;
       } = {
         ...data,
-        files: filesWithVersions,
+        files,
       };
 
       const creationTime = '2025-03-12T08:41:08.805Z';
@@ -610,6 +611,7 @@ describe('templateClient', () => {
             currentVersion: versionId,
             virusScanStatus: 'PENDING',
           },
+          initialRender: { status: 'PENDING' },
         },
       };
 
@@ -714,19 +716,20 @@ describe('templateClient', () => {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
 
-      const filesWithVersions: AuthoringLetterFiles = {
+      const files: AuthoringLetterFiles = {
         docxTemplate: {
           fileName: 'template.docx',
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
+        initialRender: { status: 'PENDING' },
       };
 
       const dataWithFiles: CreateUpdateTemplate & {
         files: AuthoringLetterFiles;
       } = {
         ...data,
-        files: filesWithVersions,
+        files,
       };
 
       const expectedTemplateDto: TemplateDto = {

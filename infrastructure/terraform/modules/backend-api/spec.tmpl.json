@@ -17,7 +17,8 @@
           }
         },
         "required": [
-          "docxTemplate"
+          "docxTemplate",
+          "initialRender"
         ],
         "type": "object"
       },
