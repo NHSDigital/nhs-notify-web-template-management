@@ -25,6 +25,7 @@ import { loginAsUser } from 'helpers/auth/login-as-user';
 test.use({ storageState: { cookies: [], origins: [] } });
 
 let routingDisabledUser: TestUser;
+let proofingDisabledAndRoutingEnabledUser: TestUser;
 
 async function createTemplates() {
   return {
@@ -41,7 +42,7 @@ async function createTemplates() {
       submit: {
         ...TemplateFactory.createEmailTemplate(
           '58c51276-19f8-438a-9d7b-bf8bbfed673c',
-          routingDisabledUser
+          proofingDisabledAndRoutingEnabledUser
         ),
         name: 'submit-email-submit-template',
         subject: 'test-template-subject-line',
@@ -79,7 +80,7 @@ async function createTemplates() {
       submit: {
         ...TemplateFactory.createSmsTemplate(
           'fd9e4983-460e-475a-af00-4c80615e20b1',
-          routingDisabledUser
+          proofingDisabledAndRoutingEnabledUser
         ),
         name: 'submit-sms-submit-template',
         message: 'test-template-message',
@@ -114,7 +115,7 @@ async function createTemplates() {
       submit: {
         ...TemplateFactory.createNhsAppTemplate(
           'f27e0e08-a612-4fe4-95ef-35138c2f28f1',
-          routingDisabledUser
+          proofingDisabledAndRoutingEnabledUser
         ),
         name: 'submit-nhs-app-submit-template',
         message: 'test-template-message',
@@ -144,8 +145,11 @@ test.describe('Submit template Page', () => {
   let templates: Awaited<ReturnType<typeof createTemplates>>;
 
   test.beforeAll(async () => {
-    routingDisabledUser = await createAuthHelper().getTestUser(
-      testUsers.User2.userId
+    const authHelper = createAuthHelper();
+
+    routingDisabledUser = await authHelper.getTestUser(testUsers.User2.userId);
+    proofingDisabledAndRoutingEnabledUser = await authHelper.getTestUser(
+      testUsers.UserRoutingEnabled.userId
     );
 
     templates = await createTemplates();
@@ -228,10 +232,10 @@ test.describe('Submit template Page', () => {
         await assertBackLinkTopNotPresent(props);
       });
 
-      test(`when user submits form, then the ${channelName} "Template submitted" page is displayed`, async ({
+      test(`when user submits form, then the ${channelName} "Submit template" page is displayed`, async ({
         page,
       }) => {
-        await loginAsUser(routingDisabledUser, page);
+        await loginAsUser(proofingDisabledAndRoutingEnabledUser, page);
 
         const template = templates[channelIdentifier].submit;
         const submitTemplatePage = new PageModel(page)
@@ -243,7 +247,7 @@ test.describe('Submit template Page', () => {
         await submitTemplatePage.clickSubmitTemplateButton();
 
         await expect(page).toHaveURL(
-          new RegExp(`/templates/${channelIdentifier}-template-submitted/(.*)`) // eslint-disable-line security/detect-non-literal-regexp
+          new RegExp(`/templates/submit-${channelIdentifier}-template/(.*)`) // eslint-disable-line security/detect-non-literal-regexp
         );
       });
     });

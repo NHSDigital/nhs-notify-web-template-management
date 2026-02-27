@@ -65,6 +65,7 @@ const setup = () => {
     language: jest.fn().mockReturnThis(),
     excludeLanguage: jest.fn().mockReturnThis(),
     letterType: jest.fn().mockReturnThis(),
+    letterVersion: jest.fn().mockReturnThis(),
   });
 
   return {
@@ -2662,6 +2663,7 @@ describe('templateClient', () => {
       expect(queryMock.templateType).not.toHaveBeenCalled();
       expect(queryMock.language).not.toHaveBeenCalled();
       expect(queryMock.letterType).not.toHaveBeenCalled();
+      expect(queryMock.letterVersion).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         data: [template],
@@ -2703,6 +2705,7 @@ describe('templateClient', () => {
         language: 'en',
         excludeLanguage: 'fr',
         letterType: 'x0',
+        letterVersion: 'AUTHORING',
       };
 
       const template: TemplateDto = {
@@ -2732,6 +2735,7 @@ describe('templateClient', () => {
       expect(queryMock.language).toHaveBeenCalledWith('en');
       expect(queryMock.excludeLanguage).toHaveBeenCalledWith('fr');
       expect(queryMock.letterType).toHaveBeenCalledWith('x0');
+      expect(queryMock.letterVersion).toHaveBeenCalledWith('AUTHORING');
 
       expect(result).toEqual({
         data: [template],
@@ -3000,7 +3004,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should set LETTER template status to proof approved if routing is enabled', async () => {
+    test('should set LETTER template status to proof approved if proofing is enabled', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
@@ -3030,7 +3034,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { routing: true } },
+        data: { features: { proofing: true } },
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -3059,7 +3063,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should set LETTER template status to submitted if routing is not enabled', async () => {
+    test('should set LETTER template status to submitted if proofing is not enabled', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
@@ -3089,7 +3093,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: {} },
+        data: { features: { proofing: false } },
       });
 
       mocks.templateRepository.get.mockResolvedValueOnce({

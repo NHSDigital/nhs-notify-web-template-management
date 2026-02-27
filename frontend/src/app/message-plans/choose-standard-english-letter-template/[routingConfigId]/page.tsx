@@ -54,6 +54,7 @@ export default async function ChooseStandardEnglishLetterTemplate(
     language: 'en',
     letterType: 'x0',
     templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+    letterVersion: 'AUTHORING',
   });
 
   return (
