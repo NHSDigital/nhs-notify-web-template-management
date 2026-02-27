@@ -11,9 +11,9 @@ import {
 } from '@providers/client-config-provider';
 import {
   AuthoringLetterTemplate,
+  LetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import type { VersionedFileDetails } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@providers/client-config-provider');
 
@@ -227,15 +227,16 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
 
-    it('matches snapshot without initialRender - page counts are not displayed', () => {
-      const templateWithoutInitialRender = {
+    it('matches snapshot with initialRender not in RENDERED status - page counts are not displayed', () => {
+      const templateWithoutInitialRender: LetterTemplate = {
         ...baseAuthoringLetter,
         files: {
           docxTemplate: {
             currentVersion: 'version-id',
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
-          } satisfies VersionedFileDetails,
+          },
+          initialRender: { status: 'PENDING' },
         },
       };
       const container = render(
@@ -388,26 +389,6 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(
         screen.queryByText('Printing and postage')
       ).not.toBeInTheDocument();
-    });
-
-    it('hides total pages and sheets when no initialRender', () => {
-      render(
-        <PreviewTemplateDetailsAuthoringLetter
-          template={{
-            ...validationFailedTemplate,
-            files: {
-              docxTemplate: {
-                currentVersion: 'version-id',
-                fileName: 'template.docx',
-                virusScanStatus: 'PASSED',
-              },
-            },
-          }}
-        />
-      );
-
-      expect(screen.queryByText('Total pages')).not.toBeInTheDocument();
-      expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
     });
 
     it('hides total pages and sheets when initialRender is not in RENDERED status', () => {

@@ -322,6 +322,7 @@ describe('form-actions', () => {
           currentVersion: 'pdf-version',
           virusScanStatus: 'PENDING',
         },
+        initialRender: { status: 'PENDING' },
       },
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',

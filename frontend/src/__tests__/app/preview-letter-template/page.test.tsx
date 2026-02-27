@@ -16,7 +16,7 @@ import Page, {
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
-import type { VersionedFileDetails } from 'nhs-notify-web-template-management-types';
+import type { RenderStatus } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -329,68 +329,46 @@ describe('valid authoring letter template', () => {
 });
 
 describe('authoring letter template without initial render in RENDERED status', () => {
-  it('does not display the letter renderer when initialRender file is missing', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      files: {
-        docxTemplate: {
-          currentVersion: 'version-id',
-          fileName: 'template.docx',
-          virusScanStatus: 'PASSED',
+  const hiddenRendererStatusCases = [
+    'PENDING',
+    'FAILED',
+  ] as const satisfies RenderStatus[];
+
+  test.each(hiddenRendererStatusCases)(
+    'does not display renderer when initialRender status is %s',
+    async (status) => {
+      jest.mocked(getTemplate).mockResolvedValue({
+        ...AUTHORING_LETTER_TEMPLATE,
+        files: {
+          docxTemplate: {
+            currentVersion: 'version-id',
+            fileName: 'template.docx',
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status,
+          },
         },
-      },
-    });
+      });
 
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+      render(
+        await Page({
+          params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        })
+      );
 
-    expect(
-      screen.queryByRole('heading', { name: 'Letter preview' })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('tab', { name: 'Short examples' })
-    ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('heading', { name: 'Letter preview' })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('tab', { name: 'Short examples' })
+      ).not.toBeInTheDocument();
 
-    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
-      AUTHORING_LETTER_TEMPLATE.id
-    );
-  });
-
-  test('does not display renderer when initialRender status is FAILED', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      files: {
-        docxTemplate: {
-          currentVersion: 'version-id',
-          fileName: 'template.docx',
-          virusScanStatus: 'PASSED',
-        },
-        initialRender: {
-          status: 'FAILED',
-        },
-      },
-    });
-
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
-
-    expect(
-      screen.queryByRole('heading', { name: 'Letter preview' })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('tab', { name: 'Short examples' })
-    ).not.toBeInTheDocument();
-
-    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
-      AUTHORING_LETTER_TEMPLATE.id
-    );
-  });
+      expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
+        AUTHORING_LETTER_TEMPLATE.id
+      );
+    }
+  );
 });
 
 describe('authoring letter template does not show submit form when already submitted', () => {
@@ -456,7 +434,8 @@ describe('authoring letter with validation errors', () => {
           currentVersion: 'version-id',
           fileName: 'template.docx',
           virusScanStatus: 'PASSED',
-        } satisfies VersionedFileDetails,
+        },
+        initialRender: { status: 'PENDING' },
       },
     };
 

@@ -214,6 +214,7 @@ describe('LetterRenderTab', () => {
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
           },
+          initialRender: { status: 'PENDING' },
         },
       };
 

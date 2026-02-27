@@ -108,7 +108,7 @@ const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
     docxTemplate: $VersionedFileDetails,
-    initialRender: $RenderDetails.optional(),
+    initialRender: $RenderDetails,
     longFormRender: $PersonalisedRenderDetails.optional(),
     shortFormRender: $PersonalisedRenderDetails.optional(),
   })
