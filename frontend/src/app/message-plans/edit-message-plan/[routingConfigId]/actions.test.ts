@@ -303,7 +303,7 @@ describe('removeTemplateFromMessagePlan', () => {
     await removeTemplateFromMessagePlan(formData);
 
     expect(redirect).toHaveBeenCalledWith(
-      `/message-plans/choose-templates/${routingConfigId}`
+      `/message-plans/edit-message-plan/${routingConfigId}`
     );
   });
 

@@ -39,7 +39,7 @@ export async function editMessagePlanSettingsServerAction(
   );
 
   redirect(
-    `/message-plans/choose-templates/${parsed.data.routingConfigId}`,
+    `/message-plans/edit-message-plan/${parsed.data.routingConfigId}`,
     RedirectType.push
   );
 }

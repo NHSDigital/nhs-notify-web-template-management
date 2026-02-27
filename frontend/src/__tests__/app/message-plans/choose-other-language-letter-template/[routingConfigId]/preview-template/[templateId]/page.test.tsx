@@ -21,7 +21,7 @@ const FRENCH_LETTER_TEMPLATE = {
 };
 
 describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should redirect to choose-templates when lockNumber is invalid', async () => {
+  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
     await PreviewOtherLanguageLetterTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -33,12 +33,12 @@ describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/choose-templates/routing-config-id',
+      '/message-plans/edit-message-plan/routing-config-id',
       'replace'
     );
   });
 
-  it('should redirect to choose-templates when lockNumber is missing', async () => {
+  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
     await PreviewOtherLanguageLetterTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -48,7 +48,7 @@ describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/choose-templates/routing-config-id',
+      '/message-plans/edit-message-plan/routing-config-id',
       'replace'
     );
   });

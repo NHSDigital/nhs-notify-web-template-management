@@ -126,7 +126,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('redirects to choose templates page if the lockNumber is missing', async () => {
+  it('redirects to the edit message plan page if the lockNumber is missing', async () => {
     await ChooseLargePrintLetterTemplate({
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
@@ -134,7 +134,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+      `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
       'replace'
     );
   });

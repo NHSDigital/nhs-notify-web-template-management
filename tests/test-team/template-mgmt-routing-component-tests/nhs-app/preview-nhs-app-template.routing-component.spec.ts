@@ -149,7 +149,7 @@ test.describe('Routing - Preview app template page', () => {
     });
   });
 
-  test('redirects to choose-templates page when lockNumber is missing', async ({
+  test('redirects to the edit message plan page when lockNumber is missing', async ({
     page,
     baseURL,
   }) => {
@@ -160,7 +160,7 @@ test.describe('Routing - Preview app template page', () => {
     await previewNhsAppTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.APP_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.APP_ROUTING_CONFIG.id}`
     );
   });
 });

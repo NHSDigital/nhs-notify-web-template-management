@@ -483,7 +483,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - invalid form - 
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -936,7 +936,7 @@ exports[`ChooseChannelTemplate Client-side validation triggers - valid form - no
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -1201,7 +1201,7 @@ exports[`ChooseChannelTemplate renders email form 1`] = `
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -1488,7 +1488,7 @@ exports[`ChooseChannelTemplate renders error component 1`] = `
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -1733,7 +1733,7 @@ exports[`ChooseChannelTemplate renders large print letter form with accessibleFo
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -1998,7 +1998,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -2263,7 +2263,7 @@ exports[`ChooseChannelTemplate renders nhs app form 1`] = `
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -2528,7 +2528,7 @@ exports[`ChooseChannelTemplate renders sms form 1`] = `
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -2981,7 +2981,7 @@ exports[`ChooseChannelTemplate when templates are available renders multiple opt
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -3060,7 +3060,7 @@ exports[`ChooseChannelTemplate when there are no templates renders correctly 1`]
             <a
               class="nhsuk-u-font-size-19"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -3513,7 +3513,7 @@ exports[`ChooseChannelTemplate when there is a conditional template selected ren
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -3966,7 +3966,7 @@ exports[`ChooseChannelTemplate when there is a default template selected renders
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>
@@ -4211,7 +4211,7 @@ exports[`ChooseChannelTemplate when there is no template preselected renders cor
             <a
               class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
               data-testid="back-link-bottom"
-              href="/message-plans/choose-templates/fbb81055-79b9-4759-ac07-d191ae57be34"
+              href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
             >
               Go back
             </a>

@@ -112,5 +112,5 @@ export async function createMessagePlanServerAction(
     cascadeGroupOverrides: [],
   });
 
-  redirect(`/message-plans/choose-templates/${created.id}`, RedirectType.push);
+  redirect(`/message-plans/edit-message-plan/${created.id}`, RedirectType.push);
 }

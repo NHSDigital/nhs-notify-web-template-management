@@ -43,7 +43,7 @@ test('submit form - validation error', async () => {
   );
 });
 
-test('submit form - success updates config and redirects to choose templates', async () => {
+test('submit form - success updates config and redirects to the edit message plan page', async () => {
   await chooseChannelTemplateAction(
     {
       messagePlan: {
@@ -108,12 +108,12 @@ test('submit form - success updates config and redirects to choose templates', a
   );
 
   expect(redirect).toHaveBeenCalledWith(
-    `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+    `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
     RedirectType.push
   );
 });
 
-test('submit form - success updates config and redirects to choose templates for letter template with supplier references', async () => {
+test('submit form - success updates config and redirects to the edit message plan page for letter template with supplier references', async () => {
   await chooseChannelTemplateAction(
     {
       messagePlan: {
@@ -162,7 +162,7 @@ test('submit form - success updates config and redirects to choose templates for
   );
 
   expect(redirect).toHaveBeenCalledWith(
-    `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+    `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
     RedirectType.push
   );
 });
@@ -227,7 +227,7 @@ test('submit form - success adds conditional template', async () => {
   );
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    `/message-plans/choose-templates/${ROUTING_CONFIG.id}`,
+    `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
     RedirectType.push
   );
 });

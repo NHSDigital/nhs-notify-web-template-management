@@ -78,7 +78,7 @@ export async function chooseChannelTemplateAction(
   );
 
   redirect(
-    `/message-plans/choose-templates/${messagePlan.id}`,
+    `/message-plans/edit-message-plan/${messagePlan.id}`,
     RedirectType.push
   );
 }

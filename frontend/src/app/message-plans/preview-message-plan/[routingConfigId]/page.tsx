@@ -43,7 +43,7 @@ export default async function PreviewMessagePlanPage({
 
   if (messagePlan.status === 'DRAFT') {
     return redirect(
-      `/message-plans/choose-templates/${routingConfigId}`,
+      `/message-plans/edit-message-plan/${routingConfigId}`,
       RedirectType.replace
     );
   }

@@ -19,7 +19,7 @@ import {
   RoutingChooseNhsAppTemplatePage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
-  RoutingChooseTemplatesPage,
+  RoutingEditMessagePlanPage,
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanSettingsPage,
@@ -61,7 +61,7 @@ const routingPages = [
   RoutingChooseNhsAppTemplatePage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
-  RoutingChooseTemplatesPage,
+  RoutingEditMessagePlanPage,
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanSettingsPage,
@@ -301,7 +301,7 @@ test.describe('Routing', () => {
 
   test('Choose template', async ({ page, analyze }) =>
     analyze(
-      new RoutingChooseTemplatesPage(page).setPathParam(
+      new RoutingEditMessagePlanPage(page).setPathParam(
         'messagePlanId',
         draftRoutingConfigId
       )
@@ -309,7 +309,7 @@ test.describe('Routing', () => {
 
   test('Choose template - error', async ({ page, analyze }) =>
     analyze(
-      new RoutingChooseTemplatesPage(page).setPathParam(
+      new RoutingEditMessagePlanPage(page).setPathParam(
         'messagePlanId',
         emptyRoutingConfigId
       ),

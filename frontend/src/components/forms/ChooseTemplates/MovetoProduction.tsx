@@ -6,9 +6,9 @@ import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyF
 import { useNHSNotifyForm } from '@providers/form-provider';
 import copy from '@content/content';
 
-const content = copy.pages.chooseTemplatesForMessagePlan;
+const content = copy.pages.editMessagePlan;
 
-export function MessagePlanChooseTemplatesMoveToProductionForm({
+export function EditMessagePlanMoveToProductionForm({
   messagePlanId,
 }: {
   messagePlanId: string;

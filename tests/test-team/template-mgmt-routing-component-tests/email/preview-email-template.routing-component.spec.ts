@@ -147,7 +147,7 @@ test.describe('Routing - Preview email template page', () => {
     });
   });
 
-  test('redirects to choose-templates page when lockNumber is missing', async ({
+  test('redirects to the edit message plan page when lockNumber is missing', async ({
     page,
     baseURL,
   }) => {
@@ -158,7 +158,7 @@ test.describe('Routing - Preview email template page', () => {
     await previewEmailTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
     );
   });
 });
