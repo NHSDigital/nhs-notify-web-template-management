@@ -99,7 +99,7 @@ jobs:
         run: |
           echo "safe=$(echo '${{ matrix.workspace }}' | tr '/' '-_')" >> "$GITHUB_OUTPUT"
       - name: "Save the result of test suite"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: unit-tests-${{ steps.names.outputs.safe }}
           path: "${{ matrix.workspace }}/.reports/unit"
@@ -107,7 +107,7 @@ jobs:
           if-no-files-found: ignore
         if: always()
       - name: "Save the result of code coverage"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: code-coverage-${{ steps.names.outputs.safe }}
           path: "${{ matrix.workspace }}/.reports/unit/coverage/lcov.info"
@@ -195,7 +195,7 @@ jobs:
             --prepend-path-fix "../../"
 
       - name: Upload merged LCOV
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: code-coverage-report
           path: .reports/lcov.info
