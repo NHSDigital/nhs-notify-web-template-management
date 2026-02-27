@@ -833,15 +833,30 @@
         "type": "object"
       },
       "RenderDetails": {
-        "oneOf": [
+        "allOf": [
           {
-            "$ref": "#/components/schemas/RenderDetailsFailed"
+            "properties": {
+              "requestedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "requestedAt"
+            ],
+            "type": "object"
           },
           {
-            "$ref": "#/components/schemas/RenderDetailsPending"
-          },
-          {
-            "$ref": "#/components/schemas/RenderDetailsRendered"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RenderDetailsFailed"
+              },
+              {
+                "$ref": "#/components/schemas/RenderDetailsPending"
+              },
+              {
+                "$ref": "#/components/schemas/RenderDetailsRendered"
+              }
+            ]
           }
         ]
       },

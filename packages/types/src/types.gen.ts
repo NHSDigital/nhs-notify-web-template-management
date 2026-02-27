@@ -260,10 +260,9 @@ export type ProofFileDetails = {
   virusScanStatus: VirusScanStatus;
 };
 
-export type RenderDetails =
-  | RenderDetailsFailed
-  | RenderDetailsPending
-  | RenderDetailsRendered;
+export type RenderDetails = {
+  requestedAt: string;
+} & (RenderDetailsFailed | RenderDetailsPending | RenderDetailsRendered);
 
 export type RenderDetailsFailed = {
   status: 'FAILED';
