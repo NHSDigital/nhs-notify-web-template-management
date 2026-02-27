@@ -395,7 +395,8 @@ test.describe('Routing', () => {
     });
 
     await test.step('verify message plan is in production', async () => {
-      expect(page.url()).toContain(messagePlansPage.getUrl());
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      await expect(page).toHaveURL(new RegExp(`${messagePlansPage.getUrl()}$`));
       await expect(messagePlansPage.pageHeading).toBeVisible();
 
       await assertMessagePlanInTable(
