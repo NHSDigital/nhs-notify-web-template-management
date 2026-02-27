@@ -181,6 +181,7 @@ describe('LetterRenderTab', () => {
           ...baseTemplate.files,
           longFormRender: {
             status: 'PENDING',
+            requestedAt: '2026-02-27T09:13:15.426Z',
             systemPersonalisationPackId: 'long-1',
             personalisationParameters: {
               firstName: 'Michael',
@@ -214,7 +215,10 @@ describe('LetterRenderTab', () => {
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
           },
-          initialRender: { status: 'PENDING' },
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: '2026-02-27T09:13:15.426Z',
+          },
         },
       };
 
@@ -264,6 +268,7 @@ describe('LetterRenderTab', () => {
           ...baseTemplate.files,
           shortFormRender: {
             status: 'PENDING',
+            requestedAt: '2026-02-27T09:42:04.142Z',
             systemPersonalisationPackId: 'short-1',
             personalisationParameters: {
               firstName: 'Jo',

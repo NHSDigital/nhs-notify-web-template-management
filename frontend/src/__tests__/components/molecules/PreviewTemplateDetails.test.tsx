@@ -236,7 +236,10 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
           },
-          initialRender: { status: 'PENDING' },
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: '2026-02-27T09:42:04.142Z',
+          },
         },
       };
       const container = render(

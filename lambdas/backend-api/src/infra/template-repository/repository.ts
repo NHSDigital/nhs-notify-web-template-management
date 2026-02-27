@@ -11,6 +11,7 @@ import {
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { ErrorCase } from 'nhs-notify-backend-client';
 import type {
+  AuthoringLetterFiles,
   CreateUpdateTemplate,
   PatchTemplate,
   PdfLetterFiles,
@@ -32,18 +33,13 @@ import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { ApplicationResult, failure, success } from '../../utils';
 import { TemplateQuery } from './query';
 
-export type Attachments<T> = T extends {
-  templateType: 'LETTER';
-  letterVersion: 'PDF';
-}
-  ? { files: PdfLetterFiles }
-  : never;
-
 export type WithAttachments<T> = T extends {
   templateType: 'LETTER';
-  letterVersion: 'PDF';
 }
-  ? T & { files: PdfLetterFiles }
+  ? T &
+      (T extends { letterVersion: 'PDF' }
+        ? { files: PdfLetterFiles }
+        : { files: AuthoringLetterFiles })
   : T;
 
 export class TemplateRepository {
