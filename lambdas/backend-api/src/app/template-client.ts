@@ -345,7 +345,7 @@ export class TemplateClient {
         currentVersion: versionId,
         virusScanStatus: 'PENDING',
       },
-      initialRender: { status: 'PENDING' },
+      initialRender: { status: 'PENDING', requestedAt: '' },
     };
 
     const letterTemplateFields = {

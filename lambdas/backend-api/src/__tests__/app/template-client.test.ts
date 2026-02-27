@@ -722,7 +722,10 @@ describe('templateClient', () => {
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
-        initialRender: { status: 'PENDING' },
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: '2026-02-27T08:34:20.935Z',
+        },
       };
 
       const dataWithFiles: CreateUpdateTemplate & {

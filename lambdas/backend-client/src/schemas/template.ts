@@ -69,16 +69,24 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   })
 );
 
+const $RenderDetailsBase = z.object({
+  systemPersonalisationPackId: z.string().optional(),
+  personalisationParameters: z.record(z.string(), z.string()).optional(),
+});
+
 const $RenderDetailsFailed = z.object({
+  ...$RenderDetailsBase.shape,
   status: z.literal('FAILED'),
 });
 
 const $RenderDetailsPending = z.object({
+  ...$RenderDetailsBase.shape,
   status: z.literal('PENDING'),
   requestedAt: z.string(),
 });
 
 const $RenderDetailsRendered = z.object({
+  ...$RenderDetailsBase.shape,
   currentVersion: z.string(),
   fileName: z.string().trim().min(1),
   pageCount: z.number().int(),

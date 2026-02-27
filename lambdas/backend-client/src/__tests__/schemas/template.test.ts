@@ -376,7 +376,10 @@ describe('Template schemas', () => {
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
           },
-          initialRender: { status: 'PENDING' },
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: '2026-02-27T08:24:17.123Z',
+          },
         },
       },
       {
@@ -418,12 +421,10 @@ describe('Template schemas', () => {
             pageCount: 2,
           },
           longFormRender: {
-            fileName: 'long.pdf',
-            currentVersion: 'v3',
             status: 'PENDING',
             personalisationParameters: { firstName: 'Jane' },
             systemPersonalisationPackId: 'pack-456',
-            pageCount: 2,
+            requestedAt: '2026-02-27T08:24:17.123Z',
           },
         },
       },

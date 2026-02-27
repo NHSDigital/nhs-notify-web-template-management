@@ -16,7 +16,7 @@ import Page, {
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
-import type { RenderStatus } from 'nhs-notify-web-template-management-types';
+import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -330,13 +330,13 @@ describe('valid authoring letter template', () => {
 
 describe('authoring letter template without initial render in RENDERED status', () => {
   const hiddenRendererStatusCases = [
-    'PENDING',
-    'FAILED',
-  ] as const satisfies RenderStatus[];
+    { status: 'PENDING', requestedAt: '2026-02-27T08:24:17.123Z' },
+    { status: 'FAILED' },
+  ] as const satisfies RenderDetails[];
 
   test.each(hiddenRendererStatusCases)(
     'does not display renderer when initialRender status is %s',
-    async (status) => {
+    async (details) => {
       jest.mocked(getTemplate).mockResolvedValue({
         ...AUTHORING_LETTER_TEMPLATE,
         files: {
@@ -345,9 +345,7 @@ describe('authoring letter template without initial render in RENDERED status', 
             fileName: 'template.docx',
             virusScanStatus: 'PASSED',
           },
-          initialRender: {
-            status,
-          },
+          initialRender: details,
         },
       });
 
@@ -435,7 +433,10 @@ describe('authoring letter with validation errors', () => {
           fileName: 'template.docx',
           virusScanStatus: 'PASSED',
         },
-        initialRender: { status: 'PENDING' },
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: '2026-02-27T08:36:15.607Z',
+        },
       },
     };
 

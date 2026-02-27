@@ -265,7 +265,7 @@ export type RenderDetailsFailed = {
 };
 
 export type RenderDetailsPending = {
-  requestedAt?: string;
+  requestedAt: string;
   status: 'PENDING';
 };
 

@@ -865,6 +865,7 @@
           }
         },
         "required": [
+          "requestedAt",
           "status"
         ],
         "type": "object"
