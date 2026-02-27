@@ -1,4 +1,7 @@
-import { CascadeGroup, CascadeItem } from 'nhs-notify-backend-client';
+import type {
+  CascadeGroup,
+  CascadeItem,
+} from 'nhs-notify-web-template-management-types';
 import { RoutingConfigUpdateBuilder } from '../routing-config-update-builder';
 
 const mockTableName = 'TABLE_NAME';

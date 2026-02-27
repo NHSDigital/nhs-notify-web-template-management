@@ -8,7 +8,7 @@ import { getRoutingConfigReferencesByTemplateId } from '@utils/message-plans';
 import type {
   TemplateDto,
   RoutingConfigReference,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { redirect } from 'next/navigation';
 import { NextRedirectError } from '@testhelpers/next-redirect';
 import DeleteTemplateError from '@molecules/DeleteTemplateError/DeleteTemplateError';

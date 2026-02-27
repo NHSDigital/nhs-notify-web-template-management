@@ -7,7 +7,7 @@ import PreviewSubmittedLetterTemplatePage, {
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,

@@ -1,4 +1,7 @@
-import { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
+import type {
+  RoutingConfig,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import { RoutingAccessibleFormatLetterType } from 'nhs-notify-web-template-management-utils';
 
 export type ChooseChannelTemplateProps = {

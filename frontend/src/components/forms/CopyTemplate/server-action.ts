@@ -3,11 +3,11 @@ import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate } from '@utils/form-actions';
 import { format } from 'date-fns/format';
-import {
-  TEMPLATE_TYPE_LIST,
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
+import type {
   TemplateDto,
   TemplateType,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import content from '@content/content';
 
 export const $CopyTemplate = z.object({

@@ -1,5 +1,8 @@
 import type { Locator, Page } from '@playwright/test';
-import type { Channel, LetterType } from 'nhs-notify-backend-client';
+import type {
+  Channel,
+  LetterType,
+} from 'nhs-notify-web-template-management-types';
 import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
 export class RoutingReviewAndMoveToProductionPage extends TemplateMgmtBasePage {

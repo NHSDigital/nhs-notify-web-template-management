@@ -13,14 +13,14 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from '@utils/form-actions';
+import type { Result } from 'nhs-notify-backend-client';
 import type {
   CascadeGroupName,
   Channel,
   ChannelType,
-  Result,
   RoutingConfig,
   RoutingConfigStatus,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import {
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
