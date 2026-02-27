@@ -1,7 +1,7 @@
 'use client';
 
 import { Container, SummaryList, Tag } from 'nhsuk-react-components';
-import type { LetterVariant } from 'nhs-notify-backend-client';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import {
   letterTypeDisplayMappings,
   AuthoringLetterTemplate,

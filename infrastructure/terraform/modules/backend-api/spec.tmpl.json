@@ -16,6 +16,9 @@
             "$ref": "#/components/schemas/PersonalisedRenderDetails"
           }
         },
+        "required": [
+          "docxTemplate"
+        ],
         "type": "object"
       },
       "AuthoringLetterPatch": {
@@ -504,6 +507,30 @@
         ],
         "type": "object"
       },
+      "CreateAuthoringLetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLetterTemplateProperties"
+          },
+          {
+            "properties": {
+              "campaignId": {
+                "type": "string"
+              },
+              "letterVersion": {
+                "enum": [
+                  "AUTHORING"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "campaignId",
+              "letterVersion"
+            ]
+          }
+        ]
+      },
       "CreatePdfLetterProperties": {
         "allOf": [
           {
@@ -575,6 +602,9 @@
               },
               {
                 "$ref": "#/components/schemas/CreatePdfLetterProperties"
+              },
+              {
+                "$ref": "#/components/schemas/CreateAuthoringLetterProperties"
               }
             ]
           }
@@ -1370,9 +1400,74 @@
         }
       }
     },
+    "/v1/docx-letter-template": {
+      "post": {
+        "description": "Create a DOCX letter template",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadLetterTemplate"
+              }
+            }
+          },
+          "description": "Letter template to create",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateSuccess"
+                }
+              }
+            },
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Create a letter template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPLOAD_DOCX_LETTER_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
     "/v1/letter-template": {
       "post": {
-        "description": "Create a letter template",
+        "description": "Create a PDF letter template",
         "requestBody": {
           "content": {
             "multipart/form-data": {

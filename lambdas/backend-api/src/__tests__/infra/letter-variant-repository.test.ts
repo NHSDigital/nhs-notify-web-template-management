@@ -6,12 +6,13 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
-import { ErrorCase, type LetterVariant } from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client';
 import { InMemoryCache } from 'nhs-notify-web-template-management-utils';
 import {
   LetterVariantQueryFilters,
   LetterVariantRepository,
 } from '../../infra/letter-variant-repository';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 jest.mock('nhs-notify-web-template-management-utils', () => {
   const actual = jest.requireActual('nhs-notify-web-template-management-utils');

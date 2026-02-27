@@ -1,13 +1,13 @@
 'use server';
 
 import { getSessionServer } from '@utils/amplify-utils';
-import {
-  $TemplateDto,
+import { $TemplateDto } from 'nhs-notify-backend-client';
+import type {
   CreateUpdateTemplate,
   AuthoringLetterPatch,
   TemplateDto,
   LetterVariant,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { letterVariantApiClient } from 'nhs-notify-backend-client/src/letter-variant-api-client';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
@@ -37,6 +37,30 @@ export async function createTemplate(
   return data;
 }
 
+export async function uploadDocxTemplate(
+  template: CreateUpdateTemplate,
+  docxTemplate: File
+) {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.uploadDocxTemplate(
+    template,
+    accessToken,
+    docxTemplate
+  );
+
+  if (error) {
+    logger.error('Failed to create AUTHORING letter template', error);
+    throw new Error('Failed to create new letter template');
+  }
+
+  return data;
+}
+
 export async function uploadLetterTemplate(
   template: CreateUpdateTemplate,
   pdf: File,
@@ -56,7 +80,7 @@ export async function uploadLetterTemplate(
   );
 
   if (error) {
-    logger.error('Failed to create letter template', error);
+    logger.error('Failed to create PDF letter template', error);
     throw new Error('Failed to create new letter template');
   }
 

@@ -1,5 +1,5 @@
 import { $ClientConfiguration } from './schemas/client';
-import { ClientConfiguration } from './types/generated';
+import type { ClientConfiguration } from 'nhs-notify-web-template-management-types';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { ErrorCase } from './types/error-cases';

@@ -20,13 +20,14 @@ import {
   requestTemplateProof,
   getLetterVariantsForTemplate,
   getLetterVariantById,
+  uploadDocxTemplate,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import {
+import type {
   LetterVariant,
   TemplateDto,
   TemplateStatus,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -312,6 +313,114 @@ describe('form-actions', () => {
     ).rejects.toThrow('Failed to get access token');
   });
 
+  test('uploadDocxTemplate', async () => {
+    const responseData = {
+      templateType: 'LETTER',
+      clientId: 'client-id',
+      id: 'new-template-id',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'template-name',
+      letterType: 'x1',
+      language: 'ar',
+      letterVersion: 'AUTHORING',
+      files: {
+        docxTemplate: {
+          fileName: 'template.docx',
+          currentVersion: 'pdf-version',
+          virusScanStatus: 'PENDING',
+        },
+      },
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+      lockNumber: 1,
+    } satisfies TemplateDto;
+
+    mockedTemplateClient.uploadDocxTemplate.mockResolvedValueOnce({
+      data: responseData,
+    });
+
+    const uploadDocxTemplateInput: UploadLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'en',
+      campaignId: 'campaign-id',
+      letterVersion: 'AUTHORING',
+    };
+
+    const docxTemplate = new File(['file contents'], 'template.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+
+    const response = await uploadDocxTemplate(
+      uploadDocxTemplateInput,
+      docxTemplate
+    );
+
+    expect(mockedTemplateClient.uploadDocxTemplate).toHaveBeenCalledWith(
+      uploadDocxTemplateInput,
+      'token',
+      docxTemplate
+    );
+
+    expect(response).toEqual(responseData);
+  });
+
+  test('uploadDocxTemplate - should throw error when saving unexpectedly fails', async () => {
+    mockedTemplateClient.uploadDocxTemplate.mockResolvedValueOnce({
+      error: {
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+        },
+      },
+    });
+
+    const uploadDocxTemplateInput: UploadLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'en',
+      campaignId: 'campaign-id',
+      letterVersion: 'AUTHORING',
+    };
+
+    const docxTemplate = new File(['file contents'], 'template.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+
+    await expect(
+      uploadDocxTemplate(uploadDocxTemplateInput, docxTemplate)
+    ).rejects.toThrow('Failed to create new letter template');
+
+    expect(mockedTemplateClient.uploadDocxTemplate).toHaveBeenCalledWith(
+      uploadDocxTemplateInput,
+      'token',
+      docxTemplate
+    );
+  });
+
+  test('uploadDocxTemplate - should throw error when no token', async () => {
+    authIdTokenServerMock.mockResolvedValueOnce({});
+
+    const uploadDocxTemplateInput: UploadLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'en',
+      campaignId: 'campaign-id',
+      letterVersion: 'AUTHORING',
+    };
+
+    const docxTemplate = new File(['file contents'], 'template.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+
+    await expect(
+      uploadDocxTemplate(uploadDocxTemplateInput, docxTemplate)
+    ).rejects.toThrow('Failed to get access token');
+  });
+
   test('saveTemplate', async () => {
     const responseData = {
       id: 'id',
@@ -420,6 +529,11 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
       lockNumber: 6,
       files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
         initialRender: {
           fileName: 'render.pdf',
           currentVersion: 'v1',

@@ -22,8 +22,9 @@
     "eslint-plugin-playwright": "^2.2.2",
     "generate-password": "^1.7.1",
     "glob": "^11.0.1",
-    "nhs-notify-backend-client": "*",
+    "nhs-notify-backend-client": "^0.0.1",
     "nhs-notify-web-template-management-test-helper-utils": "^0.0.1",
+    "nhs-notify-web-template-management-types": "^0.0.1",
     "nhs-notify-web-template-management-util-backend-config": "^0.0.1",
     "ssh2-sftp-client": "^9.1.0",
     "zod": "^4.0.17"

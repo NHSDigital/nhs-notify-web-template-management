@@ -1,6 +1,6 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { createHandler } from '../../api/patch-template';
 import { TemplateClient } from '../../app/template-client';
 
@@ -222,6 +222,11 @@ describe('Template API - Patch', () => {
           currentVersion: 'v1',
           status: 'RENDERED',
           pageCount: 1,
+        },
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PENDING',
         },
       },
       createdAt: new Date().toISOString(),

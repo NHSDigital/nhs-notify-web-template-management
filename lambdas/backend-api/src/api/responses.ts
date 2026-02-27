@@ -4,7 +4,7 @@ import type {
   RoutingConfig,
   RoutingConfigReference,
   LetterVariant,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 
 type Count = { count: number };
 

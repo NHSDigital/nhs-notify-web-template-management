@@ -1,4 +1,4 @@
-import {
+import type {
   CreateUpdateTemplate,
   TemplateSuccess,
   TemplateSuccessList,
@@ -6,7 +6,7 @@ import {
   AuthoringLetterPatch,
   LetterVariant,
   LetterVariantListSuccess,
-} from './types/generated';
+} from 'nhs-notify-web-template-management-types';
 import { Result } from './types/result';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { LETTER_MULTIPART } from './schemas/constants';
@@ -28,6 +28,34 @@ export const templateApiClient = {
       })
     );
 
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
+  async uploadDocxTemplate(
+    template: CreateUpdateTemplate,
+    token: string,
+    docxTemplate: File
+  ): Promise<Result<TemplateDto>> {
+    const formData = new FormData();
+    formData.append(LETTER_MULTIPART.TEMPLATE.name, JSON.stringify(template));
+    formData.append(LETTER_MULTIPART.DOCX.name, docxTemplate);
+
+    const response = await catchAxiosError(
+      httpClient.post<TemplateSuccess>('/v1/docx-letter-template', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: token,
+        },
+      })
+    );
     if (response.error) {
       return {
         error: response.error,

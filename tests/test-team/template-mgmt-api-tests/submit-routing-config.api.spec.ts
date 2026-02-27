@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
-import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
+import type { RoutingConfigStatus } from 'nhs-notify-web-template-management-types';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { RoutingConfigStatus } from 'nhs-notify-backend-client';
 import { getTestContext } from 'helpers/context/context';
 
 test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {

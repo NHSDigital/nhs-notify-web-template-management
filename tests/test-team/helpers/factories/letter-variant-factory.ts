@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { LetterVariant } from 'nhs-notify-backend-client';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 export const makeLetterVariant = (
   overrides: Partial<LetterVariant> = {}

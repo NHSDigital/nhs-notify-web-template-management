@@ -6,7 +6,7 @@ import { Button, Details, Table } from 'nhsuk-react-components';
 import { format } from 'date-fns/format';
 import Link from 'next/link';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
-import type { RoutingConfigStatusActive } from 'nhs-notify-backend-client';
+import type { RoutingConfigStatusActive } from 'nhs-notify-web-template-management-types';
 import { messagePlanStatusToDisplayText } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
 import { useCopyTableToClipboard } from '@hooks/use-copy-table-to-clipboard.hook';

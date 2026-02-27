@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { expect } from '@playwright/test';
+import type { RoutingConfigStatus } from 'nhs-notify-web-template-management-types';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -32,7 +33,6 @@ import {
   RoutingPreviewStandardLetterTemplatePage,
   RoutingReviewAndMoveToProductionPage,
 } from 'pages/routing';
-import { RoutingConfigStatus } from 'nhs-notify-backend-client';
 import { getTestContext } from 'helpers/context/context';
 
 let userWithMultipleCampaigns: TestUser;

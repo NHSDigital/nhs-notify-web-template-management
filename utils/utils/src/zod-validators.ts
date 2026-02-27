@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   $AuthoringLetterProperties,
+  $CreateAuthoringLetterProperties,
   $CreatePdfLetterProperties,
   $CreateUpdateTemplate,
   $EmailProperties,
@@ -12,8 +13,8 @@ import {
   $SmsProperties,
   $TemplateDto,
   TEMPLATE_STATUS_LIST,
-  TemplateDto,
 } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 export const zodValidate = <T extends z.Schema>(
   schema: T,
@@ -73,9 +74,14 @@ export const $SubmittedSMSTemplate = z.intersection(
   $SMSTemplate
 );
 
-export const $UploadLetterTemplate = z.intersection(
+export const $UploadPdfLetterTemplate = z.intersection(
   $CreateUpdateTemplate,
   $CreatePdfLetterProperties
+);
+
+export const $UploadDocxLetterTemplate = z.intersection(
+  $CreateUpdateTemplate,
+  $CreateAuthoringLetterProperties
 );
 
 const $BaseLetterTemplateDto = z.intersection(

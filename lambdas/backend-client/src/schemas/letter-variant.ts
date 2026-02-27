@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { LetterVariant } from '../types/generated';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 export const $LetterVariant: z.ZodType<LetterVariant> = z
   .object({

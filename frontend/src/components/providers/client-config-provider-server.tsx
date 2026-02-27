@@ -1,7 +1,7 @@
 'use server';
 
 import { PropsWithChildren } from 'react';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
+import type { ClientConfiguration } from 'nhs-notify-web-template-management-types';
 import { initialFeatureFlags } from '@utils/client-config';
 import { fetchClient } from '@utils/server-features';
 import { ClientConfigProvider } from '@providers/client-config-provider';

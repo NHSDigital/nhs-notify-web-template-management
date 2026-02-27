@@ -1,6 +1,6 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import type { LetterVariant } from 'nhs-notify-backend-client';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import { createHandler } from '../../api/get-letter-variant';
 import { LetterVariantClient } from '../../app/letter-variant-client';
 

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import type { Metadata } from 'next';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import type {
   AuthoringLetterTemplate,
   TemplatePageProps,
@@ -17,7 +18,6 @@ import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
-import { LetterVariant } from 'nhs-notify-backend-client';
 
 const { pageTitle, backLinkText, submitText, links, validationErrorMessages } =
   content.components.previewLetterTemplate;

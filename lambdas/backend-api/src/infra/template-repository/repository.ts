@@ -9,9 +9,9 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import {
+import { ErrorCase, FailureResult } from 'nhs-notify-backend-client';
+import type {
   CreateUpdateTemplate,
-  ErrorCase,
   AuthoringLetterPatch,
   PdfLetterFiles,
   ProofFileDetails,
@@ -19,9 +19,8 @@ import {
   TemplateStatus,
   VirusScanStatus,
   TemplateType,
-  FailureResult,
   LetterVersion,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type {
   DatabaseTemplate,

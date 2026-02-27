@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { fetchClient } from '@utils/server-features';
 import { getTemplate } from '@utils/form-actions';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
@@ -28,6 +28,11 @@ const mockTemplate: TemplateDto = {
   clientId: 'client-123',
   campaignId: 'Campaign 1',
   files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
     initialRender: {
       pageCount: 2,
       currentVersion: 'version',

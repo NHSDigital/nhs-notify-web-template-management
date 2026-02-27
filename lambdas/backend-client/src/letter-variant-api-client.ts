@@ -1,6 +1,9 @@
+import type {
+  LetterVariant,
+  LetterVariantSuccess,
+} from 'nhs-notify-web-template-management-types';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
-import { LetterVariant, LetterVariantSuccess } from './types/generated';
 
 export const httpClient = createAxiosClient();
 

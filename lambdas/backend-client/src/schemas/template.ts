@@ -1,11 +1,11 @@
 import { z } from 'zod/v4';
 import type {
   AuthoringLetterFiles,
+  AuthoringLetterPatch,
   AuthoringLetterProperties,
-  PersonalisedRenderDetails,
-  RenderDetails,
   BaseCreatedTemplate,
   BaseTemplate,
+  CreateAuthoringLetterProperties,
   CreatePdfLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
@@ -13,10 +13,11 @@ import type {
   LetterType,
   LetterValidationError,
   NhsAppProperties,
-  AuthoringLetterPatch,
+  PersonalisedRenderDetails,
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
+  RenderDetails,
   RenderStatus,
   SmsProperties,
   TemplateDto,
@@ -24,7 +25,7 @@ import type {
   TemplateStatusActive,
   TemplateType,
   VersionedFileDetails,
-} from '../types/generated';
+} from 'nhs-notify-web-template-management-types';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
   MAX_NHS_APP_CHARACTER_LENGTH,
@@ -94,6 +95,7 @@ const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
 
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
+    docxTemplate: $VersionedFileDetails,
     initialRender: $RenderDetails.optional(),
     longFormRender: $PersonalisedRenderDetails.optional(),
     shortFormRender: $PersonalisedRenderDetails.optional(),
@@ -152,6 +154,15 @@ const $LetterValidationError = schemaFor<LetterValidationError>()(
   z.enum(LETTER_VALIDATION_ERROR_LIST)
 );
 
+export const $CreateAuthoringLetterProperties =
+  schemaFor<CreateAuthoringLetterProperties>()(
+    z.object({
+      ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
+      letterVersion: z.literal('AUTHORING'),
+    })
+  );
+
 export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
@@ -199,12 +210,20 @@ export const $CreateUpdateNonLetter = schemaFor<
   ])
 );
 
+export const $CreateUpdateLetterTemplate = z.discriminatedUnion(
+  'letterVersion',
+  [
+    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $BaseTemplateSchema.extend($CreateAuthoringLetterProperties.shape),
+  ]
+);
+
 export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
   z.discriminatedUnion('templateType', [
     $BaseTemplateSchema.extend($NhsAppProperties.shape),
     $BaseTemplateSchema.extend($EmailProperties.shape),
     $BaseTemplateSchema.extend($SmsProperties.shape),
-    $BaseTemplateSchema.extend($CreatePdfLetterProperties.shape),
+    $CreateUpdateLetterTemplate,
   ])
 );
 

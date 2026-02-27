@@ -1,5 +1,8 @@
 import { mockDeep } from 'jest-mock-extended';
-import { LetterVariant, RoutingConfig } from 'nhs-notify-backend-client';
+import {
+  LetterVariant,
+  RoutingConfig,
+} from 'nhs-notify-web-template-management-types';
 import {
   AuthoringLetterTemplate,
   EmailTemplate,
@@ -108,6 +111,11 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   letterVersion: 'AUTHORING',
   letterVariantId: 'variant-123',
   files: {
+    docxTemplate: {
+      currentVersion: 'version-id',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
     initialRender: {
       fileName: 'render.pdf',
       currentVersion: 'v1',

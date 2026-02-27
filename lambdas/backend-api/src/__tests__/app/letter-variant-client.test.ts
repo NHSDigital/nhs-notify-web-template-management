@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended';
-import type { LetterVariant } from 'nhs-notify-backend-client';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import { LetterVariantClient } from '@backend-api/app/letter-variant-client';
 import type { LetterVariantRepository } from '@backend-api/infra/letter-variant-repository';
 

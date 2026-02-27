@@ -3,7 +3,7 @@ import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/SmsTemplateForm/server-action';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@utils/amplify-utils');

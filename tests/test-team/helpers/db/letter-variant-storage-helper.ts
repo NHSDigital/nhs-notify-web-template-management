@@ -5,7 +5,9 @@ import {
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { z } from 'zod/v4';
-import { $LetterVariant, type LetterVariant } from 'nhs-notify-backend-client';
+import { $LetterVariant } from 'nhs-notify-backend-client';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
+
 import GLOBAL_VARIANTS from 'fixtures/global-letter-variants.json';
 import { chunk } from 'helpers/chunk';
 import type { TestContextFile } from 'helpers/context/context-file';
@@ -66,17 +68,15 @@ export class LetterVariantStorageHelper {
   }
 
   public async createLetterVariant(variant: LetterVariant) {
-    const parsed = $LetterVariant.parse(variant);
-
     await Promise.all([
       this.dynamo.send(
         new PutCommand({
           TableName: process.env.LETTER_VARIANTS_TABLE_NAME,
-          Item: this.getPutRequestItem(parsed),
+          Item: this.getPutRequestItem(variant),
         })
       ),
 
-      this.contextFile.setLetterVariant(parsed.id, parsed),
+      this.contextFile.setLetterVariant(variant.id, variant),
     ]);
   }
 

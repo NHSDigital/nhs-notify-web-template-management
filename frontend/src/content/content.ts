@@ -3,7 +3,7 @@ import type {
   RoutingConfigStatusActive,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import type { DigitalTemplateType } from 'nhs-notify-web-template-management-utils';
 
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';

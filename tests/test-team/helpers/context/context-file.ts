@@ -3,7 +3,7 @@ import { Buffer } from 'node:buffer';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Mutex } from 'async-mutex';
-import type { LetterVariant } from 'nhs-notify-backend-client';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import type { ClientConfiguration } from '../client/client-helper';
 import type { TestUserContext } from '../auth/cognito-auth-helper';
 
