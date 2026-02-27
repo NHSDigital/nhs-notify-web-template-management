@@ -8,7 +8,7 @@ import { NHSNotifyContainer } from '@layouts/container/container';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import content from '@content/content';
 
 const { pageTitle } = content.components.templateSubmitted;

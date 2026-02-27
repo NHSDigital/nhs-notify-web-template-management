@@ -8,7 +8,7 @@ import type {
   RoutingConfigStatus,
   ClientFeatures,
   LetterVersion,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { DigitalTemplateType } from './types';
 
 /**

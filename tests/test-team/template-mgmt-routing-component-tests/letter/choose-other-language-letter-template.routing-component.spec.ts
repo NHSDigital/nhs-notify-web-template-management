@@ -22,7 +22,7 @@ import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseOtherLanguageLetterTemplatePage } from 'pages/routing/letter/choose-other-language-letter-template-page';
 import { RoutingConfigDbEntry, Template } from 'helpers/types';
-import { Language } from 'nhs-notify-backend-client';
+import type { Language } from 'nhs-notify-web-template-management-types';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { RoutingChooseTemplatesPage } from 'pages/routing';
 

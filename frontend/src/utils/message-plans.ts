@@ -1,13 +1,13 @@
 'use server';
 
-import {
-  $RoutingConfig,
+import { $RoutingConfig } from 'nhs-notify-backend-client';
+import type {
   CreateRoutingConfig,
   RoutingConfigReference,
   RoutingConfig,
   RoutingConfigStatusActive,
   UpdateRoutingConfig,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import {
   getMessagePlanTemplateIds,
   type MessagePlanTemplates,

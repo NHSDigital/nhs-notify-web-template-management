@@ -2,7 +2,7 @@ import { HTMLProps, PropsWithChildren } from 'react';
 import { Details, DetailsSummary, DetailsText } from '@atoms/nhsuk-components';
 import { FallbackConditionBlock } from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
-import { Channel } from 'nhs-notify-backend-client';
+import type { Channel } from 'nhs-notify-web-template-management-types';
 import {
   channelToTemplateType,
   ORDINALS,

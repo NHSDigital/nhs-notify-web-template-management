@@ -5,7 +5,7 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers/helpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation');

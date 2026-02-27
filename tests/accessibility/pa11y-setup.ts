@@ -4,7 +4,10 @@ import path from 'node:path';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { generate } from 'generate-password';
-import { TemplateStatus, VirusScanStatus } from 'nhs-notify-backend-client';
+import type {
+  TemplateStatus,
+  VirusScanStatus,
+} from 'nhs-notify-web-template-management-types';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import { TestUserClient } from './test-user-client';

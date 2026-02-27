@@ -7,7 +7,7 @@ import type {
   CreateUpdateTemplate,
   ClientConfiguration,
   AuthoringLetterFiles,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { TemplateRepository } from '../../infra';
 import { TemplateClient } from '../../app/template-client';
 import { LetterUploadRepository } from '../../infra/letter-upload-repository';

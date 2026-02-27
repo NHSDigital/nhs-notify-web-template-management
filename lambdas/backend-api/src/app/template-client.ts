@@ -3,19 +3,21 @@ import { randomUUID } from 'node:crypto';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
   Result,
-  TemplateDto,
-  CreateUpdateTemplate,
   ErrorCase,
-  PdfLetterFiles,
   $CreateUpdateNonLetter,
-  ClientConfiguration,
   $LockNumber,
   $TemplateDto,
   $TemplateFilter,
-  PatchTemplate,
   $PatchTemplate,
-  AuthoringLetterFiles,
 } from 'nhs-notify-backend-client';
+import type {
+  AuthoringLetterFiles,
+  ClientConfiguration,
+  CreateUpdateTemplate,
+  PatchTemplate,
+  PdfLetterFiles,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
   $UploadPdfLetterTemplate,

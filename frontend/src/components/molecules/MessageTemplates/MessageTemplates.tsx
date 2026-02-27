@@ -16,7 +16,7 @@ import {
   statusToDisplayMapping,
   statusToColourMapping,
 } from 'nhs-notify-web-template-management-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import style from './MessageTemplates.module.scss';
 import { useFeatureFlags } from '@providers/client-config-provider';
 

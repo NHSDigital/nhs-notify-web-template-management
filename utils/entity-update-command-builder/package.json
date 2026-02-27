@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "nhs-notify-backend-client": "0.0.1",
     "nhs-notify-web-template-management-utils": "0.0.1"
   },
   "devDependencies": {
@@ -9,6 +8,7 @@
     "@tsconfig/node22": "^22.0.5",
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
+    "nhs-notify-web-template-management-types": "0.0.1",
     "typescript": "^5.9.3"
   },
   "main": "src/index.ts",

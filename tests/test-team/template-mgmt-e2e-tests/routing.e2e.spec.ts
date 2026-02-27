@@ -25,8 +25,8 @@ import {
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
 import type { Template } from '../helpers/types';
-import type { Channel } from 'nhs-notify-backend-client';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import type { Channel } from 'nhs-notify-web-template-management-types';
 
 const templateStorageHelper = new TemplateStorageHelper();
 

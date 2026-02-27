@@ -2,7 +2,10 @@
 
 import { Fragment } from 'react';
 import Link from 'next/link';
-import type { RoutingConfig, TemplateDto } from 'nhs-notify-backend-client';
+import type {
+  RoutingConfig,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import {
   accessibleFormatDisplayMappings,
   channelDisplayMappings,

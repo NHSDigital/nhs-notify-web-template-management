@@ -8,7 +8,7 @@ import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,

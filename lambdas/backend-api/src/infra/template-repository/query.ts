@@ -1,13 +1,13 @@
 import { type DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import {
-  $TemplateDto,
+import { $TemplateDto } from 'nhs-notify-backend-client';
+import type {
   Language,
   LetterType,
   LetterVersion,
   TemplateDto,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { AbstractQuery } from '../abstract-query';
 
 export class TemplateQuery extends AbstractQuery<TemplateDto> {
