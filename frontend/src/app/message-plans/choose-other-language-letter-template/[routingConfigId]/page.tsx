@@ -39,6 +39,7 @@ export default async function ChooseOtherLanguageLetterTemplate(
     getRoutingConfig(routingConfigId),
     getForeignLanguageLetterTemplates({
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+      letterVersion: 'AUTHORING',
     }),
   ]);
 

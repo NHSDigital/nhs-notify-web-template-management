@@ -150,7 +150,7 @@ exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=false letter
 
 exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"pink"`;
 
-exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `"pink"`;
+exports[`statusToColourMapping status=SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `"grey"`;
 
 exports[`statusToColourMapping status=SUBMITTED type=NHS_APP routing=false letterVersion=undefined 1`] = `"grey"`;
 
@@ -370,7 +370,7 @@ exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=false lette
 
 exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Locked"`;
 
-exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `"Locked"`;
+exports[`statusToDisplayMapping status=SUBMITTED type=LETTER routing=true letterVersion=PDF 1`] = `"Submitted"`;
 
 exports[`statusToDisplayMapping status=SUBMITTED type=NHS_APP routing=false letterVersion=undefined 1`] = `"Submitted"`;
 

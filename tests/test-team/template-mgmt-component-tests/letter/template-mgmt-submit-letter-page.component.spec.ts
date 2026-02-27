@@ -23,17 +23,16 @@ import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-te
 test.use({ storageState: { cookies: [], origins: [] } });
 
 let routingEnabledUser: TestUser;
-let routingDisabledProofingEnabledUser: TestUser;
 let proofingDisabledUser: TestUser;
+let proofingDisabledAndRoutingEnabledUser: TestUser;
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
   routingEnabledUser = await authHelper.getTestUser(testUsers.User1.userId);
-  routingDisabledProofingEnabledUser = await authHelper.getTestUser(
-    testUsers.User2.userId
-  );
   proofingDisabledUser = await authHelper.getTestUser(testUsers.User3.userId);
-
+  proofingDisabledAndRoutingEnabledUser = await authHelper.getTestUser(
+    testUsers.UserRoutingEnabled.userId
+  );
   return {
     empty: {
       id: 'submit-letter-page-invalid-template',
@@ -55,7 +54,7 @@ async function createTemplates() {
 
     routingDisabled: TemplateFactory.uploadLetterTemplate(
       'b9321307-abfe-48d1-a10a-1d7fe21bd18c',
-      routingDisabledProofingEnabledUser,
+      proofingDisabledAndRoutingEnabledUser,
       'routing-disabled-submit-letter',
       'PROOF_AVAILABLE'
     ),
@@ -131,7 +130,7 @@ test.describe('Submit Letter Template Page', () => {
     page,
     baseURL,
   }) => {
-    await loginAsUser(routingDisabledProofingEnabledUser, page);
+    await loginAsUser(proofingDisabledAndRoutingEnabledUser, page);
 
     const submitPage = new TemplateMgmtSubmitLetterPage(page)
       .setPathParam('templateId', templates.routingDisabled.id)
@@ -147,10 +146,10 @@ test.describe('Submit Letter Template Page', () => {
     );
 
     await expect(submitPage.pageHeading).toHaveText(
-      `Approve and submit '${templates.routingDisabled.name}'`
+      `Submit '${templates.routingDisabled.name}'`
     );
 
-    await expect(submitPage.submitButton).toHaveText('Approve and submit');
+    await expect(submitPage.submitButton).toHaveText('Submit template');
 
     await submitPage.clickSubmitTemplateButton();
 

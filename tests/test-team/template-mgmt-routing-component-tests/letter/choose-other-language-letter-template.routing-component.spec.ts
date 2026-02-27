@@ -68,59 +68,52 @@ function getTemplates(
       user,
       `'Test NHS App template - ${templateIds.NHSAPP}`
     ),
-    LETTER: TemplateFactory.uploadLetterTemplate(
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`,
-      'SUBMITTED',
-      'PASSED'
+      'SUBMITTED'
     ),
-    LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
-      'PASSED',
       { letterType: 'x1' }
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       `Test French Letter template - ${templateIds.FRENCH_LETTER}`,
       'SUBMITTED',
-      'PASSED',
       { language: 'fr' }
     ),
-    FRENCH_LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
+    FRENCH_LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER_APPROVED,
       user,
       `Test Duplicate French Letter template - ${templateIds.FRENCH_LETTER_APPROVED}`,
       'PROOF_APPROVED',
-      'PASSED',
       { language: 'fr' }
     ),
-    FRENCH_LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
+    FRENCH_LETTER_NOT_SUBMITTED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER_NOT_SUBMITTED,
       user,
       `Proof available French letter - ${templateIds.FRENCH_LETTER_NOT_SUBMITTED}`,
-      'PROOF_AVAILABLE',
-      'PASSED',
+      'NOT_YET_SUBMITTED',
       { language: 'fr' }
     ),
-    SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
+    SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'SUBMITTED',
-      'PASSED',
       { language: 'es' }
     ),
-    POLISH_LETTER: TemplateFactory.uploadLetterTemplate(
+    POLISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.POLISH_LETTER,
       user,
       `Test Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'SUBMITTED',
-      'PASSED',
       { language: 'pl' }
     ),
   };
