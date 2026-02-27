@@ -199,3 +199,11 @@ export const guardDutyEventValidator = (
     }),
   });
 };
+
+export const eventBridgeS3ObjectCreatedValidator = z.object({
+  detail: z.object({
+    object: z.object({
+      key: z.string(),
+    }),
+  }),
+});

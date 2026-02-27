@@ -77,7 +77,7 @@ export const TemplateAPIPayloadFactory = {
     T extends TemplateInput<CreateTemplatePayload>,
   >(
     template: T,
-    uploadSpec: UploadPartSpec[]
+    uploadData: UploadPartSpec[] | Buffer
   ): {
     templateData: TemplateOutput<CreateTemplatePayload, T>;
     multipart: Buffer;
@@ -88,7 +88,24 @@ export const TemplateAPIPayloadFactory = {
       ...template,
     };
 
-    const multipartData = getTestMultipartFormData(uploadSpec, templateData);
+    const partSpec: UploadPartSpec[] = Array.isArray(uploadData)
+      ? uploadData
+      : [
+          {
+            _type: 'json',
+            partName: 'template',
+          },
+          {
+            _type: 'file',
+            partName: 'docxTemplate',
+            fileName: 'template.docx',
+            fileType:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            file: uploadData,
+          },
+        ];
+
+    const multipartData = getTestMultipartFormData(partSpec, templateData);
 
     return {
       templateData,

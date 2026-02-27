@@ -18,13 +18,13 @@ import type {
   PdfLetterProperties,
   ProofFileDetails,
   RenderDetails,
-  RenderStatus,
   SmsProperties,
   TemplateDto,
   TemplateStatus,
   TemplateStatusActive,
   TemplateType,
   VersionedFileDetails,
+  ValidationErrorDetail,
 } from 'nhs-notify-web-template-management-types';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -71,15 +71,27 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   })
 );
 
-const $RenderStatus = schemaFor<RenderStatus>()(z.enum(RENDER_STATUS_LIST));
+const $RenderDetailsFailed = z.object({
+  status: z.literal('FAILED'),
+});
+
+const $RenderDetailsPending = z.object({
+  status: z.literal('PENDING'),
+});
+
+const $RenderDetailsRendered = z.object({
+  currentVersion: z.string(),
+  fileName: z.string().trim().min(1),
+  pageCount: z.number().int(),
+  status: z.literal('RENDERED'),
+});
 
 const $RenderDetails = schemaFor<RenderDetails>()(
-  z.object({
-    currentVersion: z.string(),
-    fileName: z.string().trim().min(1),
-    pageCount: z.number().int(),
-    status: $RenderStatus,
-  })
+  z.discriminatedUnion('status', [
+    $RenderDetailsFailed,
+    $RenderDetailsPending,
+    $RenderDetailsRendered,
+  ])
 );
 
 const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
@@ -89,7 +101,7 @@ const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
     pageCount: z.number().int(),
     personalisationParameters: z.record(z.string(), z.string()),
     systemPersonalisationPackId: z.string(),
-    status: $RenderStatus,
+    status: z.enum(RENDER_STATUS_LIST),
   })
 );
 
@@ -154,6 +166,13 @@ const $LetterValidationError = schemaFor<LetterValidationError>()(
   z.enum(LETTER_VALIDATION_ERROR_LIST)
 );
 
+const $ValidationErrorDetail = schemaFor<ValidationErrorDetail>()(
+  z.object({
+    name: $LetterValidationError,
+    issues: z.array(z.string()).optional(),
+  })
+);
+
 export const $CreateAuthoringLetterProperties =
   schemaFor<CreateAuthoringLetterProperties>()(
     z.object({
@@ -172,7 +191,7 @@ export const $AuthoringLetterProperties =
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
       systemPersonalisation: z.array(z.string()).optional(),
-      validationErrors: z.array($LetterValidationError).optional(),
+      validationErrors: z.array($ValidationErrorDetail).optional(),
     })
   );
 

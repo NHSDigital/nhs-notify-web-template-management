@@ -24,7 +24,11 @@ const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
 function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
-  const pages = template.files.initialRender?.pageCount ?? 0;
+  const pages =
+    template.files.initialRender?.status === 'RENDERED'
+      ? template.files.initialRender.pageCount
+      : 0;
+
   const sheets = Math.ceil(pages / 2);
 
   return { pages, sheets };
@@ -49,7 +53,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   const pendingValidation = template.templateStatus === 'PENDING_VALIDATION';
   const validationFailed = template.templateStatus === 'VALIDATION_FAILED';
 
-  const hasInitialRender = Boolean(template.files.initialRender);
+  const hasInitialRender = template.files.initialRender?.status === 'RENDERED';
 
   const unvalidated = pendingValidation || validationFailed;
 

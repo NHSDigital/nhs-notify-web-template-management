@@ -37,9 +37,14 @@ function initialisePdfUrl(
   const personalisedRender = getPersonalisedRender(template, tab);
   const initialRender = template.files.initialRender;
 
-  const { fileName } = personalisedRender ?? initialRender ?? {};
+  const render =
+    personalisedRender?.status === 'RENDERED'
+      ? personalisedRender
+      : initialRender;
 
-  return fileName ? buildPdfUrl(template, fileName) : null;
+  return render?.status === 'RENDERED'
+    ? buildPdfUrl(template, render.fileName)
+    : null;
 }
 
 function initialiseFormState(
@@ -48,18 +53,21 @@ function initialiseFormState(
 ): FormState {
   const personalisedRender = getPersonalisedRender(template, tab);
 
+  const renderedPersonalisation =
+    personalisedRender?.status === 'RENDERED' ? personalisedRender : null;
+
   const { systemPersonalisationPackId, personalisationParameters } =
-    personalisedRender ?? {};
+    renderedPersonalisation ?? {};
 
   const customPersonalisationFields = template.customPersonalisation ?? [];
 
   return {
     fields: Object.fromEntries([
-      ['__systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
       ...customPersonalisationFields.map((f) => [
         f,
         personalisationParameters?.[f] ?? '',
       ]),
+      ['__systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
     ]),
   };
 }

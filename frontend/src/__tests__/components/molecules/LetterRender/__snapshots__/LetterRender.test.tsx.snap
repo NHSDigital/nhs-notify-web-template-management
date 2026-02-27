@@ -188,6 +188,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   appointmentDate
                 </label>
                 <input
+                  autocomplete="on"
                   class="nhsuk-input"
                   id="custom-appointmentDate-shortFormRender"
                   maxlength="500"
@@ -206,6 +207,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   clinicName
                 </label>
                 <input
+                  autocomplete="on"
                   class="nhsuk-input"
                   id="custom-clinicName-shortFormRender"
                   maxlength="500"
@@ -363,6 +365,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   appointmentDate
                 </label>
                 <input
+                  autocomplete="on"
                   class="nhsuk-input"
                   id="custom-appointmentDate-longFormRender"
                   maxlength="500"
@@ -381,6 +384,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   clinicName
                 </label>
                 <input
+                  autocomplete="on"
                   class="nhsuk-input"
                   id="custom-clinicName-longFormRender"
                   maxlength="500"

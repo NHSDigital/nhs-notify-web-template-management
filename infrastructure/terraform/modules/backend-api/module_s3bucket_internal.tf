@@ -10,4 +10,8 @@ module "s3bucket_internal" {
   component      = var.component
 
   kms_key_arn = var.kms_key_arn
+
+  notification_events = {
+    eventbridge = true
+  }
 }

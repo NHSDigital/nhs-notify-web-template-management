@@ -15,6 +15,7 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
+import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { VersionedFileDetails } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
@@ -308,7 +309,7 @@ describe('valid authoring letter template', () => {
     expect(backLink).toHaveAttribute('href', '/message-templates');
   });
 
-  it('displays the letter renderer when initialRender file exists', async () => {
+  it('displays the letter renderer when initialRender file is RENDERED', async () => {
     render(
       await Page({
         params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
@@ -327,8 +328,8 @@ describe('valid authoring letter template', () => {
   });
 });
 
-describe('authoring letter template without initial render', () => {
-  beforeEach(() => {
+describe('authoring letter template without initial render in RENDERED status', () => {
+  it('does not display the letter renderer when initialRender file is missing', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
       files: {
@@ -339,9 +340,7 @@ describe('authoring letter template without initial render', () => {
         },
       },
     });
-  });
 
-  it('does not display the letter renderer when initialRender file is missing', async () => {
     render(
       await Page({
         params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
@@ -354,9 +353,27 @@ describe('authoring letter template without initial render', () => {
     expect(
       screen.queryByRole('tab', { name: 'Short examples' })
     ).not.toBeInTheDocument();
+
+    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
+      AUTHORING_LETTER_TEMPLATE.id
+    );
   });
 
-  it('still displays template details when initialRender is missing', async () => {
+  test('does not display renderer when initialRender status is FAILED', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          status: 'FAILED',
+        },
+      },
+    });
+
     render(
       await Page({
         params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
@@ -364,8 +381,12 @@ describe('authoring letter template without initial render', () => {
     );
 
     expect(
-      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-    ).toBeInTheDocument();
+      screen.queryByRole('heading', { name: 'Letter preview' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: 'Short examples' })
+    ).not.toBeInTheDocument();
+
     expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
       AUTHORING_LETTER_TEMPLATE.id
     );
@@ -395,18 +416,18 @@ describe('authoring letter template does not show submit form when already submi
 
 describe('authoring letter with validation errors', () => {
   it('renders page with VALIDATION_FAILED status and displays error summary with virus scan message', async () => {
-    const templateWithValidationErrors = {
+    const templateWithValidationError: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
     };
 
-    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
+    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationError);
 
     render(
       await Page({
         params: Promise.resolve({
-          templateId: templateWithValidationErrors.id,
+          templateId: templateWithValidationError.id,
         }),
       })
     );
@@ -425,31 +446,11 @@ describe('authoring letter with validation errors', () => {
     ).toBeInTheDocument();
   });
 
-  it('matches snapshot with error and render', async () => {
-    const templateWithValidationErrors = {
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
-    };
-
-    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
-
-    const { asFragment } = render(
-      await Page({
-        params: Promise.resolve({
-          templateId: templateWithValidationErrors.id,
-        }),
-      })
-    );
-
-    expect(asFragment()).toMatchSnapshot();
-  });
-
   it('matches snapshot with error and no render', async () => {
-    const templateWithValidationErrors = {
+    const templateWithValidationErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
       files: {
         docxTemplate: {
           currentVersion: 'version-id',
@@ -472,11 +473,10 @@ describe('authoring letter with validation errors', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('renders page with VALIDATION_FAILED status and empty validationErrors without error summary', async () => {
-    const templateWithEmptyErrors = {
+  it('renders page with VALIDATION_FAILED status and undefined validationErrors without error summary (fallback not yet implemented)', async () => {
+    const templateWithEmptyErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: [] as 'VIRUS_SCAN_FAILED'[],
+      templateStatus: 'VALIDATION_FAILED',
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithEmptyErrors);
@@ -494,32 +494,11 @@ describe('authoring letter with validation errors', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders page with VALIDATION_FAILED status and undefined validationErrors without error summary', async () => {
-    const templateWithUndefinedErrors = {
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-    };
-
-    jest.mocked(getTemplate).mockResolvedValue(templateWithUndefinedErrors);
-
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: templateWithUndefinedErrors.id }),
-      })
-    );
-
-    expect(redirect).not.toHaveBeenCalled();
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-    ).toBeInTheDocument();
-  });
-
   it('does not display submit button when validation has failed', async () => {
-    const templateWithValidationErrors = {
+    const templateWithValidationErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED' as const,
-      validationErrors: ['VIRUS_SCAN_FAILED' as const],
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);

@@ -16,8 +16,6 @@ export PROJECT="nhs-notify"
 export ACTION="apply"
 export GROUP="nhs-notify-template-management-dev"
 
-
-
 root_dir=$(git rev-parse --show-toplevel)
 terraform_dir=$root_dir/infrastructure/terraform
 component_dir=$terraform_dir/components/$COMPONENT

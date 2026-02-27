@@ -13,4 +13,7 @@ npx esbuild \
   --loader:.node=file \
   --entry-names=[name] \
   --outdir=dist \
-  src/index.ts
+  src/letter-preview-renderer.ts
+
+converter_py=$(node -e "console.log(require.resolve('carbone/lib/converter.py'))")
+cp "$converter_py" ./dist/converter.py

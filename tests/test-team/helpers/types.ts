@@ -76,7 +76,7 @@ type TypeSpecificProperties = {
   letterVariantId?: string;
   customPersonalisation?: string[];
   systemPersonalisation?: string[];
-  validationErrors?: string[];
+  validationErrors?: Array<{ name: string; issues?: string[] }>;
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {
