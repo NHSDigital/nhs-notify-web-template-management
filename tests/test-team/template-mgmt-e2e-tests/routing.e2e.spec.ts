@@ -25,6 +25,7 @@ import {
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
 import type { Template } from '../helpers/types';
+import { loginAsUser } from 'helpers/auth/login-as-user';
 import type { Channel } from 'nhs-notify-web-template-management-types';
 
 const templateStorageHelper = new TemplateStorageHelper();
@@ -141,11 +142,19 @@ test.describe('Routing', () => {
   let templates: ReturnType<typeof createTemplates>;
   let user: TestUser;
 
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    user = await createAuthHelper().getTestUser(
+      testUsers.UserLetterAuthoringEnabled.userId
+    );
     templates = createTemplates(user);
 
     await templateStorageHelper.seedTemplateData(Object.values(templates));
+  });
+
+  test.beforeEach(async ({ page }) => {
+    await loginAsUser(user, page);
   });
 
   test.afterAll(async () => {

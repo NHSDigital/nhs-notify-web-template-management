@@ -284,6 +284,37 @@ describe('TemplateRepo#query', () => {
       });
     });
 
+    test('supports filtering by letter version (chainable)', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo.on(QueryCommand).resolvesOnce({
+        Items: [],
+      });
+
+      await repo
+        .query(clientId)
+        .letterVersion('AUTHORING')
+        .letterVersion('PDF')
+        .list();
+
+      expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
+      expect(mocks.dynamo).toHaveReceivedCommandWith(QueryCommand, {
+        TableName: TABLE_NAME,
+        KeyConditionExpression: '#owner = :owner',
+        FilterExpression:
+          '(#letterVersion IN (:letterVersion0, :letterVersion1))',
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#letterVersion': 'letterVersion',
+        },
+        ExpressionAttributeValues: {
+          ':owner': clientOwnerKey,
+          ':letterVersion0': 'AUTHORING',
+          ':letterVersion1': 'PDF',
+        },
+      });
+    });
+
     test('supports mixed filters', async () => {
       const { repo, mocks } = setup();
 
@@ -299,6 +330,7 @@ describe('TemplateRepo#query', () => {
         .language('en')
         .excludeLanguage('fr')
         .letterType('x0')
+        .letterVersion('AUTHORING')
         .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
@@ -306,13 +338,14 @@ describe('TemplateRepo#query', () => {
         TableName: TABLE_NAME,
         KeyConditionExpression: '#owner = :owner',
         FilterExpression:
-          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND NOT(#language IN (:notlanguage0)) AND (#letterType IN (:letterType0))',
+          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND NOT(#language IN (:notlanguage0)) AND (#letterType IN (:letterType0)) AND (#letterVersion IN (:letterVersion0))',
         ExpressionAttributeNames: {
           '#owner': 'owner',
           '#templateStatus': 'templateStatus',
           '#templateType': 'templateType',
           '#language': 'language',
           '#letterType': 'letterType',
+          '#letterVersion': 'letterVersion',
         },
         ExpressionAttributeValues: {
           ':owner': clientOwnerKey,
@@ -322,6 +355,7 @@ describe('TemplateRepo#query', () => {
           ':language0': 'en',
           ':notlanguage0': 'fr',
           ':letterType0': 'x0',
+          ':letterVersion0': 'AUTHORING',
         },
       });
     });
@@ -347,6 +381,8 @@ describe('TemplateRepo#query', () => {
         .excludeLanguage('fr')
         .letterType('x0')
         .letterType('x0')
+        .letterVersion('AUTHORING')
+        .letterVersion('AUTHORING')
         .list();
 
       expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
@@ -354,13 +390,14 @@ describe('TemplateRepo#query', () => {
         TableName: TABLE_NAME,
         KeyConditionExpression: '#owner = :owner',
         FilterExpression:
-          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND NOT(#language IN (:notlanguage0)) AND (#letterType IN (:letterType0))',
+          '(#templateStatus IN (:templateStatus0)) AND NOT(#templateStatus IN (:nottemplateStatus0)) AND (#templateType IN (:templateType0)) AND (#language IN (:language0)) AND NOT(#language IN (:notlanguage0)) AND (#letterType IN (:letterType0)) AND (#letterVersion IN (:letterVersion0))',
         ExpressionAttributeNames: {
           '#owner': 'owner',
           '#templateStatus': 'templateStatus',
           '#templateType': 'templateType',
           '#language': 'language',
           '#letterType': 'letterType',
+          '#letterVersion': 'letterVersion',
         },
         ExpressionAttributeValues: {
           ':owner': clientOwnerKey,
@@ -370,6 +407,7 @@ describe('TemplateRepo#query', () => {
           ':language0': 'en',
           ':notlanguage0': 'fr',
           ':letterType0': 'x0',
+          ':letterVersion0': 'AUTHORING',
         },
       });
     });

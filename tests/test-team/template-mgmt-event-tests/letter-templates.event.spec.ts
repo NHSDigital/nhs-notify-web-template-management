@@ -127,7 +127,7 @@ test.describe('Event publishing - Letters', () => {
     expect(events).toHaveLength(0);
   });
 
-  test('Expect Draft.v1 events When waiting for Proofs to become available And Completed.v1 event When submitting templates (routing disabled)', async ({
+  test('Expect Draft.v1 events When waiting for Proofs to become available (routing disabled)', async ({
     request,
     eventSubscriber,
   }) => {
@@ -250,17 +250,6 @@ test.describe('Event publishing - Letters', () => {
       );
 
       expect(drafts.length, JSON.stringify(events)).toBeGreaterThanOrEqual(5);
-
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          record: expect.objectContaining({
-            type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
-            data: expect.objectContaining({
-              id: templateId,
-            }),
-          }),
-        })
-      );
 
       console.log(`Events found: ${events.length}. Expected: 6 or 7`);
     }).toPass({ timeout: 90_000, intervals: [1000, 3000, 5000] });

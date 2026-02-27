@@ -51,51 +51,46 @@ function getTemplates(
   user: TestUser
 ): Record<keyof typeof templateIds, Template> {
   return {
-    LARGE_PRINT_LETTER1: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER1: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER1,
       user,
       'Large print letter template 1',
       'SUBMITTED',
-      'PASSED',
       { letterType: 'x1' }
     ),
-    LARGE_PRINT_LETTER2: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER2: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER2,
       user,
       'Large print letter template 2',
       'SUBMITTED',
-      'PASSED',
       { letterType: 'x1' }
     ),
-    LARGE_PRINT_LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER_APPROVED,
       user,
       'Large print letter template 3 - proof approved',
       'PROOF_APPROVED',
-      'PASSED',
       { letterType: 'x1' }
     ),
-    LARGE_PRINT_LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
-      templateIds.LARGE_PRINT_LETTER_NOT_SUBMITTED,
-      user,
-      'Proof available large print letter',
-      'PROOF_AVAILABLE',
-      'PASSED',
-      { letterType: 'x1' }
-    ),
-    STANDARD_LETTER: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER_NOT_SUBMITTED:
+      TemplateFactory.createAuthoringLetterTemplate(
+        templateIds.LARGE_PRINT_LETTER_NOT_SUBMITTED,
+        user,
+        'Proof available large print letter',
+        'NOT_YET_SUBMITTED',
+        { letterType: 'x1' }
+      ),
+    STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.STANDARD_LETTER,
       user,
       'Standard letter template',
-      'SUBMITTED',
-      'PASSED'
+      'SUBMITTED'
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       'French letter template',
       'SUBMITTED',
-      'PASSED',
       { language: 'fr' }
     ),
     APP: TemplateFactory.createNhsAppTemplate(

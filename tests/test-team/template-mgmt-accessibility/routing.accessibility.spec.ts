@@ -142,25 +142,24 @@ test.describe('Routing', () => {
         user,
         `Test SMS template - ${templateIds.SMS}`
       ),
-      TemplateFactory.uploadLetterTemplate(
+      TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER,
         user,
-        `Test Letter template - ${templateIds.LETTER}`
+        `Test Letter template - ${templateIds.LETTER}`,
+        'NOT_YET_SUBMITTED'
       ),
-      TemplateFactory.uploadLetterTemplate(
+      TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_LARGE_PRINT,
         user,
         `Test Large Print Letter template - ${templateIds.LETTER_LARGE_PRINT}`,
         'NOT_YET_SUBMITTED',
-        'PASSED',
         { letterType: 'x1' }
       ),
-      TemplateFactory.uploadLetterTemplate(
+      TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_OTHER_LANGUAGE,
         user,
         `Test Letter template French - ${templateIds.LETTER_OTHER_LANGUAGE}`,
         'NOT_YET_SUBMITTED',
-        'PASSED',
         { language: 'fr' }
       ),
     ]);

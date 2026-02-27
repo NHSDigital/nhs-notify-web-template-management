@@ -1478,9 +1478,9 @@ exports[`MessageTemplates component matches snapshot with routing flag enabled 1
                 Status 
               </span>
               <strong
-                class="nhsuk-tag nhsuk-tag--pink"
+                class="nhsuk-tag nhsuk-tag--grey"
               >
-                Locked
+                Submitted
               </strong>
             </td>
             <td

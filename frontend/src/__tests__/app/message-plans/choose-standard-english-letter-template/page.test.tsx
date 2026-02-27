@@ -82,6 +82,7 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
       language: 'en',
       letterType: 'x0',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+      letterVersion: 'AUTHORING',
     });
 
     expect(await generateMetadata()).toEqual({

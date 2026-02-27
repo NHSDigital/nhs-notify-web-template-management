@@ -147,7 +147,14 @@ export const statusToDisplayMapping = (
   const notYetSubmitted =
     template.templateType === 'LETTER' ? notYetSubmittedLetter : 'Draft';
 
-  const submitted = featureFlags.routing ? 'Locked' : 'Submitted';
+  let submitted = featureFlags.routing ? 'Locked' : 'Submitted';
+
+  if (
+    template.templateType === 'LETTER' &&
+    template.letterVersion !== 'AUTHORING'
+  ) {
+    submitted = 'Submitted';
+  }
 
   const statusToDisplayMappings: Record<TemplateStatus, string> = {
     NOT_YET_SUBMITTED: notYetSubmitted,
@@ -189,7 +196,14 @@ export const statusToColourMapping = (
   const notYetSubmitted =
     template.templateType === 'LETTER' ? notYetSubmittedLetter : 'green';
 
-  const submitted = featureFlags.routing ? 'pink' : 'grey';
+  let submitted: Colour = featureFlags.routing ? 'pink' : 'grey';
+
+  if (
+    template.templateType === 'LETTER' &&
+    template.letterVersion !== 'AUTHORING'
+  ) {
+    submitted = 'grey';
+  }
 
   const colourMappings: Record<TemplateStatus, Colour> = {
     NOT_YET_SUBMITTED: notYetSubmitted,
@@ -356,6 +370,19 @@ export const MESSAGE_ORDER_OPTIONS_LIST = [
 ] as const;
 
 export type MessageOrder = (typeof MESSAGE_ORDER_OPTIONS_LIST)[number];
+
+export const getMessageOrderOptions = (
+  features: ClientFeatures
+): MessageOrder[] => {
+  if (!features.letterAuthoring) {
+    return MESSAGE_ORDER_OPTIONS_LIST.filter(
+      (messageOrder): messageOrder is MessageOrder =>
+        !messageOrder.includes('LETTER')
+    );
+  }
+
+  return [...MESSAGE_ORDER_OPTIONS_LIST];
+};
 
 export const ORDINALS = [
   'First',

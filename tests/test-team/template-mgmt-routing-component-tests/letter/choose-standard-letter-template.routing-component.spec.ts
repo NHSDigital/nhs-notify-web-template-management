@@ -44,44 +44,42 @@ function createMessagePlans(user: TestUser) {
 
 function createTemplates(user: TestUser) {
   return {
-    LETTER1: TemplateFactory.uploadLetterTemplate(
+    LETTER1: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Submitted letter template 1',
       'SUBMITTED'
     ),
-    LETTER2: TemplateFactory.uploadLetterTemplate(
+    LETTER2: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Submitted letter template 2',
       'SUBMITTED'
     ),
-    LETTER_APPROVED: TemplateFactory.uploadLetterTemplate(
+    LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Submitted letter template - proof approved',
       'PROOF_APPROVED'
     ),
-    LETTER_NOT_SUBMITTED: TemplateFactory.uploadLetterTemplate(
+    LETTER_NOT_SUBMITTED: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Proof available letter template',
-      'PROOF_AVAILABLE'
+      'NOT_YET_SUBMITTED'
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'French letter template',
       'SUBMITTED',
-      'PASSED',
       { language: 'fr' }
     ),
-    ACCESSIBLE_LETTER: TemplateFactory.uploadLetterTemplate(
+    ACCESSIBLE_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Accessible letter template',
       'SUBMITTED',
-      'PASSED',
       { letterType: 'x1' }
     ),
     APP: TemplateFactory.createNhsAppTemplate(
