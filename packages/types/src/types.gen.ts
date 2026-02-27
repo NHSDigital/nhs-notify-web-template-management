@@ -7,8 +7,8 @@ export type ClientOptions = {
 export type AuthoringLetterFiles = {
   docxTemplate: VersionedFileDetails;
   initialRender: RenderDetails;
-  longFormRender?: PersonalisedRenderDetails;
-  shortFormRender?: PersonalisedRenderDetails;
+  longFormRender?: RenderDetails;
+  shortFormRender?: RenderDetails;
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
@@ -247,23 +247,18 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
   };
 };
 
-export type PersonalisedRenderDetails = RenderDetails & {
-  personalisationParameters: {
-    [key: string]: string;
-  };
-  systemPersonalisationPackId: string;
-};
-
 export type ProofFileDetails = {
   fileName: string;
   supplier: string;
   virusScanStatus: VirusScanStatus;
 };
 
-export type RenderDetails =
-  | RenderDetailsFailed
-  | RenderDetailsPending
-  | RenderDetailsRendered;
+export type RenderDetails = {
+  personalisationParameters?: {
+    [key: string]: string;
+  };
+  systemPersonalisationPackId?: string;
+} & (RenderDetailsFailed | RenderDetailsPending | RenderDetailsRendered);
 
 export type RenderDetailsFailed = {
   status: 'FAILED';

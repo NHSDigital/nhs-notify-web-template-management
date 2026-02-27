@@ -10,10 +10,10 @@
             "$ref": "#/components/schemas/RenderDetails"
           },
           "longFormRender": {
-            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+            "$ref": "#/components/schemas/RenderDetails"
           },
           "shortFormRender": {
-            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+            "$ref": "#/components/schemas/RenderDetails"
           }
         },
         "required": [
@@ -788,31 +788,6 @@
           }
         ]
       },
-      "PersonalisedRenderDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/RenderDetails"
-          },
-          {
-            "properties": {
-              "personalisationParameters": {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              "systemPersonalisationPackId": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "personalisationParameters",
-              "systemPersonalisationPackId"
-            ],
-            "type": "object"
-          }
-        ]
-      },
       "ProofFileDetails": {
         "properties": {
           "fileName": {
@@ -833,15 +808,33 @@
         "type": "object"
       },
       "RenderDetails": {
-        "oneOf": [
+        "allOf": [
           {
-            "$ref": "#/components/schemas/RenderDetailsFailed"
+            "properties": {
+              "personalisationParameters": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "systemPersonalisationPackId": {
+                "type": "string"
+              }
+            },
+            "type": "object"
           },
           {
-            "$ref": "#/components/schemas/RenderDetailsPending"
-          },
-          {
-            "$ref": "#/components/schemas/RenderDetailsRendered"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RenderDetailsFailed"
+              },
+              {
+                "$ref": "#/components/schemas/RenderDetailsPending"
+              },
+              {
+                "$ref": "#/components/schemas/RenderDetailsRendered"
+              }
+            ]
           }
         ]
       },

@@ -13,7 +13,6 @@ import type {
   LetterType,
   LetterValidationError,
   NhsAppProperties,
-  PersonalisedRenderDetails,
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
@@ -94,20 +93,12 @@ const $RenderDetails = schemaFor<RenderDetails>()(
   ])
 );
 
-const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
-  z.object({
-    ...$RenderDetailsRendered.shape,
-    personalisationParameters: z.record(z.string(), z.string()),
-    systemPersonalisationPackId: z.string(),
-  })
-);
-
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
     docxTemplate: $VersionedFileDetails,
     initialRender: $RenderDetails,
-    longFormRender: $PersonalisedRenderDetails.optional(),
-    shortFormRender: $PersonalisedRenderDetails.optional(),
+    longFormRender: $RenderDetails.optional(),
+    shortFormRender: $RenderDetails.optional(),
   })
 );
 
