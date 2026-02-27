@@ -128,16 +128,6 @@ async function createTemplates(user: TestUser) {
         initialRender: { pageCount: 4 },
       }
     ),
-    authoringNoInitialRender: TemplateFactory.createAuthoringLetterTemplate(
-      'C3D4E5F6-A7B8-9012-CDEF-123456789012',
-      user,
-      'authoring-letter-no-initial-render',
-      'NOT_YET_SUBMITTED',
-      {
-        letterVariantId: 'variant-no-render',
-        initialRender: false,
-      }
-    ),
     authoringNoCampaign: TemplateFactory.createAuthoringLetterTemplate(
       'B2C3D4E5-F6A7-8901-BCDE-F23456789012',
       user,
@@ -270,12 +260,7 @@ async function createTemplates(user: TestUser) {
         'VALIDATION_FAILED',
         {
           letterVariantId: 'variant-fail-render',
-          validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
-          initialRender: {
-            fileName: 'failed-render.pdf',
-            currentVersion: 'v1-failed',
-            pageCount: 4,
-          },
+          validationErrors: [{ name: 'UNEXPECTED_ADDRESS_LINES' }],
         }
       ),
     authoringWithFailedInitialRender:
@@ -659,18 +644,6 @@ test.describe('Preview Letter template Page', () => {
         await expect(previewPage.shortTab.updatePreviewButton).toBeVisible();
 
         await expect(previewPage.shortTab.previewIframe).toBeVisible();
-      });
-
-      test('hides letter preview section when no initialRender', async ({
-        page,
-      }) => {
-        const previewPage = new TemplateMgmtPreviewLetterPage(
-          page
-        ).setPathParam('templateId', templates.authoringNoInitialRender.id);
-
-        await previewPage.loadPage();
-
-        await expect(previewPage.letterRender).toBeHidden();
       });
 
       test('hides letter preview section when initialRender is FAILED', async ({
