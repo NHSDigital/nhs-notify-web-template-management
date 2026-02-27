@@ -25,6 +25,7 @@ import {
 
 // SMS template pages
 import {
+  TemplateMgmtCreateSmsPage,
   TemplateMgmtEditSmsPage,
   TemplateMgmtPreviewSmsPage,
   TemplateMgmtPreviewSubmittedSmsPage,
@@ -111,6 +112,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtTemplateSubmittedEmailPage,
 
   // SMS
+  TemplateMgmtCreateSmsPage,
   TemplateMgmtEditSmsPage,
   TemplateMgmtPreviewSmsPage,
   TemplateMgmtPreviewSubmittedSmsPage,
