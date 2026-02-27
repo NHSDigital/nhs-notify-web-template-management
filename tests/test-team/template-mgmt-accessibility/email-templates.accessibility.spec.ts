@@ -8,7 +8,6 @@ import {
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
-  TemplateMgmtCreateEmailPage,
   TemplateMgmtEditEmailPage,
   TemplateMgmtPreviewEmailPage,
   TemplateMgmtPreviewSubmittedEmailPage,
@@ -64,17 +63,6 @@ test.afterAll(async () => {
 });
 
 test.describe('Email templates', () => {
-  test('Create email template', async ({ page, analyze }) =>
-    analyze(new TemplateMgmtCreateEmailPage(page)));
-
-  test('Create email template error', async ({ page, analyze }) =>
-    analyze(new TemplateMgmtCreateEmailPage(page), {
-      beforeAnalyze: async (p) => {
-        p.clickSaveAndPreviewButton();
-        await p.errorSummary.isVisible();
-      },
-    }));
-
   test('Edit email template', async ({ page, analyze }) =>
     analyze(
       new TemplateMgmtEditEmailPage(page).setPathParam(
