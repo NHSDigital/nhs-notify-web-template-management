@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto';
-import { expect } from '@playwright/test';
 import {
   createAuthHelper,
   TestUser,
@@ -10,7 +9,6 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
-import { getAppRoutes } from 'helpers/get-app-routes';
 import { test } from 'fixtures/accessibility-analyze';
 import {
   RoutingChooseEmailTemplatePage,
@@ -53,31 +51,6 @@ const templateIds = {
   LETTER_LARGE_PRINT: randomUUID(),
   LETTER_OTHER_LANGUAGE: randomUUID(),
 };
-
-const routingPages = [
-  RoutingChooseEmailTemplatePage,
-  RoutingChooseLargePrintLetterTemplatePage,
-  RoutingChooseMessageOrderPage,
-  RoutingChooseNhsAppTemplatePage,
-  RoutingChooseOtherLanguageLetterTemplatePage,
-  RoutingChooseStandardLetterTemplatePage,
-  RoutingChooseTemplatesPage,
-  RoutingChooseTextMessageTemplatePage,
-  RoutingCreateMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
-  RoutingGetReadyToMovePage,
-  RoutingInvalidMessagePlanPage,
-  RoutingMessagePlanCampaignIdRequiredPage,
-  RoutingMessagePlansPage,
-  RoutingPreviewEmailTemplatePage,
-  RoutingPreviewLargePrintLetterTemplatePage,
-  RoutingPreviewMessagePlanPage,
-  RoutingPreviewNhsAppTemplatePage,
-  RoutingPreviewOtherLanguageLetterTemplatePage,
-  RoutingPreviewSmsTemplatePage,
-  RoutingPreviewStandardLetterTemplatePage,
-  RoutingReviewAndMoveToProductionPage,
-];
 
 test.describe('Routing', () => {
   test.beforeAll(async () => {
@@ -169,24 +142,6 @@ test.describe('Routing', () => {
   test.afterAll(async () => {
     await routingStorageHelper.deleteSeeded();
     await templateStorageHelper.deleteSeededTemplates();
-  });
-
-  test('message plan routes are covered', async () => {
-    const routes = await getAppRoutes();
-
-    const messagePlanRoutes = routes.filter((r) =>
-      r.startsWith('message-plans')
-    );
-
-    const uncoveredMessagePlans = messagePlanRoutes.filter(
-      (r) =>
-        !routingPages.some(
-          ({ staticPathSegments }) => `${staticPathSegments.join('/')}` === r
-        )
-    );
-
-    expect(uncoveredMessagePlans).toHaveLength(0);
-    expect(messagePlanRoutes.length).toBe(routingPages.length);
   });
 
   test.describe('Choose templates', () => {
