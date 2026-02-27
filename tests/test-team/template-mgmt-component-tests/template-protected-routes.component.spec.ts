@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
+import { TemplateMgmtChoosePrintingAndPostagePage } from 'pages/letter/template-mgmt-choose-printing-and-postage-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
 import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
 import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
@@ -88,6 +89,7 @@ const protectedPages = [
   RoutingPreviewSmsTemplatePage,
   RoutingReviewAndMoveToProductionPage,
   TemplateMgmtChoosePage,
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
   TemplateMgmtCreateNhsAppPage,

@@ -170,14 +170,13 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {/* Printing and postage */}
           {!hidePostageRow && (
             <SummaryList.Row
+              id='printing-and-postage'
               className={template.letterVariantId ? undefined : 'missing-value'}
             >
               <SummaryList.Key>
                 {rowHeadings.printingAndPostage}
               </SummaryList.Key>
-              <SummaryList.Value>
-                {letterVariant?.name ?? template.letterVariantId}
-              </SummaryList.Value>
+              <SummaryList.Value>{letterVariant?.name}</SummaryList.Value>
               <ActionLink
                 href={interpolate(links.choosePrintingAndPostage, {
                   templateId: template.id,

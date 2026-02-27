@@ -316,6 +316,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
               </button>
               <a
                 class="nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-3"
+                data-testid="back-link-bottom"
                 href="/preview-letter-template/template-123"
               >
                 Go back
@@ -684,6 +685,7 @@ exports[`valid template renders errors when no variant is selected and error sta
               </button>
               <a
                 class="nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-3"
+                data-testid="back-link-bottom"
                 href="/preview-letter-template/template-123"
               >
                 Go back

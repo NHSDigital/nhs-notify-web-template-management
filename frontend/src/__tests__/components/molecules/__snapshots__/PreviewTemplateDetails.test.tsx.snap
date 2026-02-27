@@ -151,6 +151,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -159,9 +160,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        >
-          variant-123
-        </dd>
+        />
         <dd
           class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
@@ -347,6 +346,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -355,9 +355,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        >
-          variant-123
-        </dd>
+        />
         <dd
           aria-hidden="true"
           class="nhsuk-summary-list__actions"
@@ -556,6 +554,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with l
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -728,6 +727,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -736,9 +736,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        >
-          variant-123
-        </dd>
+        />
         <dd
           class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
@@ -948,6 +946,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
       </div>
       <div
         class="nhsuk-summary-list__row missing-value"
+        id="printing-and-postage"
       >
         <dt
           class="nhsuk-summary-list__key"

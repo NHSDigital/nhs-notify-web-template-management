@@ -138,7 +138,7 @@ describe('template is not a letter', () => {
     });
 
     expect(redirect).toHaveBeenCalledWith(
-      '/templates/message-templates',
+      '/message-templates',
       RedirectType.replace
     );
   });

@@ -40,7 +40,7 @@ export default async function ChoosePrintingAndPostagePage(
   }
 
   if (template.templateType !== 'LETTER') {
-    return redirect('/templates/message-templates', RedirectType.replace);
+    return redirect('/message-templates', RedirectType.replace);
   }
 
   const searchParams = await props.searchParams;
@@ -227,6 +227,7 @@ export default async function ChoosePrintingAndPostagePage(
 
                   <Link
                     href={content.backLink.href(templateId)}
+                    data-testid='back-link-bottom'
                     className='nhsuk-u-display-inline-block nhsuk-u-font-size-19 nhsuk-u-margin-3'
                   >
                     {content.backLink.text}

@@ -1054,6 +1054,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 </div>
                 <div
                   class="nhsuk-summary-list__row"
+                  id="printing-and-postage"
                 >
                   <dt
                     class="nhsuk-summary-list__key"
