@@ -3,11 +3,6 @@ repos:
     rev: v5.0.0 # Use the ref you want to point at
     hooks:
       - id: trailing-whitespace
-        exclude: |
-          (?x)^(
-            frontend/src/__tests__/.*\.tsx\.snap |
-            frontend/src/__tests__/utils/markdownit/fixtures/index\.ts
-          )$
       - id: detect-aws-credentials
         args: [--allow-missing-credentials]
       - id: check-added-large-files
@@ -17,12 +12,8 @@ repos:
       - id: forbid-new-submodules
       - id: mixed-line-ending
       - id: pretty-format-json
-        exclude: |
-          (?x)^(
-            .*/?package-lock.json |
-            packages/event-schemas/schemas/[^/]+/[^/]+\.json
-          )$
         args: ['--autofix']
+        exclude: '(^|/)package(-lock)?\.json$'
     # -   id: ...
   - repo: local
     hooks:
@@ -42,7 +33,7 @@ repos:
     hooks:
       - id: check-file-format
         name: Check file format
-        entry: /usr/bin/env check=branch exclude=frontend/src/__tests__/utils/markdownit/fixtures/index.ts ./scripts/githooks/check-file-format.sh
+        entry: /usr/bin/env check=branch ./scripts/githooks/check-file-format.sh
         language: script
         pass_filenames: false
   - repo: local
