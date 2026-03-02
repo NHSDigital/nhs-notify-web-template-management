@@ -2504,6 +2504,14 @@
             "schema": {
               "$ref": "#/components/schemas/LetterType"
             }
+          },
+          {
+            "description": "Filter by a single letter version",
+            "in": "query",
+            "name": "letterVersion",
+            "schema": {
+              "$ref": "#/components/schemas/LetterVersion"
+            }
           }
         ],
         "responses": {

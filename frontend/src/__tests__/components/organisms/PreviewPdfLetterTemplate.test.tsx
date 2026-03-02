@@ -173,12 +173,12 @@ describe('PreviewPdfLetterTemplate', () => {
     expect(footer).not.toBeInTheDocument();
   });
 
-  describe('with routing feature flag enabled', () => {
+  describe('with proofing feature flag enabled', () => {
     beforeEach(() => {
       const { useFeatureFlags } = jest.requireMock(
         '@providers/client-config-provider'
       );
-      useFeatureFlags.mockReturnValue({ routing: true });
+      useFeatureFlags.mockReturnValue({ proofing: true });
     });
 
     it('renders approve button text for PROOF_AVAILABLE status', () => {

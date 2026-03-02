@@ -166,7 +166,10 @@ describe('submitTemplate', () => {
       lockNumber: '2',
     });
 
-    await submitTemplate({ channel: 'LETTER', routingEnabled: true }, formData);
+    await submitTemplate(
+      { channel: 'LETTER', proofingEnabled: true },
+      formData
+    );
 
     expect(setTemplateToSubmittedMock).toHaveBeenCalledWith(templateId, 2);
 
