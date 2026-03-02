@@ -1,10 +1,12 @@
 import { render, screen, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   PreviewAuthoringLetterTemplate,
   isRenderAlreadyStale,
 } from '@organisms/PreviewAuthoringLetterTemplate/PreviewAuthoringLetterTemplate';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { RENDER_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
+import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import type {
   AuthoringLetterTemplate,
   FormState,
@@ -14,6 +16,7 @@ jest.mock('@hooks/use-template-poll');
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
 }));
+jest.mock('@utils/csrf-utils');
 
 const mockUseTemplatePoll = jest.mocked(useTemplatePoll);
 
@@ -74,6 +77,7 @@ const pendingTemplate: AuthoringLetterTemplate = {
   },
 };
 
+// Shared stale fixture: PENDING with requestedAt exceeding RENDER_TIMEOUT_MS
 const staleTemplate: AuthoringLetterTemplate = {
   ...renderedTemplate,
   files: {
@@ -99,6 +103,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
       isPolling: false,
       isTimedOut: false,
     });
+    jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
   });
 
   afterEach(() => {
@@ -148,6 +153,18 @@ describe('PreviewAuthoringLetterTemplate', () => {
       ).not.toBeInTheDocument();
     });
 
+    it('does not render submit button when templateStatus is VALIDATION_FAILED', () => {
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate
+          template={{ ...renderedTemplate, templateStatus: 'VALIDATION_FAILED' }}
+        />
+      );
+
+      expect(
+        screen.queryByTestId('preview-letter-template-cta')
+      ).not.toBeInTheDocument();
+    });
+
     it('does not pass onError to useTemplatePoll', () => {
       renderWithProvider(
         <PreviewAuthoringLetterTemplate template={renderedTemplate} />
@@ -156,6 +173,33 @@ describe('PreviewAuthoringLetterTemplate', () => {
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.not.objectContaining({ onError: expect.anything() })
       );
+    });
+
+    it('displays the back link with correct href', () => {
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
+      );
+
+      const backLink = screen.getByTestId('back-link-top');
+      expect(backLink).toHaveAttribute('href', '/message-templates');
+    });
+
+    it('submits the form with correct templateId and lockNumber', async () => {
+      const user = userEvent.setup({
+        advanceTimers: jest.advanceTimersByTime,
+      });
+
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
+      );
+
+      await user.click(screen.getByRole('button', { name: 'Submit template' }));
+
+      expect(mockServerAction).toHaveBeenCalledTimes(1);
+
+      const formData = mockServerAction.mock.calls[0][1] as FormData;
+      expect(formData.get('templateId')).toBe(renderedTemplate.id);
+      expect(formData.get('lockNumber')).toBe(String(renderedTemplate.lockNumber));
     });
   });
 
@@ -198,6 +242,8 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders page content (not spinner) when polling has timed out', () => {
+      // isTimedOut: true means isPolling is also false — the hook sets both.
+      // The component renders the page as-is with whatever template state it has.
       mockUseTemplatePoll.mockReturnValue({
         isPolling: false,
         isTimedOut: true,
@@ -260,6 +306,15 @@ describe('PreviewAuthoringLetterTemplate', () => {
       ).not.toBeInTheDocument();
     });
 
+    it('renders back link and template details', () => {
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={failedTemplate} />
+      );
+
+      expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
+      expect(screen.getByTestId('preview-template-id')).toBeInTheDocument();
+    });
+
     it('passes the template as initialTemplate to useTemplatePoll', () => {
       renderWithProvider(
         <PreviewAuthoringLetterTemplate template={failedTemplate} />
@@ -316,11 +371,13 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
       const { onUpdate } = mockUseTemplatePoll.mock.calls[0][0];
 
+      // Simulate polling returning a fully rendered template
       const updatedTemplate: AuthoringLetterTemplate = {
         ...renderedTemplate,
         name: 'Updated Template Name',
       };
 
+      // Invoke the onUpdate callback — this calls setLatestTemplate
       act(() => {
         onUpdate(updatedTemplate);
       });
