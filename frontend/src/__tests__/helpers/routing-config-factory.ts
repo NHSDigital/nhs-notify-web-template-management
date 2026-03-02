@@ -1,4 +1,4 @@
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import { randomUUID } from 'node:crypto';
 
 export const RoutingConfigFactory = {

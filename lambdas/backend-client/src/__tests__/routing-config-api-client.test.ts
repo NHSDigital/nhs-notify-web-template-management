@@ -1,9 +1,12 @@
 import MockAdapter from 'axios-mock-adapter';
+import type {
+  RoutingConfig,
+  RoutingConfigStatus,
+} from 'nhs-notify-web-template-management-types';
 import {
   routingConfigurationApiClient as client,
   httpClient,
 } from '../routing-config-api-client';
-import { RoutingConfig, RoutingConfigStatus } from '../types/generated';
 
 const validRoutingConfigId = '2a4b6c8d-0e1f-4a2b-9c3d-5e6f7a8b9c0d';
 const notFoundRoutingConfigId = '3b5d7f9a-1c2e-4b3d-8f0a-6e7d8c9b0a1f';

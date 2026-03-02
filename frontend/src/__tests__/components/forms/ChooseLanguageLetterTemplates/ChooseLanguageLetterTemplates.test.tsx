@@ -8,7 +8,7 @@ import {
 import { useActionState } from 'react';
 import { ChooseLanguageLetterTemplatesFormState } from '@forms/ChooseLanguageLetterTemplates/server-action';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { ConditionalTemplateLanguage } from 'nhs-notify-backend-client';
+import { ConditionalTemplateLanguage } from 'nhs-notify-web-template-management-types';
 
 jest.mock('react', () => {
   const originalModule = jest.requireActual('react');

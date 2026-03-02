@@ -6,7 +6,7 @@ import {
   useClientConfig,
   useFeatureFlags,
 } from '@providers/client-config-provider';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
+import { ClientConfiguration } from 'nhs-notify-web-template-management-types';
 import { initialFeatureFlags } from '@utils/client-config';
 
 const renderProvider =

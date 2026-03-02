@@ -27,7 +27,7 @@ import type {
   Language,
   RoutingConfig,
   TemplateDto,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import {
   LARGE_PRINT_LETTER_TEMPLATE,
   PDF_LETTER_TEMPLATE,

@@ -3,19 +3,21 @@ import { randomUUID } from 'node:crypto';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
   Result,
-  TemplateDto,
-  CreateUpdateTemplate,
   ErrorCase,
-  PdfLetterFiles,
   $CreateUpdateNonLetter,
-  ClientConfiguration,
   $LockNumber,
   $TemplateDto,
   $TemplateFilter,
-  PatchTemplate,
   $PatchTemplate,
-  AuthoringLetterFiles,
 } from 'nhs-notify-backend-client';
+import type {
+  AuthoringLetterFiles,
+  ClientConfiguration,
+  CreateUpdateTemplate,
+  PatchTemplate,
+  PdfLetterFiles,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
   $UploadPdfLetterTemplate,
@@ -604,17 +606,18 @@ export class TemplateClient {
       return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
     }
 
-    const result = clientConfig.features.routing
-      ? await this.templateRepository.approveProof(
-          templateId,
-          user,
-          lockNumberValidation.data
-        )
-      : await this.templateRepository.submit(
-          templateId,
-          user,
-          lockNumberValidation.data
-        );
+    const result =
+      clientConfig.features.proofing && template.templateType === 'LETTER'
+        ? await this.templateRepository.approveProof(
+            templateId,
+            user,
+            lockNumberValidation.data
+          )
+        : await this.templateRepository.submit(
+            templateId,
+            user,
+            lockNumberValidation.data
+          );
 
     if (result.error) {
       log
@@ -764,6 +767,7 @@ export class TemplateClient {
       language,
       excludeLanguage,
       letterType,
+      letterVersion,
     } = parsedFilters;
     const query = this.templateRepository.query(user.clientId);
     query.excludeTemplateStatus('DELETED');
@@ -772,6 +776,7 @@ export class TemplateClient {
     if (language) query.language(language);
     if (excludeLanguage) query.excludeLanguage(excludeLanguage);
     if (letterType) query.letterType(letterType);
+    if (letterVersion) query.letterVersion(letterVersion);
 
     return query.list();
   }

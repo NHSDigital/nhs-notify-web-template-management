@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
+import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 
 export const routingConfig: RoutingConfig = {
   campaignId: 'campaign-1',

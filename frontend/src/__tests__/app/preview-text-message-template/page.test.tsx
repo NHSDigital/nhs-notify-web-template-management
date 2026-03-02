@@ -9,7 +9,7 @@ import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   EMAIL_TEMPLATE,
   PDF_LETTER_TEMPLATE,

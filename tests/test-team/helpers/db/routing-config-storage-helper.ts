@@ -4,7 +4,7 @@ import {
   DynamoDBDocumentClient,
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
+import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 
 type RoutingConfigKey = { id: string; clientId: string };
 

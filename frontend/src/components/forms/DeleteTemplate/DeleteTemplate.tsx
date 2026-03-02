@@ -10,7 +10,7 @@ import {
   deleteTemplateNoAction,
 } from './server-action';
 import concatClassNames from '@utils/concat-class-names';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 type DeleteTemplateProps = {
   template: TemplateDto;

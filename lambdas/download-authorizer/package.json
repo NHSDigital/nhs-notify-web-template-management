@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "3.911.0",
+    "@aws-sdk/client-cognito-identity-provider": "3.995.0",
     "cookie": "^1.0.2",
     "nhs-notify-web-template-management-utils": "^0.0.1"
   },

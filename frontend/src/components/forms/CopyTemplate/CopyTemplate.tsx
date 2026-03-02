@@ -10,7 +10,10 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $CopyTemplate, copyTemplateAction } from './server-action';
-import { TemplateDto, TemplateType } from 'nhs-notify-backend-client';
+import type {
+  TemplateDto,
+  TemplateType,
+} from 'nhs-notify-web-template-management-types';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';

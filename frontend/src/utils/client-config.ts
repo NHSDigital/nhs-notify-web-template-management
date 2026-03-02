@@ -1,4 +1,7 @@
-import { ClientConfiguration, ClientFeatures } from 'nhs-notify-backend-client';
+import type {
+  ClientConfiguration,
+  ClientFeatures,
+} from 'nhs-notify-web-template-management-types';
 
 export const FEATURES: (keyof ClientFeatures)[] = [
   'digitalProofingEmail',

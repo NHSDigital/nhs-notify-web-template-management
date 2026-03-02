@@ -2,7 +2,7 @@ import { mockDeep } from 'jest-mock-extended';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { EmailClient } from '../email-client';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { PdfLetterTemplate } from '../types';
 
 describe('EmailClient', () => {

@@ -1,12 +1,12 @@
 import { z } from 'zod';
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
 import {
-  RoutingConfig,
   schemaFor,
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
   ROUTING_CONFIG_STATUS_LIST,
 } from 'nhs-notify-backend-client';
+import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 const $AttributeValue: z.ZodType<AttributeValue> = z.lazy(() =>

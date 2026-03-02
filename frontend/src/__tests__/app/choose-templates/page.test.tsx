@@ -6,12 +6,12 @@ import {
   getMessagePlanTemplates,
 } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
-import {
+import type {
   CascadeItem,
   Channel,
   ConditionalTemplateLanguage,
   RoutingConfig,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import {
   EMAIL_TEMPLATE,
   PDF_LETTER_TEMPLATE,

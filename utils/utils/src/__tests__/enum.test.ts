@@ -1,14 +1,16 @@
 /* eslint-disable unicorn/no-array-callback-reference */
 import {
-  Language,
-  LetterType,
   TEMPLATE_STATUS_LIST,
-  TemplateStatus,
-  TemplateType,
   LANGUAGE_LIST,
-  LetterVersion,
   TEMPLATE_TYPE_LIST,
 } from 'nhs-notify-backend-client';
+import type {
+  Language,
+  LetterType,
+  TemplateStatus,
+  TemplateType,
+  LetterVersion,
+} from 'nhs-notify-web-template-management-types';
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
@@ -38,6 +40,8 @@ import {
   type SupportedLetterType,
   createTemplateUrl,
   isLanguage,
+  getMessageOrderOptions,
+  MESSAGE_ORDER_OPTIONS_LIST,
 } from '../enum';
 
 describe('templateTypeDisplayMappings', () => {
@@ -554,5 +558,38 @@ describe('isLanguage', () => {
 
   it('returns false when language is not valid', () => {
     expect(isLanguage('not a language')).toBe(false);
+  });
+});
+
+describe('getMessageOrderOptions', () => {
+  const baseFeatures = {
+    digitalProofingEmail: false,
+    digitalProofingNhsApp: false,
+    digitalProofingSms: false,
+    letterAuthoring: true,
+    proofing: false,
+    routing: false,
+  };
+
+  test('returns all options when letterAuthoring is enabled', () => {
+    expect(getMessageOrderOptions(baseFeatures)).toEqual([
+      ...MESSAGE_ORDER_OPTIONS_LIST,
+    ]);
+  });
+
+  test('filters letter options when letterAuthoring is disabled', () => {
+    expect(
+      getMessageOrderOptions({
+        ...baseFeatures,
+        letterAuthoring: false,
+      })
+    ).toEqual([
+      'NHSAPP',
+      'NHSAPP,EMAIL',
+      'NHSAPP,SMS',
+      'NHSAPP,EMAIL,SMS',
+      'NHSAPP,SMS,EMAIL',
+      'EMAIL',
+    ]);
   });
 });

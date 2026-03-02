@@ -1,4 +1,4 @@
-import {
+import type {
   CascadeGroupName,
   CascadeItem,
   ConditionalTemplateAccessible,
@@ -6,7 +6,7 @@ import {
   Language,
   RoutingConfig,
   TemplateDto,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import {
   LetterTemplate,
   ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES,

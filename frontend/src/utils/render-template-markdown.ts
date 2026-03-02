@@ -1,4 +1,4 @@
-import type { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   renderEmailMarkdown,
   renderNHSAppMarkdown,

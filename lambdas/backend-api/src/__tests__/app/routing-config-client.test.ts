@@ -3,12 +3,12 @@ import type { RoutingConfigRepository } from '../../infra/routing-config-reposit
 import { RoutingConfigQuery } from '../../infra/routing-config-repository/query';
 import { RoutingConfigClient } from '../../app/routing-config-client';
 import { routingConfig } from '../fixtures/routing-config';
-import {
+import type {
   CascadeItem,
   CreateRoutingConfig,
   RoutingConfig,
   UpdateRoutingConfig,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
 
 const user = { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' };

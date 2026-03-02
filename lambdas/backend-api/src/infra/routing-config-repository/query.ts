@@ -1,9 +1,9 @@
 import { type DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import {
-  $RoutingConfig,
-  type RoutingConfig,
-  type RoutingConfigStatus,
-} from 'nhs-notify-backend-client';
+import { $RoutingConfig } from 'nhs-notify-backend-client';
+import type {
+  RoutingConfig,
+  RoutingConfigStatus,
+} from 'nhs-notify-web-template-management-types';
 import { AbstractQuery } from '../abstract-query';
 
 export class RoutingConfigQuery extends AbstractQuery<RoutingConfig> {

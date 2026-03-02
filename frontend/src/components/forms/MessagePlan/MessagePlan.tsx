@@ -10,7 +10,7 @@ import {
   Select,
   TextInput,
 } from 'nhsuk-react-components';
-import type { RoutingConfig } from 'nhs-notify-backend-client';
+import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';

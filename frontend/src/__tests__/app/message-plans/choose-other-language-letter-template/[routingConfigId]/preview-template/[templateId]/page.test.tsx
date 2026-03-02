@@ -5,7 +5,7 @@ import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { Language } from 'nhs-notify-backend-client';
+import { Language } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

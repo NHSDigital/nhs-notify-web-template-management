@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import { createMimeMessage } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import Handlebars from 'handlebars';

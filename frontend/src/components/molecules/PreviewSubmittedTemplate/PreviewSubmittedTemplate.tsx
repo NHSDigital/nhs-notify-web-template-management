@@ -5,7 +5,7 @@ import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
 import { useFeatureFlags } from '@providers/client-config-provider';
 

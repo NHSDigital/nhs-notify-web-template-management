@@ -9,7 +9,7 @@ import { NHSNotifyContainer } from '@layouts/container/container';
 import EditNhsAppTemplatePage, {
   generateMetadata,
 } from '@app/edit-nhs-app-template/[templateId]/page';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   EMAIL_TEMPLATE,
   PDF_LETTER_TEMPLATE,

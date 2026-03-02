@@ -5,7 +5,7 @@ import type {
   SmsProperties,
   TemplateDto,
   CreatePdfLetterProperties,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { WithAttachments } from '../../infra/template-repository';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 

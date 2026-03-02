@@ -3,7 +3,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import {
   EMAIL_TEMPLATE,
   PDF_LETTER_TEMPLATE,

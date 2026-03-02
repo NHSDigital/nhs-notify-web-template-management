@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import { getForeignLanguageLetterTemplates } from '@utils/form-actions';
 import { getRoutingConfig } from '@utils/message-plans';
 import { redirect } from 'next/navigation';
-import { Language } from 'nhs-notify-backend-client';
+import { Language } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/message-plans');
 jest.mock('@utils/form-actions');
@@ -106,6 +106,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+      letterVersion: 'AUTHORING',
     });
   });
 
@@ -130,6 +131,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
     expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+      letterVersion: 'AUTHORING',
     });
 
     expect(await generateMetadata()).toEqual({
