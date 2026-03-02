@@ -1,7 +1,10 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { render, screen, within } from '@testing-library/react';
 
-import { Channel, RoutingConfig } from 'nhs-notify-backend-client';
+import {
+  Channel,
+  RoutingConfig,
+} from 'nhs-notify-web-template-management-types';
 import {
   DigitalTemplate,
   ORDINALS,

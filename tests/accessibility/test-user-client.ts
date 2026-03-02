@@ -9,7 +9,7 @@ import {
   PutParameterCommand,
   SSMClient,
 } from '@aws-sdk/client-ssm';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
+import type { ClientConfiguration } from 'nhs-notify-web-template-management-types';
 
 export class TestUserClient {
   private readonly cognitoClient = new CognitoIdentityProviderClient({

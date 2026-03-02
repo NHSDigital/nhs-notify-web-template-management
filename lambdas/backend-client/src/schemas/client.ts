@@ -1,6 +1,9 @@
 import { z } from 'zod/v4';
+import type {
+  ClientConfiguration,
+  ClientFeatures,
+} from 'nhs-notify-web-template-management-types';
 import { schemaFor } from './schema-for';
-import { ClientConfiguration, ClientFeatures } from '../types/generated';
 
 const $ClientFeatures = schemaFor<ClientFeatures>()(
   z.object({

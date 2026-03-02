@@ -1,4 +1,7 @@
-import { Language, LetterType } from 'nhs-notify-backend-client';
+import type {
+  Language,
+  LetterType,
+} from 'nhs-notify-web-template-management-types';
 
 export type ExpandedIdComponents = {
   clientId: string;

@@ -977,18 +977,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render PDF let
           </h1>
         </div>
         <div
-          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
-        >
-          <strong
-            class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
-          >
-            Locked
-          </strong>
-          <p>
-            You cannot delete this template because it's used in a message plan that's in production.
-          </p>
-        </div>
-        <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
           <dl
@@ -1035,11 +1023,11 @@ exports[`PreviewSubmittedTemplate component routing = true should render PDF let
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag nhsuk-tag--pink"
+                  class="nhsuk-tag nhsuk-tag--grey"
                   data-status="submitted"
                   data-testid="status-tag"
                 >
-                  Locked
+                  Submitted
                 </strong>
               </dd>
             </div>

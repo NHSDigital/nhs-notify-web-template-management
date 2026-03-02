@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { Channel } from 'nhs-notify-backend-client';
+import type { Channel } from 'nhs-notify-web-template-management-types';
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,

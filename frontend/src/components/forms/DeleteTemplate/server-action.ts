@@ -2,7 +2,7 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { setTemplateToDeleted } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 export const deleteTemplateNoAction = async () => {
   redirect('/message-templates', RedirectType.push);

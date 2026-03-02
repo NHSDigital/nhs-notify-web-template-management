@@ -1,6 +1,9 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { CreateRoutingConfig, RoutingConfig } from 'nhs-notify-backend-client';
+import type {
+  CreateRoutingConfig,
+  RoutingConfig,
+} from 'nhs-notify-web-template-management-types';
 import { createHandler } from '@backend-api/api/create-routing-config';
 import type { RoutingConfigClient } from '@backend-api/app/routing-config-client';
 

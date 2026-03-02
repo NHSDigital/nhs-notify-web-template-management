@@ -10,7 +10,6 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import { EmailHelper } from '../helpers/email-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { Template } from 'helpers/types';
@@ -21,11 +20,15 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   let user1: TestUser;
   let userRoutingDisabled: TestUser;
   let userSharedClient: TestUser;
+  let proofingDisabledRoutingEnabled: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
     userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    proofingDisabledRoutingEnabled = await authHelper.getTestUser(
+      testUsers.UserRoutingEnabled.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -196,94 +199,6 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated.data.createdAt).toEqual(createdAt);
     });
 
-    test('returns 200 with SUBMITTED status when routing is disabled, email is sent to supplier', async ({
-      request,
-    }) => {
-      const letterTemplate = TemplateFactory.uploadLetterTemplate(
-        randomUUID(),
-        userRoutingDisabled,
-        'Test Letter template routing disabled',
-        'PROOF_AVAILABLE'
-      );
-
-      await templateStorageHelper.seedTemplateData([
-        {
-          ...letterTemplate,
-          files: {
-            ...letterTemplate.files,
-            proofs: {
-              proof1: {
-                fileName: 'proof.pdf',
-                supplier: 'WTMMOCK',
-                virusScanStatus: 'PASSED',
-              },
-            },
-          },
-        },
-      ]);
-
-      const {
-        id: templateId,
-        name,
-        templateType,
-        createdAt,
-        lockNumber,
-      } = letterTemplate;
-
-      const start = new Date();
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
-        {
-          headers: {
-            Authorization: await userRoutingDisabled.getAccessToken(),
-            'X-Lock-Number': String(lockNumber),
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        data: expect.objectContaining({
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          name,
-          templateStatus: 'SUBMITTED',
-          templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-          lockNumber: lockNumber + 1,
-        }),
-      });
-
-      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
-        start,
-        new Date(),
-      ]);
-
-      expect(updated.data.createdAt).toEqual(createdAt);
-
-      // check email
-      const emailHelper = new EmailHelper();
-
-      await expect(async () => {
-        const emailContents = await emailHelper.getEmailForTemplateId(
-          process.env.TEST_EMAIL_BUCKET_PREFIX,
-          templateId,
-          start,
-          'template-submitted-sender'
-        );
-
-        expect(emailContents).toContain(templateId);
-        expect(emailContents).toContain(name);
-        expect(emailContents).toContain('Template Submitted');
-        expect(emailContents).toContain('proof.pdf');
-      }).toPass({ timeout: 20_000 });
-    });
-
     test('user belonging to the same client as the creator can approve', async ({
       request,
     }) => {
@@ -323,13 +238,16 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { id: templateId, lockNumber } =
-        await createProofAvailableLetterTemplate(userRoutingDisabled);
+        await createProofAvailableLetterTemplate(
+          proofingDisabledRoutingEnabled
+        );
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await userRoutingDisabled.getAccessToken(),
+            Authorization:
+              await proofingDisabledRoutingEnabled.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
@@ -346,7 +264,8 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
-            Authorization: await userRoutingDisabled.getAccessToken(),
+            Authorization:
+              await proofingDisabledRoutingEnabled.getAccessToken(),
             'X-Lock-Number': String(submitResult.data.lockNumber),
           },
         }

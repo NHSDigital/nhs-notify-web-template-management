@@ -10,7 +10,7 @@ import { serverIsFeatureEnabled } from '@utils/server-features';
 import MessagePlansPage, { generateMetadata } from '@app/message-plans/page';
 import { ReactElement } from 'react';
 import { NHSNotifyContainer } from '@layouts/container/container';
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import { RoutingConfig } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/message-plans');
 jest.mock('@utils/server-features');

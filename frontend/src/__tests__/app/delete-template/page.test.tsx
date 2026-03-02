@@ -6,7 +6,7 @@ import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

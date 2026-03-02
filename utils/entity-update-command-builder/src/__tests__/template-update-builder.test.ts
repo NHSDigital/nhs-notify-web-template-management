@@ -1,4 +1,4 @@
-import { TemplateStatus } from 'nhs-notify-backend-client';
+import type { TemplateStatus } from 'nhs-notify-web-template-management-types';
 import { TemplateUpdateBuilder } from '../template-update-builder';
 
 const mockTableName = 'TABLE_NAME';

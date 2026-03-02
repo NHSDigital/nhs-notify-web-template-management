@@ -16,7 +16,7 @@ import type {
   RoutingConfigStatus,
   RoutingConfigStatusActive,
   UpdateRoutingConfig,
-} from '../types/generated';
+} from 'nhs-notify-web-template-management-types';
 import { schemaFor } from './schema-for';
 import { $Language, $LetterType, $LockNumber } from './template';
 import {

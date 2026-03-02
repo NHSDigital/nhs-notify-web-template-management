@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
 import { redirect, RedirectType } from 'next/navigation';
-import { RoutingConfig } from 'nhs-notify-backend-client';
+import { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import { getRoutingConfig } from '@utils/message-plans';
 import Page, {
   metadata,

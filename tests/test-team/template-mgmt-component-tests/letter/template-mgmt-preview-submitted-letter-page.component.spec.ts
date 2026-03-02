@@ -102,7 +102,7 @@ test.describe('Preview submitted Letter message template Page', () => {
       );
 
       await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
-        'Locked'
+        'Submitted'
       );
 
       await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
