@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "forward_initial_render_request" {
   }
 }
 
-resource "aws_lambda_permission" "allow_eventbridge_foward_initial_render" {
+resource "aws_lambda_permission" "allow_eventbridge_forward_initial_render" {
   statement_id  = "AllowFromEventBridgeForwardInitialRender"
   action        = "lambda:InvokeFunction"
   function_name = module.lambda_forward_initial_render_request.function_name
