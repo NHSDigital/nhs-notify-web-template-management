@@ -11,7 +11,7 @@ import { getTemplate } from '@utils/form-actions';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
-import { AuthoringPreviewContent } from './AuthoringPreviewContent';
+import { PreviewAuthoringLetterTemplate } from '@organisms/PreviewAuthoringLetterTemplate/PreviewAuthoringLetterTemplate';
 
 const { pageTitle, backLinkText, submitText, links, validationErrorMessages } =
   content.components.previewLetterTemplate;
@@ -54,15 +54,8 @@ export default async function PreviewLetterTemplatePage({
   }
 
   // AUTHORING letter
-  const showRenderer =
-    validatedTemplate.files.initialRender.status === 'RENDERED';
-
-  // TODO: CCM-13495
-  // all of this might need to become a client component
-  // because lock number will change when updating previews
-
   return (
-    <NHSNotifyContainer fullWidth={showRenderer}>
+    <NHSNotifyContainer fullWidth>
       <NHSNotifyFormProvider
         initialState={{
           errorState: {
@@ -71,7 +64,7 @@ export default async function PreviewLetterTemplatePage({
         }}
         serverAction={submitAuthoringLetterAction}
       >
-        <AuthoringPreviewContent
+        <PreviewAuthoringLetterTemplate
           template={validatedTemplate}
           backLinkText={backLinkText}
           backLinkHref={links.messageTemplates}

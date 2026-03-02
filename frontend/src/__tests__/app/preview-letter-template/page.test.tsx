@@ -332,7 +332,7 @@ describe('authoring letter template without initial render in RENDERED status', 
   it('shows page spinner and hides back link and details while initialRender is PENDING', async () => {
     const pendingRender = {
       status: 'PENDING',
-      requestedAt: '2026-02-27T08:24:17.123Z',
+      requestedAt: new Date().toISOString(),
     } as const satisfies RenderDetails;
 
     jest.mocked(getTemplate).mockResolvedValue({
@@ -356,6 +356,39 @@ describe('authoring letter template without initial render in RENDERED status', 
     expect(screen.getByText('Loading letter preview')).toBeInTheDocument();
     expect(screen.queryByTestId('back-link-top')).not.toBeInTheDocument();
     expect(screen.queryByTestId('preview-template-id')).not.toBeInTheDocument();
+  });
+
+  it('does not poll and renders page content when requestedAt is already stale', async () => {
+    const staleRequestedAt = new Date(
+      Date.now() - 30_000
+    ).toISOString();
+
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        docxTemplate: {
+          currentVersion: 'version-id',
+          fileName: 'template.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: staleRequestedAt,
+        },
+      },
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByText('Loading letter preview')
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
+    expect(screen.getByTestId('preview-template-id')).toBeInTheDocument();
   });
 
   it('does not display renderer when initialRender status is FAILED', async () => {
@@ -457,7 +490,7 @@ describe('authoring letter with validation errors', () => {
         },
         initialRender: {
           status: 'PENDING',
-          requestedAt: '2026-02-27T08:36:15.607Z',
+          requestedAt: new Date().toISOString(),
         },
       },
     };

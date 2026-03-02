@@ -3,171 +3,20 @@
 exports[`authoring letter with validation errors matches snapshot with error and no render 1`] = `
 <DocumentFragment>
   <div
-    class="nhsuk-width-container"
+    class="nhsuk-width-container-fluid"
   >
     <div
-      class="nhsuk-width-container"
+      class="nhsuk-loader"
     >
-      <a
-        class="nhsuk-back-link"
-        data-testid="back-link-top"
-        href="/message-templates"
+      <span
+        class="nhsuk-loader__spinner"
+      />
+      <h1
+        class="nhsuk-loader__text"
       >
-        Back to all templates
-      </a>
+        Loading letter preview
+      </h1>
     </div>
-    <main
-      class="nhsuk-main-wrapper"
-      id="maincontent"
-      role="main"
-    >
-      <div
-        class="nhsuk-width-container"
-      >
-        <div
-          aria-labelledby="error-summary-title"
-          class="nhsuk-error-summary"
-          role="alert"
-          tabindex="-1"
-        >
-          <h2
-            class="nhsuk-error-summary__title"
-            data-testid="error-summary"
-            id="error-summary-title"
-          >
-            There is a problem
-          </h2>
-          <ul
-            class="nhsuk-list nhsuk-error-summary__list"
-          >
-            <li>
-              <span
-                class="nhsuk-error-message"
-              >
-                The file(s) you uploaded may contain a virus.
-              </span>
-            </li>
-            <li>
-              <span
-                class="nhsuk-error-message"
-              >
-                Create a new letter template to upload your file(s) again or upload different file(s).
-              </span>
-            </li>
-          </ul>
-        </div>
-        <div
-          class="nhsuk-grid-row"
-        >
-          <div
-            class="nhsuk-grid-column-full"
-          >
-            <div
-              class="nhsuk-u-reading-width"
-            >
-              <span
-                class="nhsuk-caption-l"
-              >
-                Template
-              </span>
-              <h1
-                class="preview__heading"
-                data-testid="preview-message__heading"
-              >
-                authoring letter template name
-              </h1>
-            </div>
-            <div
-              class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-            >
-              <dl
-                class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
-              >
-                <div
-                  class="nhsuk-summary-list__row"
-                >
-                  <dt
-                    class="nhsuk-summary-list__key"
-                  >
-                    Template ID
-                  </dt>
-                  <dd
-                    class="nhsuk-summary-list__value monospace-font"
-                    data-testid="preview-template-id"
-                  >
-                    authoring-letter-template-id
-                  </dd>
-                  <dd
-                    class="nhsuk-summary-list__actions"
-                  />
-                </div>
-                <div
-                  class="nhsuk-summary-list__row"
-                >
-                  <dt
-                    class="nhsuk-summary-list__key"
-                  >
-                    Template type
-                  </dt>
-                  <dd
-                    class="nhsuk-summary-list__value"
-                  >
-                    Standard letter
-                  </dd>
-                  <dd
-                    class="nhsuk-summary-list__actions"
-                  />
-                </div>
-                <div
-                  class="nhsuk-summary-list__row"
-                >
-                  <dt
-                    class="nhsuk-summary-list__key"
-                  >
-                    Status
-                  </dt>
-                  <dd
-                    class="nhsuk-summary-list__value"
-                  >
-                    <strong
-                      class="nhsuk-tag nhsuk-tag--red"
-                      data-status="validation-failed"
-                      data-testid="status-tag"
-                    >
-                      Checks failed
-                    </strong>
-                  </dd>
-                  <dd
-                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-                  >
-                    <a
-                      data-testid="status-action"
-                      href="https://notify.nhs.uk/templates/what-template-statuses-mean"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      Learn more
-                      <span
-                        class="nhsuk-u-visually-hidden"
-                      >
-                         about status
-                      </span>
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p>
-        <a
-          href="/message-templates"
-        >
-          Back to all templates
-        </a>
-      </p>
-    </main>
   </div>
 </DocumentFragment>
 `;

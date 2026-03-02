@@ -1,22 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Link from 'next/link';
-import type {
-  AuthoringLetterTemplate,
-  LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { LoadingSpinner } from '@atoms/LoadingSpinner/LoadingSpinner';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
-import { getBasePath } from '@utils/get-base-path';
+import { DEFAULT_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
 
-const POLL_INTERVAL_MS = 1500;
-
-type AuthoringPreviewContentProps = {
+type PreviewAuthoringLetterTemplateProps = {
   template: AuthoringLetterTemplate;
   backLinkText: string;
   backLinkHref: string;
@@ -24,62 +20,49 @@ type AuthoringPreviewContentProps = {
   loadingText: string;
 };
 
-function isAuthoringLetterTemplate(
-  value: LetterTemplate
-): value is AuthoringLetterTemplate {
-  return value.templateType === 'LETTER' && value.letterVersion === 'AUTHORING';
+const shouldPollInitialRender = (t: TemplateDto) =>
+  t.templateType === 'LETTER' &&
+  t.letterVersion === 'AUTHORING' &&
+  t.files.initialRender.status === 'PENDING';
+
+export function isRenderAlreadyStale(
+  template: AuthoringLetterTemplate,
+  timeoutMs: number = DEFAULT_TIMEOUT_MS
+): boolean {
+  const { initialRender } = template.files;
+
+  if (initialRender.status !== 'PENDING') return false;
+
+  const elapsed = Date.now() - new Date(initialRender.requestedAt).getTime();
+
+  return elapsed >= timeoutMs;
 }
 
-export function AuthoringPreviewContent({
+export function PreviewAuthoringLetterTemplate({
   template,
   backLinkText,
   backLinkHref,
   submitText,
   loadingText,
-}: Readonly<AuthoringPreviewContentProps>) {
+}: Readonly<PreviewAuthoringLetterTemplateProps>) {
   const [latestTemplate, setLatestTemplate] =
     useState<AuthoringLetterTemplate>(template);
 
-  const isPolling = latestTemplate.files.initialRender?.status === 'PENDING';
+  const needsPolling =
+    latestTemplate.files.initialRender.status === 'PENDING' &&
+    !isRenderAlreadyStale(template);
 
-  useEffect(() => {
-    if (!isPolling) return;
+  const onUpdate = useCallback(
+    (t: TemplateDto) => setLatestTemplate(t as AuthoringLetterTemplate),
+    []
+  );
 
-    let isActive = true;
-
-    const pollTemplate = async () => {
-      try {
-        // axios?
-        const response = await fetch(
-          `${getBasePath()}/preview-letter-template/${template.id}/poll`,
-          {
-            cache: 'no-store',
-          }
-        );
-
-        if (!response.ok || !isActive) return;
-
-        const nextTemplate = (await response.json()) as LetterTemplate;
-
-        if (isAuthoringLetterTemplate(nextTemplate)) {
-          setLatestTemplate(nextTemplate);
-        }
-      } catch {
-        return;
-      }
-    };
-
-    const pollTimerId = setInterval(() => {
-      void pollTemplate();
-    }, POLL_INTERVAL_MS);
-
-    void pollTemplate();
-
-    return () => {
-      isActive = false;
-      clearInterval(pollTimerId);
-    };
-  }, [isPolling, template.id]);
+  const { isPolling } = useTemplatePoll({
+    templateId: template.id,
+    shouldPoll: shouldPollInitialRender,
+    onUpdate,
+    enabled: needsPolling,
+  });
 
   if (isPolling) {
     return <LoadingSpinner text={loadingText} />;
