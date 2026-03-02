@@ -177,14 +177,58 @@ test.describe('Letter templates', () => {
     test('Upload British Sign Language letter', async ({ page, analyze }) =>
       analyze(new TemplateMgmtUploadBSLLetterTemplatePage(page)));
 
+    test('Upload British Sign Language - Choose a template file error', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(new TemplateMgmtUploadBSLLetterTemplatePage(page), {
+        beforeAnalyze: async (p) => {
+          await p.submitButton.click();
+          await p.errorSummary.isVisible();
+        },
+      }));
+
     test('Upload Large print letter', async ({ page, analyze }) =>
       analyze(new TemplateMgmtUploadLargePrintLetterTemplatePage(page)));
+
+    test('Upload Large print letter - Choose a template file error', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(new TemplateMgmtUploadLargePrintLetterTemplatePage(page), {
+        beforeAnalyze: async (p) => {
+          await p.submitButton.click();
+          await p.errorSummary.isVisible();
+        },
+      }));
 
     test('Upload Other language letter', async ({ page, analyze }) =>
       analyze(new TemplateMgmtUploadOtherLanguageLetterTemplatePage(page)));
 
+    test('Upload Other language letter - Choose a template file error', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(new TemplateMgmtUploadOtherLanguageLetterTemplatePage(page), {
+        beforeAnalyze: async (p) => {
+          await p.submitButton.click();
+          await p.errorSummary.isVisible();
+        },
+      }));
+
     test('Upload Standard English letter', async ({ page, analyze }) =>
       analyze(new TemplateMgmtUploadStandardEnglishLetterTemplatePage(page)));
+
+    test('Upload Standard English letter - Choose a template file error', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(new TemplateMgmtUploadStandardEnglishLetterTemplatePage(page), {
+        beforeAnalyze: async (p) => {
+          await p.submitButton.click();
+          await p.errorSummary.isVisible();
+        },
+      }));
 
     test('Edit template campaign', async ({ page, analyze }) =>
       analyze(

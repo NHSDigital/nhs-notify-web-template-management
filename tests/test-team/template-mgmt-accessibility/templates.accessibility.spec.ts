@@ -90,7 +90,7 @@ test('Choose a template type error', async ({ page, analyze }) =>
     beforeAnalyze: (p) => p.clickContinueButton(),
   }));
 
-test('Choose a template type error (no letter variant)', async ({
+test('Choose a template type error (no accessibility type)', async ({
   page,
   analyze,
 }) =>
