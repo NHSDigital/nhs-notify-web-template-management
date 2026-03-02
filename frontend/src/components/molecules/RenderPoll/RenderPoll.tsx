@@ -2,7 +2,6 @@
 
 import type { PropsWithChildren } from 'react';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 import { LoadingSpinner } from '@atoms/LoadingSpinner/LoadingSpinner';
 import content from '@content/content';
 import {
@@ -10,17 +9,7 @@ import {
   useLetterTemplatePoll,
 } from '@hooks/use-letter-template-poll';
 import type { RenderKey } from '@utils/types';
-
-export function isRenderAlreadyStale(
-  render: RenderDetails,
-  timeoutMs: number
-): boolean {
-  if (render.status !== 'PENDING') return false;
-
-  const elapsed = Date.now() - new Date(render.requestedAt).getTime();
-
-  return elapsed >= timeoutMs;
-}
+import { isRenderAlreadyStale } from '@utils/render-utils';
 
 function buildShouldPoll(mode: RenderKey) {
   return (template: AuthoringLetterTemplate): boolean => {

@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import {
   useLetterTemplatePoll,
   RENDER_TIMEOUT_MS,
+  POLL_INTERVAL_MS,
 } from '@hooks/use-letter-template-poll';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
@@ -10,8 +11,6 @@ const mockRefresh = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: mockRefresh }),
 }));
-
-const POLL_INTERVAL_MS = 2000;
 
 const pendingTemplate: AuthoringLetterTemplate = {
   id: 'template-abc',
@@ -70,7 +69,6 @@ describe('useLetterTemplatePoll', () => {
     );
 
     expect(result.current.isPolling).toBe(true);
-    expect(result.current.isTimedOut).toBe(false);
   });
 
   it('does not start polling when shouldPoll returns false for the initial template', () => {
@@ -82,7 +80,6 @@ describe('useLetterTemplatePoll', () => {
     );
 
     expect(result.current.isPolling).toBe(false);
-    expect(result.current.isTimedOut).toBe(false);
   });
 
   it('calls router.refresh() on each poll interval', () => {
@@ -108,7 +105,7 @@ describe('useLetterTemplatePoll', () => {
     expect(mockRefresh).toHaveBeenCalledTimes(2);
   });
 
-  it('stops polling and sets isTimedOut when RENDER_TIMEOUT_MS elapses', () => {
+  it('stops polling when RENDER_TIMEOUT_MS elapses', () => {
     const { result } = renderHook(() =>
       useLetterTemplatePoll({
         template: pendingTemplate,
@@ -121,7 +118,6 @@ describe('useLetterTemplatePoll', () => {
     });
 
     expect(result.current.isPolling).toBe(false);
-    expect(result.current.isTimedOut).toBe(true);
   });
 
   it('stops polling when the template prop updates with shouldPoll returning false', () => {
@@ -141,7 +137,6 @@ describe('useLetterTemplatePoll', () => {
     });
 
     expect(result.current.isPolling).toBe(false);
-    expect(result.current.isTimedOut).toBe(false);
   });
 
   it('stops calling router.refresh() after polling stops', () => {

@@ -1,12 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import {
-  RenderPoll,
-  isRenderAlreadyStale,
-} from '@molecules/RenderPoll/RenderPoll';
+import { RenderPoll } from '@molecules/RenderPoll/RenderPoll';
 import {
   RENDER_TIMEOUT_MS,
   useLetterTemplatePoll,
 } from '@hooks/use-letter-template-poll';
+import { isRenderAlreadyStale } from '@utils/render-utils';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 
@@ -70,7 +68,6 @@ describe('RenderPoll', () => {
     jest.useFakeTimers({ now: NOW });
     mockUseTemplatePoll.mockReturnValue({
       isPolling: false,
-      isTimedOut: false,
     });
   });
 
@@ -141,7 +138,6 @@ describe('RenderPoll', () => {
   it('renders the loading spinner and hides children when isPolling is true', () => {
     mockUseTemplatePoll.mockReturnValue({
       isPolling: true,
-      isTimedOut: false,
     });
 
     render(
@@ -154,39 +150,29 @@ describe('RenderPoll', () => {
     expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
   });
 
-  it('renders children when polling has timed out (isPolling is false)', () => {
-    mockUseTemplatePoll.mockReturnValue({
-      isPolling: false,
-      isTimedOut: true,
-    });
 
-    render(
-      <RenderPoll template={template} mode='initialRender'>
-        <div data-testid='page-content'>content</div>
-      </RenderPoll>
-    );
+});
 
-    expect(screen.getByTestId('page-content')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Uploading letter template')
-    ).not.toBeInTheDocument();
+describe('isRenderAlreadyStale', () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: NOW });
   });
 
-  describe('isRenderAlreadyStale', () => {
-    it('returns false when render status is not PENDING', () => {
-      expect(isRenderAlreadyStale(renderedRender, RENDER_TIMEOUT_MS)).toBe(
-        false
-      );
-    });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
-    it('returns false when render is PENDING and requestedAt is within timeout', () => {
-      expect(isRenderAlreadyStale(pendingRender, RENDER_TIMEOUT_MS)).toBe(
-        false
-      );
-    });
+  it('returns false when render status is not PENDING', () => {
+    expect(isRenderAlreadyStale(renderedRender, RENDER_TIMEOUT_MS)).toBe(
+      false
+    );
+  });
 
-    it('returns true when render is PENDING and requestedAt exceeds timeout', () => {
-      expect(isRenderAlreadyStale(staleRender, RENDER_TIMEOUT_MS)).toBe(true);
-    });
+  it('returns false when render is PENDING and requestedAt is within timeout', () => {
+    expect(isRenderAlreadyStale(pendingRender, RENDER_TIMEOUT_MS)).toBe(false);
+  });
+
+  it('returns true when render is PENDING and requestedAt exceeds timeout', () => {
+    expect(isRenderAlreadyStale(staleRender, RENDER_TIMEOUT_MS)).toBe(true);
   });
 });

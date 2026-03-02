@@ -3,9 +3,12 @@
 exports[`LoadingSpinner component renders component correctly 1`] = `
 <DocumentFragment>
   <div
+    aria-live="polite"
     class="nhsuk-loader"
+    role="status"
   >
     <span
+      aria-hidden="true"
       class="nhsuk-loader__spinner"
     />
     <h1

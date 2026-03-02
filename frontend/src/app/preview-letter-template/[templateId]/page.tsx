@@ -76,10 +76,7 @@ export default async function PreviewLetterTemplatePage({
         }}
         serverAction={submitAuthoringLetterAction}
       >
-        <RenderPoll
-          template={validatedTemplate}
-          mode='initialRender'
-        >
+        <RenderPoll template={validatedTemplate} mode='initialRender'>
           <div className='nhsuk-width-container'>
             <NHSNotifyBackLink href={links.messageTemplates}>
               {backLinkText}

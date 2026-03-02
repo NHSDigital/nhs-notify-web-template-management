@@ -1,4 +1,5 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
@@ -273,9 +274,233 @@ describe('valid authoring letter template', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('submits the form with correct data', async () => {
+    const user = userEvent.setup();
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Submit template' }));
+
+    expect(submitAuthoringLetterAction).toHaveBeenCalledTimes(1);
+
+    const callArgs = jest.mocked(submitAuthoringLetterAction).mock.calls[0];
+    const formData = callArgs[1] as FormData;
+
+    expect(formData.get('templateId')).toBe(AUTHORING_LETTER_TEMPLATE.id);
+    expect(formData.get('lockNumber')).toBe(
+      String(AUTHORING_LETTER_TEMPLATE.lockNumber)
+    );
+  });
+
+  it('displays the back link with correct href', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    const backLink = screen.getByTestId('back-link-top');
+    expect(backLink).toHaveAttribute('href', '/message-templates');
+  });
+
+  it('displays the letter renderer when initialRender file is RENDERED', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Letter preview' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Short examples' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('tab', { name: 'Long examples' })
+    ).toBeInTheDocument();
+  });
+});
+
+describe('authoring letter template with fresh PENDING initialRender (spinner state)', () => {
+  it('displays the loading spinner and hides page content', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        ...AUTHORING_LETTER_TEMPLATE.files,
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: new Date().toISOString(),
+        },
+      },
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Uploading letter template' })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByTestId('preview-template-id')
+    ).not.toBeInTheDocument();
+  });
+});
+
+describe('authoring letter template without letter renderer (post-spinner state)', () => {
+  it('does not display the letter renderer when initialRender status is stale PENDING', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        ...AUTHORING_LETTER_TEMPLATE.files,
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: new Date(
+            Date.now() - RENDER_TIMEOUT_MS - 5000
+          ).toISOString(),
+        },
+      },
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('heading', { name: 'Letter preview' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: 'Short examples' })
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
+      AUTHORING_LETTER_TEMPLATE.id
+    );
+  });
+
+  it('does not display the letter renderer when initialRender status is FAILED', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        ...AUTHORING_LETTER_TEMPLATE.files,
+        initialRender: {
+          status: 'FAILED',
+        },
+      },
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('heading', { name: 'Letter preview' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: 'Short examples' })
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
+      AUTHORING_LETTER_TEMPLATE.id
+    );
+  });
+});
+
+describe('authoring letter template does not show submit form when already submitted', () => {
+  it('does not render the submit button when templateStatus is SUBMITTED', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'Submit template' })
+    ).not.toBeInTheDocument();
+  });
 });
 
 describe('authoring letter template with VALIDATION_FAILED status', () => {
+  it('displays error summary with correct error messages when validationErrors are present', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(redirect).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole('alert', { name: 'There is a problem' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('The file(s) you uploaded may contain a virus.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Create a new letter template to upload your file(s) again or upload different file(s).'
+      )
+    ).toBeInTheDocument();
+  });
+
+  it('does not display submit button when validation has failed', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(
+      screen.queryByRole('button', { name: 'Submit template' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not display error summary when validationErrors is undefined', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: undefined,
+    });
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(redirect).not.toHaveBeenCalled();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
+    ).toBeInTheDocument();
+  });
+
   it('matches snapshot when validationErrors are present', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
@@ -309,8 +534,8 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
   });
 });
 
-describe('authoring letter template with PENDING initialRender', () => {
-  it('matches snapshot when initialRender is PENDING and fresh (shouldPollInitialRender → true)', async () => {
+describe('authoring letter template with fresh PENDING initialRender (spinner state) snapshot', () => {
+  it('matches spinner snapshot', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
       files: {
@@ -329,27 +554,5 @@ describe('authoring letter template with PENDING initialRender', () => {
     );
 
     expect(asFragment()).toMatchSnapshot();
-  });
-
-  it('renders without redirecting when initialRender is PENDING but stale (shouldPollInitialRender → false)', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      files: {
-        ...AUTHORING_LETTER_TEMPLATE.files,
-        initialRender: {
-          status: 'PENDING',
-          requestedAt: new Date(
-            Date.now() - RENDER_TIMEOUT_MS - 5000
-          ).toISOString(),
-        },
-      },
-    });
-
-    const page = await Page({
-      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-    });
-
-    expect(page).toBeTruthy();
-    expect(redirect).not.toHaveBeenCalled();
   });
 });

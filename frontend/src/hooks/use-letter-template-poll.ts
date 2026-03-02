@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 export const RENDER_TIMEOUT_MS = 20_000;
-const POLL_INTERVAL_MS = 2000;
+export const POLL_INTERVAL_MS = 2000;
 
 export function useLetterTemplatePoll({
   template,
@@ -16,7 +16,6 @@ export function useLetterTemplatePoll({
 }) {
   const router = useRouter();
   const [isPolling, setIsPolling] = useState(() => shouldPoll(template));
-  const [isTimedOut, setIsTimedOut] = useState(false);
 
   const shouldPollRef = useRef(shouldPoll);
   shouldPollRef.current = shouldPoll;
@@ -33,7 +32,6 @@ export function useLetterTemplatePoll({
 
     const timeoutTimerId = setTimeout(() => {
       setIsPolling(false);
-      setIsTimedOut(true);
     }, RENDER_TIMEOUT_MS);
 
     return () => {
@@ -48,5 +46,5 @@ export function useLetterTemplatePoll({
     }
   }, [template, isPolling]);
 
-  return { isPolling, isTimedOut };
+  return { isPolling };
 }
