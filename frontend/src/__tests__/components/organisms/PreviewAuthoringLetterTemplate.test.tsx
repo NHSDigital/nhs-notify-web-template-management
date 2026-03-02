@@ -4,7 +4,7 @@ import {
   isRenderAlreadyStale,
 } from '@organisms/PreviewAuthoringLetterTemplate/PreviewAuthoringLetterTemplate';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import { useTemplatePoll, DEFAULT_TIMEOUT_MS } from '@hooks/use-template-poll';
+import { RENDER_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
 import type {
   AuthoringLetterTemplate,
   FormState,
@@ -74,6 +74,24 @@ const pendingTemplate: AuthoringLetterTemplate = {
   },
 };
 
+// Shared stale fixture: PENDING with requestedAt exceeding RENDER_TIMEOUT_MS
+const staleTemplate: AuthoringLetterTemplate = {
+  ...renderedTemplate,
+  files: {
+    docxTemplate: {
+      currentVersion: 'v1',
+      fileName: 'template.docx',
+      virusScanStatus: 'PASSED',
+    },
+    initialRender: {
+      status: 'PENDING',
+      requestedAt: new Date(
+        FIXED_NOW.getTime() - RENDER_TIMEOUT_MS - 5000
+      ).toISOString(),
+    },
+  },
+};
+
 describe('PreviewAuthoringLetterTemplate', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -90,7 +108,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
   describe('when initialRender is RENDERED', () => {
     it('renders page content with back link, details, and renderer', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
+      );
 
       expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
       expect(
@@ -99,7 +119,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('passes the template as initialTemplate to useTemplatePoll', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
+      );
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ initialTemplate: renderedTemplate })
@@ -107,7 +129,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders submit button when templateStatus is NOT_YET_SUBMITTED', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
+      );
 
       const button = screen.getByTestId('preview-letter-template-cta');
       expect(button).toHaveTextContent('Submit template');
@@ -124,11 +148,23 @@ describe('PreviewAuthoringLetterTemplate', () => {
         screen.queryByTestId('preview-letter-template-cta')
       ).not.toBeInTheDocument();
     });
+
+    it('does not pass onError to useTemplatePoll', () => {
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
+      );
+
+      expect(mockUseTemplatePoll).toHaveBeenCalledWith(
+        expect.not.objectContaining({ onError: expect.anything() })
+      );
+    });
   });
 
   describe('when initialRender is PENDING with fresh requestedAt', () => {
     it('passes the template as initialTemplate to useTemplatePoll', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ initialTemplate: pendingTemplate })
@@ -141,7 +177,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
         isTimedOut: false,
       });
 
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
 
       expect(screen.getByText('Uploading letter template')).toBeInTheDocument();
       expect(screen.queryByTestId('back-link-top')).not.toBeInTheDocument();
@@ -153,32 +191,37 @@ describe('PreviewAuthoringLetterTemplate', () => {
         isTimedOut: false,
       });
 
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
 
+      expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
+    });
+
+    it('renders page content (not spinner) when polling has timed out', () => {
+      // isTimedOut: true means isPolling is also false — the hook sets both.
+      // The component renders the page as-is with whatever template state it has.
+      mockUseTemplatePoll.mockReturnValue({
+        isPolling: false,
+        isTimedOut: true,
+      });
+
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
+
+      expect(
+        screen.queryByText('Uploading letter template')
+      ).not.toBeInTheDocument();
       expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
     });
   });
 
   describe('when initialRender is PENDING with stale requestedAt', () => {
-    const staleTemplate: AuthoringLetterTemplate = {
-      ...renderedTemplate,
-      files: {
-        docxTemplate: {
-          currentVersion: 'v1',
-          fileName: 'template.docx',
-          virusScanStatus: 'PASSED',
-        },
-        initialRender: {
-          status: 'PENDING',
-          requestedAt: new Date(
-            FIXED_NOW.getTime() - DEFAULT_TIMEOUT_MS - 5000
-          ).toISOString(),
-        },
-      },
-    };
-
     it('passes the stale template as initialTemplate to useTemplatePoll', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={staleTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={staleTemplate} />
+      );
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ initialTemplate: staleTemplate })
@@ -186,7 +229,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders page content immediately without polling', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={staleTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={staleTemplate} />
+      );
 
       expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
       expect(
@@ -209,7 +254,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
     };
 
     it('does not render the letter renderer', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={failedTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={failedTemplate} />
+      );
 
       expect(
         screen.queryByRole('heading', { name: 'Letter preview' })
@@ -217,7 +264,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('passes the template as initialTemplate to useTemplatePoll', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={failedTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={failedTemplate} />
+      );
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ initialTemplate: failedTemplate })
@@ -227,7 +276,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
   describe('shouldPoll callback', () => {
     it('returns true for a PENDING authoring letter template', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
 
       const { shouldPoll } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -235,7 +286,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('returns false when initialRender is RENDERED', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
 
       const { shouldPoll } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -243,26 +296,11 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('returns false for a PENDING template with stale requestedAt', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
 
       const { shouldPoll } = mockUseTemplatePoll.mock.calls[0][0];
-
-      const staleTemplate: AuthoringLetterTemplate = {
-        ...renderedTemplate,
-        files: {
-          docxTemplate: {
-            currentVersion: 'v1',
-            fileName: 'template.docx',
-            virusScanStatus: 'PASSED',
-          },
-          initialRender: {
-            status: 'PENDING',
-            requestedAt: new Date(
-              FIXED_NOW.getTime() - DEFAULT_TIMEOUT_MS - 5000
-            ).toISOString(),
-          },
-        },
-      };
 
       expect(shouldPoll(staleTemplate)).toBe(false);
     });
@@ -275,7 +313,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
         isTimedOut: false,
       });
 
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={pendingTemplate} />
+      );
 
       const { onUpdate } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -298,32 +338,19 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
   describe('isRenderAlreadyStale', () => {
     it('returns false when initialRender status is not PENDING', () => {
-      expect(isRenderAlreadyStale(renderedTemplate)).toBe(false);
+      expect(isRenderAlreadyStale(renderedTemplate, RENDER_TIMEOUT_MS)).toBe(
+        false
+      );
     });
 
     it('returns false when initialRender is PENDING and requestedAt is within timeout', () => {
-      expect(isRenderAlreadyStale(pendingTemplate)).toBe(false);
+      expect(isRenderAlreadyStale(pendingTemplate, RENDER_TIMEOUT_MS)).toBe(
+        false
+      );
     });
 
     it('returns true when initialRender is PENDING and requestedAt exceeds timeout', () => {
-      const staleTemplate: AuthoringLetterTemplate = {
-        ...renderedTemplate,
-        files: {
-          docxTemplate: {
-            currentVersion: 'v1',
-            fileName: 'template.docx',
-            virusScanStatus: 'PASSED',
-          },
-          initialRender: {
-            status: 'PENDING',
-            requestedAt: new Date(
-              FIXED_NOW.getTime() - DEFAULT_TIMEOUT_MS - 5000
-            ).toISOString(),
-          },
-        },
-      };
-
-      expect(isRenderAlreadyStale(staleTemplate)).toBe(true);
+      expect(isRenderAlreadyStale(staleTemplate, RENDER_TIMEOUT_MS)).toBe(true);
     });
   });
 
@@ -341,7 +368,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders bottom back link', () => {
-      renderWithProvider(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
+      renderWithProvider(
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
+      );
 
       const links = screen.getAllByText('Back to all templates');
       expect(links.length).toBeGreaterThanOrEqual(2);

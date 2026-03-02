@@ -17,19 +17,20 @@ import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templ
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { RenderDetails } from 'nhs-notify-web-template-management-types';
+import { RENDER_TIMEOUT_MS } from '@hooks/use-template-poll';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@app/preview-letter-template/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
 
-const FIXED_NOW = new Date('2025-06-15T12:00:00.000Z');
+const NOW = new Date('2025-06-15T12:00:00.000Z');
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
 beforeEach(() => {
   jest.resetAllMocks();
-  jest.useFakeTimers({ now: FIXED_NOW });
+  jest.useFakeTimers({ now: NOW });
   jest.mocked(submitAuthoringLetterAction).mockResolvedValue({});
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 });
@@ -341,7 +342,7 @@ describe('authoring letter template without initial render in RENDERED status', 
   it('shows page spinner and hides back link and details while initialRender is PENDING', async () => {
     const pendingRender = {
       status: 'PENDING',
-      requestedAt: FIXED_NOW.toISOString(),
+      requestedAt: NOW.toISOString(),
     } as const satisfies RenderDetails;
 
     jest.mocked(getTemplate).mockResolvedValue({
@@ -369,7 +370,7 @@ describe('authoring letter template without initial render in RENDERED status', 
 
   it('does not poll and renders page content when requestedAt is already stale', async () => {
     const staleRequestedAt = new Date(
-      FIXED_NOW.getTime() - 30_000
+      NOW.getTime() - (RENDER_TIMEOUT_MS + 1)
     ).toISOString();
 
     jest.mocked(getTemplate).mockResolvedValue({
@@ -499,7 +500,7 @@ describe('authoring letter with validation errors', () => {
         },
         initialRender: {
           status: 'PENDING',
-          requestedAt: FIXED_NOW.toISOString(),
+          requestedAt: NOW.toISOString(),
         },
       },
     };

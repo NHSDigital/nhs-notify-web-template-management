@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { useTemplatePoll, DEFAULT_TIMEOUT_MS } from '@hooks/use-template-poll';
+import { useTemplatePoll } from '@hooks/use-template-poll';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 const TEMPLATE_ID = 'template-abc';
@@ -97,9 +97,11 @@ describe('useTemplatePoll', () => {
       },
     };
 
-    jest.mocked(fetch).mockResolvedValueOnce(
-      new Response(JSON.stringify(updatedTemplate), { status: 200 })
-    );
+    jest
+      .mocked(fetch)
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify(updatedTemplate), { status: 200 })
+      );
 
     const onUpdate = jest.fn();
 
@@ -132,9 +134,5 @@ describe('useTemplatePoll', () => {
     await act(() => Promise.resolve());
 
     expect(onUpdate).not.toHaveBeenCalled();
-  });
-
-  it('exports DEFAULT_TIMEOUT_MS as 20000', () => {
-    expect(DEFAULT_TIMEOUT_MS).toBe(20_000);
   });
 });
