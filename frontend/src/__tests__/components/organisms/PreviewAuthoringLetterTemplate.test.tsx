@@ -5,7 +5,10 @@ import {
   isRenderAlreadyStale,
 } from '@organisms/PreviewAuthoringLetterTemplate/PreviewAuthoringLetterTemplate';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import { RENDER_TIMEOUT_MS, useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
+import {
+  RENDER_TIMEOUT_MS,
+  useLetterTemplatePoll,
+} from '@hooks/use-letter-template-poll';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import type {
   AuthoringLetterTemplate,

@@ -273,3 +273,37 @@ describe('valid authoring letter template', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 });
+
+describe('authoring letter template with VALIDATION_FAILED status', () => {
+  it('matches snapshot when validationErrors are present', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
+    });
+
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when validationErrors is undefined', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: undefined,
+    });
+
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
