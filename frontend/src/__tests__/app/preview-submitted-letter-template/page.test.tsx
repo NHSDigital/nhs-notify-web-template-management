@@ -20,7 +20,7 @@ import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/Prev
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-const { pageTitle } = content.components.previewLetterTemplate;
+const { pageTitle } = content.pages.previewLetterTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

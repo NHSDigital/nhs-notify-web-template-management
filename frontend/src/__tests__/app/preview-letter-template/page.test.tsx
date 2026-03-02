@@ -22,7 +22,7 @@ jest.mock('next/navigation');
 jest.mock('@app/preview-letter-template/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
 
-const { pageTitle } = content.components.previewLetterTemplate;
+const { pageTitle } = content.pages.previewLetterTemplate;
 
 beforeEach(() => {
   jest.resetAllMocks();

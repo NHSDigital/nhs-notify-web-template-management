@@ -3,38 +3,38 @@
 import type { PropsWithChildren } from 'react';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LoadingSpinner } from '@atoms/LoadingSpinner/LoadingSpinner';
-import content from '@content/content';
 import {
-  RENDER_TIMEOUT_MS,
   useLetterTemplatePoll,
+  RENDER_TIMEOUT_MS,
 } from '@hooks/use-letter-template-poll';
 import type { RenderKey } from '@utils/types';
-import { isRenderAlreadyStale } from '@utils/render-utils';
 
-function buildShouldPoll(mode: RenderKey) {
-  return (template: AuthoringLetterTemplate): boolean => {
-    const render = template.files[mode];
+export function buildShouldPoll(
+  mode: RenderKey
+): (template: AuthoringLetterTemplate) => boolean {
+  return ({ files }: AuthoringLetterTemplate): boolean => {
+    const render = files[mode];
 
-    return (
-      !!render &&
-      render.status === 'PENDING' &&
-      !isRenderAlreadyStale(render, RENDER_TIMEOUT_MS)
-    );
+    if (render?.status !== 'PENDING') return false;
+
+    const elapsed = Date.now() - new Date(render.requestedAt).getTime();
+
+    return elapsed < RENDER_TIMEOUT_MS;
   };
 }
 
 type RenderPollProps = PropsWithChildren<{
   template: AuthoringLetterTemplate;
   mode: RenderKey;
+  loadingText: string;
 }>;
 
 export function RenderPoll({
   template,
   children,
   mode,
+  loadingText,
 }: Readonly<RenderPollProps>) {
-  const { loadingText } = content.components.previewLetterTemplate;
-
   const { isPolling } = useLetterTemplatePoll({
     template,
     shouldPoll: buildShouldPoll(mode),

@@ -19,8 +19,14 @@ import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-const { pageTitle, backLinkText, submitText, links, validationErrorMessages } =
-  content.components.previewLetterTemplate;
+const {
+  pageTitle,
+  backLinkText,
+  submitText,
+  loadingText,
+  links,
+  validationErrorMessages,
+} = content.pages.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -76,7 +82,11 @@ export default async function PreviewLetterTemplatePage({
         }}
         serverAction={submitAuthoringLetterAction}
       >
-        <RenderPoll template={validatedTemplate} mode='initialRender'>
+        <RenderPoll
+          template={validatedTemplate}
+          mode='initialRender'
+          loadingText={loadingText}
+        >
           <div className='nhsuk-width-container'>
             <NHSNotifyBackLink href={links.messageTemplates}>
               {backLinkText}
