@@ -23,12 +23,19 @@ jest.mock('next/navigation');
 jest.mock('@app/preview-letter-template/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
 
+const FIXED_NOW = new Date('2025-06-15T12:00:00.000Z');
+
 const { pageTitle } = content.components.previewLetterTemplate;
 
 beforeEach(() => {
   jest.resetAllMocks();
+  jest.useFakeTimers({ now: FIXED_NOW });
   jest.mocked(submitAuthoringLetterAction).mockResolvedValue({});
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
+});
+
+afterEach(() => {
+  jest.useRealTimers();
 });
 
 test('metadata', async () => {
@@ -277,7 +284,9 @@ describe('valid authoring letter template', () => {
   });
 
   it('submits the form with correct data', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({
+      advanceTimers: jest.advanceTimersByTime,
+    });
 
     render(
       await Page({
@@ -332,7 +341,7 @@ describe('authoring letter template without initial render in RENDERED status', 
   it('shows page spinner and hides back link and details while initialRender is PENDING', async () => {
     const pendingRender = {
       status: 'PENDING',
-      requestedAt: new Date().toISOString(),
+      requestedAt: FIXED_NOW.toISOString(),
     } as const satisfies RenderDetails;
 
     jest.mocked(getTemplate).mockResolvedValue({
@@ -353,14 +362,14 @@ describe('authoring letter template without initial render in RENDERED status', 
       })
     );
 
-    expect(screen.getByText('Loading letter preview')).toBeInTheDocument();
+    expect(screen.getByText('Uploading letter template')).toBeInTheDocument();
     expect(screen.queryByTestId('back-link-top')).not.toBeInTheDocument();
     expect(screen.queryByTestId('preview-template-id')).not.toBeInTheDocument();
   });
 
   it('does not poll and renders page content when requestedAt is already stale', async () => {
     const staleRequestedAt = new Date(
-      Date.now() - 30_000
+      FIXED_NOW.getTime() - 30_000
     ).toISOString();
 
     jest.mocked(getTemplate).mockResolvedValue({
@@ -385,7 +394,7 @@ describe('authoring letter template without initial render in RENDERED status', 
     );
 
     expect(
-      screen.queryByText('Loading letter preview')
+      screen.queryByText('Uploading letter template')
     ).not.toBeInTheDocument();
     expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
     expect(screen.getByTestId('preview-template-id')).toBeInTheDocument();
@@ -490,7 +499,7 @@ describe('authoring letter with validation errors', () => {
         },
         initialRender: {
           status: 'PENDING',
-          requestedAt: new Date().toISOString(),
+          requestedAt: FIXED_NOW.toISOString(),
         },
       },
     };

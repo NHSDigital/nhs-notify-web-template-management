@@ -19,11 +19,7 @@ jest.mock('@atoms/NHSNotifyForm', () => ({
   }: {
     children: React.ReactNode;
     formId: string;
-  }) => (
-    <form data-testid={formId}>
-      {children}
-    </form>
-  ),
+  }) => <form data-testid={formId}>{children}</form>,
   FormGroup: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
@@ -37,6 +33,8 @@ jest.mock('@atoms/NHSNotifyForm', () => ({
 }));
 
 const mockUseTemplatePoll = jest.mocked(useTemplatePoll);
+
+const FIXED_NOW = new Date('2025-06-15T12:00:00.000Z');
 
 const renderedTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -76,32 +74,28 @@ const pendingTemplate: AuthoringLetterTemplate = {
     },
     initialRender: {
       status: 'PENDING',
-      requestedAt: new Date().toISOString(),
+      requestedAt: FIXED_NOW.toISOString(),
     },
   },
-};
-
-const defaultProps = {
-  backLinkText: 'Back to all templates',
-  backLinkHref: '/message-templates',
-  submitText: 'Submit template',
-  loadingText: 'Loading letter preview',
 };
 
 describe('PreviewAuthoringLetterTemplate', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseTemplatePoll.mockReturnValue({ isPolling: false, isTimedOut: false });
+    jest.useFakeTimers({ now: FIXED_NOW });
+    mockUseTemplatePoll.mockReturnValue({
+      isPolling: false,
+      isTimedOut: false,
+    });
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   describe('when initialRender is RENDERED', () => {
     it('renders page content with back link, details, and renderer', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={renderedTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
 
       expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
       expect(
@@ -110,12 +104,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('passes enabled=false to useTemplatePoll', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={renderedTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ enabled: false })
@@ -123,12 +112,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders submit button when templateStatus is NOT_YET_SUBMITTED', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={renderedTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
 
       const button = screen.getByTestId('preview-letter-template-cta');
       expect(button).toHaveTextContent('Submit template');
@@ -138,7 +122,6 @@ describe('PreviewAuthoringLetterTemplate', () => {
       render(
         <PreviewAuthoringLetterTemplate
           template={{ ...renderedTemplate, templateStatus: 'SUBMITTED' }}
-          {...defaultProps}
         />
       );
 
@@ -150,12 +133,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
   describe('when initialRender is PENDING with fresh requestedAt', () => {
     it('passes enabled=true to useTemplatePoll', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ enabled: true })
@@ -168,14 +146,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
         isTimedOut: false,
       });
 
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
-      expect(screen.getByText('Loading letter preview')).toBeInTheDocument();
+      expect(screen.getByText('Uploading letter template')).toBeInTheDocument();
       expect(screen.queryByTestId('back-link-top')).not.toBeInTheDocument();
     });
 
@@ -185,12 +158,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
         isTimedOut: false,
       });
 
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
       expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
     });
@@ -208,19 +176,14 @@ describe('PreviewAuthoringLetterTemplate', () => {
         initialRender: {
           status: 'PENDING',
           requestedAt: new Date(
-            Date.now() - DEFAULT_TIMEOUT_MS - 5000
+            FIXED_NOW.getTime() - DEFAULT_TIMEOUT_MS - 5000
           ).toISOString(),
         },
       },
     };
 
     it('passes enabled=false to useTemplatePoll when requestedAt is stale', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={staleTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={staleTemplate} />);
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ enabled: false })
@@ -228,16 +191,11 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders page content immediately without polling', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={staleTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={staleTemplate} />);
 
       expect(screen.getByTestId('back-link-top')).toBeInTheDocument();
       expect(
-        screen.queryByText('Loading letter preview')
+        screen.queryByText('Uploading letter template')
       ).not.toBeInTheDocument();
     });
   });
@@ -256,12 +214,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     };
 
     it('does not render the letter renderer', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={failedTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={failedTemplate} />);
 
       expect(
         screen.queryByRole('heading', { name: 'Letter preview' })
@@ -269,12 +222,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('passes enabled=false to useTemplatePoll', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={failedTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={failedTemplate} />);
 
       expect(mockUseTemplatePoll).toHaveBeenCalledWith(
         expect.objectContaining({ enabled: false })
@@ -284,12 +232,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
   describe('shouldPoll callback', () => {
     it('returns true for a PENDING authoring letter template', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
       const { shouldPoll } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -297,7 +240,10 @@ describe('PreviewAuthoringLetterTemplate', () => {
         templateType: 'LETTER',
         letterVersion: 'AUTHORING',
         files: {
-          initialRender: { status: 'PENDING', requestedAt: new Date().toISOString() },
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: FIXED_NOW.toISOString(),
+          },
         },
       } as unknown as TemplateDto;
 
@@ -305,12 +251,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('returns false when initialRender is RENDERED', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
       const { shouldPoll } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -318,7 +259,12 @@ describe('PreviewAuthoringLetterTemplate', () => {
         templateType: 'LETTER',
         letterVersion: 'AUTHORING',
         files: {
-          initialRender: { status: 'RENDERED', fileName: 'r.pdf', currentVersion: 'v1', pageCount: 1 },
+          initialRender: {
+            status: 'RENDERED',
+            fileName: 'r.pdf',
+            currentVersion: 'v1',
+            pageCount: 1,
+          },
         },
       } as unknown as TemplateDto;
 
@@ -326,12 +272,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('returns false for a non-LETTER template type', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
       const { shouldPoll } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -339,7 +280,10 @@ describe('PreviewAuthoringLetterTemplate', () => {
         templateType: 'EMAIL',
         letterVersion: 'AUTHORING',
         files: {
-          initialRender: { status: 'PENDING', requestedAt: new Date().toISOString() },
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: FIXED_NOW.toISOString(),
+          },
         },
       } as unknown as TemplateDto;
 
@@ -347,12 +291,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('returns false for a non-AUTHORING letter version', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
       const { shouldPoll } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -360,7 +299,10 @@ describe('PreviewAuthoringLetterTemplate', () => {
         templateType: 'LETTER',
         letterVersion: 'PDF',
         files: {
-          initialRender: { status: 'PENDING', requestedAt: new Date().toISOString() },
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: FIXED_NOW.toISOString(),
+          },
         },
       } as unknown as TemplateDto;
 
@@ -375,12 +317,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
         isTimedOut: false,
       });
 
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={pendingTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={pendingTemplate} />);
 
       const { onUpdate } = mockUseTemplatePoll.mock.calls[0][0];
 
@@ -422,7 +359,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
           initialRender: {
             status: 'PENDING',
             requestedAt: new Date(
-              Date.now() - DEFAULT_TIMEOUT_MS - 5000
+              FIXED_NOW.getTime() - DEFAULT_TIMEOUT_MS - 5000
             ).toISOString(),
           },
         },
@@ -435,10 +372,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
   describe('layout structure', () => {
     it('constrains back link and details in nhsuk-width-container', () => {
       const { container } = render(
-        <PreviewAuthoringLetterTemplate
-          template={renderedTemplate}
-          {...defaultProps}
-        />
+        <PreviewAuthoringLetterTemplate template={renderedTemplate} />
       );
 
       const widthContainers = container.querySelectorAll(
@@ -449,12 +383,7 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders bottom back link', () => {
-      render(
-        <PreviewAuthoringLetterTemplate
-          template={renderedTemplate}
-          {...defaultProps}
-        />
-      );
+      render(<PreviewAuthoringLetterTemplate template={renderedTemplate} />);
 
       const links = screen.getAllByText('Back to all templates');
       expect(links.length).toBeGreaterThanOrEqual(2);

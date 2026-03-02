@@ -10,14 +10,11 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
+import content from '@content/content';
 import { DEFAULT_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
 
 type PreviewAuthoringLetterTemplateProps = {
   template: AuthoringLetterTemplate;
-  backLinkText: string;
-  backLinkHref: string;
-  submitText: string;
-  loadingText: string;
 };
 
 const shouldPollInitialRender = (t: TemplateDto) =>
@@ -40,11 +37,10 @@ export function isRenderAlreadyStale(
 
 export function PreviewAuthoringLetterTemplate({
   template,
-  backLinkText,
-  backLinkHref,
-  submitText,
-  loadingText,
 }: Readonly<PreviewAuthoringLetterTemplateProps>) {
+  const { backLinkText, links, submitText, loadingText } =
+    content.components.previewLetterTemplate;
+
   const [latestTemplate, setLatestTemplate] =
     useState<AuthoringLetterTemplate>(template);
 
@@ -75,7 +71,7 @@ export function PreviewAuthoringLetterTemplate({
   return (
     <>
       <div className='nhsuk-width-container'>
-        <NHSNotifyBackLink href={backLinkHref}>
+        <NHSNotifyBackLink href={links.messageTemplates}>
           {backLinkText}
         </NHSNotifyBackLink>
       </div>
@@ -110,7 +106,7 @@ export function PreviewAuthoringLetterTemplate({
           </NHSNotifyForm.Form>
         )}
         <p>
-          <Link href={backLinkHref}>{backLinkText}</Link>
+          <Link href={links.messageTemplates}>{backLinkText}</Link>
         </p>
       </NHSNotifyMain>
     </>

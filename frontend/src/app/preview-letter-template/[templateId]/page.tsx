@@ -13,7 +13,7 @@ import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { PreviewAuthoringLetterTemplate } from '@organisms/PreviewAuthoringLetterTemplate/PreviewAuthoringLetterTemplate';
 
-const { pageTitle, backLinkText, submitText, links, validationErrorMessages } =
+const { pageTitle, validationErrorMessages } =
   content.components.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -66,10 +66,6 @@ export default async function PreviewLetterTemplatePage({
       >
         <PreviewAuthoringLetterTemplate
           template={validatedTemplate}
-          backLinkText={backLinkText}
-          backLinkHref={links.messageTemplates}
-          submitText={submitText}
-          loadingText='Loading letter preview'
         />
       </NHSNotifyFormProvider>
     </NHSNotifyContainer>

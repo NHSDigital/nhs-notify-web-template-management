@@ -522,6 +522,7 @@ const previewLetterTemplate = {
   pageTitle: generatePageTitle('Preview letter template'),
   backLinkText: backToAllTemplates,
   submitText: 'Submit template',
+  loadingText: 'Uploading letter template',
   approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,

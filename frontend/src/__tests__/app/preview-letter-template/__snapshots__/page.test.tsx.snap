@@ -14,7 +14,7 @@ exports[`authoring letter with validation errors matches snapshot with error and
       <h1
         class="nhsuk-loader__text"
       >
-        Loading letter preview
+        Uploading letter template
       </h1>
     </div>
   </div>
