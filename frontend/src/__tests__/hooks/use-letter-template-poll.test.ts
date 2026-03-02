@@ -1,11 +1,20 @@
 import { renderHook, act } from '@testing-library/react';
-import { useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
+import {
+  useLetterTemplatePoll,
+  RENDER_TIMEOUT_MS,
+} from '@hooks/use-letter-template-poll';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
-const TEMPLATE_ID = 'template-abc';
+const mockRefresh = jest.fn();
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh: mockRefresh }),
+}));
+
+const POLL_INTERVAL_MS = 2000;
 
 const pendingTemplate: AuthoringLetterTemplate = {
-  id: TEMPLATE_ID,
+  id: 'template-abc',
   name: 'Test Letter',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -29,136 +38,159 @@ const pendingTemplate: AuthoringLetterTemplate = {
   lockNumber: 1,
 };
 
-jest.mock('@utils/get-base-path', () => ({
-  getBasePath: () => '/my-base',
-}));
+const renderedTemplate: AuthoringLetterTemplate = {
+  ...pendingTemplate,
+  files: {
+    ...pendingTemplate.files,
+    initialRender: {
+      status: 'RENDERED',
+      fileName: 'render.pdf',
+      currentVersion: 'v1',
+      pageCount: 1,
+    },
+  },
+};
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.spyOn(globalThis, 'fetch').mockResolvedValue(
-    new Response(JSON.stringify(pendingTemplate), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  );
+  mockRefresh.mockClear();
 });
 
 afterEach(() => {
   jest.useRealTimers();
-  jest.restoreAllMocks();
 });
 
 describe('useLetterTemplatePoll', () => {
-  it('fetches from the correct URL using getBasePath and the template id', async () => {
-    renderHook(() =>
+  it('starts polling when shouldPoll returns true for the initial template', () => {
+    const { result } = renderHook(() =>
       useLetterTemplatePoll({
-        initialTemplate: pendingTemplate,
-        shouldPoll: () => true,
-        onUpdate: jest.fn(),
-      })
-    );
-
-    await act(() => Promise.resolve());
-
-    expect(fetch).toHaveBeenCalledWith(
-      `/my-base/preview-letter-template/${TEMPLATE_ID}/poll`,
-      expect.objectContaining({ cache: 'no-store' })
-    );
-  });
-
-  it('passes an AbortSignal to fetch', async () => {
-    renderHook(() =>
-      useLetterTemplatePoll({
-        initialTemplate: pendingTemplate,
-        shouldPoll: () => true,
-        onUpdate: jest.fn(),
-      })
-    );
-
-    await act(() => Promise.resolve());
-
-    expect(fetch).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({ signal: expect.any(AbortSignal) })
-    );
-  });
-
-  it('calls onUpdate with parsed JSON when shouldPoll returns false', async () => {
-    const updatedTemplate: AuthoringLetterTemplate = {
-      ...pendingTemplate,
-      files: {
-        ...pendingTemplate.files,
-        initialRender: {
-          fileName: 'render.pdf',
-          currentVersion: 'v1',
-          status: 'RENDERED',
-          pageCount: 1,
-        },
-      },
-    };
-
-    jest
-      .mocked(fetch)
-      .mockResolvedValueOnce(
-        new Response(JSON.stringify(updatedTemplate), { status: 200 })
-      );
-
-    const onUpdate = jest.fn();
-
-    renderHook(() =>
-      useLetterTemplatePoll({
-        initialTemplate: pendingTemplate,
+        template: pendingTemplate,
         shouldPoll: (t) => t.files.initialRender.status === 'PENDING',
-        onUpdate,
       })
     );
 
-    await act(() => Promise.resolve());
-
-    expect(onUpdate).toHaveBeenCalledWith(updatedTemplate);
+    expect(result.current.isPolling).toBe(true);
+    expect(result.current.isTimedOut).toBe(false);
   });
 
-  it('does not call onUpdate when fetch returns a non-ok response', async () => {
-    jest.mocked(fetch).mockResolvedValue(new Response(null, { status: 500 }));
-
-    const onUpdate = jest.fn();
-
-    renderHook(() =>
+  it('does not start polling when shouldPoll returns false for the initial template', () => {
+    const { result } = renderHook(() =>
       useLetterTemplatePoll({
-        initialTemplate: pendingTemplate,
-        shouldPoll: () => true,
-        onUpdate,
+        template: renderedTemplate,
+        shouldPoll: (t) => t.files.initialRender.status === 'PENDING',
       })
     );
 
-    await act(() => Promise.resolve());
-
-    expect(onUpdate).not.toHaveBeenCalled();
+    expect(result.current.isPolling).toBe(false);
+    expect(result.current.isTimedOut).toBe(false);
   });
 
-  it('does not call onUpdate when the response is not an authoring letter template', async () => {
-    const pdfResponse = {
-      ...pendingTemplate,
-      letterVersion: 'PDF',
-      files: { pdfTemplate: { currentVersion: 'v1', fileName: 'template.pdf' } },
-    };
-
-    jest.mocked(fetch).mockResolvedValue(
-      new Response(JSON.stringify(pdfResponse), { status: 200 })
-    );
-
-    const onUpdate = jest.fn();
-
+  it('calls router.refresh() on each poll interval', () => {
     renderHook(() =>
       useLetterTemplatePoll({
-        initialTemplate: pendingTemplate,
+        template: pendingTemplate,
         shouldPoll: () => true,
-        onUpdate,
       })
     );
 
-    await act(() => Promise.resolve());
+    expect(mockRefresh).not.toHaveBeenCalled();
 
-    expect(onUpdate).not.toHaveBeenCalled();
+    act(() => {
+      jest.advanceTimersByTime(POLL_INTERVAL_MS);
+    });
+
+    expect(mockRefresh).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      jest.advanceTimersByTime(POLL_INTERVAL_MS);
+    });
+
+    expect(mockRefresh).toHaveBeenCalledTimes(2);
+  });
+
+  it('stops polling and sets isTimedOut when RENDER_TIMEOUT_MS elapses', () => {
+    const { result } = renderHook(() =>
+      useLetterTemplatePoll({
+        template: pendingTemplate,
+        shouldPoll: () => true,
+      })
+    );
+
+    act(() => {
+      jest.advanceTimersByTime(RENDER_TIMEOUT_MS);
+    });
+
+    expect(result.current.isPolling).toBe(false);
+    expect(result.current.isTimedOut).toBe(true);
+  });
+
+  it('stops polling when the template prop updates with shouldPoll returning false', () => {
+    const { result, rerender } = renderHook(
+      ({ template }: { template: AuthoringLetterTemplate }) =>
+        useLetterTemplatePoll({
+          template,
+          shouldPoll: (t) => t.files.initialRender.status === 'PENDING',
+        }),
+      { initialProps: { template: pendingTemplate } }
+    );
+
+    expect(result.current.isPolling).toBe(true);
+
+    act(() => {
+      rerender({ template: renderedTemplate });
+    });
+
+    expect(result.current.isPolling).toBe(false);
+    expect(result.current.isTimedOut).toBe(false);
+  });
+
+  it('stops calling router.refresh() after polling stops', () => {
+    const { rerender } = renderHook(
+      ({ template }: { template: AuthoringLetterTemplate }) =>
+        useLetterTemplatePoll({
+          template,
+          shouldPoll: (t) => t.files.initialRender.status === 'PENDING',
+        }),
+      { initialProps: { template: pendingTemplate } }
+    );
+
+    act(() => {
+      jest.advanceTimersByTime(POLL_INTERVAL_MS);
+    });
+
+    expect(mockRefresh).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      rerender({ template: renderedTemplate });
+    });
+
+    mockRefresh.mockClear();
+
+    act(() => {
+      jest.advanceTimersByTime(POLL_INTERVAL_MS * 3);
+    });
+
+    expect(mockRefresh).not.toHaveBeenCalled();
+  });
+
+  it('does not call router.refresh() after timeout', () => {
+    renderHook(() =>
+      useLetterTemplatePoll({
+        template: pendingTemplate,
+        shouldPoll: () => true,
+      })
+    );
+
+    act(() => {
+      jest.advanceTimersByTime(RENDER_TIMEOUT_MS);
+    });
+
+    mockRefresh.mockClear();
+
+    act(() => {
+      jest.advanceTimersByTime(POLL_INTERVAL_MS * 3);
+    });
+
+    expect(mockRefresh).not.toHaveBeenCalled();
   });
 });

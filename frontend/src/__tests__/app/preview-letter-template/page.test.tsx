@@ -14,6 +14,7 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
+import { RENDER_TIMEOUT_MS } from '@hooks/use-letter-template-poll';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -305,5 +306,50 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
     );
 
     expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe('authoring letter template with PENDING initialRender', () => {
+  it('matches snapshot when initialRender is PENDING and fresh (shouldPollInitialRender → true)', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        ...AUTHORING_LETTER_TEMPLATE.files,
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: new Date().toISOString(),
+        },
+      },
+    });
+
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('renders without redirecting when initialRender is PENDING but stale (shouldPollInitialRender → false)', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        ...AUTHORING_LETTER_TEMPLATE.files,
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: new Date(
+            Date.now() - RENDER_TIMEOUT_MS - 5000
+          ).toISOString(),
+        },
+      },
+    });
+
+    const page = await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+    });
+
+    expect(page).toBeTruthy();
+    expect(redirect).not.toHaveBeenCalled();
   });
 });

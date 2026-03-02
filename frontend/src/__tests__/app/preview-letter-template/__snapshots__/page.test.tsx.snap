@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`authoring letter template with PENDING initialRender matches snapshot when initialRender is PENDING and fresh (shouldPollInitialRender → true) 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container-fluid"
+  >
+    <div
+      class="nhsuk-loader"
+    >
+      <span
+        class="nhsuk-loader__spinner"
+      />
+      <h1
+        class="nhsuk-loader__text"
+      >
+        Uploading letter template
+      </h1>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`authoring letter template with VALIDATION_FAILED status matches snapshot when validationErrors are present 1`] = `
 <DocumentFragment>
   <div

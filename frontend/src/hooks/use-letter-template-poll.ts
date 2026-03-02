@@ -1,47 +1,52 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { getBasePath } from '@utils/get-base-path';
-import { usePoll } from './use-poll';
 
 export const RENDER_TIMEOUT_MS = 20_000;
 const POLL_INTERVAL_MS = 2000;
 
-const basePath = getBasePath();
-
 export function useLetterTemplatePoll({
-  initialTemplate,
+  template,
   shouldPoll,
-  onUpdate,
 }: {
-  initialTemplate: AuthoringLetterTemplate;
+  template: AuthoringLetterTemplate;
   shouldPoll: (template: AuthoringLetterTemplate) => boolean;
-  onUpdate: (template: AuthoringLetterTemplate) => void;
 }) {
-  return usePoll({
-    fetchFn: async (signal) => {
-      const response = await fetch(
-        `${basePath}/preview-letter-template/${initialTemplate.id}/poll`,
-        { cache: 'no-store', signal }
-      );
+  const router = useRouter();
+  const [isPolling, setIsPolling] = useState(() => shouldPoll(template));
+  const [isTimedOut, setIsTimedOut] = useState(false);
 
-      if (!response.ok) return null;
+  const shouldPollRef = useRef(shouldPoll);
+  shouldPollRef.current = shouldPoll;
 
-      const result = await response.json();
+  const templateRef = useRef(template);
+  templateRef.current = template;
 
-      if (
-        result?.templateType !== 'LETTER' ||
-        result.letterVersion !== 'AUTHORING'
-      ) {
-        return null;
-      }
+  useEffect(() => {
+    if (!isPolling) return;
 
-      return result;
-    },
-    initialValue: initialTemplate,
-    shouldPoll,
-    onUpdate,
-    intervalMs: POLL_INTERVAL_MS,
-    timeoutMs: RENDER_TIMEOUT_MS,
-  });
+    const pollTimerId = setInterval(() => {
+      router.refresh();
+    }, POLL_INTERVAL_MS);
+
+    const timeoutTimerId = setTimeout(() => {
+      setIsPolling(false);
+      setIsTimedOut(true);
+    }, RENDER_TIMEOUT_MS);
+
+    return () => {
+      clearInterval(pollTimerId);
+      clearTimeout(timeoutTimerId);
+    };
+  }, [isPolling, router]);
+
+  useEffect(() => {
+    if (isPolling && !shouldPollRef.current(templateRef.current)) {
+      setIsPolling(false);
+    }
+  }, [template, isPolling]);
+
+  return { isPolling, isTimedOut };
 }

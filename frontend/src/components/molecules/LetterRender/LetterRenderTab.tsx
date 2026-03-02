@@ -10,12 +10,12 @@ import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
-import type { RenderTab } from './types';
+import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
-  tab: RenderTab;
+  tab: PersonalisedRenderKey;
 };
 
 function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
@@ -25,14 +25,14 @@ function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
 
 function getPersonalisedRender(
   template: AuthoringLetterTemplate,
-  tab: RenderTab
+  tab: PersonalisedRenderKey
 ): RenderDetails | undefined {
   return template.files[tab];
 }
 
 function initialisePdfUrl(
   template: AuthoringLetterTemplate,
-  tab: RenderTab
+  tab: PersonalisedRenderKey
 ): string | null {
   const personalisedRender = getPersonalisedRender(template, tab);
   const initialRender = template.files.initialRender;
@@ -49,7 +49,7 @@ function initialisePdfUrl(
 
 function initialiseFormState(
   template: AuthoringLetterTemplate,
-  tab: RenderTab
+  tab: PersonalisedRenderKey
 ): FormState {
   const personalisedRender = getPersonalisedRender(template, tab);
 
