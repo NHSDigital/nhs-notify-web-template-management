@@ -487,7 +487,27 @@ describe('authoring letter with validation errors', () => {
     ).toBeInTheDocument();
   });
 
-  it('matches snapshot with error and no render', async () => {
+  it('matches snapshot with error and rendered preview', async () => {
+    const templateWithValidationErrors: LetterTemplate = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
+      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithValidationErrors);
+
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({
+          templateId: templateWithValidationErrors.id,
+        }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot with error and spinner when render is pending', async () => {
     const templateWithValidationErrors: LetterTemplate = {
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED',

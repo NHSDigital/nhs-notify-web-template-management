@@ -7,19 +7,17 @@ import { usePoll } from './use-poll';
 export const RENDER_TIMEOUT_MS = 20_000;
 const POLL_INTERVAL_MS = 2000;
 
-type UseTemplatePollOptions = {
-  initialTemplate: AuthoringLetterTemplate;
-  shouldPoll: (template: AuthoringLetterTemplate) => boolean;
-  onUpdate: (template: AuthoringLetterTemplate) => void;
-};
-
 const basePath = getBasePath();
 
 export function useTemplatePoll({
   initialTemplate,
   shouldPoll,
   onUpdate,
-}: UseTemplatePollOptions) {
+}: {
+  initialTemplate: AuthoringLetterTemplate;
+  shouldPoll: (template: AuthoringLetterTemplate) => boolean;
+  onUpdate: (template: AuthoringLetterTemplate) => void;
+}) {
   return usePoll({
     fetchFn: async (signal) => {
       const response = await fetch(
