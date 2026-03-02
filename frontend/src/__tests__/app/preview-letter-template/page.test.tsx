@@ -20,19 +20,12 @@ jest.mock('next/navigation');
 jest.mock('@app/preview-letter-template/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
 
-const NOW = new Date('2025-06-15T12:00:00.000Z');
-
 const { pageTitle } = content.components.previewLetterTemplate;
 
 beforeEach(() => {
   jest.resetAllMocks();
-  jest.useFakeTimers({ now: NOW });
   jest.mocked(submitAuthoringLetterAction).mockResolvedValue({});
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
-});
-
-afterEach(() => {
-  jest.useRealTimers();
 });
 
 test('metadata', async () => {

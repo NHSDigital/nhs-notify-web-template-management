@@ -9,7 +9,7 @@ const POLL_INTERVAL_MS = 2000;
 
 const basePath = getBasePath();
 
-export function useTemplatePoll({
+export function useLetterTemplatePoll({
   initialTemplate,
   shouldPoll,
   onUpdate,
@@ -27,7 +27,16 @@ export function useTemplatePoll({
 
       if (!response.ok) return null;
 
-      return (await response.json()) as AuthoringLetterTemplate;
+      const result = await response.json();
+
+      if (
+        result?.templateType !== 'LETTER' ||
+        result.letterVersion !== 'AUTHORING'
+      ) {
+        return null;
+      }
+
+      return result;
     },
     initialValue: initialTemplate,
     shouldPoll,

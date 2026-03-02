@@ -227,7 +227,7 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       ).toBeInTheDocument();
     });
 
-    it('matches snapshot with initialRender not in RENDERED status - page counts are not displayed', () => {
+    it('matches snapshot with initialRender in non-RENDERED status - page counts are not displayed', () => {
       const templateWithoutInitialRender: LetterTemplate = {
         ...baseAuthoringLetter,
         files: {

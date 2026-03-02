@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { useTemplatePoll } from '@hooks/use-template-poll';
+import { useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 const TEMPLATE_ID = 'template-abc';
@@ -48,10 +48,10 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-describe('useTemplatePoll', () => {
+describe('useLetterTemplatePoll', () => {
   it('fetches from the correct URL using getBasePath and the template id', async () => {
     renderHook(() =>
-      useTemplatePoll({
+      useLetterTemplatePoll({
         initialTemplate: pendingTemplate,
         shouldPoll: () => true,
         onUpdate: jest.fn(),
@@ -68,7 +68,7 @@ describe('useTemplatePoll', () => {
 
   it('passes an AbortSignal to fetch', async () => {
     renderHook(() =>
-      useTemplatePoll({
+      useLetterTemplatePoll({
         initialTemplate: pendingTemplate,
         shouldPoll: () => true,
         onUpdate: jest.fn(),
@@ -106,7 +106,7 @@ describe('useTemplatePoll', () => {
     const onUpdate = jest.fn();
 
     renderHook(() =>
-      useTemplatePoll({
+      useLetterTemplatePoll({
         initialTemplate: pendingTemplate,
         shouldPoll: (t) => t.files.initialRender.status === 'PENDING',
         onUpdate,
@@ -124,7 +124,33 @@ describe('useTemplatePoll', () => {
     const onUpdate = jest.fn();
 
     renderHook(() =>
-      useTemplatePoll({
+      useLetterTemplatePoll({
+        initialTemplate: pendingTemplate,
+        shouldPoll: () => true,
+        onUpdate,
+      })
+    );
+
+    await act(() => Promise.resolve());
+
+    expect(onUpdate).not.toHaveBeenCalled();
+  });
+
+  it('does not call onUpdate when the response is not an authoring letter template', async () => {
+    const pdfResponse = {
+      ...pendingTemplate,
+      letterVersion: 'PDF',
+      files: { pdfTemplate: { currentVersion: 'v1', fileName: 'template.pdf' } },
+    };
+
+    jest.mocked(fetch).mockResolvedValue(
+      new Response(JSON.stringify(pdfResponse), { status: 200 })
+    );
+
+    const onUpdate = jest.fn();
+
+    renderHook(() =>
+      useLetterTemplatePoll({
         initialTemplate: pendingTemplate,
         shouldPoll: () => true,
         onUpdate,

@@ -10,7 +10,10 @@ import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import content from '@content/content';
-import { RENDER_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
+import {
+  RENDER_TIMEOUT_MS,
+  useLetterTemplatePoll,
+} from '@hooks/use-letter-template-poll';
 
 type PreviewAuthoringLetterTemplateProps = {
   template: AuthoringLetterTemplate;
@@ -47,7 +50,7 @@ export function PreviewAuthoringLetterTemplate({
     []
   );
 
-  const { isPolling } = useTemplatePoll({
+  const { isPolling } = useLetterTemplatePoll({
     initialTemplate: template,
     shouldPoll: shouldPollInitialRender,
     onUpdate,

@@ -5,20 +5,20 @@ import {
   isRenderAlreadyStale,
 } from '@organisms/PreviewAuthoringLetterTemplate/PreviewAuthoringLetterTemplate';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import { RENDER_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
+import { RENDER_TIMEOUT_MS, useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import type {
   AuthoringLetterTemplate,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@hooks/use-template-poll');
+jest.mock('@hooks/use-letter-template-poll');
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
 }));
 jest.mock('@utils/csrf-utils');
 
-const mockUseTemplatePoll = jest.mocked(useTemplatePoll);
+const mockUseTemplatePoll = jest.mocked(useLetterTemplatePoll);
 
 const mockServerAction = jest.fn().mockResolvedValue({
   fields: {},
@@ -77,7 +77,6 @@ const pendingTemplate: AuthoringLetterTemplate = {
   },
 };
 
-// Shared stale fixture: PENDING with requestedAt exceeding RENDER_TIMEOUT_MS
 const staleTemplate: AuthoringLetterTemplate = {
   ...renderedTemplate,
   files: {
@@ -156,7 +155,10 @@ describe('PreviewAuthoringLetterTemplate', () => {
     it('does not render submit button when templateStatus is VALIDATION_FAILED', () => {
       renderWithProvider(
         <PreviewAuthoringLetterTemplate
-          template={{ ...renderedTemplate, templateStatus: 'VALIDATION_FAILED' }}
+          template={{
+            ...renderedTemplate,
+            templateStatus: 'VALIDATION_FAILED',
+          }}
         />
       );
 
@@ -199,7 +201,9 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
       const formData = mockServerAction.mock.calls[0][1] as FormData;
       expect(formData.get('templateId')).toBe(renderedTemplate.id);
-      expect(formData.get('lockNumber')).toBe(String(renderedTemplate.lockNumber));
+      expect(formData.get('lockNumber')).toBe(
+        String(renderedTemplate.lockNumber)
+      );
     });
   });
 
