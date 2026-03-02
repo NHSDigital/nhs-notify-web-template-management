@@ -73,7 +73,6 @@ export class S3Repository {
   ): response is GetObjectOutputReadableBody {
     return (
       response.Body !== undefined &&
-      response.Body &&
       (response.Body as Readable).read !== undefined
     );
   }

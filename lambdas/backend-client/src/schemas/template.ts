@@ -47,6 +47,12 @@ export const $LetterType = schemaFor<LetterType>()(z.enum(LETTER_TYPE_LIST));
 
 export const $Language = schemaFor<Language>()(z.enum(LANGUAGE_LIST));
 
+const $PdfFilename = z
+  .string()
+  .refine((s) => s.endsWith('.pdf') && s.length > 4, {
+    message: 'Filename is invalid for a PDF',
+  });
+
 const $ProofFileDetails = schemaFor<ProofFileDetails>()(
   z.object({
     fileName: z.string().trim().min(1),
@@ -81,7 +87,7 @@ const $RenderDetailsPending = z.object({
 
 const $RenderDetailsRendered = z.object({
   currentVersion: z.string(),
-  fileName: z.string().trim().min(1),
+  fileName: $PdfFilename,
   pageCount: z.number().int(),
   status: z.literal('RENDERED'),
 });
@@ -97,7 +103,7 @@ const $RenderDetails = schemaFor<RenderDetails>()(
 const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
   z.object({
     currentVersion: z.string(),
-    fileName: z.string().trim().min(1),
+    fileName: $PdfFilename,
     pageCount: z.number().int(),
     personalisationParameters: z.record(z.string(), z.string()),
     systemPersonalisationPackId: z.string(),
