@@ -29,7 +29,7 @@ function renderWithProvider(ui: React.ReactElement) {
   );
 }
 
-const FIXED_NOW = new Date('2025-06-15T12:00:00.000Z');
+const NOW = new Date('2025-06-15T12:00:00.000Z');
 
 const renderedTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -69,12 +69,11 @@ const pendingTemplate: AuthoringLetterTemplate = {
     },
     initialRender: {
       status: 'PENDING',
-      requestedAt: FIXED_NOW.toISOString(),
+      requestedAt: NOW.toISOString(),
     },
   },
 };
 
-// Shared stale fixture: PENDING with requestedAt exceeding RENDER_TIMEOUT_MS
 const staleTemplate: AuthoringLetterTemplate = {
   ...renderedTemplate,
   files: {
@@ -86,7 +85,7 @@ const staleTemplate: AuthoringLetterTemplate = {
     initialRender: {
       status: 'PENDING',
       requestedAt: new Date(
-        FIXED_NOW.getTime() - RENDER_TIMEOUT_MS - 5000
+        NOW.getTime() - RENDER_TIMEOUT_MS - 5000
       ).toISOString(),
     },
   },
@@ -95,7 +94,7 @@ const staleTemplate: AuthoringLetterTemplate = {
 describe('PreviewAuthoringLetterTemplate', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers({ now: FIXED_NOW });
+    jest.useFakeTimers({ now: NOW });
     mockUseTemplatePoll.mockReturnValue({
       isPolling: false,
       isTimedOut: false,
@@ -199,8 +198,6 @@ describe('PreviewAuthoringLetterTemplate', () => {
     });
 
     it('renders page content (not spinner) when polling has timed out', () => {
-      // isTimedOut: true means isPolling is also false — the hook sets both.
-      // The component renders the page as-is with whatever template state it has.
       mockUseTemplatePoll.mockReturnValue({
         isPolling: false,
         isTimedOut: true,
@@ -319,13 +316,11 @@ describe('PreviewAuthoringLetterTemplate', () => {
 
       const { onUpdate } = mockUseTemplatePoll.mock.calls[0][0];
 
-      // Simulate polling returning a fully rendered template
       const updatedTemplate: AuthoringLetterTemplate = {
         ...renderedTemplate,
         name: 'Updated Template Name',
       };
 
-      // Invoke the onUpdate callback — this calls setLatestTemplate
       act(() => {
         onUpdate(updatedTemplate);
       });

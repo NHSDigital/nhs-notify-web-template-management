@@ -4,21 +4,16 @@ export type UsePollOptions<T> = {
   fetchFn: (signal: AbortSignal) => Promise<T | null>;
   /**
    * When omitted, polling starts immediately and `shouldPoll` is not called
-   * for the initial value (it is assumed polling is needed).
+   * for the initial value
    */
   initialValue?: T;
   shouldPoll: (value: T) => boolean;
-  /**
-   * Called with the final value when `shouldPoll` returns false.
-   * Not called when polling stops due to `timeoutMs` expiring.
-   */
   onUpdate: (value: T) => void;
   /**
-   * Called when `fetchFn` throws. Abort errors (thrown when the component
-   * unmounts) are filtered out and never forwarded. Polling continues after
-   * each error; the timeout (if set) will eventually stop it.
+   * Called when `fetchFn` throws. Return `true` to stop polling immediately.
+   * Return `false` or `undefined` to continue polling
    */
-  onError?: (error: unknown) => void;
+  onError?: (error: unknown) => boolean | void;
   intervalMs: number;
   /** Omit for no timeout (poll indefinitely until shouldPoll returns false). */
   timeoutMs?: number;
@@ -41,16 +36,15 @@ export function usePoll<T>({
   const [isPolling, setIsPolling] = useState(
     () => initialValue === undefined || shouldPoll(initialValue)
   );
+
   const [isTimedOut, setIsTimedOut] = useState(false);
 
-  // Keep callbacks in refs so the polling effect dep array stays stable.
-  // Assigned unconditionally during render (safe — refs are mutable and do
-  // not trigger re-renders), avoiding the stale-ref window that would exist
-  // if they were synced inside a separate effect.
+  // Wrap all callbacks in refs so the polling effect dependency array is stable
   const shouldPollRef = useRef(shouldPoll);
   const onUpdateRef = useRef(onUpdate);
   const onErrorRef = useRef(onError);
   const fetchFnRef = useRef(fetchFn);
+  // keep referenced callbacks up to date
   shouldPollRef.current = shouldPoll;
   onUpdateRef.current = onUpdate;
   onErrorRef.current = onError;
@@ -78,9 +72,11 @@ export function usePoll<T>({
           return;
         }
       } catch (error) {
-        // Abort errors are expected on unmount — don't forward them.
         if (abortController.signal.aborted) return;
-        onErrorRef.current?.(error);
+
+        if (onErrorRef.current?.(error) === true) {
+          setIsPolling(false);
+        }
       } finally {
         inFlight = false;
       }
@@ -92,13 +88,14 @@ export function usePoll<T>({
       void poll();
     }, intervalMs);
 
-    const timeoutTimerId =
-      timeoutMs === undefined
-        ? undefined
-        : setTimeout(() => {
-            setIsPolling(false);
-            setIsTimedOut(true);
-          }, timeoutMs);
+    let timeoutTimerId: NodeJS.Timeout | undefined;
+
+    if (timeoutMs !== undefined) {
+      timeoutTimerId = setTimeout(() => {
+        setIsPolling(false);
+        setIsTimedOut(true);
+      }, timeoutMs);
+    }
 
     return () => {
       abortController.abort();
