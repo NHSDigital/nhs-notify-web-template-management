@@ -1,5 +1,5 @@
 module "s3bucket_access_logs" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip"
 
   name = "access-logs"
 

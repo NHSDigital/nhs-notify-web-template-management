@@ -1,8 +1,6 @@
 module "eventpub" {
-  # TODO CCM-12089 - move to zip release after fix from the ticket
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub?ref=v2.0.28"
-
-  name = "eventpub"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-eventpub.zip"
+  name   = "eventpub"
 
   aws_account_id = var.aws_account_id
   component      = var.component
@@ -21,4 +19,6 @@ module "eventpub" {
 
   data_plane_bus_arn    = var.data_plane_bus_arn
   control_plane_bus_arn = var.control_plane_bus_arn
+
+  access_logging_bucket = local.acct.s3_buckets["access_logs"]["id"]
 }
