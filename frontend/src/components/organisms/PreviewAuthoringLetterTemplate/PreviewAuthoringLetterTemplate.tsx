@@ -3,7 +3,6 @@
 import { useCallback, useState } from 'react';
 import Link from 'next/link';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { LoadingSpinner } from '@atoms/LoadingSpinner/LoadingSpinner';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -11,20 +10,19 @@ import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import content from '@content/content';
-import { DEFAULT_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
+import { RENDER_TIMEOUT_MS, useTemplatePoll } from '@hooks/use-template-poll';
 
 type PreviewAuthoringLetterTemplateProps = {
   template: AuthoringLetterTemplate;
 };
 
-const shouldPollInitialRender = (t: TemplateDto) =>
-  t.templateType === 'LETTER' &&
-  t.letterVersion === 'AUTHORING' &&
-  t.files.initialRender.status === 'PENDING';
+const shouldPollInitialRender = (t: AuthoringLetterTemplate) =>
+  t.files.initialRender.status === 'PENDING' &&
+  !isRenderAlreadyStale(t, RENDER_TIMEOUT_MS);
 
 export function isRenderAlreadyStale(
   template: AuthoringLetterTemplate,
-  timeoutMs: number = DEFAULT_TIMEOUT_MS
+  timeoutMs: number
 ): boolean {
   const { initialRender } = template.files;
 
@@ -44,20 +42,15 @@ export function PreviewAuthoringLetterTemplate({
   const [latestTemplate, setLatestTemplate] =
     useState<AuthoringLetterTemplate>(template);
 
-  const needsPolling =
-    latestTemplate.files.initialRender.status === 'PENDING' &&
-    !isRenderAlreadyStale(template);
-
   const onUpdate = useCallback(
-    (t: TemplateDto) => setLatestTemplate(t as AuthoringLetterTemplate),
+    (t: AuthoringLetterTemplate) => setLatestTemplate(t),
     []
   );
 
   const { isPolling } = useTemplatePoll({
-    templateId: template.id,
+    initialTemplate: template,
     shouldPoll: shouldPollInitialRender,
     onUpdate,
-    enabled: needsPolling,
   });
 
   if (isPolling) {

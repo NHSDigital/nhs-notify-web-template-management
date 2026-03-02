@@ -64,9 +64,7 @@ export default async function PreviewLetterTemplatePage({
         }}
         serverAction={submitAuthoringLetterAction}
       >
-        <PreviewAuthoringLetterTemplate
-          template={validatedTemplate}
-        />
+        <PreviewAuthoringLetterTemplate template={validatedTemplate} />
       </NHSNotifyFormProvider>
     </NHSNotifyContainer>
   );
