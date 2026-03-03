@@ -12,7 +12,7 @@ import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/Pr
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-const { pageTitle } = content.pages.previewLetterTemplate;
+const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

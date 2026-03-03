@@ -4,7 +4,7 @@ import {
   RENDER_TIMEOUT_MS,
   useLetterTemplatePoll,
 } from '@hooks/use-letter-template-poll';
-import { buildShouldPoll } from '@molecules/RenderPoll/RenderPoll';
+import { shouldPollRender } from '@molecules/RenderPoll/RenderPoll';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 
@@ -77,7 +77,7 @@ describe('RenderPoll', () => {
     jest.useRealTimers();
   });
 
-  it('forwards template and buildShouldPoll(mode) to useLetterTemplatePoll', () => {
+  it('forwards template and shouldPoll(mode) to useLetterTemplatePoll', () => {
     render(
       <RenderPoll
         template={template}
@@ -131,7 +131,7 @@ describe('RenderPoll', () => {
   });
 });
 
-describe('buildShouldPoll', () => {
+describe('shouldPoll', () => {
   beforeEach(() => {
     jest.useFakeTimers({ now: NOW });
   });
@@ -141,12 +141,12 @@ describe('buildShouldPoll', () => {
   });
 
   it('returns false when render status is RENDERED', () => {
-    const shouldPoll = buildShouldPoll('initialRender');
+    const shouldPoll = shouldPollRender('initialRender');
     expect(shouldPoll(template)).toBe(false);
   });
 
   it('returns false when render file is absent', () => {
-    const shouldPoll = buildShouldPoll('initialRender');
+    const shouldPoll = shouldPollRender('initialRender');
     const noRenderTemplate = {
       ...template,
       files: { ...template.files, initialRender: undefined },
@@ -155,7 +155,7 @@ describe('buildShouldPoll', () => {
   });
 
   it('returns true when render status is PENDING and not stale', () => {
-    const shouldPoll = buildShouldPoll('initialRender');
+    const shouldPoll = shouldPollRender('initialRender');
     const pendingTemplate = {
       ...template,
       files: { ...template.files, initialRender: pendingRender },
@@ -164,7 +164,7 @@ describe('buildShouldPoll', () => {
   });
 
   it('returns false when render status is PENDING but stale', () => {
-    const shouldPoll = buildShouldPoll('initialRender');
+    const shouldPoll = shouldPollRender('initialRender');
     const staleTemplate = {
       ...template,
       files: { ...template.files, initialRender: staleRender },
@@ -173,7 +173,7 @@ describe('buildShouldPoll', () => {
   });
 
   it('uses the mode to select the correct render file', () => {
-    const shouldPoll = buildShouldPoll('initialRender');
+    const shouldPoll = shouldPollRender('initialRender');
     const templateWithPendingInitial = {
       ...template,
       files: { ...template.files, initialRender: pendingRender },
@@ -182,7 +182,7 @@ describe('buildShouldPoll', () => {
   });
 
   it('returns false when render status is RENDERED (renderedRender fixture)', () => {
-    const shouldPoll = buildShouldPoll('initialRender');
+    const shouldPoll = shouldPollRender('initialRender');
     const renderedTemplate = {
       ...template,
       files: { ...template.files, initialRender: renderedRender },

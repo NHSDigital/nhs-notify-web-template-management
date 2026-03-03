@@ -16,10 +16,9 @@
   width: 120px;
 }
 
-.nhsuk-loader__text {
-  display: block;
-  margin-bottom: 0;
+.nhsuk-loader__text > * {
   font-size: 1.4em;
+  font-weight: bold;
 }
 
 @keyframes spin {

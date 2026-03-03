@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 'use client';
 
 import type { PropsWithChildren } from 'react';
@@ -9,7 +10,7 @@ import {
 } from '@hooks/use-letter-template-poll';
 import type { RenderKey } from '@utils/types';
 
-export function buildShouldPoll(
+export function shouldPollRender(
   mode: RenderKey
 ): (template: AuthoringLetterTemplate) => boolean {
   return ({ files }: AuthoringLetterTemplate): boolean => {
@@ -37,11 +38,15 @@ export function RenderPoll({
 }: Readonly<RenderPollProps>) {
   const { isPolling } = useLetterTemplatePoll({
     template,
-    shouldPoll: buildShouldPoll(mode),
+    shouldPoll: shouldPollRender(mode),
   });
 
   if (isPolling) {
-    return <LoadingSpinner text={loadingText} />;
+    return (
+      <LoadingSpinner>
+        <h1>{loadingText}</h1>
+      </LoadingSpinner>
+    );
   }
 
   return <>{children}</>;
