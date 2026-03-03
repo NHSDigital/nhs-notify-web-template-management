@@ -33,7 +33,6 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { ApplicationResult, failure, success } from '../../utils';
 import { TemplateQuery } from './query';
-import { PersonalisedRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 
 export type WithAttachments<T> = T extends {
   templateType: 'LETTER';
@@ -774,23 +773,12 @@ export class TemplateRepository {
         }
       )
         .setUpdatedByUserAt(this.internalUserKey(user))
-
         .setPersonalisedRender(requestTypeVariant, {
           systemPersonalisationPackId: 'pack',
-          personalisationParameters: {},
+          personalisationParameters: personalisation,
           status: 'PENDING',
           requestedAt: new Date().toISOString(),
         })
-
-        // dynamodb does not support conditional initialising of maps, so we have to
-        // initialise an empty map here, then we set supplier-specific values in the
-        // per-supplier sftp send lambda
-        .initialiseSupplierReferences()
-        .expectTemplateType('LETTER')
-        .expectClientId(user.clientId)
-        .expectProofingEnabled()
-        .expectLockNumber(lockNumber)
-        .incrementLockNumber()
         .build();
 
       const response = await this.client.send(new UpdateCommand(update));

@@ -1,5 +1,6 @@
 import type {
   InitialRenderRequest,
+  PersonalisedRenderRequest,
   RenderRequest,
 } from 'nhs-notify-backend-client/src/types/render-request';
 import type {
@@ -40,7 +41,7 @@ export class App {
       if (!canRender) {
         logger.info('Source contains non-renderable markers', analysis);
 
-        await this.templateRepository.updateFailure(
+        await this.templateRepository.updateFailureInitial(
           request,
           personalisation,
           validationErrors
@@ -64,7 +65,7 @@ export class App {
         if (validationErrors.length > 0) {
           logger.info('Source contains validation errors', analysis);
 
-          await this.templateRepository.updateRendered(
+          await this.templateRepository.updateRenderedInitial(
             request,
             personalisation,
             currentVersion,
@@ -75,7 +76,7 @@ export class App {
           return 'rendered-invalid';
         }
 
-        await this.templateRepository.updateRendered(
+        await this.templateRepository.updateRenderedInitial(
           request,
           personalisation,
           currentVersion,
@@ -88,7 +89,42 @@ export class App {
       } catch (error) {
         logger.error('Render failed', { error });
 
-        await this.templateRepository.updateFailure(request, personalisation);
+        await this.templateRepository.updateFailureInitial(
+          request,
+          personalisation
+        );
+        return 'not-rendered';
+      }
+    });
+  }
+
+  renderPersonalised(request: PersonalisedRenderRequest): Promise<Outcome> {
+    return this.renderFromSource(request, async (sourcePath, logger) => {
+      try {
+        const { fileName, currentVersion, pageCount } =
+          await this.renderAndSave(
+            request,
+            sourcePath,
+            request.personalisation
+          );
+
+        logger.info('Saved PDF', {
+          fileName,
+        });
+
+        await this.templateRepository.updateRenderedPersonalised(
+          request,
+          currentVersion,
+          fileName,
+          pageCount
+        );
+
+        logger.info('Valid personalised render created');
+        return 'rendered';
+      } catch (error) {
+        logger.error('Render failed', { error });
+
+        await this.templateRepository.updateFailurePersonalised(request);
         return 'not-rendered';
       }
     });
@@ -111,7 +147,9 @@ export class App {
     } catch (error) {
       requestLogger.error('Render failed', error);
 
-      await this.templateRepository.updateFailure(request);
+      await (request.requestType === 'initial'
+        ? this.templateRepository.updateFailureInitial(request)
+        : this.templateRepository.updateFailurePersonalised(request));
 
       return 'not-rendered';
     } finally {
