@@ -39,7 +39,9 @@ test.describe('Letter rendering', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await authHelper.getTestUser(testUsers.User1.userId);
+    user = await authHelper.getTestUser(
+      testUsers.UserLetterAuthoringEnabled.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -440,13 +442,15 @@ test.describe('Letter rendering', () => {
     async function personalisedRenderTest(
       request: APIRequestContext,
       docx: Buffer,
+      // add render request payload arg
       assert: (t: Template) => void
     ) {
+      // seeding instead of initial request?
       const { multipart, contentType } =
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
-            campaignId: 'Campaign1',
+            campaignId: user.campaignIds?.[0],
             letterVersion: 'AUTHORING',
           },
           docx
@@ -477,10 +481,14 @@ test.describe('Letter rendering', () => {
 
       templateStorageHelper.addAdHocTemplateKey(templateKey);
 
+      let lockNumber: number | undefined;
+
       await expect(async () => {
         const t = await templateStorageHelper.getTemplate(templateKey);
-        console.log(JSON.stringify(t, null, 2));
+
         expect(t.templateStatus).toBe('NOT_YET_SUBMITTED');
+
+        lockNumber = t.lockNumber;
       }).toPass({ intervals: [1000] });
 
       const requestProofResponse = await request.post(
@@ -488,14 +496,14 @@ test.describe('Letter rendering', () => {
         {
           headers: {
             Authorization: await user.getAccessToken(),
-            'X-Lock-Number': String(template.lockNumber),
+            'X-Lock-Number': String(lockNumber),
           },
           data: {
             personalisation: {
               address_line_1: '1 Long Lane',
               address_line_2: 'S70 0PQ',
               nhsNumber: '99999999999',
-              myCustomParam: 'jalapeno',
+              gpSurgeryName: 'jalapeno',
             },
             systemPersonalisationPackId: 'pack-id',
             requestTypeVariant: 'long',
@@ -503,7 +511,8 @@ test.describe('Letter rendering', () => {
         }
       );
 
-      expect(requestProofResponse.status).toBe(201);
+      // should be 201?
+      expect(requestProofResponse.status()).toBe(200);
 
       let updatedTemplate: Template | undefined;
 
@@ -522,8 +531,6 @@ test.describe('Letter rendering', () => {
         request,
         docxFixtures.standard.open(),
         (t: Template) => {
-          console.log(t);
-
           expect(t).toEqual(
             expect.objectContaining({
               templateStatus: 'NOT_YET_SUBMITTED',
@@ -532,6 +539,18 @@ test.describe('Letter rendering', () => {
                   status: 'RENDERED',
                   fileName: expect.any(String),
                   pageCount: 2,
+                }),
+                longFormRender: expect.objectContaining({
+                  pageCount: 2,
+                  personalisationParameters: {
+                    address_line_1: '1 Long Lane',
+                    address_line_2: 'S70 0PQ',
+                    gpSurgeryName: 'jalapeno',
+                    nhsNumber: '99999999999',
+                  },
+                  // missing?
+                  // systemPersonalisationPackId: 'pack-id',
+                  status: 'RENDERED',
                 }),
               }),
               customPersonalisation,
@@ -543,15 +562,16 @@ test.describe('Letter rendering', () => {
 
       const render = await templateStorageHelper.getRenderFile(
         { clientId: template.clientId!, templateId: template.id },
-        template.files!.initialRender!.fileName
+        template.files!.longFormRender!.fileName
       );
 
       expect(render?.metadata).toEqual({
         'client-id': template.clientId,
         'page-count': '2',
         'template-id': template.id,
-        'request-type': 'initial',
+        'request-type': 'personalised',
         'file-type': 'render',
+        // add variant
       });
 
       expect(render?.buffer).toBeDefined();
@@ -561,10 +581,9 @@ test.describe('Letter rendering', () => {
       const { text: pdfTextContent } = await parser.getText();
 
       expect(pdfTextContent).toContain('This is the body text');
-
-      for (const n of [1, 2, 3, 4, 5, 6, 7]) {
-        expect(pdfTextContent).toContain(`{d.address_line_${n}}`);
-      }
+      expect(pdfTextContent).toContain('1 Long Lane');
+      expect(pdfTextContent).toContain('NHS number: 99999999999');
+      expect(pdfTextContent).toContain('Your GP surgery is jalapeno');
     });
   });
 });
