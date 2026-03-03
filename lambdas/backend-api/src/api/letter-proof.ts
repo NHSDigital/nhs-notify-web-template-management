@@ -17,7 +17,7 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    const dto = JSON.parse(event.body || '{}');
+    const body = JSON.parse(event.body || '{}');
 
     const { data, error } = await templateClient.letterProof(
       templateId,
@@ -26,9 +26,7 @@ export function createHandler({
         clientId,
       },
       toHeaders(event.headers).get('X-Lock-Number') ?? '',
-      dto.personalisation,
-      dto.requestTypeVariant,
-      dto.systemPersonalisationPackId
+      body
     );
 
     if (error) {

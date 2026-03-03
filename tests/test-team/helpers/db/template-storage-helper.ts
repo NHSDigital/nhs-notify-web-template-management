@@ -244,6 +244,24 @@ export class TemplateStorageHelper {
   /**
    * Creates a letter template pdf file in the internal bucket
    */
+  async putScannedDocxTemplateFile(
+    key: TemplateKey,
+    version: string,
+    data: Buffer
+  ) {
+    return await this.putLetterTemplateFile(
+      process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
+      'docx-template',
+      key,
+      version,
+      'docx',
+      data
+    );
+  }
+
+  /**
+   * Creates a letter template pdf file in the internal bucket
+   */
   async putScannedPdfTemplateFile(
     key: TemplateKey,
     version: string,

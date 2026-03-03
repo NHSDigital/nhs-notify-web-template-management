@@ -181,6 +181,7 @@ export type GenerateLetterProof = {
     [key: string]: string;
   };
   requestTypeVariant: PersonalisedRenderRequestVariant;
+  systemPersonalisationPackId: string;
 };
 
 export type Language =

@@ -9,14 +9,15 @@ import {
   $TemplateDto,
   $TemplateFilter,
   $PatchTemplate,
+  $GenerateLetterProof,
 } from 'nhs-notify-backend-client';
 import type {
   AuthoringLetterFiles,
   ClientConfiguration,
   CreateUpdateTemplate,
+  GenerateLetterProof,
   PatchTemplate,
   PdfLetterFiles,
-  PersonalisedRenderRequestVariant,
   TemplateDto,
 } from 'nhs-notify-web-template-management-types';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
@@ -913,13 +914,23 @@ export class TemplateClient {
   async letterProof(
     templateId: string,
     user: User,
-    // consolidate these into an unknown object to validate
     lockNumberRaw: number | string,
-    personalisation: Record<string, string>,
-    requestTypeVariant: PersonalisedRenderRequestVariant,
-    systemPersonalisationPackId: string
+    body: GenerateLetterProof
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
+
+    const validationResult = await validate($GenerateLetterProof, body);
+
+    if (validationResult.error) {
+      log
+        .child(validationResult.error.errorMeta)
+        .error('Invalid proof request', validationResult.error.actualError);
+
+      return validationResult;
+    }
+
+    const { personalisation, systemPersonalisationPackId, requestTypeVariant } =
+      validationResult.data;
 
     const lockNumberValidation = $LockNumber.safeParse(lockNumberRaw);
 
@@ -973,7 +984,8 @@ export class TemplateClient {
         user,
         lockNumber,
         personalisation,
-        requestTypeVariant
+        requestTypeVariant,
+        systemPersonalisationPackId
       );
 
     if (letterProofUpdateResult.error) {

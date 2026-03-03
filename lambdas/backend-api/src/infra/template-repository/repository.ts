@@ -760,7 +760,8 @@ export class TemplateRepository {
     user: User,
     lockNumber: number,
     personalisation: Record<string, string>,
-    requestTypeVariant: PersonalisedRenderRequestVariant
+    requestTypeVariant: PersonalisedRenderRequestVariant,
+    systemPersonalisationPackId: string
   ) {
     try {
       const update = new TemplateUpdateBuilder(
@@ -774,7 +775,7 @@ export class TemplateRepository {
       )
         .setUpdatedByUserAt(this.internalUserKey(user))
         .setPersonalisedRender(requestTypeVariant, {
-          systemPersonalisationPackId: 'pack',
+          systemPersonalisationPackId,
           personalisationParameters: personalisation,
           status: 'PENDING',
           requestedAt: new Date().toISOString(),

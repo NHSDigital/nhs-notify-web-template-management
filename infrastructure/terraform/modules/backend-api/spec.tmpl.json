@@ -640,11 +640,15 @@
           },
           "requestTypeVariant": {
             "$ref": "#/components/schemas/PersonalisedRenderRequestVariant"
+          },
+          "systemPersonalisationPackId": {
+            "type": "string"
           }
         },
         "required": [
           "personalisation",
-          "requestTypeVariant"
+          "requestTypeVariant",
+          "systemPersonalisationPackId"
         ],
         "type": "object"
       },
@@ -806,6 +810,13 @@
           }
         ]
       },
+      "PersonalisedRenderRequestVariant": {
+        "enum": [
+          "long",
+          "short"
+        ],
+        "type": "string"
+      },
       "ProofFileDetails": {
         "properties": {
           "fileName": {
@@ -824,13 +835,6 @@
           "virusScanStatus"
         ],
         "type": "object"
-      },
-      "PersonalisedRenderRequestVariant": {
-        "enum": [
-          "long",
-          "short"
-        ],
-        "type": "string"
       },
       "RenderDetails": {
         "allOf": [
