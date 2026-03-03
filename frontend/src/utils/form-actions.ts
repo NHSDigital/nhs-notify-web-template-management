@@ -4,7 +4,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { $TemplateDto } from 'nhs-notify-backend-client';
 import type {
   CreateUpdateTemplate,
-  AuthoringLetterPatch,
+  LetterPatch,
   TemplateDto,
   LetterVariant,
 } from 'nhs-notify-web-template-management-types';
@@ -114,7 +114,7 @@ export async function saveTemplate(
 
 export async function patchTemplate(
   templateId: string,
-  template: AuthoringLetterPatch,
+  template: LetterPatch,
   lockNumber: number
 ): Promise<TemplateDto> {
   const { accessToken } = await getSessionServer();

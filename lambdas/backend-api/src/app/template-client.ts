@@ -5,7 +5,7 @@ import { failure, success, validate } from '@backend-api/utils/index';
 import {
   Result,
   ErrorCase,
-  $AuthoringLetterPatch,
+  $LetterPatch,
   $CreateUpdateNonLetter,
   $LockNumber,
   $TemplateDto,
@@ -13,7 +13,7 @@ import {
 } from 'nhs-notify-backend-client';
 import type {
   AuthoringLetterFiles,
-  AuthoringLetterPatch,
+  LetterPatch,
   ClientConfiguration,
   CreateUpdateTemplate,
   LetterType,
@@ -440,7 +440,7 @@ export class TemplateClient {
 
   async patchLetterAuthoringTemplate(
     templateId: string,
-    updates: AuthoringLetterPatch,
+    updates: LetterPatch,
     user: User,
     lockNumber: number | string
   ): Promise<Result<TemplateDto>> {
@@ -450,7 +450,7 @@ export class TemplateClient {
       user,
     });
 
-    const validationResult = await validate($AuthoringLetterPatch, updates);
+    const validationResult = await validate($LetterPatch, updates);
 
     if (validationResult.error) {
       log
@@ -971,10 +971,10 @@ export class TemplateClient {
 
   private async normaliseLetterAuthoringPatch(
     templateId: string,
-    patchInput: AuthoringLetterPatch,
+    patchInput: LetterPatch,
     user: User,
     log: Logger
-  ): Promise<Result<AuthoringLetterPatch>> {
+  ): Promise<Result<LetterPatch>> {
     const patch = { ...patchInput };
 
     if (patch.campaignId) {

@@ -3,7 +3,7 @@ import type {
   TemplateSuccess,
   TemplateSuccessList,
   TemplateDto,
-  AuthoringLetterPatch,
+  LetterPatch,
   LetterVariant,
   LetterVariantListSuccess,
 } from 'nhs-notify-web-template-management-types';
@@ -130,7 +130,7 @@ export const templateApiClient = {
 
   async patchTemplate(
     templateId: string,
-    template: AuthoringLetterPatch,
+    template: LetterPatch,
     token: string,
     lockNumber: number
   ): Promise<Result<TemplateDto>> {

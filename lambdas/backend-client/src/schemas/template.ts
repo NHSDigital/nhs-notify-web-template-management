@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import type {
   AuthoringLetterFiles,
-  AuthoringLetterPatch,
+  LetterPatch,
   AuthoringLetterProperties,
   BaseCreatedTemplate,
   BaseTemplate,
@@ -252,7 +252,7 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
   ])
 );
 
-export const $AuthoringLetterPatch = schemaFor<AuthoringLetterPatch>()(
+export const $LetterPatch = schemaFor<LetterPatch>()(
   z
     .object({
       campaignId: z.string().trim().nonempty().optional(),

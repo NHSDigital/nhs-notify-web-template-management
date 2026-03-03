@@ -7,7 +7,7 @@ import {
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
   $LetterProperties,
-  $AuthoringLetterPatch,
+  $LetterPatch,
   $PdfLetterProperties,
   $TemplateDto,
   $TemplateFilter,
@@ -772,9 +772,9 @@ describe('Template schemas', () => {
     });
   });
 
-  describe('$AuthoringLetterPatch', () => {
+  describe('$LetterPatch', () => {
     it('should pass validation when name is provided', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         name: 'Updated Template Name',
       });
 
@@ -785,7 +785,7 @@ describe('Template schemas', () => {
     });
 
     it('should pass validation when campaignId is provided', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         campaignId: 'Updated Campaign',
       });
 
@@ -796,7 +796,7 @@ describe('Template schemas', () => {
     });
 
     it('should pass validation when letterVariantId is provided', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         letterVariantId: 'new-variant-id',
       });
 
@@ -807,7 +807,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when name is empty', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         name: '',
       });
 
@@ -821,7 +821,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when name is whitespace only', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         name: '   ',
       });
 
@@ -835,7 +835,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when campaignId is empty', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         campaignId: '',
       });
 
@@ -849,7 +849,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when campaignId is whitespace only', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         campaignId: '   ',
       });
 
@@ -863,7 +863,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when letterVariantId is empty', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         letterVariantId: '',
       });
 
@@ -879,7 +879,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when letterVariantId is whitespace only', () => {
-      const result = $AuthoringLetterPatch.safeParse({
+      const result = $LetterPatch.safeParse({
         letterVariantId: '   ',
       });
 
@@ -895,7 +895,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when no fields are provided', () => {
-      const result = $AuthoringLetterPatch.safeParse({});
+      const result = $LetterPatch.safeParse({});
 
       expect(result.error?.flatten()).toEqual(
         expect.objectContaining({

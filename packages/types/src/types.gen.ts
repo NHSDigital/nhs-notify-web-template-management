@@ -11,7 +11,7 @@ export type AuthoringLetterFiles = {
   shortFormRender?: PersonalisedRenderDetails;
 };
 
-export type AuthoringLetterPatch = {
+export type LetterPatch = {
   campaignId?: string;
   letterVariantId?: string;
   name?: string;
@@ -874,7 +874,7 @@ export type PatchV1TemplateByTemplateIdData = {
   /**
    * Updates to apply
    */
-  body: AuthoringLetterPatch;
+  body: LetterPatch;
   headers: {
     /**
      * Lock number of the current version of the template

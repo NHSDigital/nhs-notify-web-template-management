@@ -12,7 +12,7 @@ import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { ErrorCase, FailureResult } from 'nhs-notify-backend-client';
 import type {
   CreateUpdateTemplate,
-  AuthoringLetterPatch,
+  LetterPatch,
   PdfLetterFiles,
   ProofFileDetails,
   TemplateDto,
@@ -161,7 +161,7 @@ export class TemplateRepository {
 
   async patch(
     templateId: string,
-    updates: AuthoringLetterPatch,
+    updates: LetterPatch,
     user: User,
     lockNumber: number
   ): Promise<ApplicationResult<DatabaseTemplate>> {

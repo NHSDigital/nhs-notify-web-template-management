@@ -2,7 +2,6 @@
 
 export type {
   AuthoringLetterFiles,
-  AuthoringLetterPatch,
   AuthoringLetterProperties,
   BaseCreatedTemplate,
   BaseLetterTemplateProperties,
@@ -86,6 +85,7 @@ export type {
   GetV1TemplatesResponse,
   GetV1TemplatesResponses,
   Language,
+  LetterPatch,
   LetterProperties,
   LetterType,
   LetterValidationError,
