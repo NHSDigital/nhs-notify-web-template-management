@@ -901,6 +901,7 @@ export class TemplateClient {
   private async queryLetterVariantsForAuthoringTemplate(
     template: AuthoringLetterTemplate
   ) {
+    // x0 = standard, x1 = large print, q4 = BSL - ie all types are currently a standard letter from a variant/printing perspective
     const typeMap: Record<LetterType, LetterVariant['type']> = {
       x0: 'STANDARD',
       x1: 'STANDARD',

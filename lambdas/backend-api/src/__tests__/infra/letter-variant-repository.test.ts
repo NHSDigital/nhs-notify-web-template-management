@@ -13,6 +13,7 @@ import {
   LetterVariantRepository,
 } from '../../infra/letter-variant-repository';
 import type { LetterVariant } from 'nhs-notify-web-template-management-types';
+import { makeLetterVariant } from '../helpers';
 
 jest.mock('nhs-notify-web-template-management-utils', () => {
   const actual = jest.requireActual('nhs-notify-web-template-management-utils');
@@ -24,23 +25,6 @@ jest.mock('nhs-notify-web-template-management-utils', () => {
 });
 
 const tableName = 'letter-variants-table';
-
-const makeLetterVariant = (
-  overrides: Partial<LetterVariant> = {}
-): LetterVariant => ({
-  id: 'variant-1',
-  name: 'Standard C5',
-  sheetSize: 'A4',
-  maxSheets: 5,
-  bothSides: true,
-  printColour: 'black',
-  envelopeSize: 'C5',
-  dispatchTime: 'standard',
-  postage: 'economy',
-  status: 'PROD',
-  type: 'STANDARD',
-  ...overrides,
-});
 
 type CacheMock<T> = {
   get: jest.Mock<T | undefined, [string]>;

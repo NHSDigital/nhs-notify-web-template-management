@@ -2018,7 +2018,7 @@ describe('templateClient', () => {
     });
   });
 
-  describe('patchLetterAuthoringTemplate', () => {
+  describe('patchLetterTemplate', () => {
     test('should return patched template', async () => {
       const { templateClient, mocks } = setup();
 

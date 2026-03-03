@@ -36,7 +36,7 @@ module "get_template_letter_variants_lambda" {
 
 data "aws_iam_policy_document" "get_template_letter_variants_lambda_policy" {
   statement {
-    sid    = "AllowTemplatesUpdate"
+    sid    = "AllowTemplatesRead"
     effect = "Allow"
 
     actions = [
