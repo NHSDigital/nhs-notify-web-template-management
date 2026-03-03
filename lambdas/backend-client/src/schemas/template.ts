@@ -324,4 +324,5 @@ export const $TemplateFilter = z.object({
   language: $Language.optional(),
   excludeLanguage: $Language.optional(),
   letterType: $LetterType.optional(),
+  letterVersion: z.enum(['AUTHORING', 'PDF']).optional(),
 }) satisfies z.ZodType<TemplateFilter>;

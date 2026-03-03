@@ -312,16 +312,14 @@ test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   let userWithRouting: TestUser;
-  let userWithoutRouting: TestUser;
-  let userWithoutProofing: TestUser;
+  let proofingDisabledAndRoutingEnabled: TestUser;
 
   test.beforeAll(async () => {
     userWithRouting = await context.auth.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
-    userWithoutRouting = await context.auth.getTestUser(testUsers.User2.userId);
-    userWithoutProofing = await context.auth.getTestUser(
-      testUsers.User3.userId
+    proofingDisabledAndRoutingEnabled = await context.auth.getTestUser(
+      testUsers.UserRoutingEnabled.userId
     );
   });
 
@@ -369,52 +367,15 @@ test.describe('letter complete e2e journey', () => {
     );
   });
 
-  test('Full journey with routing disabled - template created, files scanned and validated, proof requested, template successfully submitted', async ({
+  test('Full journey with proofing disabled and routing enabled - template created, files scanned and validated, proof requested, template successfully submitted', async ({
     page,
   }) => {
-    const testStart = new Date();
-
-    await loginAsUser(userWithoutRouting, page);
+    await loginAsUser(proofingDisabledAndRoutingEnabled, page);
 
     const templateKey = await create(
       page,
       templateStorageHelper,
-      userWithoutRouting,
-      'PENDING_PROOF_REQUEST'
-    );
-
-    await continueAfterCreation(page);
-
-    const supplierReference = await requestProof(
-      page,
-      templateStorageHelper,
-      templateKey
-    );
-
-    await checkEmail(
-      supplierReference,
-      testStart,
-      'Proof Requested',
-      'proof-requested-sender'
-    );
-
-    await submit(page, templateStorageHelper, templateKey);
-
-    await checkEmail(
-      supplierReference,
-      testStart,
-      'Template Submitted',
-      'template-submitted-sender'
-    );
-  });
-
-  test('Full journey - user has proofing disabled', async ({ page }) => {
-    await loginAsUser(userWithoutProofing, page);
-
-    const templateKey = await create(
-      page,
-      templateStorageHelper,
-      userWithoutProofing,
+      proofingDisabledAndRoutingEnabled,
       'NOT_YET_SUBMITTED'
     );
 

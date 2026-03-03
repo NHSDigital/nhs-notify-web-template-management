@@ -9,8 +9,30 @@ import {
   assertBackLinkTopNotPresent,
 } from '../helpers/template-mgmt-common.steps';
 import { ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS } from 'helpers/enum';
+import {
+  createAuthHelper,
+  TestUser,
+  testUsers,
+} from 'helpers/auth/cognito-auth-helper';
+import { loginAsUser } from 'helpers/auth/login-as-user';
+
+let letterAuthoringEnabledUser: TestUser;
 
 test.describe('Choose Message Order Page', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test.beforeAll(async () => {
+    const authHelper = createAuthHelper();
+
+    letterAuthoringEnabledUser = await authHelper.getTestUser(
+      testUsers.UserLetterAuthoringEnabled.userId
+    );
+  });
+
+  test.beforeEach(async ({ page }) => {
+    await loginAsUser(letterAuthoringEnabledUser, page);
+  });
+
   test('should land on "Choose Message Order" page when navigating to "/choose-message-order" url', async ({
     page,
     baseURL,

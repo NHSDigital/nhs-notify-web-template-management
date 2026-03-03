@@ -17,6 +17,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
   let user1: TestUser;
   let userRoutingDisabled: TestUser;
   let userSharedClient: TestUser;
+  let proofingDisabledRoutingEnabled: TestUser;
 
   test.beforeAll(async () => {
     user1 = await context.auth.getTestUser(testUsers.User1.userId);
@@ -24,6 +25,9 @@ test.describe('DELETE /v1/template/:templateId', () => {
       testUsers.User2.userId
     );
     userSharedClient = await context.auth.getTestUser(testUsers.User7.userId);
+    proofingDisabledRoutingEnabled = await context.auth.getTestUser(
+      testUsers.UserRoutingEnabled.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -172,15 +176,17 @@ test.describe('DELETE /v1/template/:templateId', () => {
     test('returns 400 - cannot delete a submitted template', async ({
       request,
     }) => {
-      const { id: templateId, lockNumber } =
-        await createLetterTemplate(userRoutingDisabled);
+      const { id: templateId, lockNumber } = await createLetterTemplate(
+        proofingDisabledRoutingEnabled
+      );
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             // if routing was enabled, status would be PENDING_APPROVAL and deletion would be possible
-            Authorization: await userRoutingDisabled.getAccessToken(),
+            Authorization:
+              await proofingDisabledRoutingEnabled.getAccessToken(),
             'X-Lock-Number': String(lockNumber),
           },
         }
@@ -197,7 +203,8 @@ test.describe('DELETE /v1/template/:templateId', () => {
         `${process.env.API_BASE_URL}/v1/template/${templateId}`,
         {
           headers: {
-            Authorization: await userRoutingDisabled.getAccessToken(),
+            Authorization:
+              await proofingDisabledRoutingEnabled.getAccessToken(),
             'X-Lock-Number': String(submitResult.data.lockNumber),
           },
         }
@@ -317,7 +324,6 @@ test.describe('DELETE /v1/template/:templateId', () => {
           },
         }
       );
-
       expect(submitResponse.status()).toBe(200);
       const submitted = await submitResponse.json();
 
