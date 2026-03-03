@@ -1,16 +1,13 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { PDFParse } from 'pdf-parse';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { docxFixtures } from '../fixtures/letters';
 import type { Template } from '../helpers/types';
+import { getTestContext } from 'helpers/context/context';
 
-const authHelper = createAuthHelper();
+const context = getTestContext();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const customPersonalisation = [
@@ -37,7 +34,7 @@ test.describe('Letter rendering', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await authHelper.getTestUser(testUsers.User1.userId);
+    user = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {
