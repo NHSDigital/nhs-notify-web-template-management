@@ -9,6 +9,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { docxFixtures } from '../fixtures/letters';
 import type { Template } from '../helpers/types';
+import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
 const authHelper = createAuthHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -165,6 +166,10 @@ test.describe('Letter rendering', () => {
                 docxTemplate: expect.objectContaining({
                   virusScanStatus: 'FAILED',
                 }),
+                initialRender: {
+                  status: 'PENDING',
+                  requestedAt: expect.stringMatching(isoDateRegExp),
+                },
               },
             })
           );
@@ -201,6 +206,10 @@ test.describe('Letter rendering', () => {
                 docxTemplate: expect.objectContaining({
                   virusScanStatus: 'FAILED',
                 }),
+                initialRender: {
+                  status: 'PENDING',
+                  requestedAt: expect.stringMatching(isoDateRegExp),
+                },
               },
             })
           );

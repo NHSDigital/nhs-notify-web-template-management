@@ -157,7 +157,10 @@ async function createTemplates(user: TestUser) {
       {
         letterVariantId: 'variant-virus',
         validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
-        initialRender: false,
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: '2026-03-03T12:04:32.806Z',
+        },
       }
     ),
     authoringMissingAddressLines: TemplateFactory.createAuthoringLetterTemplate(
@@ -168,7 +171,7 @@ async function createTemplates(user: TestUser) {
       {
         letterVariantId: 'variant-address',
         validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
-        initialRender: false,
+        initialRender: { status: 'FAILED' },
       }
     ),
     authoringWithCustomFields: TemplateFactory.createAuthoringLetterTemplate(
@@ -260,7 +263,7 @@ async function createTemplates(user: TestUser) {
         'VALIDATION_FAILED',
         {
           letterVariantId: 'variant-fail-render',
-          validationErrors: [{ name: 'UNEXPECTED_ADDRESS_LINES' }],
+          validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
         }
       ),
     authoringWithFailedInitialRender:
@@ -284,8 +287,10 @@ test.describe('Preview Letter template Page', () => {
 
   const templateStorageHelper = new TemplateStorageHelper();
 
+  const authHelper = createAuthHelper();
+
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const user = await authHelper.getTestUser(testUsers.User1.userId);
     templates = await createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
@@ -579,6 +584,46 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.statusTag).toBeVisible();
     });
 
+    test('when initial render is recently requested (in PENDING status), the spinner is shown', async ({
+      page,
+      baseURL,
+    }) => {
+      const user = await authHelper.getTestUser(testUsers.User1.userId);
+
+      // seed the template here to reduce the chance that render timeout expires during the test
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        '7ABB64DF-DCCF-4108-9A87-B8A3357FFA25',
+        user,
+        'authoring-pending-fresh',
+        'PENDING_VALIDATION',
+        {
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: new Date().toISOString(),
+          },
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        template.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-letter-template/${template.id}`
+      );
+
+      await expect(previewPage.pageSpinner).toBeVisible();
+
+      await expect(previewPage.letterRender).toBeHidden();
+
+      await expect(previewPage.statusTag).toBeHidden();
+    });
+
     test('when user visits page with missing data, then an invalid template error is displayed', async ({
       baseURL,
       page,
@@ -644,21 +689,6 @@ test.describe('Preview Letter template Page', () => {
         await expect(previewPage.shortTab.updatePreviewButton).toBeVisible();
 
         await expect(previewPage.shortTab.previewIframe).toBeVisible();
-      });
-
-      test('hides letter preview section when initialRender is FAILED', async ({
-        page,
-      }) => {
-        const previewPage = new TemplateMgmtPreviewLetterPage(
-          page
-        ).setPathParam(
-          'templateId',
-          templates.authoringWithFailedInitialRender.id
-        );
-
-        await previewPage.loadPage();
-
-        await expect(previewPage.letterRender).toBeHidden();
       });
 
       test('hides letter preview section when initialRender is FAILED', async ({

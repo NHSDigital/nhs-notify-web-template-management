@@ -82,7 +82,7 @@ describe('useLetterTemplatePoll', () => {
     expect(result.current.isPolling).toBe(false);
   });
 
-  it('calls router.refresh() on each poll interval', () => {
+  it('calls router.refresh on each poll interval', () => {
     renderHook(() =>
       useLetterTemplatePoll({
         template: pendingTemplate,
@@ -139,7 +139,7 @@ describe('useLetterTemplatePoll', () => {
     expect(result.current.isPolling).toBe(false);
   });
 
-  it('stops calling router.refresh() after polling stops', () => {
+  it('stops calling router.refresh after polling stops', () => {
     const { rerender } = renderHook(
       ({ template }: { template: AuthoringLetterTemplate }) =>
         useLetterTemplatePoll({
@@ -159,16 +159,14 @@ describe('useLetterTemplatePoll', () => {
       rerender({ template: renderedTemplate });
     });
 
-    mockRefresh.mockClear();
-
     act(() => {
       jest.advanceTimersByTime(POLL_INTERVAL_MS * 3);
     });
 
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockRefresh).toHaveBeenCalledTimes(1);
   });
 
-  it('does not call router.refresh() after timeout', () => {
+  it('does not call router.refresh after timeout', () => {
     renderHook(() =>
       useLetterTemplatePoll({
         template: pendingTemplate,
@@ -180,12 +178,12 @@ describe('useLetterTemplatePoll', () => {
       jest.advanceTimersByTime(RENDER_TIMEOUT_MS);
     });
 
-    mockRefresh.mockClear();
+    expect(mockRefresh).toHaveBeenCalledTimes(10);
 
     act(() => {
       jest.advanceTimersByTime(POLL_INTERVAL_MS * 3);
     });
 
-    expect(mockRefresh).not.toHaveBeenCalled();
+    expect(mockRefresh).toHaveBeenCalledTimes(10);
   });
 });

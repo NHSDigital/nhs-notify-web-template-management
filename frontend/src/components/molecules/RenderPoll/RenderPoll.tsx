@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 'use client';
 
 import type { PropsWithChildren } from 'react';

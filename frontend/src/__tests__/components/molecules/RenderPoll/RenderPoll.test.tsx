@@ -9,9 +9,7 @@ import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management
 import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@hooks/use-letter-template-poll');
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({ refresh: jest.fn() }),
-}));
+jest.mock('next/navigation');
 
 const mockUseTemplatePoll = jest.mocked(useLetterTemplatePoll);
 
@@ -62,8 +60,6 @@ const renderedRender: RenderDetails = {
   pageCount: 2,
 };
 
-const LOADING_TEXT = 'Uploading letter template';
-
 describe('RenderPoll', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -77,12 +73,12 @@ describe('RenderPoll', () => {
     jest.useRealTimers();
   });
 
-  it('forwards template and shouldPoll(mode) to useLetterTemplatePoll', () => {
+  it('forwards template and shouldPoll function to useLetterTemplatePoll', () => {
     render(
       <RenderPoll
         template={template}
         mode='initialRender'
-        loadingText={LOADING_TEXT}
+        loadingText={'loading'}
       >
         <div>content</div>
       </RenderPoll>
@@ -99,14 +95,14 @@ describe('RenderPoll', () => {
       <RenderPoll
         template={template}
         mode='initialRender'
-        loadingText={LOADING_TEXT}
+        loadingText={'loading'}
       >
         <div data-testid='page-content'>content</div>
       </RenderPoll>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
-    expect(screen.queryByText(LOADING_TEXT)).not.toBeInTheDocument();
+    expect(screen.queryByText('loading')).not.toBeInTheDocument();
   });
 
   it('renders the loading spinner with loadingText and hides children when isPolling is true', () => {
@@ -118,15 +114,16 @@ describe('RenderPoll', () => {
       <RenderPoll
         template={template}
         mode='initialRender'
-        loadingText={LOADING_TEXT}
+        loadingText={'loading'}
       >
         <div data-testid='page-content'>content</div>
       </RenderPoll>
     );
 
     expect(
-      screen.getByRole('heading', { name: LOADING_TEXT })
+      screen.getByRole('heading', { name: 'loading' })
     ).toBeInTheDocument();
+
     expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
   });
 });
@@ -142,51 +139,53 @@ describe('shouldPoll', () => {
 
   it('returns false when render status is RENDERED', () => {
     const shouldPoll = shouldPollRender('initialRender');
+
     expect(shouldPoll(template)).toBe(false);
   });
 
   it('returns false when render file is absent', () => {
-    const shouldPoll = shouldPollRender('initialRender');
-    const noRenderTemplate = {
-      ...template,
-      files: { ...template.files, initialRender: undefined },
-    } as unknown as AuthoringLetterTemplate;
-    expect(shouldPoll(noRenderTemplate)).toBe(false);
+    const shouldPoll = shouldPollRender('longFormRender');
+
+    expect(shouldPoll(template)).toBe(false);
   });
 
   it('returns true when render status is PENDING and not stale', () => {
     const shouldPoll = shouldPollRender('initialRender');
+
     const pendingTemplate = {
       ...template,
       files: { ...template.files, initialRender: pendingRender },
     };
+
     expect(shouldPoll(pendingTemplate)).toBe(true);
   });
 
   it('returns false when render status is PENDING but stale', () => {
     const shouldPoll = shouldPollRender('initialRender');
+
     const staleTemplate = {
       ...template,
       files: { ...template.files, initialRender: staleRender },
     };
+
     expect(shouldPoll(staleTemplate)).toBe(false);
   });
 
-  it('uses the mode to select the correct render file', () => {
-    const shouldPoll = shouldPollRender('initialRender');
-    const templateWithPendingInitial = {
-      ...template,
-      files: { ...template.files, initialRender: pendingRender },
-    };
-    expect(shouldPoll(templateWithPendingInitial)).toBe(true);
-  });
+  it('uses the mode to select the appropriate render file', () => {
+    const shouldPoll = shouldPollRender('shortFormRender');
 
-  it('returns false when render status is RENDERED (renderedRender fixture)', () => {
-    const shouldPoll = shouldPollRender('initialRender');
-    const renderedTemplate = {
+    const templateWithPendingShort = {
       ...template,
-      files: { ...template.files, initialRender: renderedRender },
+      files: { ...template.files, shortFormRender: pendingRender },
     };
-    expect(shouldPoll(renderedTemplate)).toBe(false);
+
+    expect(shouldPoll(templateWithPendingShort)).toBe(true);
+
+    const templateWithRenderedShort = {
+      ...template,
+      files: { ...template.files, shortFormRender: renderedRender },
+    };
+
+    expect(shouldPoll(templateWithRenderedShort)).toBe(false);
   });
 });

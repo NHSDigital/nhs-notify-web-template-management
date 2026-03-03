@@ -28,6 +28,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly shortTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
   public readonly longTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
 
+  public readonly pageSpinner: Locator;
+
   constructor(page: Page) {
     super(page);
 
@@ -50,6 +52,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
     this.shortTab = this.getTab('shortFormRender');
     this.longTab = this.getTab('longFormRender');
+
+    this.pageSpinner = page.getByRole('status');
   }
 
   public getTab(variant: TabVariant) {
