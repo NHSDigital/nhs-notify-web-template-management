@@ -1,6 +1,6 @@
 module "eventpub" {
   # TODO CCM-12089 - move to zip release after fix from the ticket
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub?ref=v2.0.28"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.3/terraform-eventpub.zip"
 
   name = "eventpub"
 
