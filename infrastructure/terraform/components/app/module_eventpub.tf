@@ -1,6 +1,6 @@
 module "eventpub" {
   # TODO CCM-12089 - move to zip release after fix from the ticket
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub?ref=v2.0.28"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/terraform/modules/eventpub?ref=3.0.4"
 
   name = "eventpub"
 
@@ -21,4 +21,10 @@ module "eventpub" {
 
   data_plane_bus_arn    = var.data_plane_bus_arn
   control_plane_bus_arn = var.control_plane_bus_arn
+
+  # CloudWatch Anomaly Detection for publishing
+  enable_publishing_anomaly_detection   = var.enable_event_publishing_anomaly_detection
+  publishing_anomaly_band_width         = var.event_publishing_anomaly_band_width
+  publishing_anomaly_evaluation_periods = var.event_publishing_anomaly_evaluation_periods
+  publishing_anomaly_period             = var.event_publishing_anomaly_period
 }
