@@ -176,6 +176,13 @@ export type Failure = {
   technicalMessage: string;
 };
 
+export type GenerateLetterProof = {
+  personalisation: {
+    [key: string]: string;
+  };
+  requestTypeVariant: PersonalisedRenderRequestVariant;
+};
+
 export type Language =
   | 'ar'
   | 'bg'
@@ -252,6 +259,8 @@ export type ProofFileDetails = {
   supplier: string;
   virusScanStatus: VirusScanStatus;
 };
+
+export type PersonalisedRenderRequestVariant = 'long' | 'short';
 
 export type RenderDetails = {
   personalisationParameters?: {
@@ -887,6 +896,47 @@ export type PutV1TemplateByTemplateIdResponses = {
 
 export type PutV1TemplateByTemplateIdResponse =
   PutV1TemplateByTemplateIdResponses[keyof PutV1TemplateByTemplateIdResponses];
+
+export type PostV1TemplateByTemplateIdLetterProofData = {
+  /**
+   * Template to update
+   */
+  body: GenerateLetterProof;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
+  path: {
+    /**
+     * ID of the template to request a proof of
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/letter-proof';
+};
+
+export type PostV1TemplateByTemplateIdLetterProofErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1TemplateByTemplateIdLetterProofError =
+  PostV1TemplateByTemplateIdLetterProofErrors[keyof PostV1TemplateByTemplateIdLetterProofErrors];
+
+export type PostV1TemplateByTemplateIdLetterProofResponses = {
+  /**
+   * 200 response
+   */
+  200: TemplateSuccess;
+};
+
+export type PostV1TemplateByTemplateIdLetterProofResponse =
+  PostV1TemplateByTemplateIdLetterProofResponses[keyof PostV1TemplateByTemplateIdLetterProofResponses];
 
 export type PostV1TemplateByTemplateIdProofData = {
   body?: never;
