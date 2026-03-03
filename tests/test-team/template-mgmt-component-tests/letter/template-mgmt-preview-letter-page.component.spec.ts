@@ -661,6 +661,21 @@ test.describe('Preview Letter template Page', () => {
         await expect(previewPage.letterRender).toBeHidden();
       });
 
+      test('hides letter preview section when initialRender is FAILED', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringWithFailedInitialRender.id
+        );
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.letterRender).toBeHidden();
+      });
+
       test('can switch between short and long example tabs', async ({
         page,
       }) => {
