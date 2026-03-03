@@ -47,7 +47,7 @@ test.describe('POST /v1/docx-letter-template', () => {
     const { templateData, multipart, contentType } =
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         baseTemplateData,
-        [baseTemplateFormData, baseDocxMultipartFormData]
+        docxFixtures.standard.open()
       );
 
     const start = new Date();
@@ -171,7 +171,7 @@ test.describe('POST /v1/docx-letter-template', () => {
           ...baseTemplateData,
           templateStatus: 'SUBMITTED',
         },
-        [baseTemplateFormData, baseDocxMultipartFormData]
+        docxFixtures.standard.open()
       );
 
     const response = await request.post(
@@ -207,7 +207,7 @@ test.describe('POST /v1/docx-letter-template', () => {
           ...baseTemplateData,
           name: undefined,
         },
-        [baseTemplateFormData, baseDocxMultipartFormData]
+        docxFixtures.standard.open()
       );
 
     const response = await request.post(

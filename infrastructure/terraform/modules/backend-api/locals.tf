@@ -45,6 +45,7 @@ locals {
     LETTER_VARIANT_CACHE_TTL_MS             = 300000
     LETTER_VARIANT_TABLE_NAME               = aws_dynamodb_table.letter_variants.name
     NODE_OPTIONS                            = "--enable-source-maps"
+    RENDER_REQUEST_QUEUE_URL                = module.sqs_letter_render.sqs_queue_url
     REQUEST_PROOF_QUEUE_URL                 = module.sqs_sftp_upload.sqs_queue_url
     ROUTING_CONFIG_TABLE_NAME               = aws_dynamodb_table.routing_configuration.name
     SUPPLIER_RECIPIENT_EMAIL_ADDRESSES      = jsonencode({ for k, v in var.letter_suppliers : k => v.email_addresses })

@@ -149,6 +149,9 @@ export type {
   PutV1TemplateByTemplateIdResponse,
   PutV1TemplateByTemplateIdResponses,
   RenderDetails,
+  RenderDetailsFailed,
+  RenderDetailsPending,
+  RenderDetailsRendered,
   RenderStatus,
   RoutingConfig,
   RoutingConfigReference,
@@ -166,6 +169,7 @@ export type {
   TemplateType,
   UpdateRoutingConfig,
   UploadLetterTemplate,
+  ValidationErrorDetail,
   VersionedFileDetails,
   VirusScanStatus,
 } from './types.gen';

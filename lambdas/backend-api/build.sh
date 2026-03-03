@@ -21,6 +21,7 @@ npx esbuild \
     src/delete-failed-scanned-object.ts \
     src/delete.ts \
     src/delete-routing-config.ts \
+    src/forward-initial-render-request.ts \
     src/get-client.ts \
     src/get-letter-variant.ts \
     src/get-routing-config.ts \

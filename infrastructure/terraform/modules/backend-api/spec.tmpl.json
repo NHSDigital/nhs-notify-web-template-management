@@ -72,7 +72,7 @@
               },
               "validationErrors": {
                 "items": {
-                  "$ref": "#/components/schemas/LetterValidationError"
+                  "$ref": "#/components/schemas/ValidationErrorDetail"
                 },
                 "type": "array"
               }
@@ -703,7 +703,9 @@
       },
       "LetterValidationError": {
         "enum": [
+          "INVALID_MARKERS",
           "MISSING_ADDRESS_LINES",
+          "UNEXPECTED_ADDRESS_LINES",
           "VIRUS_SCAN_FAILED"
         ],
         "type": "string"
@@ -942,6 +944,47 @@
         "type": "object"
       },
       "RenderDetails": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/RenderDetailsFailed"
+          },
+          {
+            "$ref": "#/components/schemas/RenderDetailsPending"
+          },
+          {
+            "$ref": "#/components/schemas/RenderDetailsRendered"
+          }
+        ]
+      },
+      "RenderDetailsFailed": {
+        "properties": {
+          "status": {
+            "enum": [
+              "FAILED"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      },
+      "RenderDetailsPending": {
+        "properties": {
+          "status": {
+            "enum": [
+              "PENDING"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      },
+      "RenderDetailsRendered": {
         "properties": {
           "currentVersion": {
             "type": "string"
@@ -953,7 +996,10 @@
             "type": "integer"
           },
           "status": {
-            "$ref": "#/components/schemas/RenderStatus"
+            "enum": [
+              "RENDERED"
+            ],
+            "type": "string"
           }
         },
         "required": [
@@ -1293,6 +1339,23 @@
             "type": "string"
           }
         },
+        "type": "object"
+      },
+      "ValidationErrorDetail": {
+        "properties": {
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LetterValidationError"
+          }
+        },
+        "required": [
+          "name"
+        ],
         "type": "object"
       },
       "VersionedFileDetails": {

@@ -33,7 +33,7 @@ function getValidationErrors(template: AuthoringLetterTemplate): string[] {
 
   return (
     template.validationErrors?.flatMap(
-      (error) => validationErrorMessages[error]
+      (error) => validationErrorMessages[error.name]
     ) ?? []
   );
 }
@@ -60,7 +60,8 @@ export default async function PreviewLetterTemplatePage({
   }
 
   // AUTHORING letter
-  const showRenderer = Boolean(validatedTemplate.files.initialRender);
+  const showRenderer =
+    validatedTemplate.files.initialRender?.status === 'RENDERED';
 
   const showSubmitForm =
     validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED';

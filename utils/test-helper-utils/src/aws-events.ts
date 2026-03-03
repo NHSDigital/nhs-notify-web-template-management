@@ -38,7 +38,7 @@ type MakeEventBridgeEventParams<
     source: TSource;
   };
 
-const makeEventBridgeEvent = <
+export const makeEventBridgeEvent = <
   TDetailType extends string,
   TDetail,
   TSource extends string,
@@ -112,3 +112,47 @@ export const makeGuardDutyMalwareScanResultNotificationEvent = (
     'detail-type': 'GuardDuty Malware Protection Object Scan Result',
     detail: makeGuardDutyMalwareScanResultNotificationEventDetail(event.detail),
   });
+
+export type S3ObjectCreatedEventDetail = {
+  version: string;
+  bucket: { name: string };
+  object: {
+    key: string;
+    size: number;
+    etag: string;
+    'version-id'?: string;
+    sequencer: string;
+  };
+  'request-id': string;
+  requester: string;
+  'source-ip-address'?: string;
+  reason: 'PutObject' | 'CopyObject' | 'CompleteMultipartUpload';
+};
+
+type MakeS3ObjectCreatedEventDetailParams = Partial<
+  Omit<S3ObjectCreatedEventDetail, 'bucket' | 'object'>
+> & {
+  bucket?: Partial<S3ObjectCreatedEventDetail['bucket']>;
+  object: Partial<S3ObjectCreatedEventDetail['object']> &
+    Pick<S3ObjectCreatedEventDetail['object'], 'key'>;
+};
+
+export const makeS3ObjectCreatedEventDetail = (
+  detail: MakeS3ObjectCreatedEventDetailParams
+): S3ObjectCreatedEventDetail => ({
+  version: '0',
+  'request-id': randomUUID(),
+  requester: '123456789012',
+  reason: 'PutObject',
+  ...detail,
+  bucket: {
+    name: 'test-bucket',
+    ...detail.bucket,
+  },
+  object: {
+    size: 1024,
+    etag: randomUUID(),
+    sequencer: '0055AED6DCD90281E5',
+    ...detail.object,
+  },
+});
