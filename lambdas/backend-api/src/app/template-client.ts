@@ -3,14 +3,18 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod/v4';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
-  Result,
-  ErrorCase,
+  LETTER_MULTIPART,
   $LetterPatch,
   $CreateUpdateNonLetter,
   $LockNumber,
   $TemplateDto,
   $TemplateFilter,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/schemas';
+import {
+  ErrorCase,
+  Result,
+  TemplateFilter,
+} from 'nhs-notify-backend-client/types';
 import type {
   AuthoringLetterFiles,
   LetterPatch,
@@ -21,8 +25,6 @@ import type {
   PdfLetterFiles,
   TemplateDto,
 } from 'nhs-notify-web-template-management-types';
-import type { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
-import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
   $UploadPdfLetterTemplate,
   $UploadDocxLetterTemplate,

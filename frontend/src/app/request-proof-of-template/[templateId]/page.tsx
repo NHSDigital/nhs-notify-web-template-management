@@ -10,7 +10,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import content from '@content/content';
 import { serverIsFeatureEnabled } from '@utils/server-features';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.components.requestProof;

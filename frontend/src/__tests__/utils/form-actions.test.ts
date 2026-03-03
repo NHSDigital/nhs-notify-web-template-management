@@ -28,10 +28,12 @@ import type {
   TemplateDto,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-types';
-import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import {
+  templateApiClient,
+  letterVariantApiClient,
+} from 'nhs-notify-backend-client';
 import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { letterVariantApiClient } from 'nhs-notify-backend-client/src/letter-variant-api-client';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
 const mockedLetterVariantClient = jest.mocked(letterVariantApiClient);
@@ -39,8 +41,7 @@ const authIdTokenServerMock = jest.mocked(getSessionServer);
 const loggerMock = jest.mocked(logger);
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client/src/template-api-client');
-jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
+jest.mock('nhs-notify-backend-client');
 jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
   logger: {
     error: jest.fn(),
@@ -49,7 +50,6 @@ jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
     debug: jest.fn(),
   },
 }));
-jest.mock('nhs-notify-backend-client/src/letter-variant-api-client');
 
 describe('form-actions', () => {
   beforeEach(() => {

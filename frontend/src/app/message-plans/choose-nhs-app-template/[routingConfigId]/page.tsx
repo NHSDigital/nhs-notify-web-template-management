@@ -9,7 +9,7 @@ import content from '@content/content';
 import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { getTemplates } from '@utils/form-actions';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 const { pageTitle, pageHeading, noTemplatesText } =
   content.pages.chooseNhsAppTemplate;
 

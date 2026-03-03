@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client/types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
   makeGuardDutyMalwareScanResultNotificationEvent,

@@ -9,7 +9,7 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import { ErrorCase, FailureResult } from 'nhs-notify-backend-client';
+import { ErrorCase, FailureResult } from 'nhs-notify-backend-client/types';
 import type {
   CreateUpdateTemplate,
   LetterPatch,

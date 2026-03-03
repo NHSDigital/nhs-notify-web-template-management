@@ -1,4 +1,4 @@
-import { DEFAULT_PERSONALISATION_LIST } from 'nhs-notify-backend-client/src/schemas/constants';
+import { DEFAULT_PERSONALISATION_LIST } from 'nhs-notify-backend-client/schemas';
 import { TemplateKey } from 'nhs-notify-web-template-management-utils';
 import type {
   TextItem,

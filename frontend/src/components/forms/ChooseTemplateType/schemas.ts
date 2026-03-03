@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client/schemas';
 import { SUPPORTED_LETTER_TYPES } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 

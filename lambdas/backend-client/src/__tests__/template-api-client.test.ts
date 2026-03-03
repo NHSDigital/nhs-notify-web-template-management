@@ -1,9 +1,7 @@
 import MockAdapter from 'axios-mock-adapter';
 import type { LetterVariant } from 'nhs-notify-web-template-management-types';
-import {
-  templateApiClient as client,
-  httpClient,
-} from '../template-api-client';
+import { templateApiClient as client } from '../template-api-client';
+import { httpClient } from '../axios-client';
 
 let axiosMock: MockAdapter;
 

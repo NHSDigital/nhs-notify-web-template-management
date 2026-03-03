@@ -1,6 +1,6 @@
 import type { User } from 'nhs-notify-web-template-management-utils';
 import type { LetterVariant } from 'nhs-notify-web-template-management-types';
-import { ErrorCase, type Result } from 'nhs-notify-backend-client';
+import { ErrorCase, type Result } from 'nhs-notify-backend-client/types';
 import type { LetterVariantRepository } from '@backend-api/infra/letter-variant-repository';
 import { failure, success } from '@backend-api/utils';
 

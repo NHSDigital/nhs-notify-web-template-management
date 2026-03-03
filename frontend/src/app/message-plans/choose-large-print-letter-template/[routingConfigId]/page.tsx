@@ -6,7 +6,7 @@ import { getRoutingConfig } from '@utils/message-plans';
 import { redirect, RedirectType } from 'next/navigation';
 import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { getTemplates } from '@utils/form-actions';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
 import content from '@content/content';

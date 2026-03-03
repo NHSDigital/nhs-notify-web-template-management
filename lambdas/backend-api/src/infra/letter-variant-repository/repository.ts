@@ -5,7 +5,8 @@ import {
   QueryCommand,
   QueryCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
-import { $LetterVariant, ErrorCase } from 'nhs-notify-backend-client';
+import { $LetterVariant } from 'nhs-notify-backend-client/schemas';
+import { ErrorCase } from 'nhs-notify-backend-client/types';
 import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import { InMemoryCache } from 'nhs-notify-web-template-management-utils';
 import { type ApplicationResult, success, failure } from '@backend-api/utils';

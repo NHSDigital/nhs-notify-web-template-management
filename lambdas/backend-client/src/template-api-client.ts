@@ -8,11 +8,9 @@ import type {
   LetterVariantListSuccess,
 } from 'nhs-notify-web-template-management-types';
 import { Result } from './types/result';
-import { catchAxiosError, createAxiosClient } from './axios-client';
+import { catchAxiosError, httpClient } from './axios-client';
 import { LETTER_MULTIPART } from './schemas/constants';
 import { TemplateFilter } from './types/filters';
-
-export const httpClient = createAxiosClient();
 
 export const templateApiClient = {
   async createTemplate(

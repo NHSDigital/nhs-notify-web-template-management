@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import { HintText, Label } from '@atoms/nhsuk-components';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';

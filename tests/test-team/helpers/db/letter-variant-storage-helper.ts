@@ -5,7 +5,7 @@ import {
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { z } from 'zod/v4';
-import { $LetterVariant } from 'nhs-notify-backend-client';
+import { $LetterVariant } from 'nhs-notify-backend-client/schemas';
 import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 import GLOBAL_VARIANTS from 'fixtures/global-letter-variants.json';

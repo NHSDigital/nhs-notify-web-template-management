@@ -6,7 +6,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client/types';
 import { InMemoryCache } from 'nhs-notify-web-template-management-utils';
 import {
   LetterVariantQueryFilters,

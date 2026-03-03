@@ -1,7 +1,7 @@
 import type { SQSHandler } from 'aws-lambda';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { App } from '../app/app';
-import { $RenderRequest } from 'nhs-notify-backend-client/src/schemas/render-request';
+import { $RenderRequest } from 'nhs-notify-backend-client/schemas';
 
 type Dependencies = {
   app: App;

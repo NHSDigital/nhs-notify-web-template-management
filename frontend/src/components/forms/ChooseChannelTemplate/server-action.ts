@@ -8,7 +8,7 @@ import {
   addAccessibleFormatLetterTemplateToCascade,
   addDefaultTemplateToCascade,
 } from '@utils/routing-utils';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 
 export type ChooseChannelTemplateFormState = FormState &
   Omit<ChooseChannelTemplateProps, 'lockNumber' | 'noTemplatesText'>;

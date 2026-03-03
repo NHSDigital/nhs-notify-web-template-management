@@ -1,7 +1,12 @@
 'use server';
 
 import { getSessionServer } from '@utils/amplify-utils';
-import { $TemplateDto } from 'nhs-notify-backend-client';
+import {
+  letterVariantApiClient,
+  templateApiClient,
+} from 'nhs-notify-backend-client';
+import { $TemplateDto } from 'nhs-notify-backend-client/schemas';
+import type { TemplateFilter } from 'nhs-notify-backend-client/types';
 import type {
   CreateUpdateTemplate,
   LetterPatch,
@@ -9,9 +14,6 @@ import type {
   LetterVariant,
 } from 'nhs-notify-web-template-management-types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { letterVariantApiClient } from 'nhs-notify-backend-client/src/letter-variant-api-client';
-import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { sortAscByUpdatedAt } from './sort';
 

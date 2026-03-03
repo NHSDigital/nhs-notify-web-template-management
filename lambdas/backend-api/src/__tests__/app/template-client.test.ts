@@ -21,7 +21,7 @@ import { RoutingConfigRepository } from '../../infra/routing-config-repository';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 
 import { TemplateQuery } from '../../infra/template-repository/query';
-import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import { TemplateFilter } from 'nhs-notify-backend-client/types';
 import type { LetterVariantRepository } from '@backend-api/infra/letter-variant-repository';
 import { success } from '@backend-api/utils';
 
