@@ -25,7 +25,6 @@ export const createHandler =
       'file-type': fileType,
       'client-id': clientId,
       'template-id': templateId,
-      'version-id': currentVersion,
     } = LetterUploadRepository.parseKey(key);
 
     if (fileType !== 'docx-template') {
@@ -38,7 +37,6 @@ export const createHandler =
       requestType: 'initial',
       clientId,
       templateId,
-      currentVersion,
     };
 
     logger.info('Forwarding initial render request', request);

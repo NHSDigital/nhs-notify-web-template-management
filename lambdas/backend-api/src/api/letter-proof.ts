@@ -27,7 +27,8 @@ export function createHandler({
       },
       toHeaders(event.headers).get('X-Lock-Number') ?? '',
       dto.personalisation,
-      dto.requestTypeVariant
+      dto.requestTypeVariant,
+      dto.systemPersonalisationPackId
     );
 
     if (error) {

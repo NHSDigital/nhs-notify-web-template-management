@@ -1,6 +1,7 @@
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { failure, success } from '@backend-api/utils/result';
 import { ErrorCase } from 'nhs-notify-backend-client';
+import type { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 import type { PersonalisedRenderRequestVariant } from 'nhs-notify-web-template-management-types';
 
 export class RenderQueue {
@@ -13,7 +14,9 @@ export class RenderQueue {
     templateId: string,
     clientId: string,
     personalisation: Record<string, string>,
-    requestTypeVariant: PersonalisedRenderRequestVariant
+    requestTypeVariant: PersonalisedRenderRequestVariant,
+    lockNumber: number,
+    systemPersonalisationPackId: string
   ) {
     try {
       const response = await this.sqsClient.send(
@@ -22,9 +25,12 @@ export class RenderQueue {
           MessageBody: JSON.stringify({
             templateId,
             clientId,
-            requestTypeVariant,
+            requestType: 'personalised',
             personalisation,
-          }),
+            requestTypeVariant,
+            lockNumber,
+            systemPersonalisationPackId,
+          } satisfies Extract<RenderRequest, { requestType: 'personalised' }>),
         })
       );
       return success(response);

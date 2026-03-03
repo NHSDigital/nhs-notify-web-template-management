@@ -100,33 +100,25 @@ export class App {
 
   renderPersonalised(request: PersonalisedRenderRequest): Promise<Outcome> {
     return this.renderFromSource(request, async (sourcePath, logger) => {
-      try {
-        const { fileName, currentVersion, pageCount } =
-          await this.renderAndSave(
-            request,
-            sourcePath,
-            request.personalisation
-          );
+      const { fileName, currentVersion, pageCount } = await this.renderAndSave(
+        request,
+        sourcePath,
+        request.personalisation
+      );
 
-        logger.info('Saved PDF', {
-          fileName,
-        });
+      logger.info('Saved PDF', {
+        fileName,
+      });
 
-        await this.templateRepository.updateRenderedPersonalised(
-          request,
-          currentVersion,
-          fileName,
-          pageCount
-        );
+      await this.templateRepository.updateRenderedPersonalised(
+        request,
+        currentVersion,
+        fileName,
+        pageCount
+      );
 
-        logger.info('Valid personalised render created');
-        return 'rendered';
-      } catch (error) {
-        logger.error('Render failed', { error });
-
-        await this.templateRepository.updateFailurePersonalised(request);
-        return 'not-rendered';
-      }
+      logger.info('Valid personalised render created');
+      return 'rendered';
     });
   }
 

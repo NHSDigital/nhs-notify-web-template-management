@@ -26,6 +26,7 @@ import {
   DatabaseTemplate,
   User,
   $PdfLetterTemplate,
+  $AuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -39,12 +40,19 @@ import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repos
 import { RenderQueue } from '@backend-api/infra/render-queue';
 
 export class TemplateClient {
-  private $LetterForProofing = z.intersection(
+  private $LetterForPdfProofing = z.intersection(
     $PdfLetterTemplate,
     z.object({
       templateType: z.literal('LETTER'),
       personalisationParameters: z.array(z.string()),
       campaignId: z.string(),
+    })
+  );
+
+  private $LetterForProofing = z.intersection(
+    $AuthoringLetterTemplate,
+    z.object({
+      templateStatus: z.literal('NOT_YET_SUBMITTED'),
     })
   );
 
@@ -851,7 +859,7 @@ export class TemplateClient {
       return proofRequestUpdateResult;
     }
 
-    const proofLetterValidationResult = this.$LetterForProofing.safeParse(
+    const proofLetterValidationResult = this.$LetterForPdfProofing.safeParse(
       proofRequestUpdateResult.data
     );
 
@@ -905,13 +913,15 @@ export class TemplateClient {
   async letterProof(
     templateId: string,
     user: User,
-    lockNumber: number | string,
+    // consolidate these into an unknown object to validate
+    lockNumberRaw: number | string,
     personalisation: Record<string, string>,
-    requestTypeVariant: PersonalisedRenderRequestVariant
+    requestTypeVariant: PersonalisedRenderRequestVariant,
+    systemPersonalisationPackId: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+    const lockNumberValidation = $LockNumber.safeParse(lockNumberRaw);
 
     if (!lockNumberValidation.success) {
       log.error(
@@ -924,6 +934,8 @@ export class TemplateClient {
         'Invalid lock number provided'
       );
     }
+
+    const { data: lockNumber } = lockNumberValidation;
 
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
@@ -959,8 +971,9 @@ export class TemplateClient {
       await this.templateRepository.letterProofUpdate(
         templateId,
         user,
-        lockNumberValidation.data,
-        personalisation
+        lockNumber,
+        personalisation,
+        requestTypeVariant
       );
 
     if (letterProofUpdateResult.error) {
@@ -990,7 +1003,9 @@ export class TemplateClient {
       templateId,
       user.clientId,
       personalisation,
-      requestTypeVariant
+      requestTypeVariant,
+      lockNumberValidation.data,
+      systemPersonalisationPackId
     );
 
     if (sendQueueResult.error) {
