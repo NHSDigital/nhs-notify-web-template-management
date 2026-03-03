@@ -3,5 +3,5 @@ import { getTestContext } from 'helpers/context/context';
 
 setup('backend test teardown', async () => {
   const context = getTestContext();
-  context.teardown();
+  await context.teardown();
 });

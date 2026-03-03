@@ -11,5 +11,5 @@ setup('backend test setup', async () => {
   BackendConfigHelper.toEnv(backendConfig);
 
   const context = getTestContext();
-  context.setup();
+  await context.setup();
 });

@@ -867,7 +867,9 @@ export class TemplateRepository {
     updates: Partial<TemplateDto>,
     lockNumber: number,
     blockedStatuses: TemplateStatus[] = [],
-    callback?: (oldItem: Record<string, unknown>) => FailureResult | void
+    additionalConditionsCallback?: (
+      oldItem: Record<string, unknown>
+    ) => FailureResult | void
   ) {
     if (error instanceof ConditionalCheckFailedException) {
       if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
@@ -906,8 +908,8 @@ export class TemplateRepository {
         );
       }
 
-      if (callback) {
-        const callbackFailure = callback(oldItem);
+      if (additionalConditionsCallback) {
+        const callbackFailure = additionalConditionsCallback(oldItem);
 
         if (callbackFailure) {
           callbackFailure.error.actualError = error;
