@@ -87,9 +87,9 @@ test.describe('POST /v1/docx-letter-template', () => {
             fileName: 'template.docx',
             virusScanStatus: 'PENDING',
           },
-          intialRender: {
-            status: 'PENDING',
+          initialRender: {
             requestedAt: expect.stringMatching(isoDateRegExp),
+            status: 'PENDING',
           },
         },
         id: expect.stringMatching(uuidRegExp),

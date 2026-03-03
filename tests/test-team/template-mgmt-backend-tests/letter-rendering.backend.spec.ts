@@ -154,7 +154,6 @@ test.describe('Letter rendering', () => {
         request,
         docxFixtures.fakeVirus.open(),
         (t: Template) => {
-          expect(t.files?.initialRender).toBeUndefined();
           expect(t.customPersonalisation).toBeUndefined();
           expect(t.systemPersonalisation).toBeUndefined();
 
@@ -194,7 +193,6 @@ test.describe('Letter rendering', () => {
         request,
         docxFixtures.password.open(),
         (t: Template) => {
-          expect(t.files?.initialRender).toBeUndefined();
           expect(t.customPersonalisation).toBeUndefined();
           expect(t.systemPersonalisation).toBeUndefined();
 

@@ -335,7 +335,7 @@ describe('valid authoring letter template', () => {
 });
 
 describe('authoring letter initial render states', () => {
-  it('displays the loading spinner and hides page content when initialRender is fresh PENDING', async () => {
+  it('displays the loading spinner and hides page content when initialRender is freshly PENDING', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
       files: {
@@ -360,7 +360,7 @@ describe('authoring letter initial render states', () => {
     expect(screen.queryByTestId('preview-template-id')).not.toBeInTheDocument();
   });
 
-  it('shows page content and hides spinner and renderer when initialRender is stale PENDING', async () => {
+  it('shows page content and hides spinner and renderer when initialRender is PENDING, but render request is stale', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
       files: {
