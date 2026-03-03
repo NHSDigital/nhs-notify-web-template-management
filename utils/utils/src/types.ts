@@ -6,6 +6,7 @@ import type {
   CreateUpdateTemplate,
   Language,
   LetterType,
+  ValidationErrorDetail,
   LetterVersion,
   PdfLetterFiles,
   PdfLetterProperties,
@@ -149,11 +150,13 @@ export type DatabaseTemplate = {
   sftpSendLockTime?: number;
   subject?: string;
   supplier?: string;
+  systemPersonalisation?: string[];
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;
   updatedBy?: string;
   supplierReferences?: Record<string, string>;
+  validationErrors?: ValidationErrorDetail[];
 } & DbOnlyTemplateProperties;
 
 type DbOnlyTemplateProperties = {

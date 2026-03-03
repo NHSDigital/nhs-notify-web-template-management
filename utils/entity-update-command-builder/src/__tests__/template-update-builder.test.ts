@@ -1,4 +1,7 @@
-import type { TemplateStatus } from 'nhs-notify-web-template-management-types';
+import type {
+  TemplateStatus,
+  ValidationErrorDetail,
+} from 'nhs-notify-web-template-management-types';
 import { TemplateUpdateBuilder } from '../template-update-builder';
 
 const mockTableName = 'TABLE_NAME';
@@ -686,6 +689,129 @@ describe('TemplateUpdateBuilder', () => {
           '#campaignId': 'campaignId',
         },
         UpdateExpression: 'SET #campaignId = :campaignId',
+      });
+    });
+  });
+
+  describe('setPersonalisation', () => {
+    test('sets systemPersonalisation and customPersonalisation fields', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setPersonalisation(['firstName', 'lastName'], ['appointmentDate'])
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':systemPersonalisation': ['firstName', 'lastName'],
+          ':customPersonalisation': ['appointmentDate'],
+        },
+        ExpressionAttributeNames: {
+          '#systemPersonalisation': 'systemPersonalisation',
+          '#customPersonalisation': 'customPersonalisation',
+        },
+        UpdateExpression:
+          'SET #systemPersonalisation = :systemPersonalisation, #customPersonalisation = :customPersonalisation',
+      });
+    });
+  });
+
+  describe('setInitialRender', () => {
+    test('sets initialRender in files map', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const renderDetails = {
+        status: 'RENDERED' as const,
+        fileName: 'test-file.pdf',
+        currentVersion: 'v1',
+        pageCount: 2,
+      };
+
+      const res = builder.setInitialRender(renderDetails).build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#files': 'files',
+          '#initialRender': 'initialRender',
+        },
+        ExpressionAttributeValues: {
+          ':initialRender': renderDetails,
+        },
+        UpdateExpression: 'SET #files.#initialRender = :initialRender',
+      });
+    });
+  });
+
+  describe('setShortFormRender', () => {
+    test('sets shortFormRender in files map', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const renderDetails = {
+        status: 'RENDERED' as const,
+        fileName: 'short-form.pdf',
+        currentVersion: 'v2',
+        pageCount: 1,
+        systemPersonalisationPackId: 'pack-1',
+        personalisationParameters: { firstName: 'John' },
+      };
+
+      const res = builder.setShortFormRender(renderDetails).build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#files': 'files',
+          '#shortFormRender': 'shortFormRender',
+        },
+        ExpressionAttributeValues: {
+          ':shortFormRender': renderDetails,
+        },
+        UpdateExpression: 'SET #files.#shortFormRender = :shortFormRender',
+      });
+    });
+  });
+
+  describe('appendValidationErrors', () => {
+    test('appends validation errors to existing list or creates it', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const errors: ValidationErrorDetail[] = [
+        { name: 'MISSING_ADDRESS_LINES' },
+        { name: 'INVALID_MARKERS', issues: ['marker-1', 'marker-2'] },
+      ];
+
+      const res = builder.appendValidationErrors(errors).build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#validationErrors': 'validationErrors',
+        },
+        ExpressionAttributeValues: {
+          ':validationErrors': errors,
+          ':emptyList': [],
+        },
+        UpdateExpression:
+          'SET #validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors)',
       });
     });
   });
