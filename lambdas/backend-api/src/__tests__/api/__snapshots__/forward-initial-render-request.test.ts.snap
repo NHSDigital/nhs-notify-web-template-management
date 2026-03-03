@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createHandler errors if the event has no object key 1`] = `
+"[
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "object",
+      "key"
+    ],
+    "message": "Invalid input: expected string, received undefined"
+  }
+]"
+`;

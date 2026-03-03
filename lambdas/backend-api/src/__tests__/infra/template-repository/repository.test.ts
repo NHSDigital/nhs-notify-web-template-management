@@ -1816,7 +1816,7 @@ describe('templateRepository', () => {
           ':version': 'docx-version-id',
           ':lockNumberIncrement': 1,
           ':emptyList': [],
-          ':validationErrors': ['VIRUS_SCAN_FAILED'],
+          ':validationErrors': [{ name: 'VIRUS_SCAN_FAILED' }],
         },
       });
     });
