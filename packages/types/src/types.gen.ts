@@ -255,13 +255,13 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
   };
 };
 
+export type PersonalisedRenderRequestVariant = 'long' | 'short';
+
 export type ProofFileDetails = {
   fileName: string;
   supplier: string;
   virusScanStatus: VirusScanStatus;
 };
-
-export type PersonalisedRenderRequestVariant = 'long' | 'short';
 
 export type RenderDetails = {
   personalisationParameters?: {

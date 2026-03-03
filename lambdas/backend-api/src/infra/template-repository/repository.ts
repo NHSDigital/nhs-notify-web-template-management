@@ -773,6 +773,7 @@ export class TemplateRepository {
           ReturnValues: 'ALL_NEW',
         }
       )
+        .incrementLockNumber()
         .setUpdatedByUserAt(this.internalUserKey(user))
         .setPersonalisedRender(requestTypeVariant, {
           systemPersonalisationPackId,

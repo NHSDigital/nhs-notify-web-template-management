@@ -5,6 +5,7 @@ import { schemaFor } from './schema-for';
 const $Common = z.object({
   templateId: z.string(),
   clientId: z.string(),
+  currentVersion: z.string(),
 });
 
 const $InitialRenderRequest = z.object({

@@ -2,6 +2,7 @@ type Common = {
   clientId: string;
   templateId: string;
   // current version? Is it useful in the renderer? Or API?
+  currentVersion: string;
 };
 
 export type InitialRenderRequest = Common & {

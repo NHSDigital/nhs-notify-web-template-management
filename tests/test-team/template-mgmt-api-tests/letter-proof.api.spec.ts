@@ -11,6 +11,7 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { randomUUID } from 'node:crypto';
 import { docxFixtures } from 'fixtures/letters';
 import { GenerateLetterProof } from 'nhs-notify-web-template-management-types';
+import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
 test.describe('POST /v1/template/:templateId/letter-proof', () => {
   const authHelper = createAuthHelper();
@@ -101,6 +102,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     });
   });
 
+  // eslint-disable-next-line playwright/no-focused-test, sonarjs/no-exclusive-tests
   test.only('returns 200 and the updated template data', async ({
     request,
   }) => {
@@ -164,14 +166,44 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
 
     expect(requestProofResponse.status(), debug).toBe(200);
 
-    expect(result).toEqual({
-      statusCode: 200,
-      data: expect.objectContaining({
-        name: template.name,
-        templateStatus: 'WAITING_FOR_PROOF',
-        templateType: template.templateType,
-        lockNumber: template.lockNumber + 1,
-      }),
+    expect(result.data).toEqual({
+      name: template.name,
+      templateType: 'LETTER',
+      campaignId: template.campaignId,
+      clientId: user.clientId,
+      createdAt: expect.stringMatching(isoDateRegExp),
+      lockNumber: template.lockNumber + 1,
+      id: template.id,
+      templateStatus: 'NOT_YET_SUBMITTED',
+      updatedAt: expect.stringMatching(isoDateRegExp),
+      updatedBy: `INTERNAL_USER#${user.internalUserId}`,
+      letterType: 'x0',
+      language: 'en',
+      files: {
+        docxTemplate: {
+          currentVersion,
+          fileName: `${currentVersion}.docx`,
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          currentVersion: 'v1',
+          fileName: 'initial-render.pdf',
+          pageCount: 1,
+          status: 'RENDERED',
+        },
+        longFormRender: {
+          personalisationParameters: {
+            address_line_1: '1 Long Lane',
+            address_line_2: 'S70 0PQ',
+            myCustomParam: 'jalapeno',
+            nhsNumber: '99999999999',
+          },
+          requestedAt: expect.stringMatching(isoDateRegExp),
+          status: 'PENDING',
+          systemPersonalisationPackId: 'pack-id',
+        },
+      },
+      letterVersion: 'AUTHORING',
     });
 
     expect(result.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);

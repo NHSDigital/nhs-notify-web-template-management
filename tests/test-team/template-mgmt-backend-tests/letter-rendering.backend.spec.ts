@@ -10,6 +10,7 @@ import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-pay
 import { docxFixtures } from '../fixtures/letters';
 import type { Template } from '../helpers/types';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
+import { GenerateLetterProof } from 'nhs-notify-web-template-management-types';
 
 const authHelper = createAuthHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -45,60 +46,60 @@ test.describe('Letter rendering', () => {
     await templateStorageHelper.deleteAdHocTemplates();
   });
 
-  async function initialRenderTest(
-    request: APIRequestContext,
-    docx: Buffer,
-    assert: (t: Template) => void
-  ) {
-    const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
+  test.describe('Initial render', () => {
+    async function initialRenderTest(
+      request: APIRequestContext,
+      docx: Buffer,
+      assert: (t: Template) => void
+    ) {
+      const { multipart, contentType } =
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
+          {
+            templateType: 'LETTER',
+            campaignId: 'Campaign1',
+            letterVersion: 'AUTHORING',
+          },
+          docx
+        );
+
+      const response = await request.post(
+        `${process.env.API_BASE_URL}/v1/docx-letter-template`,
         {
-          templateType: 'LETTER',
-          campaignId: 'Campaign1',
-          letterVersion: 'AUTHORING',
-        },
-        docx
+          data: multipart,
+          headers: {
+            Authorization: await user.getAccessToken(),
+            'Content-Type': contentType,
+          },
+        }
       );
 
-    const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
-      {
-        data: multipart,
-        headers: {
-          Authorization: await user.getAccessToken(),
-          'Content-Type': contentType,
-        },
-      }
-    );
+      const result = await response.json();
+      const debug = JSON.stringify(result, null, 2);
 
-    const result = await response.json();
-    const debug = JSON.stringify(result, null, 2);
+      expect(response.status(), debug).toBe(201);
 
-    expect(response.status(), debug).toBe(201);
+      const template = result.data as Template;
 
-    const template = result.data as Template;
+      const templateKey = {
+        templateId: template.id,
+        clientId: user.clientId,
+      };
 
-    const templateKey = {
-      templateId: template.id,
-      clientId: user.clientId,
-    };
+      templateStorageHelper.addAdHocTemplateKey(templateKey);
 
-    templateStorageHelper.addAdHocTemplateKey(templateKey);
+      expect(template.templateStatus).toBe('PENDING_VALIDATION');
 
-    expect(template.templateStatus).toBe('PENDING_VALIDATION');
+      let updatedTemplate: Template | undefined;
 
-    let updatedTemplate: Template | undefined;
+      await expect(async () => {
+        updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
 
-    await expect(async () => {
-      updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
+        assert(updatedTemplate);
+      }).toPass({ intervals: [1000] });
 
-      assert(updatedTemplate);
-    }).toPass({ intervals: [1000] });
+      return updatedTemplate as Template;
+    }
 
-    return updatedTemplate as Template;
-  }
-
-  test.describe('Initial render', () => {
     test('produces initial render', async ({ request }) => {
       const template = await initialRenderTest(
         request,
@@ -432,6 +433,138 @@ test.describe('Letter rendering', () => {
           );
         }
       );
+    });
+  });
+
+  test.describe('Personalised render', () => {
+    async function personalisedRenderTest(
+      request: APIRequestContext,
+      docx: Buffer,
+      assert: (t: Template) => void
+    ) {
+      const { multipart, contentType } =
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
+          {
+            templateType: 'LETTER',
+            campaignId: 'Campaign1',
+            letterVersion: 'AUTHORING',
+          },
+          docx
+        );
+
+      const response = await request.post(
+        `${process.env.API_BASE_URL}/v1/docx-letter-template`,
+        {
+          data: multipart,
+          headers: {
+            Authorization: await user.getAccessToken(),
+            'Content-Type': contentType,
+          },
+        }
+      );
+
+      const result = await response.json();
+      const debug = JSON.stringify(result, null, 2);
+
+      expect(response.status(), debug).toBe(201);
+
+      const template = result.data as Template;
+
+      const templateKey = {
+        templateId: template.id,
+        clientId: user.clientId,
+      };
+
+      templateStorageHelper.addAdHocTemplateKey(templateKey);
+
+      await expect(async () => {
+        const t = await templateStorageHelper.getTemplate(templateKey);
+        console.log(JSON.stringify(t, null, 2));
+        expect(t.templateStatus).toBe('NOT_YET_SUBMITTED');
+      }).toPass({ intervals: [1000] });
+
+      const requestProofResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+        {
+          headers: {
+            Authorization: await user.getAccessToken(),
+            'X-Lock-Number': String(template.lockNumber),
+          },
+          data: {
+            personalisation: {
+              address_line_1: '1 Long Lane',
+              address_line_2: 'S70 0PQ',
+              nhsNumber: '99999999999',
+              myCustomParam: 'jalapeno',
+            },
+            systemPersonalisationPackId: 'pack-id',
+            requestTypeVariant: 'long',
+          } satisfies GenerateLetterProof,
+        }
+      );
+
+      expect(requestProofResponse.status).toBe(201);
+
+      let updatedTemplate: Template | undefined;
+
+      await expect(async () => {
+        updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
+
+        assert(updatedTemplate);
+      }).toPass({ intervals: [1000] });
+
+      return updatedTemplate as Template;
+    }
+
+    // eslint-disable-next-line playwright/no-focused-test, sonarjs/no-exclusive-tests
+    test.only('produces initial render', async ({ request }) => {
+      const template = await personalisedRenderTest(
+        request,
+        docxFixtures.standard.open(),
+        (t: Template) => {
+          console.log(t);
+
+          expect(t).toEqual(
+            expect.objectContaining({
+              templateStatus: 'NOT_YET_SUBMITTED',
+              files: expect.objectContaining({
+                initialRender: expect.objectContaining({
+                  status: 'RENDERED',
+                  fileName: expect.any(String),
+                  pageCount: 2,
+                }),
+              }),
+              customPersonalisation,
+              systemPersonalisation,
+            })
+          );
+        }
+      );
+
+      const render = await templateStorageHelper.getRenderFile(
+        { clientId: template.clientId!, templateId: template.id },
+        template.files!.initialRender!.fileName
+      );
+
+      expect(render?.metadata).toEqual({
+        'client-id': template.clientId,
+        'page-count': '2',
+        'template-id': template.id,
+        'request-type': 'initial',
+        'file-type': 'render',
+      });
+
+      expect(render?.buffer).toBeDefined();
+
+      const parser = new PDFParse({ data: render!.buffer });
+
+      const { text: pdfTextContent } = await parser.getText();
+
+      expect(pdfTextContent).toContain('This is the body text');
+
+      for (const n of [1, 2, 3, 4, 5, 6, 7]) {
+        expect(pdfTextContent).toContain(`{d.address_line_${n}}`);
+      }
     });
   });
 });

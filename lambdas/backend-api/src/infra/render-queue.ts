@@ -16,12 +16,14 @@ export class RenderQueue {
     personalisation: Record<string, string>,
     requestTypeVariant: PersonalisedRenderRequestVariant,
     lockNumber: number,
-    systemPersonalisationPackId: string
+    systemPersonalisationPackId: string,
+    currentVersion: string
   ) {
     try {
       const response = await this.sqsClient.send(
         new SendMessageCommand({
           QueueUrl: this.queueUrl,
+          MessageGroupId: clientId,
           MessageBody: JSON.stringify({
             templateId,
             clientId,
@@ -30,6 +32,7 @@ export class RenderQueue {
             requestTypeVariant,
             lockNumber,
             systemPersonalisationPackId,
+            currentVersion,
           } satisfies Extract<RenderRequest, { requestType: 'personalised' }>),
         })
       );

@@ -1017,7 +1017,8 @@ export class TemplateClient {
       personalisation,
       requestTypeVariant,
       lockNumberValidation.data,
-      systemPersonalisationPackId
+      systemPersonalisationPackId,
+      proofLetterValidationResult.data.files.docxTemplate.currentVersion
     );
 
     if (sendQueueResult.error) {
