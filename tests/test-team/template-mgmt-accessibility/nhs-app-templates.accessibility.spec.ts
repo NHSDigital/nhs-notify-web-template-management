@@ -14,7 +14,7 @@ import {
   TemplateMgmtPreviewSubmittedNhsAppPage,
   TemplateMgmtSubmitNhsAppPage,
   TemplateMgmtTemplateSubmittedNhsAppPage,
-} from '../pages/nhs-app';
+} from 'pages/nhs-app';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
 const templateIds = {
@@ -70,7 +70,7 @@ test.describe('NHS App templates', () => {
   test('Create NHS App template error', async ({ page, analyze }) =>
     analyze(new TemplateMgmtCreateNhsAppPage(page), {
       beforeAnalyze: async (p) => {
-        p.clickSaveAndPreviewButton();
+        await p.clickSaveAndPreviewButton();
         await p.errorSummary.isVisible();
       },
     }));

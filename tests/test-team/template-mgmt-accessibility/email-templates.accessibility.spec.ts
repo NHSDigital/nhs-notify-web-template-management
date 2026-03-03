@@ -14,7 +14,7 @@ import {
   TemplateMgmtPreviewSubmittedEmailPage,
   TemplateMgmtSubmitEmailPage,
   TemplateMgmtTemplateSubmittedEmailPage,
-} from '../pages/email';
+} from 'pages/email';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
 const templateIds = {
@@ -70,7 +70,7 @@ test.describe('Email templates', () => {
   test('Create email template error', async ({ page, analyze }) =>
     analyze(new TemplateMgmtCreateEmailPage(page), {
       beforeAnalyze: async (p) => {
-        p.clickSaveAndPreviewButton();
+        await p.clickSaveAndPreviewButton();
         await p.errorSummary.isVisible();
       },
     }));

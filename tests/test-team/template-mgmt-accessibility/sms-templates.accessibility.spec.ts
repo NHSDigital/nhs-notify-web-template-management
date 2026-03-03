@@ -14,7 +14,7 @@ import {
   TemplateMgmtPreviewSubmittedSmsPage,
   TemplateMgmtSubmitSmsPage,
   TemplateMgmtTemplateSubmittedSmsPage,
-} from '../pages/sms';
+} from 'pages/sms';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
 const templateIds = {
@@ -49,7 +49,7 @@ test.beforeAll(async () => {
   const draftRoutingDisabled = TemplateFactory.createSmsTemplate(
     templateIds.DRAFT_ROUTING_DISABLED,
     userWithRoutingDisabled,
-    `Draft NHS App template with routing disabled - ${templateIds.DRAFT_ROUTING_DISABLED}`
+    `Draft SMS template with routing disabled - ${templateIds.DRAFT_ROUTING_DISABLED}`
   );
 
   await templateStorageHelper.seedTemplateData([
@@ -70,7 +70,7 @@ test.describe('SMS templates', () => {
   test('Create a SMS template error', async ({ page, analyze }) =>
     analyze(new TemplateMgmtCreateSmsPage(page), {
       beforeAnalyze: async (p) => {
-        p.clickSaveAndPreviewButton();
+        await p.clickSaveAndPreviewButton();
         await p.errorSummary.isVisible();
       },
     }));
