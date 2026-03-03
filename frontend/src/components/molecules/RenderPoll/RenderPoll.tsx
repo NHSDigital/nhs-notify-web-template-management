@@ -1,6 +1,6 @@
 'use client';
 
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LoadingSpinner } from '@atoms/LoadingSpinner/LoadingSpinner';
 import {
@@ -26,14 +26,14 @@ export function shouldPollRender(
 type RenderPollProps = PropsWithChildren<{
   template: AuthoringLetterTemplate;
   mode: RenderKey;
-  loadingText: string;
+  loadingElement: ReactNode;
 }>;
 
 export function RenderPoll({
   template,
   children,
   mode,
-  loadingText,
+  loadingElement,
 }: Readonly<RenderPollProps>) {
   const { isPolling } = useLetterTemplatePoll({
     template,
@@ -41,11 +41,7 @@ export function RenderPoll({
   });
 
   if (isPolling) {
-    return (
-      <LoadingSpinner>
-        <h1>{loadingText}</h1>
-      </LoadingSpinner>
-    );
+    return <LoadingSpinner>{loadingElement}</LoadingSpinner>;
   }
 
   return <>{children}</>;

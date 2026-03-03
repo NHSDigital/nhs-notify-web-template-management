@@ -78,7 +78,7 @@ describe('RenderPoll', () => {
       <RenderPoll
         template={template}
         mode='initialRender'
-        loadingText={'loading'}
+        loadingElement={<h1>{'loading'}</h1>}
       >
         <div>content</div>
       </RenderPoll>
@@ -95,7 +95,7 @@ describe('RenderPoll', () => {
       <RenderPoll
         template={template}
         mode='initialRender'
-        loadingText={'loading'}
+        loadingElement={<p>{'loading'}</p>}
       >
         <div data-testid='page-content'>content</div>
       </RenderPoll>
@@ -105,7 +105,7 @@ describe('RenderPoll', () => {
     expect(screen.queryByText('loading')).not.toBeInTheDocument();
   });
 
-  it('renders the loading spinner with loadingText and hides children when isPolling is true', () => {
+  it('renders the loading spinner with loadingElement and hides children when isPolling is true', () => {
     mockUseTemplatePoll.mockReturnValue({
       isPolling: true,
     });
@@ -114,7 +114,7 @@ describe('RenderPoll', () => {
       <RenderPoll
         template={template}
         mode='initialRender'
-        loadingText={'loading'}
+        loadingElement={<h1>{'loading'}</h1>}
       >
         <div data-testid='page-content'>content</div>
       </RenderPoll>

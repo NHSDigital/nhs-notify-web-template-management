@@ -85,7 +85,7 @@ export default async function PreviewLetterTemplatePage({
         <RenderPoll
           template={validatedTemplate}
           mode='initialRender'
-          loadingText={loadingText}
+          loadingElement={<h1>{loadingText}</h1>}
         >
           <div className='nhsuk-width-container'>
             <NHSNotifyBackLink href={links.messageTemplates}>
