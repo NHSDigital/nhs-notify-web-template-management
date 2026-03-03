@@ -9,16 +9,16 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import {
+import { ErrorCase } from 'nhs-notify-backend-client';
+import type {
   CreateUpdateTemplate,
-  ErrorCase,
   PatchTemplate,
   PdfLetterFiles,
   ProofFileDetails,
   TemplateDto,
   TemplateStatus,
   VirusScanStatus,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type {
   DatabaseTemplate,
@@ -661,7 +661,9 @@ export class TemplateRepository {
 
       if (fileType === 'docx-template') {
         ExpressionAttributeNames['#validationErrors'] = 'validationErrors';
-        ExpressionAttributeValues[':validationErrors'] = ['VIRUS_SCAN_FAILED'];
+        ExpressionAttributeValues[':validationErrors'] = [
+          { name: 'VIRUS_SCAN_FAILED' },
+        ];
         ExpressionAttributeValues[':emptyList'] = [];
         updates.push(
           '#validationErrors = list_append(if_not_exists(#validationErrors, :emptyList), :validationErrors)'

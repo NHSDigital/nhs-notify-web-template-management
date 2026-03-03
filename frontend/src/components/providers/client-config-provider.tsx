@@ -2,7 +2,7 @@
 
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { getCampaignIds, initialFeatureFlags } from '@utils/client-config';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
+import type { ClientConfiguration } from 'nhs-notify-web-template-management-types';
 
 const ClientConfigContext = createContext<ClientConfiguration | null>(null);
 

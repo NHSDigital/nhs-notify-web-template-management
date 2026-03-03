@@ -11,7 +11,7 @@ import {
 import { useActionState } from 'react';
 import { ChooseChannelTemplateFormState } from '@forms/ChooseChannelTemplate/server-action';
 import { usePathname } from 'next/navigation';
-import { LetterType } from 'nhs-notify-backend-client';
+import { LetterType } from 'nhs-notify-web-template-management-types';
 
 jest.mock('next/navigation');
 

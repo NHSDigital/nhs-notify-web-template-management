@@ -5,11 +5,8 @@ import {
   ParameterNotFound,
   SSMClient,
 } from '@aws-sdk/client-ssm';
-import {
-  ClientConfiguration,
-  $ClientConfiguration,
-  ErrorCase,
-} from 'nhs-notify-backend-client';
+import { $ClientConfiguration, ErrorCase } from 'nhs-notify-backend-client';
+import type { ClientConfiguration } from 'nhs-notify-web-template-management-types';
 import { parseJsonPreprocessor } from '@backend-api/utils/zod-json-preprocessor';
 import { ApplicationResult, failure, success } from '@backend-api/utils/result';
 

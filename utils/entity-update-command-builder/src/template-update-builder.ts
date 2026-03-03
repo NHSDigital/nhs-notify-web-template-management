@@ -1,4 +1,10 @@
-import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import type {
+  PersonalisedRenderDetails,
+  RenderDetails,
+  TemplateStatus,
+  TemplateType,
+  ValidationErrorDetail,
+} from 'nhs-notify-web-template-management-types';
 import { BuilderOptionalArgs } from './types/builders';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { EntityUpdateBuilder } from './common/entity-update-builder';
@@ -85,6 +91,27 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
       supplier,
       supplierReference
     );
+    return this;
+  }
+
+  setInitialRender(details: RenderDetails) {
+    this.updateBuilder.setValueInMap('files', 'initialRender', details);
+    return this;
+  }
+
+  setShortFormRender(details: PersonalisedRenderDetails) {
+    this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
+    return this;
+  }
+
+  setPersonalisation(system: string[], custom: string[]) {
+    this.updateBuilder.setValue('systemPersonalisation', system);
+    this.updateBuilder.setValue('customPersonalisation', custom);
+    return this;
+  }
+
+  appendValidationErrors(errors: ValidationErrorDetail[]) {
+    this.updateBuilder.setValueInOrCreateList('validationErrors', errors);
     return this;
   }
 

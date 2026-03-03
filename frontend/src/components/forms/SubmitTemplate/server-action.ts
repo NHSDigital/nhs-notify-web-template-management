@@ -8,7 +8,8 @@ import {
   legacyTemplateTypeToUrlTextMappings,
   validateTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { $LockNumber, type TemplateType } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client';
+import type { TemplateType } from 'nhs-notify-web-template-management-types';
 
 const $SubmitTemplateFormData = z.object({
   templateId: z.uuidv4(),
@@ -18,8 +19,8 @@ const $SubmitTemplateFormData = z.object({
 export async function submitTemplate(
   {
     channel,
-    routingEnabled,
-  }: { channel: TemplateType; routingEnabled?: boolean },
+    proofingEnabled,
+  }: { channel: TemplateType; proofingEnabled?: boolean },
   formData: FormData
 ) {
   const { success, data } = $SubmitTemplateFormData.safeParse(
@@ -51,7 +52,7 @@ export async function submitTemplate(
     throw error;
   }
 
-  if (routingEnabled && channel === 'LETTER') {
+  if (proofingEnabled && channel === 'LETTER') {
     return redirect('/message-templates', RedirectType.push);
   }
 

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import DeleteTemplateError from '@molecules/DeleteTemplateError/DeleteTemplateError';
-import type { RoutingConfigReference } from 'nhs-notify-backend-client';
+import type { RoutingConfigReference } from 'nhs-notify-web-template-management-types';
 
 describe('DeleteTemplateError component', () => {
   test('renders template name in heading', () => {

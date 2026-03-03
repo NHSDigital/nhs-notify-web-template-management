@@ -2,7 +2,10 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
-import type { CascadeItem, Channel } from 'nhs-notify-backend-client';
+import type {
+  CascadeItem,
+  Channel,
+} from 'nhs-notify-web-template-management-types';
 import {
   MESSAGE_ORDER_OPTIONS_LIST,
   type FormState,

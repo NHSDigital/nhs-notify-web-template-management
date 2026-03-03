@@ -9,7 +9,7 @@ import { getBasePath } from '@utils/get-base-path';
 import { Details, WarningCallout } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import { TemplateStatus } from 'nhs-notify-backend-client';
+import type { TemplateStatus } from 'nhs-notify-web-template-management-types';
 import classNames from 'classnames';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
@@ -37,7 +37,7 @@ export function PreviewPdfLetterTemplate({
   } = content.components.previewLetterTemplate;
 
   const basePath = getBasePath();
-  const { routing } = useFeatureFlags();
+  const { proofing } = useFeatureFlags();
 
   const buttonMap: Record<string, ButtonDetails> = {
     NOT_YET_SUBMITTED: {
@@ -49,7 +49,7 @@ export function PreviewPdfLetterTemplate({
       }),
     },
     PROOF_AVAILABLE: {
-      text: routing ? approveProofText : submitText,
+      text: proofing ? approveProofText : submitText,
       href: interpolate(links.submitLetterTemplate, {
         basePath,
         templateId: template.id,
@@ -103,7 +103,7 @@ export function PreviewPdfLetterTemplate({
                     {preSubmissionText.ifDoesNotMatch.summary}
                   </Details.Summary>
                   <Details.Text>
-                    {(routing
+                    {(proofing
                       ? preSubmissionText.ifDoesNotMatch.paragraphsApproval
                       : preSubmissionText.ifDoesNotMatch.paragraphsSubmit
                     ).map((text, i) => (
@@ -120,7 +120,7 @@ export function PreviewPdfLetterTemplate({
                   </Details.Text>
                 </Details>
                 <p>
-                  {routing
+                  {proofing
                     ? preSubmissionText.ifYouAreHappyParagraphApproval
                     : preSubmissionText.ifYouAreHappyParagraphSubmit}
                 </p>

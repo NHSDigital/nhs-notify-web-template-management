@@ -16,12 +16,12 @@ import {
   routingConfig,
   makeRoutingConfig,
 } from '../../fixtures/routing-config';
-import {
+import type {
   CreateRoutingConfig,
   RoutingConfig,
   RoutingConfigStatus,
   UpdateRoutingConfig,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 import { randomUUID, UUID } from 'node:crypto';
 import {
   ConditionalCheckFailedException,

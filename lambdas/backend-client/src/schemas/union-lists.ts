@@ -4,7 +4,7 @@
  * this wouldn't be needed, but that's not currently available.
  * Note that there is a unit test against these to guard against duplicates
  */
-import {
+import type {
   CascadeGroupName,
   Channel,
   ChannelType,
@@ -16,7 +16,7 @@ import {
   TemplateStatus,
   TemplateType,
   VirusScanStatus,
-} from '../types/generated';
+} from 'nhs-notify-web-template-management-types';
 
 /**
  * Returns an identity function which will fail to compile if 'array'
@@ -90,7 +90,12 @@ export const LANGUAGE_LIST = arrayOfAll<Language>()([
 export const LETTER_TYPE_LIST = arrayOfAll<LetterType>()(['q4', 'x0', 'x1']);
 
 export const LETTER_VALIDATION_ERROR_LIST = arrayOfAll<LetterValidationError>()(
-  ['MISSING_ADDRESS_LINES', 'VIRUS_SCAN_FAILED']
+  [
+    'INVALID_MARKERS',
+    'MISSING_ADDRESS_LINES',
+    'UNEXPECTED_ADDRESS_LINES',
+    'VIRUS_SCAN_FAILED',
+  ]
 );
 
 export const VIRUS_SCAN_STATUS_LIST = arrayOfAll<VirusScanStatus>()([

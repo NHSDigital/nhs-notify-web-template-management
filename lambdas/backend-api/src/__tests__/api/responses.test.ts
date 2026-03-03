@@ -1,5 +1,5 @@
 import { apiSuccess, apiFailure } from '../../api/responses';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 describe('responses', () => {
   it('should return success response', () => {

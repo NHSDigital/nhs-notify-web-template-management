@@ -1,6 +1,9 @@
 import { createHandler } from '../../api/upload-letter';
 import { mock } from 'jest-mock-extended';
-import { CreateUpdateTemplate, TemplateDto } from 'nhs-notify-backend-client';
+import type {
+  CreateUpdateTemplate,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,

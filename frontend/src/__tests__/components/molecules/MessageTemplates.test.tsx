@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
 import content from '@content/content';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@providers/client-config-provider');

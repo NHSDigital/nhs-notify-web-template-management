@@ -7,7 +7,7 @@ import {
 import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
 import content from '@content/content';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
 import { useFeatureFlags } from '@providers/client-config-provider';

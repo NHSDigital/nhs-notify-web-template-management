@@ -143,6 +143,68 @@ describe('LetterRenderTab', () => {
       );
     });
 
+    it('falls back to initialRender URL when shortFormRender exists but is not RENDERED', () => {
+      const templateWithFailedRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          shortFormRender: {
+            status: 'FAILED',
+            systemPersonalisationPackId: 'short-1',
+            personalisationParameters: {
+              firstName: 'Jo',
+              lastName: 'Bloggs',
+            },
+          },
+        },
+      };
+
+      render(
+        <LetterRenderTab
+          template={templateWithFailedRender}
+          tab='shortFormRender'
+        />
+      );
+
+      const iframe = screen.getByTitle('Letter preview - short examples');
+
+      expect(iframe).toHaveAttribute(
+        'src',
+        '/templates/files/client-456/renders/template-123/initial.pdf'
+      );
+    });
+
+    it('falls back to initialRender URL when longFormRender exists but is not RENDERED', () => {
+      const templateWithPendingRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          longFormRender: {
+            status: 'PENDING',
+            systemPersonalisationPackId: 'long-1',
+            personalisationParameters: {
+              firstName: 'Michael',
+              lastName: 'Richardson-Clarke',
+            },
+          },
+        },
+      };
+
+      render(
+        <LetterRenderTab
+          template={templateWithPendingRender}
+          tab='longFormRender'
+        />
+      );
+
+      const iframe = screen.getByTitle('Letter preview - long examples');
+
+      expect(iframe).toHaveAttribute(
+        'src',
+        '/templates/files/client-456/renders/template-123/initial.pdf'
+      );
+    });
+
     it('returns null URL when no renders exist', () => {
       const templateNoRenders: AuthoringLetterTemplate = {
         ...baseTemplate,
@@ -192,6 +254,74 @@ describe('LetterRenderTab', () => {
       });
 
       expect(dropdown).toHaveValue('');
+    });
+
+    it('does not pre-populate form when shortFormRender exists but is not RENDERED', () => {
+      const templateWithPendingRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          shortFormRender: {
+            status: 'PENDING',
+            systemPersonalisationPackId: 'short-1',
+            personalisationParameters: {
+              firstName: 'Jo',
+              lastName: 'Bloggs',
+              appointmentDate: '2025-03-20',
+            },
+          },
+        },
+      };
+
+      render(
+        <LetterRenderTab
+          template={templateWithPendingRender}
+          tab='shortFormRender'
+        />
+      );
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+
+      expect(dropdown).toHaveValue('');
+
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+      expect(appointmentInput).toHaveValue('');
+    });
+
+    it('does not pre-populate form when longFormRender exists but is not RENDERED', () => {
+      const templateWithFailedRender: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        files: {
+          ...baseTemplate.files,
+          longFormRender: {
+            status: 'FAILED',
+            systemPersonalisationPackId: 'long-2',
+            personalisationParameters: {
+              firstName: 'Elizabeth',
+              lastName: 'Thompson',
+              appointmentDate: '2025-04-15',
+            },
+          },
+        },
+      };
+
+      render(
+        <LetterRenderTab
+          template={templateWithFailedRender}
+          tab='longFormRender'
+        />
+      );
+
+      const dropdown = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+
+      expect(dropdown).toHaveValue('');
+
+      const appointmentInput = screen.getByLabelText('appointmentDate');
+      expect(appointmentInput).toHaveValue('');
     });
 
     it('uses stored systemPersonalisationPackId from shortFormRender', () => {

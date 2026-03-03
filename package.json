@@ -63,6 +63,7 @@
     "lambdas/letter-preview-renderer",
     "lambdas/sftp-letters",
     "packages/event-schemas",
+    "packages/types",
     "tests/accessibility",
     "tests/contracts/provider",
     "tests/test-team",

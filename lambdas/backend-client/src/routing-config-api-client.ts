@@ -11,7 +11,7 @@ import type {
   PostV1RoutingConfigurationData,
   PatchV1RoutingConfigurationByRoutingConfigIdData,
   UpdateRoutingConfig,
-} from './types/generated';
+} from 'nhs-notify-web-template-management-types';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 import { Result } from './types/result';
 import { OpenApiToTemplate } from './types/open-api-helper';

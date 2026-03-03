@@ -4,7 +4,7 @@ import type {
   RoutingConfig,
   Language,
   LetterType,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-web-template-management-types';
 
 export const templateTypeDisplayMappings: Record<string, string> = {
   NHS_APP: 'NHS App message',
@@ -76,7 +76,7 @@ type TypeSpecificProperties = {
   letterVariantId?: string;
   customPersonalisation?: string[];
   systemPersonalisation?: string[];
-  validationErrors?: string[];
+  validationErrors?: Array<{ name: string; issues?: string[] }>;
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {

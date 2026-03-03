@@ -25,7 +25,8 @@ import {
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
 import type { Template } from '../helpers/types';
-import type { Channel } from 'nhs-notify-backend-client';
+import { loginAsUser } from 'helpers/auth/login-as-user';
+import type { Channel } from 'nhs-notify-web-template-management-types';
 
 const templateStorageHelper = new TemplateStorageHelper();
 
@@ -141,11 +142,19 @@ test.describe('Routing', () => {
   let templates: ReturnType<typeof createTemplates>;
   let user: TestUser;
 
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    user = await createAuthHelper().getTestUser(
+      testUsers.UserLetterAuthoringEnabled.userId
+    );
     templates = createTemplates(user);
 
     await templateStorageHelper.seedTemplateData(Object.values(templates));
+  });
+
+  test.beforeEach(async ({ page }) => {
+    await loginAsUser(user, page);
   });
 
   test.afterAll(async () => {
@@ -395,7 +404,8 @@ test.describe('Routing', () => {
     });
 
     await test.step('verify message plan is in production', async () => {
-      expect(page.url()).toContain(messagePlansPage.getUrl());
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      await expect(page).toHaveURL(new RegExp(`${messagePlansPage.getUrl()}$`));
       await expect(messagePlansPage.pageHeading).toBeVisible();
 
       await assertMessagePlanInTable(

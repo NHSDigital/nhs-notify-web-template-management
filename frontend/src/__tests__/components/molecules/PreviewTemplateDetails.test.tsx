@@ -13,7 +13,7 @@ import {
   AuthoringLetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { VersionedFileDetails } from 'nhs-notify-backend-client';
+import type { VersionedFileDetails } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@providers/client-config-provider');
 
@@ -410,7 +410,30 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
     });
 
-    it('shows total pages and sheets when initialRender exists', () => {
+    it('hides total pages and sheets when initialRender is not in RENDERED status', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{
+            ...validationFailedTemplate,
+            files: {
+              docxTemplate: {
+                currentVersion: 'version-id',
+                fileName: 'template.docx',
+                virusScanStatus: 'PASSED',
+              },
+              initialRender: {
+                status: 'FAILED',
+              },
+            },
+          }}
+        />
+      );
+
+      expect(screen.queryByText('Total pages')).not.toBeInTheDocument();
+      expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
+    });
+
+    it('shows total pages and sheets when initialRender is in RENDERED status', () => {
       render(
         <PreviewTemplateDetailsAuthoringLetter
           template={{

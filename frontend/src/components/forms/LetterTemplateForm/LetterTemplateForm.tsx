@@ -28,7 +28,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import FileUpload from '@atoms/FileUpload/FileUpload';
 import { $UploadLetterTemplateForm } from './form-schema';
 import { validate } from '@utils/client-validate-form';
-import { Language } from 'nhs-notify-backend-client';
+import type { Language } from 'nhs-notify-web-template-management-types';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 

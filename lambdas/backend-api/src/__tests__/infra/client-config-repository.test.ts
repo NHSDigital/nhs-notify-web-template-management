@@ -7,7 +7,7 @@ import {
 import { mockClient } from 'aws-sdk-client-mock';
 import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
+import type { ClientConfiguration } from 'nhs-notify-web-template-management-types';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 function setup() {
