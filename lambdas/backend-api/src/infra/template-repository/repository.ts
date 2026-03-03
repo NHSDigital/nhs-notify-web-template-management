@@ -15,6 +15,7 @@ import type {
   CreateUpdateTemplate,
   PatchTemplate,
   PdfLetterFiles,
+  PersonalisedRenderRequestVariant,
   ProofFileDetails,
   TemplateDto,
   TemplateStatus,
@@ -32,6 +33,7 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { ApplicationResult, failure, success } from '../../utils';
 import { TemplateQuery } from './query';
+import { PersonalisedRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
 
 export type WithAttachments<T> = T extends {
   templateType: 'LETTER';
@@ -713,6 +715,72 @@ export class TemplateRepository {
         .setStatus('WAITING_FOR_PROOF')
         .expectStatus('PENDING_PROOF_REQUEST')
         .setUpdatedByUserAt(this.internalUserKey(user))
+
+        // dynamodb does not support conditional initialising of maps, so we have to
+        // initialise an empty map here, then we set supplier-specific values in the
+        // per-supplier sftp send lambda
+        .initialiseSupplierReferences()
+        .expectTemplateType('LETTER')
+        .expectClientId(user.clientId)
+        .expectProofingEnabled()
+        .expectLockNumber(lockNumber)
+        .incrementLockNumber()
+        .build();
+
+      const response = await this.client.send(new UpdateCommand(update));
+      return success(response.Attributes as DatabaseTemplate);
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
+          return failure(ErrorCase.NOT_FOUND, `Template not found`);
+        }
+
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
+        }
+
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Template cannot be proofed',
+          error
+        );
+      }
+
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
+    }
+  }
+
+  async letterProofUpdate(
+    templateId: string,
+    user: User,
+    lockNumber: number,
+    personalisation: Record<string, string>,
+    requestTypeVariant: PersonalisedRenderRequestVariant
+  ) {
+    try {
+      const update = new TemplateUpdateBuilder(
+        this.templatesTableName,
+        user.clientId,
+        templateId,
+        {
+          ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+          ReturnValues: 'ALL_NEW',
+        }
+      )
+        .setUpdatedByUserAt(this.internalUserKey(user))
+
+        .setPersonalisedRender(requestTypeVariant, {
+          systemPersonalisationPackId: 'pack',
+          personalisationParameters: {},
+          status: 'PENDING',
+          requestedAt: new Date().toISOString(),
+        })
 
         // dynamodb does not support conditional initialising of maps, so we have to
         // initialise an empty map here, then we set supplier-specific values in the

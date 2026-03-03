@@ -21,6 +21,7 @@ import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 
 import { TemplateQuery } from '../../infra/template-repository/query';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import { RenderQueue } from '@backend-api/infra/render-queue';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/enum');
@@ -37,7 +38,9 @@ const setup = () => {
 
   const letterUploadRepository = mock<LetterUploadRepository>();
 
-  const queueMock = mock<ProofingQueue>();
+  const proofingQueueMock = mock<ProofingQueue>();
+
+  const renderQueueMock = mock<RenderQueue>();
 
   const clientConfigRepository = mock<ClientConfigRepository>();
 
@@ -48,7 +51,8 @@ const setup = () => {
   const templateClient = new TemplateClient(
     templateRepository,
     letterUploadRepository,
-    queueMock,
+    proofingQueueMock,
+    renderQueueMock,
     defaultLetterSupplier,
     clientConfigRepository,
     routingConfigRepository,
@@ -74,7 +78,8 @@ const setup = () => {
     mocks: {
       templateRepository,
       letterUploadRepository,
-      queueMock,
+      proofingQueueMock,
+      renderQueueMock,
       logger,
       clientConfigRepository,
       routingConfigRepository,
@@ -3462,7 +3467,7 @@ describe('templateClient', () => {
 
       const clientErr = new Error('sqs err');
 
-      mocks.queueMock.send.mockResolvedValueOnce({
+      mocks.proofingQueueMock.send.mockResolvedValueOnce({
         error: {
           actualError: clientErr,
           errorMeta: {
@@ -3489,8 +3494,8 @@ describe('templateClient', () => {
         1
       );
 
-      expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
-      expect(mocks.queueMock.send).toHaveBeenCalledWith(
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledTimes(1);
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
         user,
@@ -3556,7 +3561,9 @@ describe('templateClient', () => {
         data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
-      mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
+      mocks.proofingQueueMock.send.mockResolvedValueOnce({
+        data: { $metadata: {} },
+      });
 
       const result = await templateClient.requestProof(templateId, user, 1);
 
@@ -3566,8 +3573,8 @@ describe('templateClient', () => {
         1
       );
 
-      expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
-      expect(mocks.queueMock.send).toHaveBeenCalledWith(
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledTimes(1);
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
         user,

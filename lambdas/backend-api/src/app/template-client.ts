@@ -16,6 +16,7 @@ import type {
   CreateUpdateTemplate,
   PatchTemplate,
   PdfLetterFiles,
+  PersonalisedRenderRequestVariant,
   TemplateDto,
 } from 'nhs-notify-web-template-management-types';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
@@ -35,6 +36,7 @@ import { ClientConfigRepository } from '../infra/client-config-repository';
 import { TemplateRepository } from '../infra';
 import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+import { RenderQueue } from '@backend-api/infra/render-queue';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(
@@ -50,6 +52,7 @@ export class TemplateClient {
     private readonly templateRepository: TemplateRepository,
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
+    private readonly renderQueue: RenderQueue,
     private readonly defaultLetterSupplier: string,
     private readonly clientConfigRepository: ClientConfigRepository,
     private readonly routingConfigRepository: RoutingConfigRepository,
@@ -886,6 +889,108 @@ export class TemplateClient {
       pdfVersionId,
       testDataVersionId,
       this.defaultLetterSupplier
+    );
+
+    if (sendQueueResult.error) {
+      log
+        .child(sendQueueResult.error.errorMeta)
+        .error(sendQueueResult.error.actualError);
+
+      return sendQueueResult;
+    }
+
+    return success(proofLetterValidationResult.data);
+  }
+
+  async letterProof(
+    templateId: string,
+    user: User,
+    lockNumber: number | string,
+    personalisation: Record<string, string>,
+    requestTypeVariant: PersonalisedRenderRequestVariant
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({ templateId, user });
+
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    if (clientConfigurationResult.error) {
+      log
+        .child(clientConfigurationResult.error.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationResult.error.actualError
+        );
+
+      return clientConfigurationResult;
+    }
+
+    const clientConfig = clientConfigurationResult.data;
+
+    if (!clientConfig?.features.letterAuthoring) {
+      log.error({
+        code: ErrorCase.FEATURE_DISABLED,
+        description: 'User cannot request a personalised proof',
+        clientConfig,
+      });
+
+      return failure(
+        ErrorCase.FEATURE_DISABLED,
+        'User cannot request a personalised proof'
+      );
+    }
+
+    const letterProofUpdateResult =
+      await this.templateRepository.letterProofUpdate(
+        templateId,
+        user,
+        lockNumberValidation.data,
+        personalisation
+      );
+
+    if (letterProofUpdateResult.error) {
+      log
+        .child(letterProofUpdateResult.error.errorMeta)
+        .error(letterProofUpdateResult.error.actualError);
+
+      return letterProofUpdateResult;
+    }
+
+    const proofLetterValidationResult = this.$LetterForProofing.safeParse(
+      letterProofUpdateResult.data
+    );
+
+    if (proofLetterValidationResult.error) {
+      log
+        .child({
+          code: ErrorCase.INTERNAL,
+          template: letterProofUpdateResult.data,
+        })
+        .error('Malformed template', proofLetterValidationResult.error);
+
+      return failure(ErrorCase.INTERNAL, 'Malformed template');
+    }
+
+    const sendQueueResult = await this.renderQueue.send(
+      templateId,
+      user.clientId,
+      personalisation,
+      requestTypeVariant
     );
 
     if (sendQueueResult.error) {

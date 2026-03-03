@@ -1,4 +1,9 @@
 import type {
+<<<<<<< HEAD
+=======
+  PersonalisedRenderDetails,
+  PersonalisedRenderRequestVariant,
+>>>>>>> 37072458 (wip)
   RenderDetails,
   TemplateStatus,
   TemplateType,
@@ -98,8 +103,20 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+<<<<<<< HEAD
   setShortFormRender(details: RenderDetails) {
     this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
+=======
+  setPersonalisedRender(
+    variant: PersonalisedRenderRequestVariant,
+    details: PersonalisedRenderDetails
+  ) {
+    this.updateBuilder.setValueInMap(
+      'files',
+      variant === 'long' ? 'longFormRender' : 'shortFormRender',
+      details
+    );
+>>>>>>> 37072458 (wip)
     return this;
   }
 

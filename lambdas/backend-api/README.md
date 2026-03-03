@@ -150,6 +150,23 @@ curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/proof" \
 --header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
+### POST - /v1/template/:templateId/letter-proof - Request a personalised proof of a template
+
+Will trigger a proof request for the template.
+
+```bash
+curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/letter-proof" \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER" \
+--data '{
+  "requestTypeVariant": "short",
+  "personalisation": {
+      "k": "v"
+    }
+}'
+```
+
 ### GET - /v1/client-configuration - Get client configuration for the caller
 
 ```bash
