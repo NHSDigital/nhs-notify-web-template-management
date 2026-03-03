@@ -541,6 +541,9 @@ const previewLetterTemplate = {
       'The file(s) you uploaded may contain a virus.',
       'Create a new letter template to upload your file(s) again or upload different file(s).',
     ],
+    // not yet implemented, but required as placeholders
+    INVALID_MARKERS: [],
+    UNEXPECTED_ADDRESS_LINES: [],
   } satisfies Record<string, string[]>,
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {

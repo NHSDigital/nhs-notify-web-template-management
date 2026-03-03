@@ -466,6 +466,16 @@ describe('Template schemas', () => {
           },
         },
       },
+      {
+        description: 'initialRender has non-PDF filename',
+        files: {
+          initialRender: {
+            fileName: 'initial.webp',
+            currentVersion: 'v1',
+            status: 'RENDERED',
+          },
+        },
+      },
     ])('should fail validation for $description', ({ files }) => {
       const result = $AuthoringLetterFiles.safeParse(files);
 

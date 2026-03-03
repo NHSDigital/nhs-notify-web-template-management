@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createHandler throws when event is not a valid render request 1`] = `
+"[
+  {
+    "code": "invalid_union",
+    "errors": [],
+    "note": "No matching discriminator",
+    "discriminator": "requestType",
+    "path": [
+      "requestType"
+    ],
+    "message": "Invalid input"
+  }
+]"
+`;
