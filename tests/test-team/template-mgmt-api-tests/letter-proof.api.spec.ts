@@ -81,8 +81,8 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.uploadLetterTemplate(
       randomUUID(),
       user,
-      'userProofingEnabledtemplate',
-      'PENDING_PROOF_REQUEST'
+      'otherOwner',
+      'NOT_YET_SUBMITTED'
     );
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -116,8 +116,8 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.uploadLetterTemplate(
       randomUUID(),
       user,
-      'userProofingEnabledtemplate',
-      'PENDING_PROOF_REQUEST'
+      'noBody',
+      'NOT_YET_SUBMITTED'
     );
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -144,7 +144,6 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
   });
 
   test('returns 201 and the updated template data', async ({ request }) => {
-    // top level object for IDs
     const templateId = randomUUID();
     const currentVersion = randomUUID();
 
@@ -160,11 +159,9 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.createAuthoringLetterTemplate(
       templateId,
       user,
-      // put ID in name
-      'userProofingEnabledtemplate',
+      'valid',
       'NOT_YET_SUBMITTED',
       {
-        // add personalisation fields?
         docxTemplate: {
           virusScanStatus: 'PASSED',
           currentVersion,
@@ -179,6 +176,13 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
 
     const start = new Date();
 
+    const personalisation = {
+      address_line_1: '1 Long Lane',
+      address_line_2: 'S70 0PQ',
+      nhsNumber: '99999999999',
+      myCustomParam: 'jalapeno',
+    };
+
     const requestProofResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
       {
@@ -187,12 +191,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
           'X-Lock-Number': String(template.lockNumber),
         },
         data: {
-          personalisation: {
-            address_line_1: '1 Long Lane',
-            address_line_2: 'S70 0PQ',
-            nhsNumber: '99999999999',
-            myCustomParam: 'jalapeno',
-          },
+          personalisation,
           systemPersonalisationPackId: 'pack-id',
           requestTypeVariant: 'long',
         } satisfies LetterProofRequest,
@@ -230,12 +229,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
           status: 'RENDERED',
         },
         longFormRender: {
-          personalisationParameters: {
-            address_line_1: '1 Long Lane',
-            address_line_2: 'S70 0PQ',
-            myCustomParam: 'jalapeno',
-            nhsNumber: '99999999999',
-          },
+          personalisationParameters: personalisation,
           requestedAt: expect.stringMatching(isoDateRegExp),
           status: 'PENDING',
           systemPersonalisationPackId: 'pack-id',
@@ -256,7 +250,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.createAuthoringLetterTemplate(
       templateId,
       user,
-      'userProofingEnabledtemplate',
+      'validationFailed',
       'VALIDATION_FAILED',
       {
         docxTemplate: {
@@ -305,7 +299,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.createEmailTemplate(
       templateId,
       user,
-      'userProofingEnabledtemplate'
+      'email'
     );
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -354,11 +348,9 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.createAuthoringLetterTemplate(
       templateId,
       user,
-      // put ID in name
-      'userProofingEnabledtemplate',
+      'shared',
       'NOT_YET_SUBMITTED',
       {
-        // add personalisation fields?
         docxTemplate: {
           virusScanStatus: 'PASSED',
           currentVersion,
@@ -414,11 +406,9 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.createAuthoringLetterTemplate(
       templateId,
       user,
-      // put ID in name
-      'userProofingEnabledtemplate',
+      'noLockNo',
       'NOT_YET_SUBMITTED',
       {
-        // add personalisation fields?
         docxTemplate: {
           virusScanStatus: 'PASSED',
           currentVersion,
@@ -464,11 +454,9 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const template = TemplateFactory.createAuthoringLetterTemplate(
       templateId,
       user,
-      // put ID in name
-      'userProofingEnabledtemplate',
+      'wrongLockNo',
       'NOT_YET_SUBMITTED',
       {
-        // add personalisation fields?
         docxTemplate: {
           virusScanStatus: 'PASSED',
           currentVersion,
