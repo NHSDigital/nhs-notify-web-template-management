@@ -442,15 +442,14 @@ test.describe('Letter rendering', () => {
     async function personalisedRenderTest(
       request: APIRequestContext,
       docx: Buffer,
-      // add render request payload arg
+      payload: Partial<LetterProofRequest>,
       assert: (t: Template) => void
     ) {
-      // seeding instead of initial request?
       const { multipart, contentType } =
         TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
-            campaignId: user.campaignIds?.[0],
+            campaignId: user.campaignIds![0],
             letterVersion: 'AUTHORING',
           },
           docx
