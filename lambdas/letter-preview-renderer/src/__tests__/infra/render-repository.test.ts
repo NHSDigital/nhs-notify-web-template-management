@@ -5,7 +5,6 @@ import { RenderRepository } from '../../infra/render-repository';
 import {
   createInitialRequest,
   createPersonalisedRequest,
-  createLongPersonalisedRequest,
 } from '../fixtures/create-request';
 
 jest.mock('node:crypto');
@@ -102,7 +101,8 @@ describe('RenderRepository', () => {
     test('includes request-type-variant in metadata for long personalised request', async () => {
       const { renderRepository, mocks } = setup();
       const pdf = Buffer.from('pdf-content');
-      const request = createLongPersonalisedRequest({
+      const request = createPersonalisedRequest({
+        requestTypeVariant: 'long',
         clientId: 'client-long',
         templateId: 'tmpl-long',
       });

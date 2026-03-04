@@ -789,65 +789,43 @@ describe('TemplateUpdateBuilder', () => {
   });
 
   describe('setPersonalisedRender', () => {
-    test('sets shortFormRender in files map for short variant', () => {
-      const builder = new TemplateUpdateBuilder(
-        mockTableName,
-        mockOwner,
-        mockId
-      );
+    test.each([
+      ['short', 'shortFormRender'],
+      ['long', 'longFormRender'],
+    ] as const)(
+      'sets %s variant render in files map',
+      (variant, expectedKey) => {
+        const builder = new TemplateUpdateBuilder(
+          mockTableName,
+          mockOwner,
+          mockId
+        );
 
-      const renderDetails = {
-        status: 'RENDERED' as const,
-        fileName: 'short-form.pdf',
-        currentVersion: 'v2',
-        pageCount: 1,
-        systemPersonalisationPackId: 'pack-1',
-        personalisationParameters: { firstName: 'John' },
-      };
+        const renderDetails = {
+          status: 'RENDERED' as const,
+          fileName: `${variant}-form.pdf`,
+          currentVersion: 'v2',
+          pageCount: 1,
+          systemPersonalisationPackId: 'pack-1',
+          personalisationParameters: { firstName: 'John' },
+        };
 
-      const res = builder.setPersonalisedRender('short', renderDetails).build();
+        const res = builder
+          .setPersonalisedRender(variant, renderDetails)
+          .build();
 
-      expect(res).toMatchObject({
-        ExpressionAttributeNames: {
-          '#files': 'files',
-          '#shortFormRender': 'shortFormRender',
-        },
-        ExpressionAttributeValues: {
-          ':shortFormRender': renderDetails,
-        },
-        UpdateExpression: 'SET #files.#shortFormRender = :shortFormRender',
-      });
-    });
-
-    test('sets longFormRender in files map for long variant', () => {
-      const builder = new TemplateUpdateBuilder(
-        mockTableName,
-        mockOwner,
-        mockId
-      );
-
-      const renderDetails = {
-        status: 'RENDERED' as const,
-        fileName: 'long-form.pdf',
-        currentVersion: 'v3',
-        pageCount: 4,
-        systemPersonalisationPackId: 'pack-2',
-        personalisationParameters: { full_address: '123 Test St' },
-      };
-
-      const res = builder.setPersonalisedRender('long', renderDetails).build();
-
-      expect(res).toMatchObject({
-        ExpressionAttributeNames: {
-          '#files': 'files',
-          '#longFormRender': 'longFormRender',
-        },
-        ExpressionAttributeValues: {
-          ':longFormRender': renderDetails,
-        },
-        UpdateExpression: 'SET #files.#longFormRender = :longFormRender',
-      });
-    });
+        expect(res).toMatchObject({
+          ExpressionAttributeNames: {
+            '#files': 'files',
+            [`#${expectedKey}`]: expectedKey,
+          },
+          ExpressionAttributeValues: {
+            [`:${expectedKey}`]: renderDetails,
+          },
+          UpdateExpression: `SET #files.#${expectedKey} = :${expectedKey}`,
+        });
+      }
+    );
   });
 
   describe('appendValidationErrors', () => {

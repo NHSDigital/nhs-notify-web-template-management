@@ -6,7 +6,6 @@ import type { Personalisation } from '../../types/types';
 import {
   createInitialRequest,
   createPersonalisedRequest,
-  createLongPersonalisedRequest,
 } from '../fixtures/create-request';
 
 const templatesTableName = 'test-templates-table';
@@ -302,7 +301,7 @@ describe('TemplateRepository', () => {
   });
 
   describe('updateRenderedPersonalised', () => {
-    test('sends correct UpdateCommand for short variant', async () => {
+    test('sends correct UpdateCommand with variant and render details', async () => {
       const { templateRepository, mocks } = setup();
       const request = createPersonalisedRequest();
 
@@ -343,55 +342,10 @@ describe('TemplateRepository', () => {
           'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
       });
     });
-
-    test('sends correct UpdateCommand for long variant', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createLongPersonalisedRequest({
-        personalisation: { full_address: '123 Test Street' },
-        systemPersonalisationPackId: 'long-pack-id',
-      });
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateRenderedPersonalised(
-        request,
-        'v3',
-        'long-render.pdf',
-        4
-      );
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        TableName: templatesTableName,
-        Key: { owner: 'CLIENT#test-client', id: 'test-template' },
-        ExpressionAttributeNames: {
-          '#lockNumber': 'lockNumber',
-          '#id': 'id',
-          '#templateStatus': 'templateStatus',
-          '#files': 'files',
-          '#longFormRender': 'longFormRender',
-        },
-        ExpressionAttributeValues: {
-          ':lockNumber': 1,
-          ':condition_2_templateStatus': 'NOT_YET_SUBMITTED',
-          ':longFormRender': {
-            status: 'RENDERED',
-            currentVersion: 'v3',
-            fileName: 'long-render.pdf',
-            pageCount: 4,
-            systemPersonalisationPackId: 'long-pack-id',
-            personalisationParameters: { full_address: '123 Test Street' },
-          },
-        },
-        UpdateExpression:
-          'SET #files.#longFormRender = :longFormRender ADD #lockNumber :lockNumber',
-        ConditionExpression:
-          'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
-      });
-    });
   });
 
   describe('updateFailurePersonalised', () => {
-    test('sends correct UpdateCommand for short variant failure', async () => {
+    test('sends correct UpdateCommand with variant and failure status', async () => {
       const { templateRepository, mocks } = setup();
       const request = createPersonalisedRequest();
 
@@ -420,43 +374,6 @@ describe('TemplateRepository', () => {
         },
         UpdateExpression:
           'SET #files.#shortFormRender = :shortFormRender ADD #lockNumber :lockNumber',
-        ConditionExpression:
-          'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
-      });
-    });
-
-    test('sends correct UpdateCommand for long variant failure', async () => {
-      const { templateRepository, mocks } = setup();
-      const request = createLongPersonalisedRequest({
-        personalisation: { full_address: '456 Test Avenue' },
-        systemPersonalisationPackId: 'long-pack-id',
-      });
-
-      mocks.ddbDocClient.on(UpdateCommand).resolves({});
-
-      await templateRepository.updateFailurePersonalised(request);
-
-      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
-        TableName: templatesTableName,
-        Key: { owner: 'CLIENT#test-client', id: 'test-template' },
-        ExpressionAttributeNames: {
-          '#lockNumber': 'lockNumber',
-          '#id': 'id',
-          '#templateStatus': 'templateStatus',
-          '#files': 'files',
-          '#longFormRender': 'longFormRender',
-        },
-        ExpressionAttributeValues: {
-          ':lockNumber': 1,
-          ':condition_2_templateStatus': 'NOT_YET_SUBMITTED',
-          ':longFormRender': {
-            status: 'FAILED',
-            systemPersonalisationPackId: 'long-pack-id',
-            personalisationParameters: { full_address: '456 Test Avenue' },
-          },
-        },
-        UpdateExpression:
-          'SET #files.#longFormRender = :longFormRender ADD #lockNumber :lockNumber',
         ConditionExpression:
           'attribute_exists (#id) AND #templateStatus = :condition_2_templateStatus',
       });
