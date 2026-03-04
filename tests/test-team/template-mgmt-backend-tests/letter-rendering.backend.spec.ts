@@ -511,8 +511,7 @@ test.describe('Letter rendering', () => {
         }
       );
 
-      // should be 201?
-      expect(requestProofResponse.status()).toBe(200);
+      expect(requestProofResponse.status()).toBe(201);
 
       let updatedTemplate: Template | undefined;
 

@@ -176,14 +176,6 @@ export type Failure = {
   technicalMessage: string;
 };
 
-export type LetterProofRequest = {
-  personalisation: {
-    [key: string]: string;
-  };
-  requestTypeVariant: PersonalisedRenderRequestVariant;
-  systemPersonalisationPackId: string;
-};
-
 export type Language =
   | 'ar'
   | 'bg'
@@ -214,6 +206,14 @@ export type Language =
   | 'tr'
   | 'ur'
   | 'zh';
+
+export type LetterProofRequest = {
+  personalisation: {
+    [key: string]: string;
+  };
+  requestTypeVariant: PersonalisedRenderRequestVariant;
+  systemPersonalisationPackId: string;
+};
 
 export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
@@ -931,9 +931,9 @@ export type PostV1TemplateByTemplateIdLetterProofError =
 
 export type PostV1TemplateByTemplateIdLetterProofResponses = {
   /**
-   * 200 response
+   * 201 response
    */
-  200: TemplateSuccess;
+  201: TemplateSuccess;
 };
 
 export type PostV1TemplateByTemplateIdLetterProofResponse =

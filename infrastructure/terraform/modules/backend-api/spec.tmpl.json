@@ -2370,7 +2370,7 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "201": {
             "content": {
               "application/json": {
                 "schema": {
@@ -2378,7 +2378,7 @@
                 }
               }
             },
-            "description": "200 response",
+            "description": "201 response",
             "headers": {
               "Content-Type": {
                 "schema": {

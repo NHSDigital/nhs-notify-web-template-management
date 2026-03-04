@@ -37,6 +37,6 @@ export function createHandler({
       );
     }
 
-    return apiSuccess(200, data);
+    return apiSuccess(201, data);
   };
 }
