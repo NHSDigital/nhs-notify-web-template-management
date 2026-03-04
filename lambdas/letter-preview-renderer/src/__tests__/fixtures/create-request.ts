@@ -1,6 +1,5 @@
 import type {
   InitialRenderRequest,
-  PersonalisedRenderRequest,
   ShortPersonalisedRenderRequest,
   LongPersonalisedRenderRequest,
 } from 'nhs-notify-backend-client/src/types/render-request';

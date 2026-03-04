@@ -437,9 +437,9 @@ describe('App', () => {
       expect(mocks.carbone.render).not.toHaveBeenCalled();
       expect(mocks.renderRepo.save).not.toHaveBeenCalled();
 
-      expect(
-        mocks.templateRepo.updateFailurePersonalised
-      ).toHaveBeenCalledWith(request);
+      expect(mocks.templateRepo.updateFailurePersonalised).toHaveBeenCalledWith(
+        request
+      );
     });
 
     test('returns "not-rendered" when render fails', async () => {
@@ -459,9 +459,9 @@ describe('App', () => {
 
       expect(mocks.renderRepo.save).not.toHaveBeenCalled();
 
-      expect(
-        mocks.templateRepo.updateFailurePersonalised
-      ).toHaveBeenCalledWith(request);
+      expect(mocks.templateRepo.updateFailurePersonalised).toHaveBeenCalledWith(
+        request
+      );
     });
 
     test('returns "not-rendered" when page count fails', async () => {
@@ -483,9 +483,9 @@ describe('App', () => {
 
       expect(mocks.renderRepo.save).not.toHaveBeenCalled();
 
-      expect(
-        mocks.templateRepo.updateFailurePersonalised
-      ).toHaveBeenCalledWith(request);
+      expect(mocks.templateRepo.updateFailurePersonalised).toHaveBeenCalledWith(
+        request
+      );
     });
 
     test('returns "not-rendered" when save fails', async () => {
@@ -507,9 +507,9 @@ describe('App', () => {
 
       expect(outcome).toBe('not-rendered');
 
-      expect(
-        mocks.templateRepo.updateFailurePersonalised
-      ).toHaveBeenCalledWith(request);
+      expect(mocks.templateRepo.updateFailurePersonalised).toHaveBeenCalledWith(
+        request
+      );
     });
   });
 });

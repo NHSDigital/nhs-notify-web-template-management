@@ -1,6 +1,9 @@
 import { createHandler } from '../../api/upload-docx-letter';
 import { mock } from 'jest-mock-extended';
-import { CreateUpdateTemplate, TemplateDto } from 'nhs-notify-backend-client';
+import type {
+  CreateUpdateTemplate,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
@@ -85,6 +88,10 @@ describe('upload-docx-letter', () => {
           fileName: docxFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
+        },
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: '2026-03-04T16:33:01.519Z',
         },
       },
     };

@@ -155,10 +155,8 @@ describe('$RenderRequest', () => {
       expect(initialResult.success).toBe(true);
       expect(personalisedResult.success).toBe(true);
 
-      if (initialResult.success && personalisedResult.success) {
-        expect(initialResult.data.requestType).toBe('initial');
-        expect(personalisedResult.data.requestType).toBe('personalised');
-      }
+      expect(initialResult.data?.requestType).toBe('initial');
+      expect(personalisedResult.data?.requestType).toBe('personalised');
     });
 
     test('should discriminate between short and long personalised variants', () => {
@@ -185,10 +183,8 @@ describe('$RenderRequest', () => {
       expect(shortResult.success).toBe(true);
       expect(longResult.success).toBe(true);
 
-      if (shortResult.success && longResult.success) {
-        expect(shortResult.data).toHaveProperty('requestTypeVariant', 'short');
-        expect(longResult.data).toHaveProperty('requestTypeVariant', 'long');
-      }
+      expect(shortResult.data).toHaveProperty('requestTypeVariant', 'short');
+      expect(longResult.data).toHaveProperty('requestTypeVariant', 'long');
     });
   });
 });
