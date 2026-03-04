@@ -3593,6 +3593,437 @@ describe('templateClient', () => {
     });
   });
 
+  describe('letterProof', () => {
+    const validBody = {
+      personalisation: { name: 'Test Name' },
+      requestTypeVariant: 'short' as const,
+      systemPersonalisationPackId: 'pack-id',
+    };
+
+    test('returns failure result when body validation fails', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        1,
+        { invalid: 'body' } as never
+      );
+
+      expect(
+        mocks.templateRepository.letterProofUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          actualError: expect.any(Object),
+          errorMeta: {
+            code: 400,
+            description: 'Request failed validation',
+            details: expect.objectContaining({
+              personalisation: expect.any(String),
+              requestTypeVariant: expect.any(String),
+              systemPersonalisationPackId: expect.any(String),
+            }),
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'Invalid letter proof request',
+        })
+      );
+    });
+
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        '',
+        validBody
+      );
+
+      expect(
+        mocks.templateRepository.letterProofUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Invalid lock number provided',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'Lock number failed validation',
+        })
+      );
+    });
+
+    test('returns failure result when repository update fails', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const actualError = new Error('from db');
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        1,
+        validBody
+      );
+
+      expect(mocks.templateRepository.letterProofUpdate).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'from db',
+        })
+      );
+    });
+
+    test('returns failure result when template is not LETTER type', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        message: 'message',
+        templateType: 'SMS',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        1,
+        validBody
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Unexpectedly found template unsuitable for proofing',
+          },
+        },
+      });
+    });
+
+    test('returns failure result when template is LETTER but not AUTHORING', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'PDF',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        1,
+        validBody
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Unexpectedly found template unsuitable for proofing',
+          },
+        },
+      });
+    });
+
+    test('returns failure result when render queue send fails', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const actualError = new Error('SQS error');
+
+      mocks.renderQueueMock.send.mockResolvedValueOnce({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to send to render queue',
+          },
+        },
+      });
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        1,
+        validBody
+      );
+
+      expect(mocks.renderQueueMock.send).toHaveBeenCalledWith(
+        templateId,
+        user.clientId,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId,
+        versionId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to send to render queue',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'SQS error',
+        })
+      );
+    });
+
+    test('returns updated template on success', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+          shortFormRender: {
+            status: 'PENDING',
+            requestedAt: NOW,
+            personalisationParameters: validBody.personalisation,
+            systemPersonalisationPackId: validBody.systemPersonalisationPackId,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      mocks.renderQueueMock.send.mockResolvedValueOnce({
+        data: { $metadata: {} },
+      });
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        1,
+        validBody
+      );
+
+      expect(mocks.templateRepository.letterProofUpdate).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId
+      );
+
+      expect(mocks.renderQueueMock.send).toHaveBeenCalledWith(
+        templateId,
+        user.clientId,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId,
+        versionId
+      );
+
+      expect(result).toEqual({
+        data: expect.objectContaining({
+          id: templateId,
+          templateType: 'LETTER',
+          letterVersion: 'AUTHORING',
+        }),
+      });
+    });
+
+    test('coerces stringified lock number to number', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      mocks.renderQueueMock.send.mockResolvedValueOnce({
+        data: { $metadata: {} },
+      });
+
+      await templateClient.letterProof(templateId, user, '10', validBody);
+
+      expect(mocks.templateRepository.letterProofUpdate).toHaveBeenCalledWith(
+        templateId,
+        user,
+        10,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId
+      );
+
+      expect(mocks.renderQueueMock.send).toHaveBeenCalledWith(
+        templateId,
+        user.clientId,
+        10,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId,
+        versionId
+      );
+    });
+  });
+
   describe('deleteTemplate', () => {
     test('should return nothing when successful (and no routing configs linked)', async () => {
       const { templateClient, mocks } = setup();
