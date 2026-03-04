@@ -1,10 +1,14 @@
-module "s3bucket_access_logs" {
+module "s3bucket_access_logs_us" {
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip"
 
   name = "access-logs"
 
+  providers = {
+    aws = aws.us-east-1
+  }
+
   aws_account_id = var.aws_account_id
-  region         = var.region
+  region         = "us-east-1"
   project        = var.project
   environment    = var.environment
   component      = var.component
@@ -35,7 +39,7 @@ module "s3bucket_access_logs" {
   ]
 
   policy_documents = [
-    data.aws_iam_policy_document.s3bucket_access_logs.json
+    data.aws_iam_policy_document.s3bucket_access_logs_us.json
   ]
 
   public_access = {
@@ -45,13 +49,12 @@ module "s3bucket_access_logs" {
     restrict_public_buckets = true
   }
 
-
   default_tags = {
     Name = "S3 bucket access logs"
   }
 }
 
-data "aws_iam_policy_document" "s3bucket_access_logs" {
+data "aws_iam_policy_document" "s3bucket_access_logs_us" {
   statement {
     sid    = "DontAllowNonSecureConnection"
     effect = "Deny"
@@ -61,8 +64,8 @@ data "aws_iam_policy_document" "s3bucket_access_logs" {
     ]
 
     resources = [
-      module.s3bucket_access_logs.arn,
-      "${module.s3bucket_access_logs.arn}/*",
+      module.s3bucket_access_logs_us.arn,
+      "${module.s3bucket_access_logs_us.arn}/*",
     ]
 
     principals {
@@ -92,7 +95,7 @@ data "aws_iam_policy_document" "s3bucket_access_logs" {
     ]
 
     resources = [
-      module.s3bucket_access_logs.arn,
+      module.s3bucket_access_logs_us.arn,
     ]
 
     principals {
@@ -112,7 +115,7 @@ data "aws_iam_policy_document" "s3bucket_access_logs" {
     ]
 
     resources = [
-      "${module.s3bucket_access_logs.arn}/*",
+      "${module.s3bucket_access_logs_us.arn}/*",
     ]
 
     principals {
@@ -132,7 +135,7 @@ data "aws_iam_policy_document" "s3bucket_access_logs" {
     ]
 
     resources = [
-      "${module.s3bucket_access_logs.arn}/*",
+      "${module.s3bucket_access_logs_us.arn}/*",
     ]
 
     principals {

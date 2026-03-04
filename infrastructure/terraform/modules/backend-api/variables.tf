@@ -151,3 +151,9 @@ variable "container_image_tag_suffix" {
   description = "Suffix used for container/image based Lambda image tags"
   default     = "latest"
 }
+
+variable "access_logging_bucket" {
+  type        = string
+  description = "Name of S3 bucket to use for access logging"
+  default     = ""
+}

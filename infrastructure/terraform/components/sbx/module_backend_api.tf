@@ -36,4 +36,6 @@ module "backend_api" {
   email_domain                            = local.email_domain
   template_submitted_sender_email_address = local.sandbox_letter_supplier_mock_template_submitted_sender
   proof_requested_sender_email_address    = local.sandbox_letter_supplier_mock_proof_requested_sender
+
+  access_logging_bucket = local.acct.s3_buckets["access_logs"]["id"]
 }
