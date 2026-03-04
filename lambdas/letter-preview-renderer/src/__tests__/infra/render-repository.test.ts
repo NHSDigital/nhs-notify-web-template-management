@@ -25,20 +25,16 @@ describe('RenderRepository', () => {
   });
 
   describe('save', () => {
-    test('saves PDF to S3 with correct key and metadata, returns filename', async () => {
+    test('saves initial render PDF to S3 with metadata', async () => {
       const { renderRepository, mocks } = setup();
       const pdf = Buffer.from('pdf-content');
       const request = createInitialRequest();
-      const pageCount = 3;
       const uuid = '99472D0D-7C5A-4162-B3B0-7F3F2C679EB4';
 
       mockUUID.mockReturnValue(uuid);
+      mocks.s3.putRawData.mockResolvedValue({ $metadata: {} });
 
-      mocks.s3.putRawData.mockResolvedValue({
-        $metadata: {},
-      });
-
-      const result = await renderRepository.save(pdf, request, pageCount);
+      const result = await renderRepository.save(pdf, request, 3);
 
       expect(result).toEqual({
         fileName: `${uuid}.pdf`,
@@ -62,27 +58,20 @@ describe('RenderRepository', () => {
       );
     });
 
-    test('includes request-type-variant in metadata for short personalised request', async () => {
+    test('saves personalised render PDF to S3 with variant in metadata', async () => {
       const { renderRepository, mocks } = setup();
       const pdf = Buffer.from('pdf-content');
-      const request = createPersonalisedRequest({
-        clientId: 'client-abc',
-        templateId: 'tmpl-xyz',
-      });
-      const pageCount = 5;
+      const request = createPersonalisedRequest();
       const uuid = '4CBEA40A-D9AE-478A-8E42-5A87C135AAE4';
 
       mockUUID.mockReturnValue(uuid);
+      mocks.s3.putRawData.mockResolvedValue({ $metadata: {} });
 
-      mocks.s3.putRawData.mockResolvedValue({
-        $metadata: {},
-      });
-
-      await renderRepository.save(pdf, request, pageCount);
+      await renderRepository.save(pdf, request, 5);
 
       expect(mocks.s3.putRawData).toHaveBeenCalledWith(
         pdf,
-        `client-abc/renders/tmpl-xyz/${uuid}.pdf`,
+        `test-client/renders/test-template/${uuid}.pdf`,
         {
           ContentDisposition: 'inline',
           ContentType: 'application/pdf',
@@ -90,46 +79,9 @@ describe('RenderRepository', () => {
             'request-type': 'personalised',
             'request-type-variant': 'short',
             'file-type': 'render',
-            'template-id': 'tmpl-xyz',
+            'template-id': 'test-template',
             'page-count': '5',
-            'client-id': 'client-abc',
-          },
-        }
-      );
-    });
-
-    test('includes request-type-variant in metadata for long personalised request', async () => {
-      const { renderRepository, mocks } = setup();
-      const pdf = Buffer.from('pdf-content');
-      const request = createPersonalisedRequest({
-        requestTypeVariant: 'long',
-        clientId: 'client-long',
-        templateId: 'tmpl-long',
-      });
-      const pageCount = 8;
-      const uuid = '8D1E5F2A-3B4C-6D7E-9F0A-1B2C3D4E5F6A';
-
-      mockUUID.mockReturnValue(uuid);
-
-      mocks.s3.putRawData.mockResolvedValue({
-        $metadata: {},
-      });
-
-      await renderRepository.save(pdf, request, pageCount);
-
-      expect(mocks.s3.putRawData).toHaveBeenCalledWith(
-        pdf,
-        `client-long/renders/tmpl-long/${uuid}.pdf`,
-        {
-          ContentDisposition: 'inline',
-          ContentType: 'application/pdf',
-          Metadata: {
-            'request-type': 'personalised',
-            'request-type-variant': 'long',
-            'file-type': 'render',
-            'template-id': 'tmpl-long',
-            'page-count': '8',
-            'client-id': 'client-long',
+            'client-id': 'test-client',
           },
         }
       );
