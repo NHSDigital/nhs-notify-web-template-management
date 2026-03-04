@@ -394,6 +394,39 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
+  describe('expectLetterVersion', () => {
+    test('adds letterVersion condition', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectLetterVersion('AUTHORING')
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_1_letterVersion': 'AUTHORING',
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#letterVersion': 'letterVersion',
+        },
+        ConditionExpression: '#letterVersion = :condition_1_letterVersion',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
+      });
+    });
+  });
+
   describe('expectClientId', () => {
     test('adds clientId condition', () => {
       const builder = new TemplateUpdateBuilder(
@@ -755,8 +788,8 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
-  describe('setShortFormRender', () => {
-    test('sets shortFormRender in files map', () => {
+  describe('setPersonalisedRender', () => {
+    test('sets shortFormRender in files map for short variant', () => {
       const builder = new TemplateUpdateBuilder(
         mockTableName,
         mockOwner,
@@ -772,7 +805,7 @@ describe('TemplateUpdateBuilder', () => {
         personalisationParameters: { firstName: 'John' },
       };
 
-      const res = builder.setShortFormRender(renderDetails).build();
+      const res = builder.setPersonalisedRender('short', renderDetails).build();
 
       expect(res).toMatchObject({
         ExpressionAttributeNames: {
@@ -783,6 +816,36 @@ describe('TemplateUpdateBuilder', () => {
           ':shortFormRender': renderDetails,
         },
         UpdateExpression: 'SET #files.#shortFormRender = :shortFormRender',
+      });
+    });
+
+    test('sets longFormRender in files map for long variant', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const renderDetails = {
+        status: 'RENDERED' as const,
+        fileName: 'long-form.pdf',
+        currentVersion: 'v3',
+        pageCount: 4,
+        systemPersonalisationPackId: 'pack-2',
+        personalisationParameters: { full_address: '123 Test St' },
+      };
+
+      const res = builder.setPersonalisedRender('long', renderDetails).build();
+
+      expect(res).toMatchObject({
+        ExpressionAttributeNames: {
+          '#files': 'files',
+          '#longFormRender': 'longFormRender',
+        },
+        ExpressionAttributeValues: {
+          ':longFormRender': renderDetails,
+        },
+        UpdateExpression: 'SET #files.#longFormRender = :longFormRender',
       });
     });
   });
