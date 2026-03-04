@@ -113,8 +113,7 @@ curl -X POST --location "${APIG_STAGE}/v1/docx-letter-template" \
   "letterType": "x0",
   "language": "en",
   "letterVersion": "AUTHORING",
-  "campaignId": "campaign",
-  "systemPersonalisationPackId": "pack-id"
+  "campaignId": "campaign"
 }'
 ```
 
@@ -187,7 +186,8 @@ curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/letter-proof" 
   "requestTypeVariant": "short",
   "personalisation": {
       "k": "v"
-    }
+    },
+  "systemPersonalisationPackId": "pack-id"
 }'
 ```
 
