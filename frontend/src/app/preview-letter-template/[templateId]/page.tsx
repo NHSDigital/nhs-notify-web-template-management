@@ -73,7 +73,7 @@ export default async function PreviewLetterTemplatePage({
     validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED';
 
   return (
-    <NHSNotifyContainer fullWidth>
+    <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
         initialState={{
           errorState: {
@@ -87,13 +87,13 @@ export default async function PreviewLetterTemplatePage({
           mode='initialRender'
           loadingElement={<h1>{loadingText}</h1>}
         >
-          <div className='nhsuk-width-container'>
+          <NHSNotifyContainer>
             <NHSNotifyBackLink href={links.messageTemplates}>
               {backLinkText}
             </NHSNotifyBackLink>
-          </div>
+          </NHSNotifyContainer>
           <NHSNotifyMain>
-            <div className='nhsuk-width-container'>
+            <NHSNotifyContainer>
               <NHSNotifyForm.ErrorSummary />
               <div className='nhsuk-grid-row'>
                 <div className='nhsuk-grid-column-full'>
@@ -102,33 +102,35 @@ export default async function PreviewLetterTemplatePage({
                   />
                 </div>
               </div>
-            </div>
+            </NHSNotifyContainer>
             {showRenderer && <LetterRender template={validatedTemplate} />}
-            {showSubmitForm && (
-              <NHSNotifyForm.Form formId='preview-letter-template'>
-                <input
-                  type='hidden'
-                  name='templateId'
-                  value={validatedTemplate.id}
-                />
-                <input
-                  type='hidden'
-                  name='lockNumber'
-                  value={validatedTemplate.lockNumber}
-                />
-                <button
-                  type='submit'
-                  className='nhsuk-button'
-                  data-testid='preview-letter-template-cta'
-                  id='preview-letter-template-cta'
-                >
-                  {submitText}
-                </button>
-              </NHSNotifyForm.Form>
-            )}
-            <p>
-              <Link href={links.messageTemplates}>{backLinkText}</Link>
-            </p>
+            <NHSNotifyContainer fullWidth={showRenderer}>
+              {showSubmitForm && (
+                <NHSNotifyForm.Form formId='preview-letter-template'>
+                  <input
+                    type='hidden'
+                    name='templateId'
+                    value={validatedTemplate.id}
+                  />
+                  <input
+                    type='hidden'
+                    name='lockNumber'
+                    value={validatedTemplate.lockNumber}
+                  />
+                  <button
+                    type='submit'
+                    className='nhsuk-button'
+                    data-testid='preview-letter-template-cta'
+                    id='preview-letter-template-cta'
+                  >
+                    {submitText}
+                  </button>
+                </NHSNotifyForm.Form>
+              )}
+              <p>
+                <Link href={links.messageTemplates}>{backLinkText}</Link>
+              </p>
+            </NHSNotifyContainer>
           </NHSNotifyMain>
         </RenderPoll>
       </NHSNotifyFormProvider>

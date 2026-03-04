@@ -535,13 +535,17 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
           </div>
         </div>
       </section>
-      <p>
-        <a
-          href="/message-templates"
-        >
-          Back to all templates
-        </a>
-      </p>
+      <div
+        class="nhsuk-width-container-fluid"
+      >
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
     </main>
   </div>
 </DocumentFragment>
@@ -1050,13 +1054,17 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
           </div>
         </div>
       </section>
-      <p>
-        <a
-          href="/message-templates"
-        >
-          Back to all templates
-        </a>
-      </p>
+      <div
+        class="nhsuk-width-container-fluid"
+      >
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
     </main>
   </div>
 </DocumentFragment>
@@ -1793,47 +1801,51 @@ exports[`valid authoring letter template matches snapshot 1`] = `
           </div>
         </div>
       </section>
-      <form
-        action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+      <div
+        class="nhsuk-width-container-fluid"
       >
-        <input
-          name="form-id"
-          readonly=""
-          type="hidden"
-          value="preview-letter-template"
-        />
-        <input
-          name="csrf_token"
-          readonly=""
-          type="hidden"
-          value="no_token"
-        />
-        <input
-          name="templateId"
-          type="hidden"
-          value="authoring-letter-template-id"
-        />
-        <input
-          name="lockNumber"
-          type="hidden"
-          value="1"
-        />
-        <button
-          class="nhsuk-button"
-          data-testid="preview-letter-template-cta"
-          id="preview-letter-template-cta"
-          type="submit"
+        <form
+          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
         >
-          Submit template
-        </button>
-      </form>
-      <p>
-        <a
-          href="/message-templates"
-        >
-          Back to all templates
-        </a>
-      </p>
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="preview-letter-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="templateId"
+            type="hidden"
+            value="authoring-letter-template-id"
+          />
+          <input
+            name="lockNumber"
+            type="hidden"
+            value="1"
+          />
+          <button
+            class="nhsuk-button"
+            data-testid="preview-letter-template-cta"
+            id="preview-letter-template-cta"
+            type="submit"
+          >
+            Submit template
+          </button>
+        </form>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
     </main>
   </div>
 </DocumentFragment>
