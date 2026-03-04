@@ -2,18 +2,20 @@ import type { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
-  Result,
+  type Result,
   ErrorCase,
   $CreateUpdateNonLetter,
   $LockNumber,
   $TemplateDto,
   $TemplateFilter,
   $PatchTemplate,
+  $LetterProofRequest,
 } from 'nhs-notify-backend-client';
 import type {
   AuthoringLetterFiles,
   ClientConfiguration,
   CreateUpdateTemplate,
+  LetterProofRequest,
   PatchTemplate,
   PdfLetterFiles,
   TemplateDto,
@@ -22,22 +24,23 @@ import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constant
 import {
   $UploadPdfLetterTemplate,
   $UploadDocxLetterTemplate,
-  DatabaseTemplate,
-  User,
+  type DatabaseTemplate,
+  type User,
   $PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
-import { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { z } from 'zod/v4';
-import { LetterUploadRepository } from '../infra/letter-upload-repository';
-import { ProofingQueue } from '../infra/proofing-queue';
-import { ClientConfigRepository } from '../infra/client-config-repository';
-import { TemplateRepository } from '../infra';
-import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
-import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+import type { LetterUploadRepository } from '../infra/letter-upload-repository';
+import type { ProofingQueue } from '../infra/proofing-queue';
+import type { ClientConfigRepository } from '../infra/client-config-repository';
+import type { TemplateRepository } from '../infra';
+import type { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import type { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+import type { RenderQueue } from '@backend-api/infra/render-queue';
 
 export class TemplateClient {
-  private $LetterForProofing = z.intersection(
+  private $LetterForPdfProofing = z.intersection(
     $PdfLetterTemplate,
     z.object({
       templateType: z.literal('LETTER'),
@@ -50,6 +53,7 @@ export class TemplateClient {
     private readonly templateRepository: TemplateRepository,
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
+    private readonly renderQueue: RenderQueue,
     private readonly defaultLetterSupplier: string,
     private readonly clientConfigRepository: ClientConfigRepository,
     private readonly routingConfigRepository: RoutingConfigRepository,
@@ -848,7 +852,7 @@ export class TemplateClient {
       return proofRequestUpdateResult;
     }
 
-    const proofLetterValidationResult = this.$LetterForProofing.safeParse(
+    const proofLetterValidationResult = this.$LetterForPdfProofing.safeParse(
       proofRequestUpdateResult.data
     );
 
@@ -897,6 +901,105 @@ export class TemplateClient {
     }
 
     return success(proofLetterValidationResult.data);
+  }
+
+  async letterProof(
+    templateId: string,
+    user: User,
+    lockNumberRaw: number | string,
+    body: LetterProofRequest
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({ templateId, user });
+
+    const validationResult = await validate($LetterProofRequest, body);
+
+    if (validationResult.error) {
+      log
+        .child(validationResult.error.errorMeta)
+        .error(
+          'Invalid letter proof request',
+          validationResult.error.actualError
+        );
+
+      return validationResult;
+    }
+
+    const { personalisation, systemPersonalisationPackId, requestTypeVariant } =
+      validationResult.data;
+
+    const lockNumberValidation = $LockNumber.safeParse(lockNumberRaw);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    const { data: lockNumber } = lockNumberValidation;
+
+    const letterProofUpdateResult =
+      await this.templateRepository.letterProofUpdate(
+        templateId,
+        user,
+        lockNumber,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+    if (letterProofUpdateResult.error) {
+      log
+        .child(letterProofUpdateResult.error.errorMeta)
+        .error(letterProofUpdateResult.error.actualError);
+
+      return letterProofUpdateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(
+      letterProofUpdateResult.data
+    );
+
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
+
+    if (
+      templateDTO.templateType !== 'LETTER' ||
+      templateDTO.letterVersion !== 'AUTHORING'
+    ) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Unexpectedly found template unsuitable for proofing'
+      );
+    }
+
+    console.log(JSON.stringify(templateDTO, null, 2));
+
+    const sendQueueResult = await this.renderQueue.send(
+      templateId,
+      user.clientId,
+      lockNumberValidation.data,
+      personalisation,
+      requestTypeVariant,
+      systemPersonalisationPackId,
+      templateDTO.files.docxTemplate.currentVersion
+    );
+
+    if (sendQueueResult.error) {
+      log
+        .child(sendQueueResult.error.errorMeta)
+        .error(sendQueueResult.error.actualError);
+
+      return sendQueueResult;
+    }
+
+    return success(templateDTO);
   }
 
   isCampaignIdValid(

@@ -10,6 +10,7 @@ import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-pay
 import { docxFixtures } from '../fixtures/letters';
 import type { Template } from '../helpers/types';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
+import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 
 const authHelper = createAuthHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -38,7 +39,9 @@ test.describe('Letter rendering', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await authHelper.getTestUser(testUsers.User1.userId);
+    user = await authHelper.getTestUser(
+      testUsers.UserLetterAuthoringEnabled.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -54,7 +57,7 @@ test.describe('Letter rendering', () => {
       TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
-          campaignId: 'Campaign1',
+          campaignId: user.campaignIds![0],
           letterVersion: 'AUTHORING',
         },
         docx
@@ -428,6 +431,157 @@ test.describe('Letter rendering', () => {
                 'gpSurgeryPhone',
                 'address_line_8',
               ],
+            })
+          );
+        }
+      );
+    });
+  });
+
+  const baseProofPayload: LetterProofRequest = {
+    personalisation: {
+      address_line_1: '1 Long Lane',
+      address_line_2: 'S70 0PQ',
+      nhsNumber: '99999999999',
+      gpSurgeryName: 'jalapeno',
+    },
+    systemPersonalisationPackId: 'pack-id',
+    requestTypeVariant: 'long',
+  };
+
+  async function personalisedRenderTest(
+    request: APIRequestContext,
+    { docx, payload }: { docx: Buffer; payload?: Partial<LetterProofRequest> },
+
+    assert: (t: Template) => void
+  ) {
+    const template = await initialRenderTest(request, docx, (t) => {
+      expect(t.templateStatus).toBe('NOT_YET_SUBMITTED');
+    });
+
+    const requestProofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          ...baseProofPayload,
+          ...payload,
+        } satisfies LetterProofRequest,
+      }
+    );
+
+    const debugProof = JSON.stringify(await requestProofResponse.json());
+    expect(requestProofResponse.status(), debugProof).toBe(201);
+
+    let updatedTemplate: Template | undefined;
+
+    await expect(async () => {
+      updatedTemplate = await templateStorageHelper.getTemplate({
+        clientId: template.clientId!,
+        templateId: template.id,
+      });
+
+      assert(updatedTemplate);
+    }).toPass({ intervals: [1000] });
+
+    return updatedTemplate as Template;
+  }
+
+  test.describe('Personalised render', () => {
+    test('produces initial render (long variant)', async ({ request }) => {
+      const template = await personalisedRenderTest(
+        request,
+        {
+          docx: docxFixtures.standard.open(),
+          payload: {
+            requestTypeVariant: 'long',
+            personalisation: {
+              address_line_1: '1 Long Lane',
+              address_line_2: 'S70 0PQ',
+              nhsNumber: '99999999999',
+              gpSurgeryName: 'jalapeno',
+            },
+          },
+        },
+        (t: Template) => {
+          expect(t.files?.shortFormRender).toBeUndefined();
+
+          expect(t).toEqual(
+            expect.objectContaining({
+              templateStatus: 'NOT_YET_SUBMITTED',
+              files: expect.objectContaining({
+                initialRender: expect.objectContaining({
+                  status: 'RENDERED',
+                  pageCount: 2,
+                }),
+                longFormRender: expect.objectContaining({
+                  pageCount: 2,
+                  personalisationParameters: baseProofPayload.personalisation,
+                  systemPersonalisationPackId:
+                    baseProofPayload.systemPersonalisationPackId,
+                  status: 'RENDERED',
+                }),
+              }),
+            })
+          );
+        }
+      );
+
+      const render = await templateStorageHelper.getRenderFile(
+        { clientId: template.clientId!, templateId: template.id },
+        template.files!.longFormRender!.fileName
+      );
+
+      expect(render?.metadata).toEqual({
+        'client-id': template.clientId,
+        'page-count': '2',
+        'template-id': template.id,
+        'request-type': 'personalised',
+        'file-type': 'render',
+        'request-type-variant': 'long',
+      });
+
+      expect(render?.buffer).toBeDefined();
+
+      const parser = new PDFParse({ data: render!.buffer });
+
+      const { text: pdfTextContent } = await parser.getText();
+
+      expect(pdfTextContent).toContain('This is the body text');
+      expect(pdfTextContent).toContain('1 Long Lane');
+      expect(pdfTextContent).toContain('NHS number: 99999999999');
+      expect(pdfTextContent).toContain('Your GP surgery is jalapeno');
+    });
+
+    test('produces initial render (short variant)', async ({ request }) => {
+      await personalisedRenderTest(
+        request,
+        {
+          docx: docxFixtures.standard.open(),
+          payload: { requestTypeVariant: 'short' },
+        },
+        (t: Template) => {
+          expect(t.files?.longFormRender).toBeUndefined();
+
+          expect(t).toEqual(
+            expect.objectContaining({
+              templateStatus: 'NOT_YET_SUBMITTED',
+              files: expect.objectContaining({
+                initialRender: expect.objectContaining({
+                  status: 'RENDERED',
+                  pageCount: 2,
+                }),
+                shortFormRender: expect.objectContaining({
+                  pageCount: 2,
+                  personalisationParameters: baseProofPayload.personalisation,
+                  systemPersonalisationPackId:
+                    baseProofPayload.systemPersonalisationPackId,
+                  status: 'RENDERED',
+                }),
+              }),
             })
           );
         }

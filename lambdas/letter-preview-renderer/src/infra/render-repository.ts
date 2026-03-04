@@ -28,16 +28,18 @@ export class RenderRepository {
     return { fileName: `${id}.pdf`, currentVersion: id };
   }
 
-  private buildMetadata(
-    { templateId, clientId, requestType }: RenderRequest,
-    pageCount: number
-  ) {
+  private buildMetadata(request: RenderRequest, pageCount: number) {
+    const { templateId, clientId, requestType } = request;
+
     return {
       'page-count': pageCount.toString(),
       'template-id': templateId,
       'client-id': clientId,
       'request-type': requestType,
       'file-type': 'render',
+      ...(requestType === 'personalised' && {
+        'request-type-variant': request.requestTypeVariant,
+      }),
     };
   }
 

@@ -5,7 +5,7 @@ import { schemaFor } from './schema-for';
 const $Common = z.object({
   templateId: z.string(),
   clientId: z.string(),
-  currentVersion: z.string(),
+  docxCurrentVersion: z.string(),
 });
 
 const $InitialRenderRequest = z.object({
@@ -17,6 +17,7 @@ const $PersonalisedCommon = z.object({
   ...$Common.shape,
   requestType: z.literal('personalised'),
   personalisation: z.record(z.string(), z.string()),
+  systemPersonalisationPackId: z.string(),
   lockNumber: z.number(),
 });
 

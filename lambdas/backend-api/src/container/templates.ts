@@ -11,6 +11,7 @@ import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { RoutingConfigRepository } from '../infra/routing-config-repository';
 import { TemplateClient } from '../app/template-client';
+import { RenderQueue } from '@backend-api/infra/render-queue';
 
 const awsConfig = { region: 'eu-west-2' };
 
@@ -43,6 +44,8 @@ export const templatesContainer = () => {
     config.requestProofQueueUrl
   );
 
+  const renderQueue = new RenderQueue(sqsClient, config.renderRequestQueueUrl);
+
   const clientConfigRepository = new ClientConfigRepository(
     config.clientConfigSsmKeyPrefix,
     ssmClient,
@@ -59,6 +62,7 @@ export const templatesContainer = () => {
     templateRepository,
     letterUploadRepository,
     proofingQueue,
+    renderQueue,
     config.defaultLetterSupplier,
     clientConfigRepository,
     routingConfigRepository,
