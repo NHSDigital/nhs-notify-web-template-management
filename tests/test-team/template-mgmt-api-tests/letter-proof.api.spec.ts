@@ -1,5 +1,3 @@
-/* eslint-disable sonarjs/no-commented-code */
-/* eslint-disable jest/no-commented-out-tests */
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
@@ -18,14 +16,16 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
   let differentClientUser: TestUser;
-  // let sameClientUser: TestUser;
+  let sameClientUser: TestUser;
 
   test.beforeAll(async () => {
     user = await authHelper.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
     differentClientUser = await authHelper.getTestUser(testUsers.User2.userId);
-    // sameClientUser = await authHelper.getTestUser(testUsers.User5.userId);
+    sameClientUser = await authHelper.getTestUser(
+      testUsers.UserLetterAuthoringEnabledSharedClient.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -59,6 +59,11 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
           Authorization: await user.getAccessToken(),
           'X-Lock-Number': '0',
         },
+        data: {
+          personalisation: {},
+          systemPersonalisationPackId: 'pack-id',
+          requestTypeVariant: 'long',
+        } satisfies LetterProofRequest,
       }
     );
     const result = await response.json();
@@ -89,6 +94,11 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
           Authorization: await differentClientUser.getAccessToken(),
           'X-Lock-Number': String(template.lockNumber),
         },
+        data: {
+          personalisation: {},
+          systemPersonalisationPackId: 'pack-id',
+          requestTypeVariant: 'long',
+        } satisfies LetterProofRequest,
       }
     );
 
@@ -102,10 +112,38 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     });
   });
 
-  // eslint-disable-next-line playwright/no-focused-test, sonarjs/no-exclusive-tests
-  test.only('returns 200 and the updated template data', async ({
-    request,
-  }) => {
+  test('returns 400 if no request body', async ({ request }) => {
+    const template = TemplateFactory.uploadLetterTemplate(
+      randomUUID(),
+      user,
+      'userProofingEnabledtemplate',
+      'PENDING_PROOF_REQUEST'
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const updateResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      {
+        headers: {
+          Authorization: await differentClientUser.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+      }
+    );
+
+    const result = await updateResponse.json();
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(updateResponse.status(), debug).toBe(400);
+    expect(result).toEqual(
+      expect.objectContaining({
+        technicalMessage: 'Request failed validation',
+      })
+    );
+  });
+
+  test('returns 201 and the updated template data', async ({ request }) => {
     // top level object for IDs
     const templateId = randomUUID();
     const currentVersion = randomUUID();
@@ -126,7 +164,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
       'userProofingEnabledtemplate',
       'NOT_YET_SUBMITTED',
       {
-        // add personalisation fields
+        // add personalisation fields?
         docxTemplate: {
           virusScanStatus: 'PASSED',
           currentVersion,
@@ -164,7 +202,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const result = await requestProofResponse.json();
     const debug = JSON.stringify(result, null, 2);
 
-    expect(requestProofResponse.status(), debug).toBe(200);
+    expect(requestProofResponse.status(), debug).toBe(201);
 
     expect(result.data).toEqual({
       name: template.name,
@@ -209,235 +247,263 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     expect(result.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
   });
 
-  // test('returns 400 - cannot request a proof for a template where the status is not PENDING_PROOF_REQUEST', async ({
-  //   request,
-  // }) => {
-  //   const templateId = randomUUID();
-  //   const currentVersion = randomUUID();
+  test('returns 400 - cannot request a proof for a template where the status is not NOT_YET_SUBMITTED', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+    const currentVersion = randomUUID();
 
-  //   const template = {
-  //     ...TemplateFactory.uploadLetterTemplate(
-  //       templateId,
-  //       userProofingEnabled,
-  //       'userProofingEnabledtemplate',
-  //       'PENDING_VALIDATION'
-  //     ),
-  //     files: {
-  //       pdfTemplate: {
-  //         virusScanStatus: 'PASSED',
-  //         currentVersion,
-  //         fileName: 'template.pdf',
-  //       },
-  //     },
-  //   };
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      templateId,
+      user,
+      'userProofingEnabledtemplate',
+      'VALIDATION_FAILED',
+      {
+        docxTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion,
+          fileName: `${currentVersion}.docx`,
+        },
+        longFormRender: false,
+        shortFormRender: false,
+      }
+    );
 
-  //   await templateStorageHelper.seedTemplateData([template]);
+    await templateStorageHelper.seedTemplateData([template]);
 
-  //   const proofResponse = await request.post(
-  //     `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
-  //     {
-  //       headers: {
-  //         Authorization: await userProofingEnabled.getAccessToken(),
-  //         'X-Lock-Number': String(template.lockNumber),
-  //       },
-  //     }
-  //   );
+    const proofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          personalisation: {},
+          systemPersonalisationPackId: 'pack-id',
+          requestTypeVariant: 'long',
+        } satisfies LetterProofRequest,
+      }
+    );
 
-  //   const result = await proofResponse.json();
-  //   const debug = JSON.stringify(result, null, 2);
+    const result = await proofResponse.json();
+    const debug = JSON.stringify(result, null, 2);
 
-  //   expect(proofResponse.status(), debug).toBe(400);
+    expect(proofResponse.status(), debug).toBe(400);
 
-  //   expect(result).toEqual({
-  //     statusCode: 400,
-  //     technicalMessage: 'Template cannot be proofed',
-  //   });
-  // });
+    expect(result).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Template cannot be proofed',
+    });
+  });
 
-  // test('returns 400 - cannot request a proof for a non-letter', async ({
-  //   request,
-  // }) => {
-  //   const templateId = randomUUID();
+  test('returns 400 - cannot request a proof for a non-letter', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
 
-  //   const template = TemplateFactory.createEmailTemplate(
-  //     templateId,
-  //     userProofingEnabled,
-  //     'userProofingEnabledtemplate'
-  //   );
+    const template = TemplateFactory.createEmailTemplate(
+      templateId,
+      user,
+      'userProofingEnabledtemplate'
+    );
 
-  //   await templateStorageHelper.seedTemplateData([template]);
+    await templateStorageHelper.seedTemplateData([template]);
 
-  //   const proofResponse = await request.post(
-  //     `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
-  //     {
-  //       headers: {
-  //         Authorization: await userProofingEnabled.getAccessToken(),
-  //         'X-Lock-Number': String(template.lockNumber),
-  //       },
-  //     }
-  //   );
+    const proofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          personalisation: {},
+          systemPersonalisationPackId: 'pack-id',
+          requestTypeVariant: 'long',
+        } satisfies LetterProofRequest,
+      }
+    );
 
-  //   const result = await proofResponse.json();
-  //   const debug = JSON.stringify(result, null, 2);
+    const result = await proofResponse.json();
+    const debug = JSON.stringify(result, null, 2);
 
-  //   expect(proofResponse.status(), debug).toBe(400);
+    expect(proofResponse.status(), debug).toBe(400);
 
-  //   expect(result).toEqual({
-  //     statusCode: 400,
-  //     technicalMessage: 'Template cannot be proofed',
-  //   });
-  // });
+    expect(result).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Template cannot be proofed',
+    });
+  });
 
-  // test('user can request a proof of template created by another user belonging to the same client', async ({
-  //   request,
-  // }) => {
-  //   const templateId = randomUUID();
-  //   const currentVersion = randomUUID();
+  test('user can request a proof of template created by another user belonging to the same client', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+    const currentVersion = randomUUID();
 
-  //   const template = {
-  //     ...TemplateFactory.uploadLetterTemplate(
-  //       templateId,
-  //       sameClientUser,
-  //       'sameClientUserTemplate',
-  //       'PENDING_PROOF_REQUEST'
-  //     ),
-  //     files: {
-  //       pdfTemplate: {
-  //         virusScanStatus: 'PASSED',
-  //         currentVersion,
-  //         fileName: 'template.pdf',
-  //       },
-  //     },
-  //     personalisationParameters: ['nhsNumber'],
-  //     campaignId: userProofingEnabled.campaignIds?.[0],
-  //   };
+    await templateStorageHelper.putScannedDocxTemplateFile(
+      {
+        clientId: user.clientId,
+        templateId,
+      },
+      currentVersion,
+      docxFixtures.standard.open()
+    );
 
-  //   await templateStorageHelper.seedTemplateData([template]);
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      templateId,
+      user,
+      // put ID in name
+      'userProofingEnabledtemplate',
+      'NOT_YET_SUBMITTED',
+      {
+        // add personalisation fields?
+        docxTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion,
+          fileName: `${currentVersion}.docx`,
+        },
+        longFormRender: false,
+        shortFormRender: false,
+      }
+    );
 
-  //   const start = new Date();
+    await templateStorageHelper.seedTemplateData([template]);
 
-  //   const requestProofResponse = await request.post(
-  //     `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
-  //     {
-  //       headers: {
-  //         Authorization: await userProofingEnabled.getAccessToken(),
-  //         'X-Lock-Number': String(template.lockNumber),
-  //       },
-  //     }
-  //   );
+    const start = new Date();
 
-  //   const result = await requestProofResponse.json();
-  //   const debug = JSON.stringify(result, null, 2);
+    const requestProofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
+      {
+        headers: {
+          Authorization: await sameClientUser.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          personalisation: {},
+          systemPersonalisationPackId: 'pack-id',
+          requestTypeVariant: 'long',
+        } satisfies LetterProofRequest,
+      }
+    );
 
-  //   expect(requestProofResponse.status(), debug).toBe(200);
+    const result = await requestProofResponse.json();
+    const debug = JSON.stringify(result, null, 2);
 
-  //   expect(result).toEqual({
-  //     statusCode: 200,
-  //     data: expect.objectContaining({
-  //       name: template.name,
-  //       templateStatus: 'WAITING_FOR_PROOF',
-  //       templateType: template.templateType,
-  //     }),
-  //   });
+    expect(requestProofResponse.status(), debug).toBe(201);
 
-  //   expect(result.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
-  // });
+    expect(result).toEqual({
+      statusCode: 201,
+      data: expect.objectContaining({
+        name: template.name,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        templateType: template.templateType,
+      }),
+    });
 
-  // test('returns 400 if the lock number header is not set', async ({
-  //   request,
-  // }) => {
-  //   const template = {
-  //     ...TemplateFactory.uploadLetterTemplate(
-  //       randomUUID(),
-  //       userProofingEnabled,
-  //       'userProofingEnabledtemplate',
-  //       'PENDING_PROOF_REQUEST'
-  //     ),
-  //     files: {
-  //       pdfTemplate: {
-  //         virusScanStatus: 'PASSED',
-  //         currentVersion: randomUUID(),
-  //         fileName: 'template.pdf',
-  //       },
-  //       testDataCsv: {
-  //         virusScanStatus: 'PASSED',
-  //         currentVersion: randomUUID(),
-  //         fileName: 'data.csv',
-  //       },
-  //     },
-  //     personalisationParameters: ['nhsNumber'],
-  //     campaignId: userProofingEnabled.campaignIds?.[0],
-  //   };
+    expect(result.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+  });
 
-  //   await templateStorageHelper.seedTemplateData([template]);
+  test('returns 400 if the lock number header is not set', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+    const currentVersion = randomUUID();
 
-  //   const response = await request.post(
-  //     `${process.env.API_BASE_URL}/v1/template/${template.id}/proof`,
-  //     {
-  //       headers: {
-  //         Authorization: await userProofingEnabled.getAccessToken(),
-  //       },
-  //     }
-  //   );
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      templateId,
+      user,
+      // put ID in name
+      'userProofingEnabledtemplate',
+      'NOT_YET_SUBMITTED',
+      {
+        // add personalisation fields?
+        docxTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion,
+          fileName: `${currentVersion}.docx`,
+        },
+        longFormRender: false,
+        shortFormRender: false,
+      }
+    );
+    await templateStorageHelper.seedTemplateData([template]);
 
-  //   const result = await response.json();
-  //   const debug = JSON.stringify(result, null, 2);
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+        },
+        data: {
+          personalisation: {},
+          systemPersonalisationPackId: 'pack-id',
+          requestTypeVariant: 'long',
+        } satisfies LetterProofRequest,
+      }
+    );
 
-  //   expect(response.status(), debug).toBe(400);
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
 
-  //   expect(result).toEqual({
-  //     statusCode: 400,
-  //     technicalMessage: 'Invalid lock number provided',
-  //   });
-  // });
+    expect(response.status(), debug).toBe(400);
 
-  // test('returns 409 if the lock number header does not match the current one', async ({
-  //   request,
-  // }) => {
-  //   const template = {
-  //     ...TemplateFactory.uploadLetterTemplate(
-  //       randomUUID(),
-  //       userProofingEnabled,
-  //       'userProofingEnabledtemplate',
-  //       'PENDING_PROOF_REQUEST'
-  //     ),
-  //     files: {
-  //       pdfTemplate: {
-  //         virusScanStatus: 'PASSED',
-  //         currentVersion: randomUUID(),
-  //         fileName: 'template.pdf',
-  //       },
-  //       testDataCsv: {
-  //         virusScanStatus: 'PASSED',
-  //         currentVersion: randomUUID(),
-  //         fileName: 'data.csv',
-  //       },
-  //     },
-  //     personalisationParameters: ['nhsNumber'],
-  //     campaignId: userProofingEnabled.campaignIds?.[0],
-  //   };
+    expect(result).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Invalid lock number provided',
+    });
+  });
 
-  //   await templateStorageHelper.seedTemplateData([template]);
+  test('returns 409 if the lock number header does not match the current one', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+    const currentVersion = randomUUID();
 
-  //   const response = await request.post(
-  //     `${process.env.API_BASE_URL}/v1/template/${template.id}/proof`,
-  //     {
-  //       headers: {
-  //         Authorization: await userProofingEnabled.getAccessToken(),
-  //         'X-Lock-Number': String(template.lockNumber + 1),
-  //       },
-  //     }
-  //   );
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      templateId,
+      user,
+      // put ID in name
+      'userProofingEnabledtemplate',
+      'NOT_YET_SUBMITTED',
+      {
+        // add personalisation fields?
+        docxTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion,
+          fileName: `${currentVersion}.docx`,
+        },
+        longFormRender: false,
+        shortFormRender: false,
+      }
+    );
+    await templateStorageHelper.seedTemplateData([template]);
 
-  //   const result = await response.json();
-  //   const debug = JSON.stringify(result, null, 2);
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      {
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber + 1),
+        },
+        data: {
+          personalisation: {},
+          systemPersonalisationPackId: 'pack-id',
+          requestTypeVariant: 'long',
+        } satisfies LetterProofRequest,
+      }
+    );
 
-  //   expect(response.status(), debug).toBe(409);
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
 
-  //   expect(result).toEqual({
-  //     statusCode: 409,
-  //     technicalMessage:
-  //       'Lock number mismatch - Template has been modified since last read',
-  //   });
-  // });
+    expect(response.status(), debug).toBe(409);
+
+    expect(result).toEqual({
+      statusCode: 409,
+      technicalMessage:
+        'Lock number mismatch - Template has been modified since last read',
+    });
+  });
 });

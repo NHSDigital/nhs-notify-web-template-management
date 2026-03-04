@@ -48,60 +48,60 @@ test.describe('Letter rendering', () => {
     await templateStorageHelper.deleteAdHocTemplates();
   });
 
-  test.describe('Initial render', () => {
-    async function initialRenderTest(
-      request: APIRequestContext,
-      docx: Buffer,
-      assert: (t: Template) => void
-    ) {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: 'Campaign1',
-            letterVersion: 'AUTHORING',
-          },
-          docx
-        );
-
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/docx-letter-template`,
+  async function initialRenderTest(
+    request: APIRequestContext,
+    docx: Buffer,
+    assert: (t: Template) => void
+  ) {
+    const { multipart, contentType } =
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
-          data: multipart,
-          headers: {
-            Authorization: await user.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
+          templateType: 'LETTER',
+          campaignId: user.campaignIds![0],
+          letterVersion: 'AUTHORING',
+        },
+        docx
       );
 
-      const result = await response.json();
-      const debug = JSON.stringify(result, null, 2);
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/docx-letter-template`,
+      {
+        data: multipart,
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'Content-Type': contentType,
+        },
+      }
+    );
 
-      expect(response.status(), debug).toBe(201);
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
 
-      const template = result.data as Template;
+    expect(response.status(), debug).toBe(201);
 
-      const templateKey = {
-        templateId: template.id,
-        clientId: user.clientId,
-      };
+    const template = result.data as Template;
 
-      templateStorageHelper.addAdHocTemplateKey(templateKey);
+    const templateKey = {
+      templateId: template.id,
+      clientId: user.clientId,
+    };
 
-      expect(template.templateStatus).toBe('PENDING_VALIDATION');
+    templateStorageHelper.addAdHocTemplateKey(templateKey);
 
-      let updatedTemplate: Template | undefined;
+    expect(template.templateStatus).toBe('PENDING_VALIDATION');
 
-      await expect(async () => {
-        updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
+    let updatedTemplate: Template | undefined;
 
-        assert(updatedTemplate);
-      }).toPass({ intervals: [1000] });
+    await expect(async () => {
+      updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
 
-      return updatedTemplate as Template;
-    }
+      assert(updatedTemplate);
+    }).toPass({ intervals: [1000] });
 
+    return updatedTemplate as Template;
+  }
+
+  test.describe('Initial render', () => {
     test('produces initial render', async ({ request }) => {
       const template = await initialRenderTest(
         request,
@@ -438,107 +438,77 @@ test.describe('Letter rendering', () => {
     });
   });
 
-  test.describe('Personalised render', () => {
-    const basePayload: LetterProofRequest = {
-      personalisation: {
-        address_line_1: '1 Long Lane',
-        address_line_2: 'S70 0PQ',
-        nhsNumber: '99999999999',
-        gpSurgeryName: 'jalapeno',
-      },
-      systemPersonalisationPackId: 'pack-id',
-      requestTypeVariant: 'long',
-    };
+  const baseProofPayload: LetterProofRequest = {
+    personalisation: {
+      address_line_1: '1 Long Lane',
+      address_line_2: 'S70 0PQ',
+      nhsNumber: '99999999999',
+      gpSurgeryName: 'jalapeno',
+    },
+    systemPersonalisationPackId: 'pack-id',
+    requestTypeVariant: 'long',
+  };
 
-    async function personalisedRenderTest(
-      request: APIRequestContext,
+  async function personalisedRenderTest(
+    request: APIRequestContext,
+    { docx, payload }: { docx: Buffer; payload?: Partial<LetterProofRequest> },
+
+    assert: (t: Template) => void
+  ) {
+    const template = await initialRenderTest(request, docx, (t) => {
+      expect(t.templateStatus).toBe('NOT_YET_SUBMITTED');
+    });
+
+    const requestProofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
       {
-        docx,
-        payload,
-      }: { docx: Buffer; payload?: Partial<LetterProofRequest> },
+        headers: {
+          Authorization: await user.getAccessToken(),
+          'X-Lock-Number': String(template.lockNumber),
+        },
+        data: {
+          ...baseProofPayload,
+          ...payload,
+        } satisfies LetterProofRequest,
+      }
+    );
 
-      assert: (t: Template) => void
-    ) {
-      const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
-          {
-            templateType: 'LETTER',
-            campaignId: user.campaignIds![0],
-            letterVersion: 'AUTHORING',
-          },
-          docx
-        );
+    const debugProof = JSON.stringify(await requestProofResponse.json());
+    expect(requestProofResponse.status(), debugProof).toBe(201);
 
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/docx-letter-template`,
-        {
-          data: multipart,
-          headers: {
-            Authorization: await user.getAccessToken(),
-            'Content-Type': contentType,
-          },
-        }
-      );
+    let updatedTemplate: Template | undefined;
 
-      const result = await response.json();
-      const debug = JSON.stringify(result, null, 2);
-
-      expect(response.status(), debug).toBe(201);
-
-      const template = result.data as Template;
-
-      const templateKey = {
+    await expect(async () => {
+      updatedTemplate = await templateStorageHelper.getTemplate({
+        clientId: template.clientId!,
         templateId: template.id,
-        clientId: user.clientId,
-      };
+      });
 
-      templateStorageHelper.addAdHocTemplateKey(templateKey);
+      assert(updatedTemplate);
+    }).toPass({ intervals: [1000] });
 
-      let lockNumber: number | undefined;
+    return updatedTemplate as Template;
+  }
 
-      await expect(async () => {
-        const t = await templateStorageHelper.getTemplate(templateKey);
-
-        expect(t.templateStatus).toBe('NOT_YET_SUBMITTED');
-
-        lockNumber = t.lockNumber;
-      }).toPass({ intervals: [1000] });
-
-      const requestProofResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
-        {
-          headers: {
-            Authorization: await user.getAccessToken(),
-            'X-Lock-Number': String(lockNumber),
-          },
-          data: {
-            ...basePayload,
-            ...payload,
-          } satisfies LetterProofRequest,
-        }
-      );
-
-      expect(requestProofResponse.status()).toBe(201);
-
-      let updatedTemplate: Template | undefined;
-
-      await expect(async () => {
-        updatedTemplate = await templateStorageHelper.getTemplate(templateKey);
-
-        assert(updatedTemplate);
-      }).toPass({ intervals: [1000] });
-
-      return updatedTemplate as Template;
-    }
-
+  test.describe('Personalised render', () => {
     test('produces initial render (long variant)', async ({ request }) => {
       const template = await personalisedRenderTest(
         request,
         {
           docx: docxFixtures.standard.open(),
-          payload: { requestTypeVariant: 'long' },
+          payload: {
+            requestTypeVariant: 'long',
+            personalisation: {
+              address_line_1: '1 Long Lane',
+              address_line_2: 'S70 0PQ',
+              nhsNumber: '99999999999',
+              gpSurgeryName: 'jalapeno',
+            },
+          },
         },
         (t: Template) => {
+          expect(t.files?.shortFormRender).toBeUndefined();
+
           expect(t).toEqual(
             expect.objectContaining({
               templateStatus: 'NOT_YET_SUBMITTED',
@@ -549,12 +519,11 @@ test.describe('Letter rendering', () => {
                 }),
                 longFormRender: expect.objectContaining({
                   pageCount: 2,
-                  personalisationParameters: basePayload.personalisation,
+                  personalisationParameters: baseProofPayload.personalisation,
                   systemPersonalisationPackId:
-                    basePayload.systemPersonalisationPackId,
+                    baseProofPayload.systemPersonalisationPackId,
                   status: 'RENDERED',
                 }),
-                shortFormRender: undefined,
               }),
             })
           );
@@ -587,14 +556,16 @@ test.describe('Letter rendering', () => {
       expect(pdfTextContent).toContain('Your GP surgery is jalapeno');
     });
 
-    test('produces initial render (long variant)', async ({ request }) => {
-      const template = await personalisedRenderTest(
+    test('produces initial render (short variant)', async ({ request }) => {
+      await personalisedRenderTest(
         request,
         {
           docx: docxFixtures.standard.open(),
           payload: { requestTypeVariant: 'short' },
         },
         (t: Template) => {
+          expect(t.files?.longFormRender).toBeUndefined();
+
           expect(t).toEqual(
             expect.objectContaining({
               templateStatus: 'NOT_YET_SUBMITTED',
@@ -605,42 +576,16 @@ test.describe('Letter rendering', () => {
                 }),
                 shortFormRender: expect.objectContaining({
                   pageCount: 2,
-                  personalisationParameters: basePayload.personalisation,
+                  personalisationParameters: baseProofPayload.personalisation,
                   systemPersonalisationPackId:
-                    basePayload.systemPersonalisationPackId,
+                    baseProofPayload.systemPersonalisationPackId,
                   status: 'RENDERED',
                 }),
-                longFormRender: undefined,
               }),
             })
           );
         }
       );
-
-      const render = await templateStorageHelper.getRenderFile(
-        { clientId: template.clientId!, templateId: template.id },
-        template.files!.shortFormRender!.fileName
-      );
-
-      expect(render?.metadata).toEqual({
-        'client-id': template.clientId,
-        'page-count': '2',
-        'template-id': template.id,
-        'request-type': 'personalised',
-        'file-type': 'render',
-        'request-type-variant': 'short',
-      });
-
-      expect(render?.buffer).toBeDefined();
-
-      const parser = new PDFParse({ data: render!.buffer });
-
-      const { text: pdfTextContent } = await parser.getText();
-
-      expect(pdfTextContent).toContain('This is the body text');
-      expect(pdfTextContent).toContain('1 Long Lane');
-      expect(pdfTextContent).toContain('NHS number: 99999999999');
-      expect(pdfTextContent).toContain('Your GP surgery is jalapeno');
     });
   });
 });

@@ -49,7 +49,7 @@ describe('createHandler', () => {
             requestType: 'initial',
             clientId: 'client-123',
             templateId: 'template-456',
-            currentVersion: 'version-789',
+            docxCurrentVersion: 'version-789',
           }),
           MessageGroupId: 'client-123',
         },
