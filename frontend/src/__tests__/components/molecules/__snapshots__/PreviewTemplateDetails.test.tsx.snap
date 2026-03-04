@@ -150,7 +150,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
         </dd>
       </div>
       <div
-        class="nhsuk-summary-list__row"
+        class="nhsuk-summary-list__row missing-value"
         id="printing-and-postage"
       >
         <dt
@@ -345,7 +345,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
         </dd>
       </div>
       <div
-        class="nhsuk-summary-list__row"
+        class="nhsuk-summary-list__row missing-value"
         id="printing-and-postage"
       >
         <dt
@@ -726,7 +726,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         </dd>
       </div>
       <div
-        class="nhsuk-summary-list__row"
+        class="nhsuk-summary-list__row missing-value"
         id="printing-and-postage"
       >
         <dt

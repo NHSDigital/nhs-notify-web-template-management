@@ -142,7 +142,7 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
               </dd>
             </div>
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-summary-list__row missing-value"
               id="printing-and-postage"
             >
               <dt

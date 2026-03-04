@@ -175,7 +175,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           {!hidePostageRow && (
             <SummaryList.Row
               id='printing-and-postage'
-              className={template.letterVariantId ? undefined : 'missing-value'}
+              className={letterVariant ? undefined : 'missing-value'}
             >
               <SummaryList.Key>
                 {rowHeadings.printingAndPostage}

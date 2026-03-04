@@ -553,7 +553,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
               </dd>
             </div>
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-summary-list__row missing-value"
               id="printing-and-postage"
             >
               <dt
@@ -1517,7 +1517,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
               </dd>
             </div>
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-summary-list__row missing-value"
               id="printing-and-postage"
             >
               <dt
