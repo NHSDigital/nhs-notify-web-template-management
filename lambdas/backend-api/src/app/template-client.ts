@@ -50,13 +50,6 @@ export class TemplateClient {
     })
   );
 
-  private $LetterForProofing = z.intersection(
-    $AuthoringLetterTemplate,
-    z.object({
-      templateStatus: z.literal('NOT_YET_SUBMITTED'),
-    })
-  );
-
   constructor(
     private readonly templateRepository: TemplateRepository,
     private readonly letterUploadRepository: LetterUploadRepository,
@@ -924,7 +917,10 @@ export class TemplateClient {
     if (validationResult.error) {
       log
         .child(validationResult.error.errorMeta)
-        .error('Invalid proof request', validationResult.error.actualError);
+        .error(
+          'Invalid letter proof request',
+          validationResult.error.actualError
+        );
 
       return validationResult;
     }
@@ -966,30 +962,32 @@ export class TemplateClient {
       return letterProofUpdateResult;
     }
 
-    const proofLetterValidationResult = this.$LetterForProofing.safeParse(
+    const templateDTO = this.mapDatabaseObjectToDTO(
       letterProofUpdateResult.data
     );
 
-    if (proofLetterValidationResult.error) {
-      log
-        .child({
-          code: ErrorCase.INTERNAL,
-          template: letterProofUpdateResult.data,
-        })
-        .error('Malformed template', proofLetterValidationResult.error);
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
 
-      return failure(ErrorCase.INTERNAL, 'Malformed template');
+    if (
+      templateDTO.templateType !== 'LETTER' ||
+      templateDTO.letterVersion !== 'AUTHORING'
+    ) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Unexpectedly found template unsuitable for proofing'
+      );
     }
 
     const sendQueueResult = await this.renderQueue.send(
       templateId,
       user.clientId,
+      lockNumberValidation.data,
       personalisation,
       requestTypeVariant,
-      lockNumberValidation.data,
       systemPersonalisationPackId,
-      // focus the validator on just this?
-      proofLetterValidationResult.data.files.docxTemplate.currentVersion
+      templateDTO.files.docxTemplate.currentVersion
     );
 
     if (sendQueueResult.error) {
@@ -1000,7 +998,7 @@ export class TemplateClient {
       return sendQueueResult;
     }
 
-    return success(proofLetterValidationResult.data);
+    return success(templateDTO);
   }
 
   isCampaignIdValid(

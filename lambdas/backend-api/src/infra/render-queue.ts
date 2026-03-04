@@ -13,9 +13,9 @@ export class RenderQueue {
   async send(
     templateId: string,
     clientId: string,
+    lockNumber: number,
     personalisation: Record<string, string>,
     requestTypeVariant: PersonalisedRenderRequestVariant,
-    lockNumber: number,
     systemPersonalisationPackId: string,
     currentVersion: string
   ) {
