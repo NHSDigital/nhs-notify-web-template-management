@@ -242,7 +242,7 @@ export class TemplateStorageHelper {
   }
 
   /**
-   * Creates a letter template pdf file in the internal bucket
+   * Creates a letter template docx file in the internal bucket
    */
   async putScannedDocxTemplateFile(
     key: TemplateKey,

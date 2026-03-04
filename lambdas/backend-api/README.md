@@ -113,7 +113,8 @@ curl -X POST --location "${APIG_STAGE}/v1/docx-letter-template" \
   "letterType": "x0",
   "language": "en",
   "letterVersion": "AUTHORING",
-  "campaignId": "campaign"
+  "campaignId": "campaign",
+  "systemPersonalisationPackId": "pack-id"
 }'
 ```
 
