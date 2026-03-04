@@ -130,6 +130,29 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
     await loginAsUser(userLetterAuthoringEnabled, page);
   });
 
+  test('should display correct number of radio button options for template type', async ({
+    page,
+  }) => {
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplateTypePage.loadPage();
+
+    await expect(chooseTemplateTypePage.templateTypeRadioButtons).toHaveCount(
+      4
+    );
+
+    for (const [templateType, label] of [
+      ['nhsapp', 'NHS App message'],
+      ['email', 'Email'],
+      ['sms', 'Text message (SMS)'],
+      ['letter', 'Letter'],
+    ] as const) {
+      const radio = chooseTemplateTypePage.getTemplateTypeRadio(templateType);
+      await expect(radio).toBeVisible();
+      await expect(radio).toHaveAccessibleName(label);
+    }
+  });
+
   test('should only show letter type conditional radios when Letter template type is selected', async ({
     page,
   }) => {

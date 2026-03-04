@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Renders NHSNotifyRadioButtonForm - handles validation errors for other fields 1`] = `
+exports[`Renders ChooseTemplateTypeRadios - handles validation errors for other fields 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -95,7 +95,7 @@ exports[`Renders NHSNotifyRadioButtonForm - handles validation errors for other 
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm - renders without validation error field 1`] = `
+exports[`Renders ChooseTemplateTypeRadios - renders without validation error field 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -190,7 +190,7 @@ exports[`Renders NHSNotifyRadioButtonForm - renders without validation error fie
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
+exports[`Renders ChooseTemplateTypeRadios correctly with errors 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -297,7 +297,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
+exports[`Renders ChooseTemplateTypeRadios correctly without errors 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -399,7 +399,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm with conditional content for a radio option 1`] = `
+exports[`Renders ChooseTemplateTypeRadios with conditional content for a radio option 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -507,7 +507,7 @@ exports[`Renders NHSNotifyRadioButtonForm with conditional content for a radio o
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm with conditional radios and validation error on nested field 1`] = `
+exports[`Renders ChooseTemplateTypeRadios with conditional radios and validation error on nested field 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -666,7 +666,7 @@ exports[`Renders NHSNotifyRadioButtonForm with conditional radios and validation
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm with learn more link 1`] = `
+exports[`Renders ChooseTemplateTypeRadios with learn more link 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -777,7 +777,7 @@ exports[`Renders NHSNotifyRadioButtonForm with learn more link 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm with nested conditional radio buttons 1`] = `
+exports[`Renders ChooseTemplateTypeRadios with nested conditional radio buttons 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -924,7 +924,7 @@ exports[`Renders NHSNotifyRadioButtonForm with nested conditional radio buttons 
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm without learn more link if learnMoreLink is not provided 1`] = `
+exports[`Renders ChooseTemplateTypeRadios without learn more link if learnMoreLink is not provided 1`] = `
 <DocumentFragment>
   <form
     action="/action"
@@ -1026,7 +1026,7 @@ exports[`Renders NHSNotifyRadioButtonForm without learn more link if learnMoreLi
 </DocumentFragment>
 `;
 
-exports[`Renders NHSNotifyRadioButtonForm without learn more link if learnMoreText is not provided 1`] = `
+exports[`Renders ChooseTemplateTypeRadios without learn more link if learnMoreText is not provided 1`] = `
 <DocumentFragment>
   <form
     action="/action"
