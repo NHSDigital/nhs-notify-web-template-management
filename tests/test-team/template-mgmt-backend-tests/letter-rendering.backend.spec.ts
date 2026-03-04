@@ -10,7 +10,7 @@ import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-pay
 import { docxFixtures } from '../fixtures/letters';
 import type { Template } from '../helpers/types';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
-import { GenerateLetterProof } from 'nhs-notify-web-template-management-types';
+import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 
 const authHelper = createAuthHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -507,7 +507,7 @@ test.describe('Letter rendering', () => {
             },
             systemPersonalisationPackId: 'pack-id',
             requestTypeVariant: 'long',
-          } satisfies GenerateLetterProof,
+          } satisfies LetterProofRequest,
         }
       );
 

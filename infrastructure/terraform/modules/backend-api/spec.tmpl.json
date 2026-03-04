@@ -630,28 +630,6 @@
         ],
         "type": "object"
       },
-      "GenerateLetterProof": {
-        "properties": {
-          "personalisation": {
-            "additionalProperties": {
-              "type": "string"
-            },
-            "type": "object"
-          },
-          "requestTypeVariant": {
-            "$ref": "#/components/schemas/PersonalisedRenderRequestVariant"
-          },
-          "systemPersonalisationPackId": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "personalisation",
-          "requestTypeVariant",
-          "systemPersonalisationPackId"
-        ],
-        "type": "object"
-      },
       "Language": {
         "enum": [
           "ar",
@@ -685,6 +663,28 @@
           "zh"
         ],
         "type": "string"
+      },
+      "LetterProofRequest": {
+        "properties": {
+          "personalisation": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "requestTypeVariant": {
+            "$ref": "#/components/schemas/PersonalisedRenderRequestVariant"
+          },
+          "systemPersonalisationPackId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "personalisation",
+          "requestTypeVariant",
+          "systemPersonalisationPackId"
+        ],
+        "type": "object"
       },
       "LetterProperties": {
         "oneOf": [
@@ -2362,7 +2362,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateLetterProof"
+                "$ref": "#/components/schemas/LetterProofRequest"
               }
             }
           },

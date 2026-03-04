@@ -10,7 +10,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { randomUUID } from 'node:crypto';
 import { docxFixtures } from 'fixtures/letters';
-import { GenerateLetterProof } from 'nhs-notify-web-template-management-types';
+import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
 test.describe('POST /v1/template/:templateId/letter-proof', () => {
@@ -157,7 +157,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
           },
           systemPersonalisationPackId: 'pack-id',
           requestTypeVariant: 'long',
-        } satisfies GenerateLetterProof,
+        } satisfies LetterProofRequest,
       }
     );
 

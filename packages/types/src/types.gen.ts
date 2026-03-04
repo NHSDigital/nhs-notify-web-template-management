@@ -176,7 +176,7 @@ export type Failure = {
   technicalMessage: string;
 };
 
-export type GenerateLetterProof = {
+export type LetterProofRequest = {
   personalisation: {
     [key: string]: string;
   };
@@ -902,7 +902,7 @@ export type PostV1TemplateByTemplateIdLetterProofData = {
   /**
    * Template to update
    */
-  body: GenerateLetterProof;
+  body: LetterProofRequest;
   headers: {
     /**
      * Lock number of the current version of the template

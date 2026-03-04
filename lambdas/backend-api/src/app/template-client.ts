@@ -9,13 +9,13 @@ import {
   $TemplateDto,
   $TemplateFilter,
   $PatchTemplate,
-  $GenerateLetterProof,
+  $LetterProofRequest,
 } from 'nhs-notify-backend-client';
 import type {
   AuthoringLetterFiles,
   ClientConfiguration,
   CreateUpdateTemplate,
-  GenerateLetterProof,
+  LetterProofRequest,
   PatchTemplate,
   PdfLetterFiles,
   TemplateDto,
@@ -915,11 +915,11 @@ export class TemplateClient {
     templateId: string,
     user: User,
     lockNumberRaw: number | string,
-    body: GenerateLetterProof
+    body: LetterProofRequest
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const validationResult = await validate($GenerateLetterProof, body);
+    const validationResult = await validate($LetterProofRequest, body);
 
     if (validationResult.error) {
       log
