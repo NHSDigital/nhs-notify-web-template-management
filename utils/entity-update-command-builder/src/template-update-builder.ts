@@ -1,4 +1,5 @@
 import type {
+  LetterVersion,
   PersonalisedRenderRequestVariant,
   RenderDetails,
   TemplateStatus,
@@ -142,6 +143,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
 
   expectTemplateType(type: TemplateType) {
     this.updateBuilder.conditions.and('templateType', '=', type);
+    return this;
+  }
+
+  expectLetterVersion(version: LetterVersion) {
+    this.updateBuilder.conditions.and('letterVersion', '=', version);
     return this;
   }
 

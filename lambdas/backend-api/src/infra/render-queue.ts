@@ -17,7 +17,7 @@ export class RenderQueue {
     personalisation: Record<string, string>,
     requestTypeVariant: PersonalisedRenderRequestVariant,
     systemPersonalisationPackId: string,
-    currentVersion: string
+    docxCurrentVersion: string
   ) {
     try {
       const response = await this.sqsClient.send(
@@ -32,7 +32,7 @@ export class RenderQueue {
             requestTypeVariant,
             lockNumber,
             systemPersonalisationPackId,
-            currentVersion,
+            docxCurrentVersion,
           } satisfies Extract<RenderRequest, { requestType: 'personalised' }>),
         })
       );

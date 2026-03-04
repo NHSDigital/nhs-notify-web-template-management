@@ -2,7 +2,7 @@ import type { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
-  Result,
+  type Result,
   ErrorCase,
   $CreateUpdateNonLetter,
   $LockNumber,
@@ -24,21 +24,20 @@ import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constant
 import {
   $UploadPdfLetterTemplate,
   $UploadDocxLetterTemplate,
-  DatabaseTemplate,
-  User,
+  type DatabaseTemplate,
+  type User,
   $PdfLetterTemplate,
-  $AuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
-import { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { z } from 'zod/v4';
-import { LetterUploadRepository } from '../infra/letter-upload-repository';
-import { ProofingQueue } from '../infra/proofing-queue';
-import { ClientConfigRepository } from '../infra/client-config-repository';
-import { TemplateRepository } from '../infra';
-import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
-import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
-import { RenderQueue } from '@backend-api/infra/render-queue';
+import type { LetterUploadRepository } from '../infra/letter-upload-repository';
+import type { ProofingQueue } from '../infra/proofing-queue';
+import type { ClientConfigRepository } from '../infra/client-config-repository';
+import type { TemplateRepository } from '../infra';
+import type { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
+import type { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+import type { RenderQueue } from '@backend-api/infra/render-queue';
 
 export class TemplateClient {
   private $LetterForPdfProofing = z.intersection(

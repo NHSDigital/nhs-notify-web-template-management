@@ -773,6 +773,10 @@ export class TemplateRepository {
           ReturnValues: 'ALL_NEW',
         }
       )
+        .expectStatus('NOT_YET_SUBMITTED')
+        .expectTemplateType('LETTER')
+        .expectLetterVersion('AUTHORING')
+        .expectLockNumber(lockNumber)
         .incrementLockNumber()
         .setUpdatedByUserAt(this.internalUserKey(user))
         .setPersonalisedRender(requestTypeVariant, {
