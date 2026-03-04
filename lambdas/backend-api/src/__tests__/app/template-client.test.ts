@@ -3717,6 +3717,67 @@ describe('templateClient', () => {
       );
     });
 
+    test('returns failure result when updated database template is invalid', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        createdAt: undefined as unknown as string,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.letterProof(
+        templateId,
+        user,
+        1,
+        validBody
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: expect.objectContaining({
+            description: 'Failed to parse template',
+          }),
+        })
+      );
+    });
+
     test('returns failure result when template is not LETTER type', async () => {
       const { templateClient, mocks } = setup();
 
