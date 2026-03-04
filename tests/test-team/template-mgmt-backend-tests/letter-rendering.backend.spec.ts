@@ -439,10 +439,24 @@ test.describe('Letter rendering', () => {
   });
 
   test.describe('Personalised render', () => {
+    const basePayload: LetterProofRequest = {
+      personalisation: {
+        address_line_1: '1 Long Lane',
+        address_line_2: 'S70 0PQ',
+        nhsNumber: '99999999999',
+        gpSurgeryName: 'jalapeno',
+      },
+      systemPersonalisationPackId: 'pack-id',
+      requestTypeVariant: 'long',
+    };
+
     async function personalisedRenderTest(
       request: APIRequestContext,
-      docx: Buffer,
-      payload: Partial<LetterProofRequest>,
+      {
+        docx,
+        payload,
+      }: { docx: Buffer; payload?: Partial<LetterProofRequest> },
+
       assert: (t: Template) => void
     ) {
       const { multipart, contentType } =
@@ -498,14 +512,8 @@ test.describe('Letter rendering', () => {
             'X-Lock-Number': String(lockNumber),
           },
           data: {
-            personalisation: {
-              address_line_1: '1 Long Lane',
-              address_line_2: 'S70 0PQ',
-              nhsNumber: '99999999999',
-              gpSurgeryName: 'jalapeno',
-            },
-            systemPersonalisationPackId: 'pack-id',
-            requestTypeVariant: 'long',
+            ...basePayload,
+            ...payload,
           } satisfies LetterProofRequest,
         }
       );
@@ -523,11 +531,13 @@ test.describe('Letter rendering', () => {
       return updatedTemplate as Template;
     }
 
-    // eslint-disable-next-line playwright/no-focused-test, sonarjs/no-exclusive-tests
-    test.only('produces initial render', async ({ request }) => {
+    test('produces initial render (long variant)', async ({ request }) => {
       const template = await personalisedRenderTest(
         request,
-        docxFixtures.standard.open(),
+        {
+          docx: docxFixtures.standard.open(),
+          payload: { requestTypeVariant: 'long' },
+        },
         (t: Template) => {
           expect(t).toEqual(
             expect.objectContaining({
@@ -535,24 +545,17 @@ test.describe('Letter rendering', () => {
               files: expect.objectContaining({
                 initialRender: expect.objectContaining({
                   status: 'RENDERED',
-                  fileName: expect.any(String),
                   pageCount: 2,
                 }),
                 longFormRender: expect.objectContaining({
                   pageCount: 2,
-                  personalisationParameters: {
-                    address_line_1: '1 Long Lane',
-                    address_line_2: 'S70 0PQ',
-                    gpSurgeryName: 'jalapeno',
-                    nhsNumber: '99999999999',
-                  },
-                  // missing?
-                  // systemPersonalisationPackId: 'pack-id',
+                  personalisationParameters: basePayload.personalisation,
+                  systemPersonalisationPackId:
+                    basePayload.systemPersonalisationPackId,
                   status: 'RENDERED',
                 }),
+                shortFormRender: undefined,
               }),
-              customPersonalisation,
-              systemPersonalisation,
             })
           );
         }
@@ -569,7 +572,63 @@ test.describe('Letter rendering', () => {
         'template-id': template.id,
         'request-type': 'personalised',
         'file-type': 'render',
-        // add variant
+        'request-type-variant': 'long',
+      });
+
+      expect(render?.buffer).toBeDefined();
+
+      const parser = new PDFParse({ data: render!.buffer });
+
+      const { text: pdfTextContent } = await parser.getText();
+
+      expect(pdfTextContent).toContain('This is the body text');
+      expect(pdfTextContent).toContain('1 Long Lane');
+      expect(pdfTextContent).toContain('NHS number: 99999999999');
+      expect(pdfTextContent).toContain('Your GP surgery is jalapeno');
+    });
+
+    test('produces initial render (long variant)', async ({ request }) => {
+      const template = await personalisedRenderTest(
+        request,
+        {
+          docx: docxFixtures.standard.open(),
+          payload: { requestTypeVariant: 'short' },
+        },
+        (t: Template) => {
+          expect(t).toEqual(
+            expect.objectContaining({
+              templateStatus: 'NOT_YET_SUBMITTED',
+              files: expect.objectContaining({
+                initialRender: expect.objectContaining({
+                  status: 'RENDERED',
+                  pageCount: 2,
+                }),
+                shortFormRender: expect.objectContaining({
+                  pageCount: 2,
+                  personalisationParameters: basePayload.personalisation,
+                  systemPersonalisationPackId:
+                    basePayload.systemPersonalisationPackId,
+                  status: 'RENDERED',
+                }),
+                longFormRender: undefined,
+              }),
+            })
+          );
+        }
+      );
+
+      const render = await templateStorageHelper.getRenderFile(
+        { clientId: template.clientId!, templateId: template.id },
+        template.files!.shortFormRender!.fileName
+      );
+
+      expect(render?.metadata).toEqual({
+        'client-id': template.clientId,
+        'page-count': '2',
+        'template-id': template.id,
+        'request-type': 'personalised',
+        'file-type': 'render',
+        'request-type-variant': 'short',
       });
 
       expect(render?.buffer).toBeDefined();
