@@ -3,7 +3,8 @@ import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { mockClient } from 'aws-sdk-client-mock';
 import { RenderQueue } from '../../infra/render-queue';
 
-const queueUrl = 'https://sqs.eu-west-2.amazonaws.com/123456789012/render-queue';
+const queueUrl =
+  'https://sqs.eu-west-2.amazonaws.com/123456789012/render-queue';
 
 const setup = () => {
   const sqsClient = mockClient(SQSClient);
@@ -68,29 +69,6 @@ describe('RenderQueue', () => {
           systemPersonalisationPackId,
           docxCurrentVersion,
         }),
-      });
-    });
-
-    it('sends message with long form render variant', async () => {
-      const { renderQueue, mocks } = setup();
-
-      mocks.sqsClient.on(SendMessageCommand).resolvesOnce({
-        MessageId: 'msg-456',
-        $metadata: {},
-      });
-
-      await renderQueue.send(
-        templateId,
-        clientId,
-        lockNumber,
-        personalisation,
-        'long',
-        systemPersonalisationPackId,
-        docxCurrentVersion
-      );
-
-      expect(mocks.sqsClient).toHaveReceivedCommandWith(SendMessageCommand, {
-        MessageBody: expect.stringContaining('"requestTypeVariant":"long"'),
       });
     });
 

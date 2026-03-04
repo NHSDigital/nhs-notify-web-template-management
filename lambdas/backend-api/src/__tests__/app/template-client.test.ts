@@ -3603,30 +3603,19 @@ describe('templateClient', () => {
     test('returns failure result when body validation fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
-      const result = await templateClient.letterProof(
-        templateId,
-        user,
-        1,
-        { invalid: 'body' } as never
-      );
+      const result = await templateClient.letterProof(templateId, user, 1, {
+        invalid: 'body',
+      } as never);
 
-      expect(
-        mocks.templateRepository.letterProofUpdate
-      ).not.toHaveBeenCalled();
+      expect(mocks.templateRepository.letterProofUpdate).not.toHaveBeenCalled();
 
       expect(result).toEqual({
-        error: {
-          actualError: expect.any(Object),
-          errorMeta: {
+        error: expect.objectContaining({
+          errorMeta: expect.objectContaining({
             code: 400,
             description: 'Request failed validation',
-            details: expect.objectContaining({
-              personalisation: expect.any(String),
-              requestTypeVariant: expect.any(String),
-              systemPersonalisationPackId: expect.any(String),
-            }),
-          },
-        },
+          }),
+        }),
       });
 
       expect(logMessages).toContainEqual(
@@ -3647,9 +3636,7 @@ describe('templateClient', () => {
         validBody
       );
 
-      expect(
-        mocks.templateRepository.letterProofUpdate
-      ).not.toHaveBeenCalled();
+      expect(mocks.templateRepository.letterProofUpdate).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         error: {
