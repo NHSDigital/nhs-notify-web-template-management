@@ -23,14 +23,10 @@ const config: Config = {
 
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
-    '.types.ts',
-    'layout.tsx',
-    'container.tsx',
-    '.snap',
-    'resource.ts',
-    'backend.ts',
-    'jest.config.ts',
+    '.dev.ts',
     '.dev.tsx',
+    '.snap',
+    'layout.tsx',
   ],
 
   testPathIgnorePatterns: ['/node_modules/', 'fixture', 'helpers.ts', '.build'],

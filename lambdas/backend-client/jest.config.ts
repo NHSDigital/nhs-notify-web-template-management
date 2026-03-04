@@ -1,1 +1,11 @@
-export { baseJestConfig as default } from 'nhs-notify-web-template-management-utils'; // eslint-disable-line no-restricted-exports
+import type { Config } from 'jest';
+import { baseJestConfig } from 'nhs-notify-web-template-management-utils';
+
+const config: Config = {
+  ...baseJestConfig,
+  coveragePathIgnorePatterns: [
+    ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
+  ],
+};
+
+export default config;
