@@ -75,6 +75,7 @@ export default async function PreviewLetterTemplatePage({
   return (
     <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
+        key={validatedTemplate.templateStatus}
         initialState={{
           errorState: {
             formErrors: getValidationErrors(validatedTemplate),
