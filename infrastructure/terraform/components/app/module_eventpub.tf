@@ -1,6 +1,6 @@
 module "eventpub" {
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-eventpub.zip"
-  
+
   name = "eventpub"
 
   aws_account_id = var.aws_account_id
