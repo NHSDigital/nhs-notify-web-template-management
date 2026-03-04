@@ -948,36 +948,6 @@ export class TemplateClient {
 
     const { data: lockNumber } = lockNumberValidation;
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      user.clientId
-    );
-
-    if (clientConfigurationResult.error) {
-      log
-        .child(clientConfigurationResult.error.errorMeta)
-        .error(
-          'Failed to fetch client configuration',
-          clientConfigurationResult.error.actualError
-        );
-
-      return clientConfigurationResult;
-    }
-
-    const clientConfig = clientConfigurationResult.data;
-
-    if (!clientConfig?.features.letterAuthoring) {
-      log.error({
-        code: ErrorCase.FEATURE_DISABLED,
-        description: 'User cannot request a personalised proof',
-        clientConfig,
-      });
-
-      return failure(
-        ErrorCase.FEATURE_DISABLED,
-        'User cannot request a personalised proof'
-      );
-    }
-
     const letterProofUpdateResult =
       await this.templateRepository.letterProofUpdate(
         templateId,
@@ -1018,6 +988,7 @@ export class TemplateClient {
       requestTypeVariant,
       lockNumberValidation.data,
       systemPersonalisationPackId,
+      // focus the validator on just this?
       proofLetterValidationResult.data.files.docxTemplate.currentVersion
     );
 

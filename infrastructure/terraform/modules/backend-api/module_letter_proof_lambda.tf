@@ -77,15 +77,4 @@ data "aws_iam_policy_document" "letter_proof_lambda_policy" {
       module.sqs_letter_render.sqs_queue_arn,
     ]
   }
-
-  statement {
-    sid    = "AllowSSMParameterRead"
-    effect = "Allow"
-
-    actions = [
-      "ssm:GetParameter",
-    ]
-
-    resources = [local.client_ssm_path_pattern]
-  }
 }
