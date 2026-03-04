@@ -149,10 +149,22 @@ describe('shouldPoll', () => {
     expect(shouldPoll(template)).toBe(false);
   });
 
+  it('returns false when template status is not VALIDATION_FAILED', () => {
+    const shouldPoll = shouldPollRender('longFormRender');
+
+    const pendingTemplate: AuthoringLetterTemplate = {
+      ...template,
+      templateStatus: 'VALIDATION_FAILED',
+      files: { ...template.files, initialRender: pendingRender },
+    };
+
+    expect(shouldPoll(pendingTemplate)).toBe(false);
+  });
+
   it('returns true when render status is PENDING and not stale', () => {
     const shouldPoll = shouldPollRender('initialRender');
 
-    const pendingTemplate = {
+    const pendingTemplate: AuthoringLetterTemplate = {
       ...template,
       files: { ...template.files, initialRender: pendingRender },
     };
@@ -163,7 +175,7 @@ describe('shouldPoll', () => {
   it('returns false when render status is PENDING but stale', () => {
     const shouldPoll = shouldPollRender('initialRender');
 
-    const staleTemplate = {
+    const staleTemplate: AuthoringLetterTemplate = {
       ...template,
       files: { ...template.files, initialRender: staleRender },
     };
@@ -174,14 +186,14 @@ describe('shouldPoll', () => {
   it('uses the mode to select the appropriate render file', () => {
     const shouldPoll = shouldPollRender('shortFormRender');
 
-    const templateWithPendingShort = {
+    const templateWithPendingShort: AuthoringLetterTemplate = {
       ...template,
       files: { ...template.files, shortFormRender: pendingRender },
     };
 
     expect(shouldPoll(templateWithPendingShort)).toBe(true);
 
-    const templateWithRenderedShort = {
+    const templateWithRenderedShort: AuthoringLetterTemplate = {
       ...template,
       files: { ...template.files, shortFormRender: renderedRender },
     };

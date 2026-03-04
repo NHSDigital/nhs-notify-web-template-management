@@ -1,5 +1,5 @@
 module "s3bucket_cf_logs" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip"
   providers = {
     aws = aws.us-east-1
   }
@@ -60,6 +60,10 @@ module "s3bucket_cf_logs" {
       }
     }
   ]
+
+  bucket_logging_target = {
+    bucket = local.acct.s3_buckets["access_logs_us"]["id"]
+  }
 
   policy_documents = [
     data.aws_iam_policy_document.s3bucket_cf_logs.json

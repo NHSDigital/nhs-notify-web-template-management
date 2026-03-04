@@ -12,10 +12,15 @@ import type { RenderKey } from '@utils/types';
 export function shouldPollRender(
   mode: RenderKey
 ): (template: AuthoringLetterTemplate) => boolean {
-  return ({ files }: AuthoringLetterTemplate): boolean => {
+  return ({ files, templateStatus }: AuthoringLetterTemplate): boolean => {
     const render = files[mode];
 
-    if (render?.status !== 'PENDING') return false;
+    if (
+      render?.status !== 'PENDING' ||
+      templateStatus === 'VALIDATION_FAILED'
+    ) {
+      return false;
+    }
 
     const elapsed = Date.now() - new Date(render.requestedAt).getTime();
 
