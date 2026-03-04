@@ -94,11 +94,13 @@ export class TemplateRepository {
     )
       .incrementLockNumber()
       .expectTemplateExists()
+      .expectStatus('NOT_YET_SUBMITTED')
       .setPersonalisedRender(request.requestTypeVariant, {
         status: 'RENDERED',
         currentVersion,
         fileName,
         pageCount,
+        systemPersonalisationPackId: request.systemPersonalisationPackId,
         personalisationParameters: request.personalisation,
       });
 
@@ -113,8 +115,11 @@ export class TemplateRepository {
     )
       .incrementLockNumber()
       .expectTemplateExists()
+      .expectStatus('NOT_YET_SUBMITTED')
       .setPersonalisedRender(request.requestTypeVariant, {
         status: 'FAILED',
+        systemPersonalisationPackId: request.systemPersonalisationPackId,
+        personalisationParameters: request.personalisation,
       });
 
     return await this.ddb.send(new UpdateCommand(builder.build()));
