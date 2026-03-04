@@ -17,7 +17,7 @@ export function shouldPollRender(
 
     if (
       render?.status !== 'PENDING' ||
-      templateStatus !== 'NOT_YET_SUBMITTED'
+      templateStatus === 'VALIDATION_FAILED'
     ) {
       return false;
     }

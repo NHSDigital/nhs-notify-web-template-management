@@ -149,7 +149,7 @@ describe('shouldPoll', () => {
     expect(shouldPoll(template)).toBe(false);
   });
 
-  it('returns false when template status is not NOT_YET_SUBMITTED', () => {
+  it('returns false when template status is not VALIDATION_FAILED', () => {
     const shouldPoll = shouldPollRender('longFormRender');
 
     const pendingTemplate: AuthoringLetterTemplate = {
