@@ -31,8 +31,12 @@
 | <a name="input_enable_amplify_branch_auto_build"></a> [enable\_amplify\_branch\_auto\_build](#input\_enable\_amplify\_branch\_auto\_build) | Enable automatic building of branches | `bool` | `false` | no |
 | <a name="input_enable_api_data_trace"></a> [enable\_api\_data\_trace](#input\_enable\_api\_data\_trace) | Enable API Gateway data trace logging | `bool` | `false` | no |
 | <a name="input_enable_cognito_built_in_idp"></a> [enable\_cognito\_built\_in\_idp](#input\_enable\_cognito\_built\_in\_idp) | Enable the use of Cognito as an IDP; CIS2 is preferred | `bool` | `false` | no |
+| <a name="input_enable_event_anomaly_detection"></a> [enable\_event\_anomaly\_detection](#input\_enable\_event\_anomaly\_detection) | Enable CloudWatch anomaly detection alarm for SNS message publishing. Detects abnormal drops or spikes in event publishing volume. | `bool` | `true` | no |
 | <a name="input_enable_event_caching"></a> [enable\_event\_caching](#input\_enable\_event\_caching) | Enable caching of events to an S3 bucket | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
+| <a name="input_event_anomaly_band_width"></a> [event\_anomaly\_band\_width](#input\_event\_anomaly\_band\_width) | The width of the anomaly detection band. Higher values (e.g. 4-6) reduce sensitivity and noise, lower values (e.g. 2-3) increase sensitivity. Recommended: 2-4. | `number` | `5` | no |
+| <a name="input_event_anomaly_evaluation_periods"></a> [event\_anomaly\_evaluation\_periods](#input\_event\_anomaly\_evaluation\_periods) | Number of evaluation periods for the publishing anomaly alarm. Each period is defined by event\_anomaly\_period. | `number` | `3` | no |
+| <a name="input_event_anomaly_period"></a> [event\_anomaly\_period](#input\_event\_anomaly\_period) | The period in seconds over which the specified statistic is applied for anomaly detection. Minimum 300 seconds (5 minutes). Recommended: 300-600. | `number` | `300` | no |
 | <a name="input_event_delivery_logging"></a> [event\_delivery\_logging](#input\_event\_delivery\_logging) | Enable SNS Event Delivery logging | `bool` | `true` | no |
 | <a name="input_event_delivery_logging_success_sample_percentage"></a> [event\_delivery\_logging\_success\_sample\_percentage](#input\_event\_delivery\_logging\_success\_sample\_percentage) | Enable caching of events to an S3 bucket | `number` | `0` | no |
 | <a name="input_external_email_domain"></a> [external\_email\_domain](#input\_external\_email\_domain) | Externally managed domain used to create an SES identity for sending emails from. Validation DNS records will need to be manually configured in the DNS provider. | `string` | `null` | no |
@@ -53,11 +57,11 @@
 | <a name="module_amplify_branch"></a> [amplify\_branch](#module\_amplify\_branch) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-amp_branch.zip | n/a |
 | <a name="module_backend_api"></a> [backend\_api](#module\_backend\_api) | ../../modules/backend-api | n/a |
 | <a name="module_download_authorizer_lambda"></a> [download\_authorizer\_lambda](#module\_download\_authorizer\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
-| <a name="module_eventpub"></a> [eventpub](#module\_eventpub) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub | v2.0.28 |
+| <a name="module_eventpub"></a> [eventpub](#module\_eventpub) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.6/terraform-eventpub.zip | n/a |
 | <a name="module_kms"></a> [kms](#module\_kms) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_kms_us_east_1"></a> [kms\_us\_east\_1](#module\_kms\_us\_east\_1) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_nhse_backup_vault"></a> [nhse\_backup\_vault](#module\_nhse\_backup\_vault) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.25/terraform-aws-backup-source.zip | n/a |
-| <a name="module_s3bucket_cf_logs"></a> [s3bucket\_cf\_logs](#module\_s3bucket\_cf\_logs) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
+| <a name="module_s3bucket_cf_logs"></a> [s3bucket\_cf\_logs](#module\_s3bucket\_cf\_logs) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
 | <a name="module_ses"></a> [ses](#module\_ses) | ../../modules/ses | n/a |
 ## Outputs
 

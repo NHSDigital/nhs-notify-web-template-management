@@ -410,7 +410,30 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
     });
 
-    it('shows total pages and sheets when initialRender exists', () => {
+    it('hides total pages and sheets when initialRender is not in RENDERED status', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={{
+            ...validationFailedTemplate,
+            files: {
+              docxTemplate: {
+                currentVersion: 'version-id',
+                fileName: 'template.docx',
+                virusScanStatus: 'PASSED',
+              },
+              initialRender: {
+                status: 'FAILED',
+              },
+            },
+          }}
+        />
+      );
+
+      expect(screen.queryByText('Total pages')).not.toBeInTheDocument();
+      expect(screen.queryByText('Sheets')).not.toBeInTheDocument();
+    });
+
+    it('shows total pages and sheets when initialRender is in RENDERED status', () => {
       render(
         <PreviewTemplateDetailsAuthoringLetter
           template={{

@@ -17,7 +17,7 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   letterVariantId?: string;
   letterVersion: 'AUTHORING';
   systemPersonalisation?: Array<string>;
-  validationErrors?: Array<LetterValidationError>;
+  validationErrors?: Array<ValidationErrorDetail>;
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
@@ -212,7 +212,9 @@ export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 export type LetterType = 'q4' | 'x0' | 'x1';
 
 export type LetterValidationError =
+  | 'INVALID_MARKERS'
   | 'MISSING_ADDRESS_LINES'
+  | 'UNEXPECTED_ADDRESS_LINES'
   | 'VIRUS_SCAN_FAILED';
 
 export type LetterVersion = 'AUTHORING' | 'PDF';
@@ -258,11 +260,24 @@ export type ProofFileDetails = {
   virusScanStatus: VirusScanStatus;
 };
 
-export type RenderDetails = {
+export type RenderDetails =
+  | RenderDetailsFailed
+  | RenderDetailsPending
+  | RenderDetailsRendered;
+
+export type RenderDetailsFailed = {
+  status: 'FAILED';
+};
+
+export type RenderDetailsPending = {
+  status: 'PENDING';
+};
+
+export type RenderDetailsRendered = {
   currentVersion: string;
   fileName: string;
   pageCount: number;
-  status: RenderStatus;
+  status: 'RENDERED';
 };
 
 export type RenderStatus = 'FAILED' | 'PENDING' | 'RENDERED';
@@ -350,6 +365,11 @@ export type UploadLetterTemplate = {
   letterPdf?: Blob | File;
   template?: CreateUpdateTemplate;
   testCsv?: string;
+};
+
+export type ValidationErrorDetail = {
+  issues?: Array<string>;
+  name: LetterValidationError;
 };
 
 export type VersionedFileDetails = {
