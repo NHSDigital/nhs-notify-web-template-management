@@ -214,7 +214,7 @@ test.describe('Routing - Edit Message Plan page', () => {
         const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
 
         await expect(page).toHaveURL(
-          /\/templates\/message-plans\/choose-templates\//
+          /\/templates\/message-plans\/edit-message-plan\//
         );
 
         const { messagePlanId } =
