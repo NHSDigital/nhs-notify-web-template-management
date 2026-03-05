@@ -46,6 +46,12 @@ export default async function ChoosePrintingAndPostagePage(
   const searchParams = await props.searchParams;
   const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
+  const client = await fetchClient();
+
+  if (!client?.features.letterAuthoring) {
+    return redirect('/message-templates', RedirectType.replace);
+  }
+
   const variants = await getLetterVariantsForTemplate(templateId);
 
   const previewUrl =
@@ -61,12 +67,6 @@ export default async function ChoosePrintingAndPostagePage(
     variants.length === 0
   ) {
     return redirect(previewUrl, RedirectType.replace);
-  }
-
-  const client = await fetchClient();
-
-  if (!client?.features.letterAuthoring) {
-    return redirect('/message-templates', RedirectType.replace);
   }
 
   return (
