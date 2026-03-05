@@ -1280,7 +1280,7 @@ const messagePlanCascadePreview = {
   },
 };
 
-const chooseTemplatesForMessagePlan = {
+const editMessagePlan = {
   pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
   changeNameLink: {
@@ -1400,7 +1400,7 @@ const chooseChannelTemplate = {
     },
     backLink: {
       text: 'Go back',
-      href: '/message-plans/choose-templates/{{routingConfigId}}',
+      href: '/message-plans/edit-message-plan/{{routingConfigId}}',
     },
   },
 };
@@ -1540,7 +1540,7 @@ const messagePlansListComponent = {
   copiedText: 'Names and IDs copied to clipboard',
   copiedFailedText: 'Failed copying names and IDs to clipboard',
   messagePlanLink: {
-    DRAFT: '/message-plans/choose-templates/{{routingConfigId}}',
+    DRAFT: '/message-plans/edit-message-plan/{{routingConfigId}}',
     COMPLETED: '/message-plans/preview-message-plan/{{routingConfigId}}',
   } satisfies Record<RoutingConfigStatusActive, string>,
 };
@@ -1566,7 +1566,7 @@ const editMessagePlanSettings = {
   pageTitle: generatePageTitle('Edit message plan settings'),
   pageHeading: 'Edit message plan settings',
   backLink: (id: string) => ({
-    href: `/message-plans/choose-templates/${id}`,
+    href: `/message-plans/edit-message-plan/${id}`,
     text: 'Go back',
   }),
 };
@@ -1775,7 +1775,7 @@ const reviewAndMoveToProduction = {
     },
     keepInDraft: {
       text: 'Keep in draft',
-      href: '{{basePath}}/message-plans/choose-templates/{{routingConfigId}}',
+      href: '{{basePath}}/message-plans/edit-message-plan/{{routingConfigId}}',
     },
   },
 };
@@ -1869,10 +1869,10 @@ const content = {
     chooseNhsAppTemplate,
     chooseOtherLanguageLetterTemplate,
     chooseStandardEnglishLetterTemplate,
-    chooseTemplatesForMessagePlan,
     chooseTextMessageTemplate,
     createMessagePlan,
     deleteTemplateErrorPage,
+    editMessagePlan,
     editMessagePlanSettings,
     editTemplateCampaignPage,
     editTemplateNamePage,

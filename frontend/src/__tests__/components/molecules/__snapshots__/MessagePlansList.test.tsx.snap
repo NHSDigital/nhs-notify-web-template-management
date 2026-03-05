@@ -179,7 +179,7 @@ exports[`MessagePlansList matches snapshot when data is available 1`] = `
                 Name 
               </span>
               <a
-                href="/message-plans/choose-templates/3"
+                href="/message-plans/edit-message-plan/3"
               >
                 Draft Y
               </a>

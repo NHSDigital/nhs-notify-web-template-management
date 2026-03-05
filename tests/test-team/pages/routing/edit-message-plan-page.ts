@@ -1,9 +1,9 @@
 import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
 
-export class RoutingChooseTemplatesPage extends TemplateMgmtBasePage {
+export class RoutingEditMessagePlanPage extends TemplateMgmtBasePage {
   static readonly pathTemplate =
-    '/message-plans/choose-templates/:messagePlanId';
+    '/message-plans/edit-message-plan/:messagePlanId';
 
   public readonly editSettingsLink: Locator;
 

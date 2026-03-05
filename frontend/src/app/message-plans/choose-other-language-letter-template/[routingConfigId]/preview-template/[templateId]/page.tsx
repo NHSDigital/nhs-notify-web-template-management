@@ -31,7 +31,7 @@ const PreviewOtherLanguageLetterTemplateFromMessagePlan = async (
 
   if (!lockNumberResult.success) {
     return redirect(
-      `/message-plans/choose-templates/${routingConfigId}`,
+      `/message-plans/edit-message-plan/${routingConfigId}`,
       RedirectType.replace
     );
   }

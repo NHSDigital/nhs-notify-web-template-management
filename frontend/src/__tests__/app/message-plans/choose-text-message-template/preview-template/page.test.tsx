@@ -15,7 +15,7 @@ const redirectMock = jest.mocked(redirect);
 describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should redirect to choose-templates when lockNumber is invalid', async () => {
+  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
     await PreviewTextMessageTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -27,12 +27,12 @@ describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/choose-templates/routing-config-id',
+      '/message-plans/edit-message-plan/routing-config-id',
       'replace'
     );
   });
 
-  it('should redirect to choose-templates when lockNumber is missing', async () => {
+  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
     await PreviewTextMessageTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -42,7 +42,7 @@ describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/choose-templates/routing-config-id',
+      '/message-plans/edit-message-plan/routing-config-id',
       'replace'
     );
   });

@@ -17,8 +17,8 @@ import {
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingCreateMessagePlanPage } from 'pages/routing/create-message-plan-page';
 
-const chooseTemplatesRegexp =
-  /\/message-plans\/choose-templates\/([\dA-Fa-f-]+)$/;
+const editMessagePlanRegexp =
+  /\/message-plans\/edit-message-plan\/([\dA-Fa-f-]+)$/;
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 
@@ -44,7 +44,7 @@ test.describe('Create Message Plan Page', () => {
     const messageOrder = 'NHSAPP';
 
     test.describe('single campaign client', () => {
-      test('creates a message plan and redirects to the template selection page for the created message plan', async ({
+      test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
         page,
       }) => {
         const createMessagePlanPage = new RoutingCreateMessagePlanPage(
@@ -63,9 +63,9 @@ test.describe('Create Message Plan Page', () => {
 
         await createMessagePlanPage.clickSubmit();
 
-        await expect(page).toHaveURL(chooseTemplatesRegexp);
+        await expect(page).toHaveURL(editMessagePlanRegexp);
 
-        const urlParts = page.url().match(chooseTemplatesRegexp);
+        const urlParts = page.url().match(editMessagePlanRegexp);
 
         routingConfigStorageHelper.addAdHocKey({
           id: urlParts![1],
@@ -112,7 +112,7 @@ test.describe('Create Message Plan Page', () => {
       await loginAsUser(userWithMultipleCampaigns, page);
     });
 
-    test('creates a message plan and redirects to the template selection page for the created template', async ({
+    test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
       page,
     }) => {
       const createMessagePlanPage = new RoutingCreateMessagePlanPage(
@@ -133,9 +133,9 @@ test.describe('Create Message Plan Page', () => {
 
       await createMessagePlanPage.clickSubmit();
 
-      await expect(page).toHaveURL(chooseTemplatesRegexp);
+      await expect(page).toHaveURL(editMessagePlanRegexp);
 
-      const urlParts = page.url().match(chooseTemplatesRegexp);
+      const urlParts = page.url().match(editMessagePlanRegexp);
 
       routingConfigStorageHelper.addAdHocKey({
         id: urlParts![1],
