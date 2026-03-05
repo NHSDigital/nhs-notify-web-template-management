@@ -22,6 +22,12 @@ const baseTemplate: AuthoringLetterTemplate = {
       fileName: 'template.docx',
       virusScanStatus: 'PASSED',
     },
+    initialRender: {
+      status: 'RENDERED',
+      currentVersion: '1234',
+      fileName: '1234.pdf',
+      pageCount: 1,
+    },
   },
   systemPersonalisation: ['firstName', 'lastName'],
   createdAt: '2025-01-13T10:19:25.579Z',
