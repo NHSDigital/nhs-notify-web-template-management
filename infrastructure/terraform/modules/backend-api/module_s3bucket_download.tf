@@ -1,5 +1,5 @@
 module "s3bucket_download" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip"
 
   name = "download"
 
@@ -12,6 +12,10 @@ module "s3bucket_download" {
   kms_key_arn = var.kms_key_arn
 
   policy_documents = [data.aws_iam_policy_document.s3bucket_download.json]
+
+  bucket_logging_target = {
+    bucket = "${var.access_logging_bucket}"
+  }
 }
 
 data "aws_iam_policy_document" "s3bucket_download" {
