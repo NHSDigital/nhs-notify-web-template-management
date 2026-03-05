@@ -1,8 +1,10 @@
+import { setTimeout } from 'node:timers/promises';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
   PutCommand,
+  QueryCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { z } from 'zod/v4';
 import { $LetterVariant } from 'nhs-notify-backend-client/schemas';
@@ -41,6 +43,48 @@ export class LetterVariantStorageHelper {
           ),
         ]);
       })
+    );
+
+    // Wait for the DynamoDB GSI to reflect the seeded global variants before
+    // returning. The LetterVariantRepository in the backend Lambda caches GSI
+    // query results for several minutes; if the Lambda queries the GSI before
+    // propagation completes it will cache an empty result, causing tests to see
+    // no variants.
+    await this.waitForGlobalVariantsInGsi(GLOBAL_VARIANTS.length);
+  }
+
+  private async waitForGlobalVariantsInGsi(expectedCount: number) {
+    const timeoutMs = 30_000;
+    const intervalMs = 1000;
+    const deadline = Date.now() + timeoutMs;
+
+    do {
+      const { Items = [] } = await this.dynamo.send(
+        new QueryCommand({
+          TableName: process.env.LETTER_VARIANTS_TABLE_NAME,
+          IndexName: 'ByScope',
+          KeyConditionExpression:
+            '#pk = :scope AND begins_with(#sk, :skPrefix)',
+          ExpressionAttributeNames: {
+            '#pk': 'ByScopeIndexPK',
+            '#sk': 'ByScopeIndexSK',
+          },
+          ExpressionAttributeValues: {
+            ':scope': 'GLOBAL',
+            ':skPrefix': 'STANDARD#PROD#',
+          },
+        })
+      );
+
+      if (Items.length >= expectedCount) {
+        return;
+      }
+
+      await setTimeout(intervalMs);
+    } while (Date.now() < deadline);
+
+    throw new Error(
+      `Timed out after ${timeoutMs}ms waiting for ${expectedCount} global letter variants to appear in the ByScope GSI`
     );
   }
 
