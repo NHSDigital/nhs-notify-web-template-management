@@ -1,10 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { test } from 'fixtures/accessibility-analyze';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
@@ -23,6 +19,7 @@ import {
 } from 'pages/letter';
 import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-page';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { getTestContext } from 'helpers/context/context';
 
 const templateStorageHelper = new TemplateStorageHelper();
 const templateIds = {
@@ -38,13 +35,13 @@ let userWithProofingDisabled: TestUser;
 let authoringEnabledWithMultipleCampaignsUser: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
 
-  defaultUser = await authHelper.getTestUser(testUsers.User1.userId);
-  userWithProofingDisabled = await authHelper.getTestUser(
+  defaultUser = await context.auth.getTestUser(testUsers.User1.userId);
+  userWithProofingDisabled = await context.auth.getTestUser(
     testUsers.User3.userId
   );
-  authoringEnabledWithMultipleCampaignsUser = await authHelper.getTestUser(
+  authoringEnabledWithMultipleCampaignsUser = await context.auth.getTestUser(
     testUsers.UserWithMultipleCampaigns.userId
   );
 
