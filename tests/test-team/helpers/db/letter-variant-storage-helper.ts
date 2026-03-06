@@ -91,8 +91,15 @@ export class LetterVariantStorageHelper {
   public async teardown() {
     const variants = await this.contextFile.getAllLetterVariants();
 
+    // Only delete client/campaign-scoped variants. Global variants (no clientId)
+    // have hardcoded IDs shared by all parallel test-suite runs. Deleting them
+    // here would race with another concurrent suite's setup/tests, causing
+    // intermittent 404s and empty variant results. They are safe to leave in
+    // place: the next setup() call will overwrite them.
+    const ownedVariants = variants.filter((v) => v.clientId);
+
     await Promise.all(
-      chunk(variants).map((batch) =>
+      chunk(ownedVariants).map((batch) =>
         this.dynamo.send(
           new BatchWriteCommand({
             RequestItems: {
