@@ -4,6 +4,7 @@ import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtPreviewLetterPage,
@@ -227,20 +228,25 @@ test.describe('Letter templates', () => {
         },
       }));
 
+    test('Choose printing and postage', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtChoosePrintingAndPostagePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
+      ));
+
     test('Edit template campaign', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        )
+        new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Edit template campaign error', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        ),
+        new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0'),
         {
           beforeAnalyze: async (p) => {
             await p.campaignSelect.selectOption('');
@@ -252,18 +258,16 @@ test.describe('Letter templates', () => {
 
     test('Edit template name', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        )
+        new TemplateMgmtEditTemplateNamePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Edit template name error', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        ),
+        new TemplateMgmtEditTemplateNamePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0'),
         {
           beforeAnalyze: async (p) => {
             await p.nameInput.fill('');
