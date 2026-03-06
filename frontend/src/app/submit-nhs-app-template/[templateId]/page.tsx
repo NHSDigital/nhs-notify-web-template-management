@@ -2,7 +2,7 @@
 
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import {
   TemplatePageProps,

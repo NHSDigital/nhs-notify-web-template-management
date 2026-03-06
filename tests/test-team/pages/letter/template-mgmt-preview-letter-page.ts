@@ -22,6 +22,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly sheetsAction: Locator;
   public readonly statusAction: Locator;
   public readonly campaignAction: Locator;
+  public readonly printingAndPostage: Locator;
 
   public readonly letterRender: Locator;
 
@@ -43,6 +44,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.sheetsAction = page.getByTestId('sheets-action');
     this.statusAction = page.getByTestId('status-action');
     this.campaignAction = page.getByTestId('campaign-action');
+    this.printingAndPostage = page.locator('[id="printing-and-postage"]');
 
     this.letterRender = page.locator('section').filter({
       has: page.getByRole('heading', { name: 'Letter preview' }),

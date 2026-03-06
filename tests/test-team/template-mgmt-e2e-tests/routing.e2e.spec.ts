@@ -1,9 +1,6 @@
 import { expect, test, Locator } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
@@ -139,13 +136,14 @@ async function assertMessagePlanInTable(
 }
 
 test.describe('Routing', () => {
+  const context = getTestContext();
   let templates: ReturnType<typeof createTemplates>;
   let user: TestUser;
 
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(
+    user = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
     templates = createTemplates(user);

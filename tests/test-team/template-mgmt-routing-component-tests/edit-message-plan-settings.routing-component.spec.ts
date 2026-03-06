@@ -1,10 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  testUsers,
-  type TestUser,
-} from 'helpers/auth/cognito-auth-helper';
+import { testUsers, type TestUser } from 'helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
@@ -17,6 +13,7 @@ import {
   assertAndClickBackLinkBottom,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
+import { getTestContext } from 'helpers/context/context';
 
 const storageHelper = new RoutingConfigStorageHelper();
 
@@ -25,10 +22,12 @@ let userWithoutCampaignId: TestUser;
 let userWithMultipleCampaigns: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
-  user = await authHelper.getTestUser(testUsers.User1.userId);
-  userWithoutCampaignId = await authHelper.getTestUser(testUsers.User6.userId);
-  userWithMultipleCampaigns = await authHelper.getTestUser(
+  const context = getTestContext();
+  user = await context.auth.getTestUser(testUsers.User1.userId);
+  userWithoutCampaignId = await context.auth.getTestUser(
+    testUsers.User6.userId
+  );
+  userWithMultipleCampaigns = await context.auth.getTestUser(
     testUsers.UserWithMultipleCampaigns.userId
   );
 });

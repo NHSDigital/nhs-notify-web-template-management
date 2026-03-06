@@ -7,17 +7,14 @@ import {
   assertAndClickBackLinkTop,
   assertBackLinkBottom,
 } from '../../helpers/template-mgmt-common.steps';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
+import { getTestContext } from 'helpers/context/context';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -76,7 +73,8 @@ test.describe('Routing - Preview foreign language letter template page', () => {
   let templates: ReturnType<typeof createTemplates>;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
 
     messagePlans = createMessagePlans(user);
     templates = createTemplates(user);

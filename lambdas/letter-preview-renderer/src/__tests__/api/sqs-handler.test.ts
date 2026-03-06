@@ -7,7 +7,7 @@ import type { App } from '../../app/app';
 import type {
   InitialRenderRequest,
   PersonalisedRenderRequest,
-} from 'nhs-notify-backend-client/src/types/render-request';
+} from 'nhs-notify-backend-client/types';
 
 function setup() {
   const app = mock<App>();

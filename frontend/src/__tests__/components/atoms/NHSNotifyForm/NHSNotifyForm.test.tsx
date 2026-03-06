@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Label } from 'nhsuk-react-components';
 import type {
   ErrorState,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
+import { Label } from '@atoms/nhsuk-components';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
@@ -48,6 +48,45 @@ function UserRegistrationForm() {
           </NHSNotifyForm.Select>
         </NHSNotifyForm.FormGroup>
 
+        <NHSNotifyForm.FormGroup htmlFor='colour'>
+          <fieldset className='nhsuk-fieldset'>
+            <legend className='nhsuk-fieldset__legend'>
+              <h1 className='nhsuk-fieldset__heading'>
+                What is your favourite colour?
+              </h1>
+            </legend>
+            <NHSNotifyForm.ErrorMessage htmlFor='colour' />
+            <div className='nhsuk-radios'>
+              <div className='nhsuk-radios__item'>
+                <NHSNotifyForm.RadioInput name='colour' id='red' value='red' />
+                <Label className='nhsuk-radios__label' htmlFor='red'>
+                  Red
+                </Label>
+              </div>
+              <div className='nhsuk-radios__item'>
+                <NHSNotifyForm.RadioInput
+                  name='colour'
+                  id='green'
+                  value='green'
+                />
+                <Label className='nhsuk-radios__label' htmlFor='green'>
+                  Green
+                </Label>
+              </div>
+              <div className='nhsuk-radios__item'>
+                <NHSNotifyForm.RadioInput
+                  name='colour'
+                  id='blue'
+                  value='blue'
+                />
+                <Label className='nhsuk-radios__label' htmlFor='blue'>
+                  Blue
+                </Label>
+              </div>
+            </div>
+          </fieldset>
+        </NHSNotifyForm.FormGroup>
+
         <NHSNotifyButton type='submit'>Create user</NHSNotifyButton>
       </NHSNotifyForm.Form>
     </>
@@ -69,6 +108,9 @@ describe('NHSNotifyForm components', () => {
       expect(screen.getByLabelText('Last name')).toBeInTheDocument();
       expect(screen.getByLabelText('Email address')).toBeInTheDocument();
       expect(screen.getByLabelText('Role')).toBeInTheDocument();
+      expect(screen.getByLabelText('Red')).toBeInTheDocument();
+      expect(screen.getByLabelText('Green')).toBeInTheDocument();
+      expect(screen.getByLabelText('Blue')).toBeInTheDocument();
       expect(
         screen.getByRole('button', { name: 'Create user' })
       ).toBeInTheDocument();
@@ -94,6 +136,7 @@ describe('NHSNotifyForm components', () => {
         'john.smith@nhs.uk'
       );
       await user.selectOptions(screen.getByLabelText('Role'), 'admin');
+      await user.click(screen.getByLabelText('Green'));
 
       // Submit the form
       await user.click(screen.getByRole('button', { name: 'Create user' }));
@@ -107,6 +150,38 @@ describe('NHSNotifyForm components', () => {
       expect(formData.get('lastName')).toBe('Smith');
       expect(formData.get('email')).toBe('john.smith@nhs.uk');
       expect(formData.get('role')).toBe('admin');
+      expect(formData.get('colour')).toBe('green');
+    });
+
+    it('allows only one radio option to be selected at a time', async () => {
+      const user = userEvent.setup();
+      const mockServerAction = jest.fn().mockResolvedValue({});
+
+      render(
+        <NHSNotifyFormProvider serverAction={mockServerAction}>
+          <UserRegistrationForm />
+        </NHSNotifyFormProvider>
+      );
+
+      const redRadio = screen.getByLabelText('Red');
+      const greenRadio = screen.getByLabelText('Green');
+      const blueRadio = screen.getByLabelText('Blue');
+
+      expect(redRadio).not.toBeChecked();
+      expect(greenRadio).not.toBeChecked();
+      expect(blueRadio).not.toBeChecked();
+
+      await user.click(redRadio);
+
+      expect(redRadio).toBeChecked();
+      expect(greenRadio).not.toBeChecked();
+      expect(blueRadio).not.toBeChecked();
+
+      await user.click(blueRadio);
+
+      expect(redRadio).not.toBeChecked();
+      expect(greenRadio).not.toBeChecked();
+      expect(blueRadio).toBeChecked();
     });
 
     it('displays validation errors when form submission fails', async () => {
@@ -116,6 +191,7 @@ describe('NHSNotifyForm components', () => {
           firstName: ['First name is required'],
           email: ['Enter a valid email address'],
           role: ['Please select a role'],
+          colour: ['Please select a colour'],
         },
       };
 
@@ -142,6 +218,9 @@ describe('NHSNotifyForm components', () => {
         expect(
           screen.getAllByText('Please select a role').length
         ).toBeGreaterThan(0);
+        expect(
+          screen.getAllByText('Please select a colour').length
+        ).toBeGreaterThan(0);
       });
 
       // Check that form groups have error styling
@@ -162,6 +241,7 @@ describe('NHSNotifyForm components', () => {
           lastName: 'Doe',
           email: 'jane.doe@nhs.uk',
           role: 'editor',
+          colour: 'blue',
         },
       };
 
@@ -180,6 +260,7 @@ describe('NHSNotifyForm components', () => {
         'jane.doe@nhs.uk'
       );
       expect(screen.getByLabelText('Role')).toHaveValue('editor');
+      expect(screen.getByLabelText('Blue')).toBeChecked();
     });
 
     it('renders with initial error state and field values', () => {
@@ -197,6 +278,7 @@ describe('NHSNotifyForm components', () => {
           lastName: 'Smith',
           email: 'invalid-email',
           role: '',
+          colour: 'red',
         },
         errorState,
       };
@@ -217,6 +299,7 @@ describe('NHSNotifyForm components', () => {
         'invalid-email'
       );
       expect(screen.getByLabelText('Role')).toHaveValue('');
+      expect(screen.getByLabelText('Red')).toBeChecked();
 
       // Errors should be displayed
       expect(
@@ -254,6 +337,7 @@ describe('NHSNotifyForm components', () => {
           lastName: 'Johnson',
           email: 'alice@example.com',
           role: 'viewer',
+          colour: 'green',
         },
       } as FormState);
 
@@ -271,6 +355,7 @@ describe('NHSNotifyForm components', () => {
         'alice@example.com'
       );
       await user.selectOptions(screen.getByLabelText('Role'), 'viewer');
+      await user.click(screen.getByLabelText('Green'));
 
       // Submit the form
       await user.click(screen.getByRole('button', { name: 'Create user' }));
@@ -283,6 +368,7 @@ describe('NHSNotifyForm components', () => {
           'alice@example.com'
         );
         expect(screen.getByLabelText('Role')).toHaveValue('viewer');
+        expect(screen.getByLabelText('Green')).toBeChecked();
 
         // Error should be displayed
         expect(
@@ -301,6 +387,7 @@ describe('NHSNotifyForm components', () => {
           lastName: 'Brown',
           email: 'bob@nhs.uk',
           role: 'admin',
+          colour: 'red',
         },
       };
 
@@ -321,6 +408,7 @@ describe('NHSNotifyForm components', () => {
       expect(screen.getByLabelText('Last name')).toHaveValue('Brown');
       expect(screen.getByLabelText('Email address')).toHaveValue('bob@nhs.uk');
       expect(screen.getByLabelText('Role')).toHaveValue('admin');
+      expect(screen.getByLabelText('Red')).toBeChecked();
 
       // Submit the form
       await user.click(screen.getByRole('button', { name: 'Create user' }));
@@ -335,6 +423,9 @@ describe('NHSNotifyForm components', () => {
         expect(screen.getByLabelText('Last name')).toHaveValue('');
         expect(screen.getByLabelText('Email address')).toHaveValue('');
         expect(screen.getByLabelText('Role')).toHaveValue('');
+        expect(screen.getByLabelText('Red')).not.toBeChecked();
+        expect(screen.getByLabelText('Green')).not.toBeChecked();
+        expect(screen.getByLabelText('Blue')).not.toBeChecked();
       });
     });
   });

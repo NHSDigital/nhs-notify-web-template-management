@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { S3Repository } from 'nhs-notify-web-template-management-utils';
-import type { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
+import type { RenderRequest } from 'nhs-notify-backend-client/types';
 
 export type SaveResult = {
   fileName: string;

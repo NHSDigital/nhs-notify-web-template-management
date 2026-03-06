@@ -11,6 +11,7 @@ import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { RoutingConfigRepository } from '../infra/routing-config-repository';
 import { TemplateClient } from '../app/template-client';
+import { LetterVariantRepository } from '@backend-api/infra/letter-variant-repository';
 
 const awsConfig = { region: 'eu-west-2' };
 
@@ -55,6 +56,12 @@ export const templatesContainer = () => {
     config.templatesTableName
   );
 
+  const letterVariantRepository = new LetterVariantRepository(
+    ddbDocClient,
+    config.letterVariantTableName,
+    config.letterVariantCacheTtlMs
+  );
+
   const templateClient = new TemplateClient(
     templateRepository,
     letterUploadRepository,
@@ -62,6 +69,7 @@ export const templatesContainer = () => {
     config.defaultLetterSupplier,
     clientConfigRepository,
     routingConfigRepository,
+    letterVariantRepository,
     logger
   );
 

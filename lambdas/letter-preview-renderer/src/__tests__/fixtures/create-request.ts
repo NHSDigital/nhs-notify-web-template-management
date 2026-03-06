@@ -1,7 +1,7 @@
 import type {
   InitialRenderRequest,
   ShortPersonalisedRenderRequest,
-} from 'nhs-notify-backend-client/src/types/render-request';
+} from 'nhs-notify-backend-client/types';
 
 export const createInitialRequest = (
   overrides: Partial<Omit<InitialRenderRequest, 'requestType'>> = {}

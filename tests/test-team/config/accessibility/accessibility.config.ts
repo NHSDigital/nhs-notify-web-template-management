@@ -24,6 +24,7 @@ export default defineConfig({
         headless: true,
         screenshot: 'only-on-failure',
       },
+      teardown: 'accessibility:teardown',
     },
     {
       name: 'accessibility',
@@ -36,7 +37,6 @@ export default defineConfig({
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
       dependencies: ['accessibility:setup'],
-      teardown: 'accessibility:teardown',
     },
     {
       name: 'accessibility:teardown',

@@ -41,7 +41,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
               name="lockNumber"
               readonly=""
               type="hidden"
-              value="5"
+              value="7"
             />
             <div
               class="nhsuk-form-group"
@@ -198,7 +198,7 @@ exports[`valid template renders errors when blank form is submitted and error st
               name="lockNumber"
               readonly=""
               type="hidden"
-              value="5"
+              value="7"
             />
             <div
               class="nhsuk-form-group nhsuk-form-group--error"

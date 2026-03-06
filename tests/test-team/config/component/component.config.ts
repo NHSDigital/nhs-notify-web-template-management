@@ -24,6 +24,7 @@ export default defineConfig({
         headless: true,
         screenshot: 'only-on-failure',
       },
+      teardown: 'component:teardown',
     },
     {
       name: 'component',
@@ -36,7 +37,6 @@ export default defineConfig({
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
       dependencies: ['component:setup'],
-      teardown: 'component:teardown',
     },
     {
       name: 'component:teardown',

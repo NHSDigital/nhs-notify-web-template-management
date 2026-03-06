@@ -6,7 +6,7 @@ import {
   removeTemplatesFromCascadeItem,
   getChannelsMissingTemplates,
 } from '@utils/routing-utils';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { redirect } from 'next/navigation';
 import { FormState, ORDINALS } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
