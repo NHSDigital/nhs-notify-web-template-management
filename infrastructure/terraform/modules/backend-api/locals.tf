@@ -42,7 +42,7 @@ locals {
     CLIENT_CONFIG_TTL_SECONDS               = 900
     DEFAULT_LETTER_SUPPLIER                 = local.default_letter_supplier_name
     ENVIRONMENT                             = var.environment
-    LETTER_VARIANT_CACHE_TTL_MS             = 0
+    LETTER_VARIANT_CACHE_TTL_MS             = 300000
     LETTER_VARIANT_TABLE_NAME               = aws_dynamodb_table.letter_variants.name
     NODE_OPTIONS                            = "--enable-source-maps"
     RENDER_REQUEST_QUEUE_URL                = module.sqs_letter_render.sqs_queue_url
