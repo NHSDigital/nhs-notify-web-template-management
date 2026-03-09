@@ -194,7 +194,7 @@ const MESSAGE_ORDER_SCENARIOS: [MessageOrder, CascadeItem[]][] = [
 ];
 
 test.each(MESSAGE_ORDER_SCENARIOS)(
-  'creates a message plan with correct initial cascade for %s message order and redirects to the choose templates page',
+  'creates a message plan with correct initial cascade for %s message order and redirects to the edit message plan page',
   async (messageOrder, expectedCascade) => {
     const form = new FormData();
     form.append('name', 'Message Plan Name');
@@ -204,7 +204,7 @@ test.each(MESSAGE_ORDER_SCENARIOS)(
     await expect(createMessagePlanServerAction({}, form)).rejects.toMatchObject(
       {
         message: 'NEXT_REDIRECT',
-        url: '/message-plans/choose-templates/mock-routing-config-id',
+        url: '/message-plans/edit-message-plan/mock-routing-config-id',
         type: RedirectType.push,
       }
     );

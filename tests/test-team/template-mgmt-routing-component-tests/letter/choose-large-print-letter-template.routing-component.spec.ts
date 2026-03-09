@@ -20,7 +20,7 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseLargePrintLetterTemplatePage } from 'pages/routing/letter/choose-large-print-letter-template-page';
 import { RoutingConfigDbEntry, Template } from 'helpers/types';
 import { getTestContext } from 'helpers/context/context';
-import { RoutingChooseTemplatesPage } from 'pages/routing';
+import { RoutingEditMessagePlanPage } from 'pages/routing';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -177,7 +177,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     await assertBackLinkTopNotPresent(props);
     await assertAndClickBackLinkBottom({
       ...props,
-      expectedUrl: `templates/message-plans/choose-templates/${routingConfigIds.valid}`,
+      expectedUrl: `templates/message-plans/edit-message-plan/${routingConfigIds.valid}`,
     });
   });
 
@@ -241,7 +241,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     await chooseLargePrintLetterTemplatePage.backLinkBottom.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.valid.id}`
     );
   });
 
@@ -262,16 +262,16 @@ test.describe('Routing - Choose large print letter template page', () => {
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.valid.id}`
     );
 
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
-    await chooseTemplatesPage
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
+    await editMessagePlanPage
       .setPathParam('messagePlanId', routingConfigs.valid.id)
       .loadPage();
 
     await expect(
-      chooseTemplatesPage.alternativeLetterFormats().largePrint.templateName
+      editMessagePlanPage.alternativeLetterFormats().largePrint.templateName
     ).toHaveText(templates.LARGE_PRINT_LETTER1.name);
   });
 
@@ -321,7 +321,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
     await page.waitForURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.validationError.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.validationError.id}`
     );
   });
 
@@ -374,11 +374,11 @@ test.describe('Routing - Choose large print letter template page', () => {
     await chooseLargePrintLetterTemplatePage.saveAndContinueButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.withLargePrintSelected.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.withLargePrintSelected.id}`
     );
 
     await expect(
-      new RoutingChooseTemplatesPage(page).alternativeLetterFormats().largePrint
+      new RoutingEditMessagePlanPage(page).alternativeLetterFormats().largePrint
         .templateName
     ).toHaveText(templates.LARGE_PRINT_LETTER_APPROVED.name);
   });
@@ -433,7 +433,7 @@ test.describe('Routing - Choose large print letter template page', () => {
     });
   });
 
-  test.describe('redirects to choose templates page', () => {
+  test.describe('redirects to the edit message plan page', () => {
     test('when no lockNumber in url', async ({ page, baseURL }) => {
       const chooseTemplatePage = new RoutingChooseLargePrintLetterTemplatePage(
         page
@@ -442,7 +442,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       await chooseTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+        `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.valid.id}`
       );
     });
   });

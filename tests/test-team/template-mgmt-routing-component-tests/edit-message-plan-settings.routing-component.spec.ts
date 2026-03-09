@@ -57,7 +57,7 @@ test('common page tests', async ({ page, baseURL }) => {
   const props = {
     page: editPage,
     baseURL,
-    expectedUrl: `templates/message-plans/choose-templates/${plan.dbEntry.id}`,
+    expectedUrl: `templates/message-plans/edit-message-plan/${plan.dbEntry.id}`,
   };
 
   await assertSkipToMainContent(props);
@@ -107,7 +107,7 @@ test.describe('single campaign client', () => {
     await editPage.clickSubmit();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${plan.dbEntry.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${plan.dbEntry.id}`
     );
 
     // reload the edit page - should display the latest data
@@ -201,7 +201,7 @@ test.describe('client has multiple campaigns', () => {
     await editPage.clickSubmit();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${plan.dbEntry.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${plan.dbEntry.id}`
     );
 
     // reload the edit page - should display the latest data

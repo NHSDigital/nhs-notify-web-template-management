@@ -265,7 +265,7 @@ test.describe('Routing - Preview large print letter template page', () => {
     });
   });
 
-  test('redirects to choose-templates page when lockNumber is missing', async ({
+  test('redirects to the edit message plan page when lockNumber is missing', async ({
     page,
     baseURL,
   }) => {
@@ -278,7 +278,7 @@ test.describe('Routing - Preview large print letter template page', () => {
       .loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${messagePlans.LETTER_ROUTING_CONFIG.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.LETTER_ROUTING_CONFIG.id}`
     );
   });
 });

@@ -15,7 +15,7 @@ import {
   assertAndClickBackLinkBottom,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
-import { RoutingChooseTemplatesPage } from 'pages/routing';
+import { RoutingEditMessagePlanPage } from 'pages/routing';
 import { getTestContext } from 'helpers/context/context';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
@@ -140,7 +140,7 @@ test.describe('Routing - Preview Message Plan page', () => {
     await expect(page).toHaveURL(`${baseURL}/templates/message-plans/invalid`);
   });
 
-  test('redirects to choose templates page when message plan is in draft', async ({
+  test('redirects to the edit message plan page when message plan is in draft', async ({
     page,
     baseURL,
   }) => {
@@ -159,12 +159,12 @@ test.describe('Routing - Preview Message Plan page', () => {
     await previewMessagePlanPage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${dbEntry.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${dbEntry.id}`
     );
 
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
 
-    await expect(chooseTemplatesPage.messagePlanStatus).toHaveText('Draft');
+    await expect(editMessagePlanPage.messagePlanStatus).toHaveText('Draft');
   });
 
   test('displays preview of full routing config', async ({ page }) => {

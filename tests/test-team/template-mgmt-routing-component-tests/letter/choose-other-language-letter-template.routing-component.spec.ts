@@ -20,8 +20,8 @@ import { RoutingChooseOtherLanguageLetterTemplatePage } from 'pages/routing/lett
 import { RoutingConfigDbEntry, Template } from 'helpers/types';
 import type { Language } from 'nhs-notify-web-template-management-types';
 import { loginAsUser } from 'helpers/auth/login-as-user';
-import { RoutingChooseTemplatesPage } from 'pages/routing';
 import { getTestContext } from 'helpers/context/context';
+import { RoutingEditMessagePlanPage } from 'pages/routing';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -236,7 +236,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await assertSignOutLink(props);
     await assertBackLinkBottom({
       ...props,
-      expectedUrl: `templates/message-plans/choose-templates/${routingConfigIds.valid}`,
+      expectedUrl: `templates/message-plans/edit-message-plan/${routingConfigIds.valid}`,
     });
   });
 
@@ -321,7 +321,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage.backLinkBottom.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.valid.id}`
     );
   });
 
@@ -383,13 +383,13 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.valid.id}`
     );
 
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
 
     const templateNames =
-      chooseTemplatesPage.alternativeLetterFormats().otherLanguages
+      editMessagePlanPage.alternativeLetterFormats().otherLanguages
         .templateNames;
     const templateTexts = await templateNames.allTextContents();
     expect(templateTexts.length).toBe(2);
@@ -432,11 +432,11 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.withAccessibleTemplateSelected.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.withAccessibleTemplateSelected.id}`
     );
 
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
-    await chooseTemplatesPage
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
+    await editMessagePlanPage
       .setPathParam(
         'messagePlanId',
         routingConfigs.withAccessibleTemplateSelected.id
@@ -444,7 +444,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .loadPage();
 
     const otherLanguagesItem =
-      chooseTemplatesPage.alternativeLetterFormats().otherLanguages;
+      editMessagePlanPage.alternativeLetterFormats().otherLanguages;
     const templateNames = otherLanguagesItem.templateNames;
     const templateTexts = await templateNames.allTextContents();
     expect(templateTexts.length).toBe(2);
@@ -452,7 +452,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     expect(templateTexts).toContain(templates.POLISH_LETTER.name);
 
     const largePrintSection =
-      chooseTemplatesPage.alternativeLetterFormats().largePrint.templateName;
+      editMessagePlanPage.alternativeLetterFormats().largePrint.templateName;
     await expect(largePrintSection).toContainText(
       templates.LARGE_PRINT_LETTER.name
     );
@@ -511,11 +511,11 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.withLanguageTemplatesSelected.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.withLanguageTemplatesSelected.id}`
     );
 
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
-    await chooseTemplatesPage
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
+    await editMessagePlanPage
       .setPathParam(
         'messagePlanId',
         routingConfigs.withLanguageTemplatesSelected.id
@@ -523,7 +523,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .loadPage();
 
     const otherLanguagesItem =
-      chooseTemplatesPage.alternativeLetterFormats().otherLanguages;
+      editMessagePlanPage.alternativeLetterFormats().otherLanguages;
     const templateNames = otherLanguagesItem.templateNames;
     const templateTexts = await templateNames.allTextContents();
     expect(templateTexts.length).toBe(2);
@@ -647,7 +647,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await chooseOtherLanguageLetterTemplatePage.saveAndContinueButton.click();
 
     await page.waitForURL(
-      `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.validationError.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.validationError.id}`
     );
   });
 
@@ -701,7 +701,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     });
   });
 
-  test.describe('redirects to choose templates page', () => {
+  test.describe('redirects to the edit message plan page', () => {
     test('when no lockNumber in url', async ({ page, baseURL }) => {
       const chooseTemplatePage =
         new RoutingChooseOtherLanguageLetterTemplatePage(page).setPathParam(
@@ -712,7 +712,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       await chooseTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${routingConfigs.valid.id}`
+        `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.valid.id}`
       );
     });
   });

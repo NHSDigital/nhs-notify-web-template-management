@@ -12,7 +12,7 @@ import { FormState, ORDINALS } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
 import copy from '@content/content';
 
-const content = copy.pages.chooseTemplatesForMessagePlan;
+const content = copy.pages.editMessagePlan;
 
 export async function removeTemplateFromMessagePlan(formData: FormData) {
   const parseResult = z
@@ -51,7 +51,7 @@ export async function removeTemplateFromMessagePlan(formData: FormData) {
 
   await updateRoutingConfig(routingConfigId, updatedConfig, lockNumber);
 
-  redirect(`/message-plans/choose-templates/${routingConfigId}`);
+  redirect(`/message-plans/edit-message-plan/${routingConfigId}`);
 }
 
 export async function moveToProduction(

@@ -13,7 +13,7 @@ import {
   assertSkipToMainContent,
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingReviewAndMoveToProductionPage } from 'pages/routing/review-and-move-to-production-page';
-import { RoutingChooseTemplatesPage } from 'pages/routing';
+import { RoutingEditMessagePlanPage } from 'pages/routing';
 import { RoutingMessagePlansPage } from 'pages/routing/message-plans-page';
 import { getTestContext } from 'helpers/context/context';
 
@@ -305,7 +305,7 @@ test.describe('Routing - Review and Move to Production page', () => {
     });
   });
 
-  test('keep in draft button navigates to choose templates page', async ({
+  test('keep in draft button navigates to the edit message plan page', async ({
     page,
     baseURL,
   }) => {
@@ -326,12 +326,12 @@ test.describe('Routing - Review and Move to Production page', () => {
     await reviewPage.keepInDraftButton.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-templates/${dbEntry.id}`
+      `${baseURL}/templates/message-plans/edit-message-plan/${dbEntry.id}`
     );
 
-    const chooseTemplatesPage = new RoutingChooseTemplatesPage(page);
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
 
-    await expect(chooseTemplatesPage.messagePlanStatus).toHaveText('Draft');
+    await expect(editMessagePlanPage.messagePlanStatus).toHaveText('Draft');
   });
 
   test('move to production button submits plan and navigates to message plans page', async ({
