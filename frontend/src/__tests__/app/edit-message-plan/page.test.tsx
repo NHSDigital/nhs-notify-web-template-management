@@ -1,4 +1,4 @@
-import ChooseTemplatesPage from '@app/message-plans/choose-templates/[routingConfigId]/page';
+import EditMessagePlanPage from '@app/message-plans/edit-message-plan/[routingConfigId]/page';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -123,11 +123,11 @@ beforeEach(() => {
   jest.mocked(getMessagePlanTemplates).mockResolvedValue(templates);
 });
 
-describe('ChooseTemplatesPage', () => {
+describe('EditMessagePlanPage', () => {
   it('should redirect to invalid page when routing config not found', async () => {
     jest.mocked(getRoutingConfig).mockResolvedValue(undefined);
 
-    await ChooseTemplatesPage({
+    await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId: 'invalid-id' }),
     });
 
@@ -145,7 +145,7 @@ describe('ChooseTemplatesPage', () => {
 
     jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-    await ChooseTemplatesPage({
+    await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId }),
     });
 
@@ -156,7 +156,7 @@ describe('ChooseTemplatesPage', () => {
   });
 
   it('renders correctly for a message plan with multiple templates (snapshot)', async () => {
-    const page = await ChooseTemplatesPage({
+    const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId }),
     });
 
@@ -168,7 +168,7 @@ describe('ChooseTemplatesPage', () => {
 
     jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-    const page = await ChooseTemplatesPage({
+    const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId }),
     });
 
@@ -186,7 +186,7 @@ describe('ChooseTemplatesPage', () => {
   });
 
   it('should render CTAs for both saving and moving to production', async () => {
-    const page = await ChooseTemplatesPage({
+    const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId }),
     });
 
@@ -200,7 +200,7 @@ describe('ChooseTemplatesPage', () => {
   });
 
   it('should render an "edit settings" link', async () => {
-    const page = await ChooseTemplatesPage({
+    const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId }),
     });
 
@@ -218,7 +218,7 @@ describe('ChooseTemplatesPage', () => {
 
     jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-    const page = await ChooseTemplatesPage({
+    const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId }),
     });
 
@@ -299,7 +299,7 @@ describe('ChooseTemplatesPage', () => {
 
         jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-        const page = await ChooseTemplatesPage({
+        const page = await EditMessagePlanPage({
           params: Promise.resolve({ routingConfigId }),
         });
 
@@ -363,7 +363,7 @@ describe('ChooseTemplatesPage', () => {
 
         jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-        const page = await ChooseTemplatesPage({
+        const page = await EditMessagePlanPage({
           params: Promise.resolve({ routingConfigId }),
         });
 
@@ -436,7 +436,7 @@ describe('ChooseTemplatesPage', () => {
 
       jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-      const page = await ChooseTemplatesPage({
+      const page = await EditMessagePlanPage({
         params: Promise.resolve({ routingConfigId }),
       });
 
@@ -591,7 +591,7 @@ describe('ChooseTemplatesPage', () => {
 
       jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-      const page = await ChooseTemplatesPage({
+      const page = await EditMessagePlanPage({
         params: Promise.resolve({ routingConfigId }),
       });
 
@@ -738,7 +738,7 @@ describe('ChooseTemplatesPage', () => {
         throw new NextRedirectError(url, type);
       });
 
-      const page = await ChooseTemplatesPage({
+      const page = await EditMessagePlanPage({
         params: Promise.resolve({ routingConfigId }),
       });
 
@@ -761,7 +761,7 @@ describe('ChooseTemplatesPage', () => {
     it('should show error summary when a channel is missing a template', async () => {
       const user = userEvent.setup();
 
-      const page = await ChooseTemplatesPage({
+      const page = await EditMessagePlanPage({
         params: Promise.resolve({ routingConfigId }),
       });
 
@@ -800,7 +800,7 @@ describe('ChooseTemplatesPage', () => {
 
       jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-      const page = await ChooseTemplatesPage({
+      const page = await EditMessagePlanPage({
         params: Promise.resolve({ routingConfigId }),
       });
 
@@ -847,7 +847,7 @@ describe('ChooseTemplatesPage', () => {
 
       jest.mocked(getRoutingConfig).mockResolvedValue(routingConfig);
 
-      const page = await ChooseTemplatesPage({
+      const page = await EditMessagePlanPage({
         params: Promise.resolve({ routingConfigId }),
       });
 
