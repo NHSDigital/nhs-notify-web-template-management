@@ -7,6 +7,7 @@ import type {
   CreateUpdateTemplate,
   ClientConfiguration,
   AuthoringLetterFiles,
+  LetterProofRequest,
 } from 'nhs-notify-web-template-management-types';
 import { TemplateRepository } from '../../infra';
 import { TemplateClient } from '../../app/template-client';
@@ -1769,7 +1770,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
@@ -1798,7 +1799,7 @@ describe('templateClient', () => {
         templateId,
         data as unknown as CreateUpdateTemplate,
         user,
-        1
+        '1'
       );
 
       expect(result).toEqual({
@@ -1827,7 +1828,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(result).toEqual({
@@ -1844,12 +1845,10 @@ describe('templateClient', () => {
     });
 
     describe('lock number parsing', () => {
-      const errorCases: [string, string | number][] = [
+      const errorCases: [string, string][] = [
         ['empty', ''],
-        ['negative', -1],
-        ['negative stringified', -1],
+        ['negative', '-1'],
         ['non-number string', 'a'],
-        ['NaN', Number.NaN],
         ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
@@ -1945,7 +1944,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
@@ -1998,7 +1997,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
@@ -2062,7 +2061,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
@@ -2088,7 +2087,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(result).toEqual({
@@ -2110,7 +2109,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(result).toEqual({
@@ -2124,12 +2123,10 @@ describe('templateClient', () => {
     });
 
     describe('lock number parsing', () => {
-      const errorCases: [string, string | number][] = [
+      const errorCases: [string, string][] = [
         ['empty', ''],
-        ['negative', -1],
-        ['negative stringified', -1],
+        ['negative', '-1'],
         ['non-number string', 'a'],
-        ['NaN', Number.NaN],
         ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
@@ -2234,7 +2231,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
@@ -2301,7 +2298,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
@@ -2336,7 +2333,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
@@ -2365,7 +2362,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
@@ -2433,7 +2430,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
@@ -2493,7 +2490,7 @@ describe('templateClient', () => {
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
@@ -2891,7 +2888,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
@@ -2935,7 +2932,7 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
@@ -2976,7 +2973,7 @@ describe('templateClient', () => {
         data: { features: { routing: false } },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
@@ -3005,7 +3002,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
@@ -3060,7 +3057,7 @@ describe('templateClient', () => {
         data: { ...approvedTemplate, owner: user.internalUserId, version: 2 },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
@@ -3119,7 +3116,7 @@ describe('templateClient', () => {
         data: { ...submittedTemplate, owner: user.internalUserId, version: 2 },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
@@ -3167,7 +3164,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
@@ -3195,7 +3192,7 @@ describe('templateClient', () => {
         error: templateError,
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
@@ -3232,7 +3229,7 @@ describe('templateClient', () => {
         data: { features: { proofing: false } },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -3255,7 +3252,7 @@ describe('templateClient', () => {
         error: { errorMeta: { description: 'err', code: 500 } },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -3299,7 +3296,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -3362,7 +3359,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -3415,7 +3412,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -3486,7 +3483,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -3565,7 +3562,7 @@ describe('templateClient', () => {
         data: { $metadata: {} },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -3603,9 +3600,9 @@ describe('templateClient', () => {
     test('returns failure result when body validation fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
-      const result = await templateClient.letterProof(templateId, user, 1, {
+      const result = await templateClient.letterProof(templateId, user, '1', {
         invalid: 'body',
-      } as never);
+      } as unknown as LetterProofRequest);
 
       expect(mocks.templateRepository.letterProofUpdate).not.toHaveBeenCalled();
 
@@ -3673,7 +3670,7 @@ describe('templateClient', () => {
       const result = await templateClient.letterProof(
         templateId,
         user,
-        1,
+        '1',
         validBody
       );
 
@@ -3742,7 +3739,7 @@ describe('templateClient', () => {
       const result = await templateClient.letterProof(
         templateId,
         user,
-        1,
+        '1',
         validBody
       );
 
@@ -3788,7 +3785,7 @@ describe('templateClient', () => {
       const result = await templateClient.letterProof(
         templateId,
         user,
-        1,
+        '1',
         validBody
       );
 
@@ -3834,7 +3831,7 @@ describe('templateClient', () => {
       const result = await templateClient.letterProof(
         templateId,
         user,
-        1,
+        '1',
         validBody
       );
 
@@ -3898,7 +3895,7 @@ describe('templateClient', () => {
       const result = await templateClient.letterProof(
         templateId,
         user,
-        1,
+        '1',
         validBody
       );
 
@@ -3978,7 +3975,7 @@ describe('templateClient', () => {
       const result = await templateClient.letterProof(
         templateId,
         user,
-        1,
+        '1',
         validBody
       );
 
@@ -4084,7 +4081,7 @@ describe('templateClient', () => {
         data: null,
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId
@@ -4117,7 +4114,7 @@ describe('templateClient', () => {
         ],
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId
@@ -4172,7 +4169,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId
@@ -4203,12 +4200,10 @@ describe('templateClient', () => {
     });
 
     describe('lock number parsing', () => {
-      const errorCases: [string, string | number][] = [
+      const errorCases: [string, string][] = [
         ['empty', ''],
-        ['negative', -1],
-        ['negative stringified', -1],
+        ['negative', '-1'],
         ['non-number string', 'a'],
-        ['NaN', Number.NaN],
         ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
@@ -4274,7 +4269,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId
