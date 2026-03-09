@@ -407,7 +407,7 @@ export class TemplateClient {
     templateId: string,
     template: CreateUpdateTemplate,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -468,7 +468,7 @@ export class TemplateClient {
     templateId: string,
     updates: PatchTemplate,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -561,7 +561,7 @@ export class TemplateClient {
   async submitTemplate(
     templateId: string,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -650,7 +650,7 @@ export class TemplateClient {
   async deleteTemplate(
     templateId: string,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
@@ -792,7 +792,7 @@ export class TemplateClient {
   async requestProof(
     templateId: string,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -906,7 +906,7 @@ export class TemplateClient {
   async letterProof(
     templateId: string,
     user: User,
-    lockNumberRaw: number | string,
+    lockNumberRaw: string,
     body: LetterProofRequest
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
@@ -943,7 +943,7 @@ export class TemplateClient {
 
     const { data: lockNumber } = lockNumberValidation;
 
-    const letterProofUpdateResult =
+    const pendingProofUpdateResult =
       await this.templateRepository.letterProofUpdate(
         templateId,
         user,
@@ -953,16 +953,16 @@ export class TemplateClient {
         systemPersonalisationPackId
       );
 
-    if (letterProofUpdateResult.error) {
+    if (pendingProofUpdateResult.error) {
       log
-        .child(letterProofUpdateResult.error.errorMeta)
-        .error(letterProofUpdateResult.error.actualError);
+        .child(pendingProofUpdateResult.error.errorMeta)
+        .error(pendingProofUpdateResult.error.actualError);
 
-      return letterProofUpdateResult;
+      return pendingProofUpdateResult;
     }
 
     const templateDTO = this.mapDatabaseObjectToDTO(
-      letterProofUpdateResult.data
+      pendingProofUpdateResult.data
     );
 
     if (!templateDTO) {
