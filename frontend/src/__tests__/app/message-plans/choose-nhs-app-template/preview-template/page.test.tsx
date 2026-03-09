@@ -13,7 +13,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
 describe('PreviewNhsAppTemplateFromMessagePlan page', () => {
-  it('should redirect to choose-templates when lockNumber is invalid', async () => {
+  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
     await PreviewNhsAppTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -25,12 +25,12 @@ describe('PreviewNhsAppTemplateFromMessagePlan page', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/choose-templates/routing-config-id',
+      '/message-plans/edit-message-plan/routing-config-id',
       'replace'
     );
   });
 
-  it('should redirect to choose-templates when lockNumber is missing', async () => {
+  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
     await PreviewNhsAppTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -40,7 +40,7 @@ describe('PreviewNhsAppTemplateFromMessagePlan page', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/choose-templates/routing-config-id',
+      '/message-plans/edit-message-plan/routing-config-id',
       'replace'
     );
   });

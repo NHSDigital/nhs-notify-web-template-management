@@ -291,7 +291,7 @@ describe('removeTemplateFromMessagePlan', () => {
     expect(updateConfig.cascade?.[0].conditionalTemplates).toBeUndefined();
   });
 
-  it('refreshes the choose-templates page after successful removal', async () => {
+  it('refreshes the edit-message-plan page after successful removal', async () => {
     mockGetRoutingConfig.mockResolvedValue(baseConfig);
     mockUpdateRoutingConfig.mockResolvedValue(undefined);
 
@@ -303,7 +303,7 @@ describe('removeTemplateFromMessagePlan', () => {
     await removeTemplateFromMessagePlan(formData);
 
     expect(redirect).toHaveBeenCalledWith(
-      `/message-plans/choose-templates/${routingConfigId}`
+      `/message-plans/edit-message-plan/${routingConfigId}`
     );
   });
 
