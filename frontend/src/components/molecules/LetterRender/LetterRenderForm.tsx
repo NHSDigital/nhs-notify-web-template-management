@@ -33,14 +33,14 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup htmlFor='__systemPersonalisationPackId'>
+      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        <NHSNotifyForm.ErrorMessage htmlFor='__systemPersonalisationPackId' />
+        <NHSNotifyForm.ErrorMessage htmlFor='systemPersonalisationPackId' />
         <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
-          name='__systemPersonalisationPackId'
+          name='systemPersonalisationPackId'
           className={styles.recipientSelect}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
@@ -68,7 +68,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
                 <NHSNotifyForm.Input
                   type='text'
                   id={id}
-                  name={field}
+                  name={`__personalisation__${field}`}
                   maxLength={500}
                   autoComplete='on'
                 />
@@ -77,6 +77,10 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
           })}
         </>
       )}
+
+      <input type='hidden' name='templateId' value={template.id} />
+      <input type='hidden' name='lockNumber' value={template.lockNumber} />
+      <input type='hidden' name='tab' value={tab} />
 
       <NHSNotifyButton type='submit' secondary className='nhsuk-u-margin-top-4'>
         {copy.updatePreviewButton}

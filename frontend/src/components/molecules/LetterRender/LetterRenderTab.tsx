@@ -64,10 +64,10 @@ function initialiseFormState(
   return {
     fields: Object.fromEntries([
       ...customPersonalisationFields.map((f) => [
-        f,
+        `__personalisation__${f}`,
         personalisationParameters?.[f] ?? '',
       ]),
-      ['__systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
+      ['systemPersonalisationPackId', systemPersonalisationPackId ?? ''],
     ]),
   };
 }
@@ -75,6 +75,7 @@ function initialiseFormState(
 export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
   const formState = initialiseFormState(template, tab);
   const pdfUrl = initialisePdfUrl(template, tab);
+  console.log(formState);
 
   return (
     <NHSNotifyFormProvider

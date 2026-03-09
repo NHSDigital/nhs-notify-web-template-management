@@ -4,6 +4,7 @@ import { getSessionServer } from '@utils/amplify-utils';
 import { $TemplateDto } from 'nhs-notify-backend-client';
 import type {
   CreateUpdateTemplate,
+  LetterProofRequest,
   PatchTemplate,
   TemplateDto,
 } from 'nhs-notify-web-template-management-types';
@@ -211,6 +212,32 @@ export async function requestTemplateProof(
   if (error) {
     logger.error('Failed to request proof', error);
     throw new Error('Failed to request proof');
+  }
+
+  return data;
+}
+
+export async function generateLetterProof(
+  templateId: string,
+  lockNumber: number,
+  request: LetterProofRequest
+): Promise<TemplateDto> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.generateLetterProof(
+    templateId,
+    accessToken,
+    lockNumber,
+    request
+  );
+
+  if (error) {
+    logger.error('Failed to initiale letter proof generation', error);
+    throw new Error('Failed to initiale letter proof generation');
   }
 
   return data;

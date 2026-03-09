@@ -260,7 +260,7 @@ export const $PatchTemplate = schemaFor<PatchTemplate>()(
     )
 );
 
-const $RenderRequestTypeVariant = z.enum(['long', 'short']);
+export const $RenderRequestTypeVariant = z.enum(['long', 'short']);
 
 export const $LetterProofRequest = schemaFor<LetterProofRequest>()(
   z.object({
