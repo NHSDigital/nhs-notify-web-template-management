@@ -119,6 +119,10 @@ export class LetterVariantStorageHelper {
   }
 
   public async createLetterVariant(variant: LetterVariant) {
+    if (!variant.clientId) {
+      throw new Error('Do not create ad-hoc global letter variants in tests.');
+    }
+
     await Promise.all([
       this.dynamo.send(
         new PutCommand({
