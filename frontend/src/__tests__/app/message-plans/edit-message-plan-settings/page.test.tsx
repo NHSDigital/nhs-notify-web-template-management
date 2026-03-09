@@ -139,7 +139,7 @@ describe('single campaign', () => {
     expect(updateRoutingConfig).not.toHaveBeenCalled();
   });
 
-  it('updates the message plan and redirects to the choose templates page', async () => {
+  it('updates the message plan and redirects to the edit message plan page', async () => {
     const user = userEvent.setup();
 
     const page = await EditMessagePlanPage({
@@ -166,7 +166,7 @@ describe('single campaign', () => {
     );
 
     expect(redirect).toHaveBeenCalledWith(
-      `/message-plans/choose-templates/${routingConfig.id}`,
+      `/message-plans/edit-message-plan/${routingConfig.id}`,
       RedirectType.push
     );
   });
@@ -241,7 +241,7 @@ describe('multiple campaigns', () => {
     expect(updateRoutingConfig).not.toHaveBeenCalled();
   });
 
-  it('updates the message plan and redirects to the choose templates page', async () => {
+  it('updates the message plan and redirects to the edit message plan page', async () => {
     const user = userEvent.setup();
 
     const page = await EditMessagePlanPage({
@@ -273,7 +273,7 @@ describe('multiple campaigns', () => {
     );
 
     expect(redirect).toHaveBeenCalledWith(
-      `/message-plans/choose-templates/${routingConfig.id}`,
+      `/message-plans/edit-message-plan/${routingConfig.id}`,
       RedirectType.push
     );
   });

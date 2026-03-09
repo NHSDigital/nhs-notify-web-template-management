@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChooseTemplatesPage renders correctly for a message plan with multiple templates (snapshot) 1`] = `
+exports[`EditMessagePlanPage renders correctly for a message plan with multiple templates (snapshot) 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-width-container"
@@ -973,7 +973,7 @@ exports[`ChooseTemplatesPage renders correctly for a message plan with multiple 
 </DocumentFragment>
 `;
 
-exports[`ChooseTemplatesPage validation should match snapshot when displaying validation errors 1`] = `
+exports[`EditMessagePlanPage validation should match snapshot when displaying validation errors 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-width-container"

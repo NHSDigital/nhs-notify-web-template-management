@@ -122,7 +122,7 @@ describe('ChooseLanguageLetterTemplates', () => {
     const backLink = screen.getByRole('link', { name: 'Go back' });
     expect(backLink).toHaveAttribute(
       'href',
-      `/message-plans/choose-templates/${ROUTING_CONFIG.id}`
+      `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`
     );
   });
 
