@@ -1,6 +1,6 @@
 export * from './campaign-id-required-page';
 export * from './choose-message-order-page';
-export * from './choose-templates-page';
+export * from './edit-message-plan-page';
 export * from './create-message-plan-page';
 export * from './edit-message-plan-settings-page';
 export * from './get-ready-to-move-page';

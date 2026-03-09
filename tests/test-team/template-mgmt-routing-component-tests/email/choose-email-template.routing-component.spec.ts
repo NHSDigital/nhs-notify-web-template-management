@@ -104,7 +104,7 @@ test.describe('Routing - Choose email template page', () => {
     await assertBackLinkTopNotPresent(props);
     await assertAndClickBackLinkBottom({
       ...props,
-      expectedUrl: `templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
+      expectedUrl: `templates/message-plans/edit-message-plan/${messagePlans.EMAIL_ROUTING_CONFIG.id}`,
     });
   });
 
@@ -181,7 +181,7 @@ test.describe('Routing - Choose email template page', () => {
       await expect(goBackLink).toBeVisible();
       await expect(goBackLink).toHaveAttribute(
         'href',
-        `/templates/message-plans/choose-templates/${plan.id}`
+        `/templates/message-plans/edit-message-plan/${plan.id}`
       );
     });
 
@@ -198,14 +198,14 @@ test.describe('Routing - Choose email template page', () => {
       ]);
     });
 
-    await test.step('submits selected template and navigates to choose templates page', async () => {
+    await test.step('submits selected template and navigates to the edit message plan page', async () => {
       await chooseEmailTemplatePage.loadPage();
 
       await chooseEmailTemplatePage.getRadioButton(templates.EMAIL2.id).check();
       await chooseEmailTemplatePage.saveAndContinueButton.click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${plan.id}`
+        `${baseURL}/templates/message-plans/edit-message-plan/${plan.id}`
       );
     });
 
@@ -278,7 +278,7 @@ test.describe('Routing - Choose email template page', () => {
     });
   });
 
-  test.describe('redirects to choose templates page', () => {
+  test.describe('redirects to the edit message plan page', () => {
     test('when no lockNumber in url', async ({ page, baseURL }) => {
       const chooseTemplatePage = new RoutingChooseEmailTemplatePage(
         page
@@ -287,7 +287,7 @@ test.describe('Routing - Choose email template page', () => {
       await chooseTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/choose-templates/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
+        `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
       );
     });
   });

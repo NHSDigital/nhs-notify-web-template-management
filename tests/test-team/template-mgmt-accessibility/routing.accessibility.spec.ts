@@ -17,7 +17,7 @@ import {
   RoutingChooseNhsAppTemplatePage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
-  RoutingChooseTemplatesPage,
+  RoutingEditMessagePlanPage,
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanSettingsPage,
@@ -143,7 +143,7 @@ test.describe('Routing', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test.describe('Choose templates', () => {
+  test.describe('Choose template pages', () => {
     test('Choose large print letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseLargePrintLetterTemplatePage(page)
@@ -151,7 +151,7 @@ test.describe('Routing', () => {
           .setSearchParam('lockNumber', '0')
       ));
 
-    test('Choose other language letter template', async ({ page, analyze }) =>
+    test('Choose other language letter templates', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseOtherLanguageLetterTemplatePage(page)
           .setPathParam('messagePlanId', draftRoutingConfigId)
@@ -254,17 +254,17 @@ test.describe('Routing', () => {
       beforeAnalyze: (p) => p.clickContinueButton(),
     }));
 
-  test('Choose template', async ({ page, analyze }) =>
+  test('Edit message plan', async ({ page, analyze }) =>
     analyze(
-      new RoutingChooseTemplatesPage(page).setPathParam(
+      new RoutingEditMessagePlanPage(page).setPathParam(
         'messagePlanId',
         draftRoutingConfigId
       )
     ));
 
-  test('Choose template - error', async ({ page, analyze }) =>
+  test('Edit message plan - error', async ({ page, analyze }) =>
     analyze(
-      new RoutingChooseTemplatesPage(page).setPathParam(
+      new RoutingEditMessagePlanPage(page).setPathParam(
         'messagePlanId',
         emptyRoutingConfigId
       ),

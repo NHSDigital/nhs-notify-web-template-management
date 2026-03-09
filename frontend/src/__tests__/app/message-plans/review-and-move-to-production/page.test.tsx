@@ -204,7 +204,7 @@ describe('Review and move to production page', () => {
     expect(keepInDraftLink).toHaveTextContent('Keep in draft');
     expect(keepInDraftLink).toHaveAttribute(
       'href',
-      '/templates/message-plans/choose-templates/rc-123'
+      '/templates/message-plans/edit-message-plan/rc-123'
     );
   });
 
