@@ -50,15 +50,11 @@ export async function updateLetterPreview(
     )
   );
 
-  const systemPersonalisation = (
-    tab === 'longFormRender'
+  const systemPersonalisation =
+    (tab === 'longFormRender'
       ? LONG_EXAMPLE_RECIPIENTS
       : SHORT_EXAMPLE_RECIPIENTS
-  ).find((r) => r.id === systemPersonalisationPackId)?.data;
-
-  if (!systemPersonalisation) {
-    throw new Error('system personalisation missing');
-  }
+    ).find((r) => r.id === systemPersonalisationPackId)?.data ?? {};
 
   const personalisation = {
     ...customPersonalisation,
@@ -72,7 +68,7 @@ export async function updateLetterPreview(
     requestTypeVariant: tab === 'longFormRender' ? 'long' : 'short',
   };
 
-  const _updated = await generateLetterProof(templateId, lockNumber, request);
+  await generateLetterProof(templateId, lockNumber, request);
 
   return {
     fields,

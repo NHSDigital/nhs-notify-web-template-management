@@ -19,6 +19,7 @@ import {
   setTemplateToSubmitted,
   requestTemplateProof,
   uploadDocxTemplate,
+  generateLetterProof,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
 import {
@@ -1041,6 +1042,77 @@ describe('form-actions', () => {
       await expect(requestTemplateProof('id', 0)).rejects.toThrow(
         'Failed to get access token'
       );
+    });
+  });
+
+  describe('generateLetterProof', () => {
+    const request = {
+      personalisation: { firstName: 'Jo' },
+      systemPersonalisationPackId: 'short-1',
+      requestTypeVariant: 'short' as const,
+    };
+
+    test('sends letter proof request successfully', async () => {
+      const responseData = {
+        templateType: 'LETTER',
+        id: 'template-id',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: 'template-name',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
+        lockNumber: 2,
+      } satisfies TemplateDto;
+
+      mockedTemplateClient.generateLetterProof.mockResolvedValueOnce({
+        data: responseData,
+      });
+
+      const response = await generateLetterProof('template-id', 1, request);
+
+      expect(mockedTemplateClient.generateLetterProof).toHaveBeenCalledWith(
+        'template-id',
+        'token',
+        1,
+        request
+      );
+
+      expect(response).toEqual(responseData);
+    });
+
+    test('should throw error when request unexpectedly fails', async () => {
+      mockedTemplateClient.generateLetterProof.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
+        },
+      });
+
+      await expect(
+        generateLetterProof('template-id', 1, request)
+      ).rejects.toThrow('Failed to initiale letter proof generation');
+
+      expect(mockedTemplateClient.generateLetterProof).toHaveBeenCalledWith(
+        'template-id',
+        'token',
+        1,
+        request
+      );
+    });
+
+    test('should throw error when no token', async () => {
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(
+        generateLetterProof('template-id', 1, request)
+      ).rejects.toThrow('Failed to get access token');
     });
   });
 });

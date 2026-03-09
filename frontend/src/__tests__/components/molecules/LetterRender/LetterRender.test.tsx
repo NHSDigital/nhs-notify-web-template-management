@@ -2,11 +2,17 @@ import { render, screen } from '@testing-library/react';
 import { LetterRender } from '@molecules/LetterRender';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
+import { useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
 
 jest.mock('@utils/csrf-utils');
 jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 jest.mock('@molecules/LetterRender/server-action');
+
+jest.mock('next/navigation');
+jest.mock('@hooks/use-letter-template-poll');
+
+const mockUseLetterTemplatePoll = jest.mocked(useLetterTemplatePoll);
 
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
@@ -43,6 +49,11 @@ const baseTemplate: AuthoringLetterTemplate = {
 };
 
 describe('LetterRender', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockUseLetterTemplatePoll.mockReturnValue({ isPolling: false });
+  });
+
   it('renders tabs for short and long examples', () => {
     render(<LetterRender template={baseTemplate} />);
 

@@ -87,6 +87,26 @@ describe('RenderPoll', () => {
     expect(mockUseTemplatePoll).toHaveBeenCalledWith({
       template,
       shouldPoll: expect.any(Function),
+      forcePolling: undefined,
+    });
+  });
+
+  it('forwards forcePolling prop to useLetterTemplatePoll', () => {
+    render(
+      <RenderPoll
+        template={template}
+        mode='initialRender'
+        loadingElement={<h1>{'loading'}</h1>}
+        forcePolling
+      >
+        <div>content</div>
+      </RenderPoll>
+    );
+
+    expect(mockUseTemplatePoll).toHaveBeenCalledWith({
+      template,
+      shouldPoll: expect.any(Function),
+      forcePolling: true,
     });
   });
 

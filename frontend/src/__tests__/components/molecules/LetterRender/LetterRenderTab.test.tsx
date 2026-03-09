@@ -6,11 +6,17 @@ import type {
   FormState,
 } from 'nhs-notify-web-template-management-utils';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
+import { useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
 
 jest.mock('@utils/csrf-utils');
 jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 jest.mock('@molecules/LetterRender/server-action');
+
+jest.mock('next/navigation');
+jest.mock('@hooks/use-letter-template-poll');
+
+const mockUseLetterTemplatePoll = jest.mocked(useLetterTemplatePoll);
 
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
@@ -51,8 +57,8 @@ const baseTemplate: AuthoringLetterTemplate = {
 function createMockState(overrides: Partial<FormState> = {}): FormState {
   return {
     fields: {
-      __systemPersonalisationPackId: '',
-      appointmentDate: '',
+      systemPersonalisationPackId: '',
+      __personalisation__appointmentDate: '',
     },
     ...overrides,
   };
@@ -62,6 +68,7 @@ describe('LetterRenderTab', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUpdateLetterPreview.mockResolvedValue(createMockState());
+    mockUseLetterTemplatePoll.mockReturnValue({ isPolling: false });
   });
 
   describe('buildPdfUrl', () => {
@@ -432,13 +439,15 @@ describe('LetterRenderTab', () => {
 
       expect(formState).toEqual({
         fields: {
-          __systemPersonalisationPackId: '',
-          appointmentDate: '',
+          systemPersonalisationPackId: '',
+          __personalisation__appointmentDate: '',
         },
       } satisfies FormState);
 
-      expect(formData.get('__systemPersonalisationPackId')).toBe('short-1');
-      expect(formData.get('appointmentDate')).toBe('2025-06-15');
+      expect(formData.get('systemPersonalisationPackId')).toBe('short-1');
+      expect(formData.get('__personalisation__appointmentDate')).toBe(
+        '2025-06-15'
+      );
     });
 
     it('calls updateLetterPreview with form state and form data for long tab', async () => {
@@ -467,13 +476,15 @@ describe('LetterRenderTab', () => {
 
       expect(formState).toEqual({
         fields: {
-          __systemPersonalisationPackId: '',
-          appointmentDate: '',
+          systemPersonalisationPackId: '',
+          __personalisation__appointmentDate: '',
         },
       } satisfies FormState);
 
-      expect(formData.get('__systemPersonalisationPackId')).toBe('long-1');
-      expect(formData.get('appointmentDate')).toBe('2025-07-20');
+      expect(formData.get('systemPersonalisationPackId')).toBe('long-1');
+      expect(formData.get('__personalisation__appointmentDate')).toBe(
+        '2025-07-20'
+      );
     });
 
     it('displays validation error when no recipient selected', async () => {
@@ -482,7 +493,7 @@ describe('LetterRenderTab', () => {
           errorState: {
             formErrors: [],
             fieldErrors: {
-              __systemPersonalisationPackId: ['Select an example recipient'],
+              systemPersonalisationPackId: ['Select an example recipient'],
             },
           },
         })

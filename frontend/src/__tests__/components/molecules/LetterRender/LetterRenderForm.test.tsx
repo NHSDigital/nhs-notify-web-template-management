@@ -167,7 +167,7 @@ describe('LetterRenderForm', () => {
     it('displays selected PDS recipient from form state', () => {
       const initialState = createInitialFormState({
         fields: {
-          __systemPersonalisationPackId: 'short-1',
+          systemPersonalisationPackId: 'short-1',
         },
       });
 
@@ -191,8 +191,8 @@ describe('LetterRenderForm', () => {
 
       const initialState = createInitialFormState({
         fields: {
-          __systemPersonalisationPackId: '',
-          appointmentDate: '2025-01-15',
+          systemPersonalisationPackId: '',
+          __personalisation__appointmentDate: '2025-01-15',
         },
       });
 
@@ -227,7 +227,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            __systemPersonalisationPackId: ['Select an example recipient'],
+            systemPersonalisationPackId: ['Select an example recipient'],
           },
         },
       });
@@ -295,7 +295,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            __systemPersonalisationPackId: ['Select an example recipient'],
+            systemPersonalisationPackId: ['Select an example recipient'],
           },
         },
       });

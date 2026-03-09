@@ -5,13 +5,17 @@ import type {
   FormState,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
-import { NHSNotifyFormProvider } from '@providers/form-provider';
+import {
+  NHSNotifyFormProvider,
+  useNHSNotifyForm,
+} from '@providers/form-provider';
 import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
+import { RenderPoll } from '@molecules/RenderPoll/RenderPoll';
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -72,25 +76,47 @@ function initialiseFormState(
   };
 }
 
+function LetterRenderTabContent({
+  template,
+  tab,
+  pdfUrl,
+}: {
+  template: AuthoringLetterTemplate;
+  tab: PersonalisedRenderKey;
+  pdfUrl: string | null;
+}) {
+  const [_state, _dispatch, isPending] = useNHSNotifyForm();
+
+  return (
+    <div className='nhsuk-grid-row'>
+      <div className='nhsuk-grid-column-one-third'>
+        <LetterRenderForm template={template} tab={tab} />
+      </div>
+
+      <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
+        <RenderPoll
+          template={template}
+          mode={tab}
+          loadingElement={<p>loading</p>}
+          forcePolling={isPending}
+        >
+          <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
+        </RenderPoll>
+      </div>
+    </div>
+  );
+}
+
 export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
   const formState = initialiseFormState(template, tab);
   const pdfUrl = initialisePdfUrl(template, tab);
-  console.log(formState);
 
   return (
     <NHSNotifyFormProvider
       initialState={formState}
       serverAction={updateLetterPreview}
     >
-      <div className='nhsuk-grid-row'>
-        <div className='nhsuk-grid-column-one-third'>
-          <LetterRenderForm template={template} tab={tab} />
-        </div>
-
-        <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
-          <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
-        </div>
-      </div>
+      <LetterRenderTabContent template={template} tab={tab} pdfUrl={pdfUrl} />
     </NHSNotifyFormProvider>
   );
 }

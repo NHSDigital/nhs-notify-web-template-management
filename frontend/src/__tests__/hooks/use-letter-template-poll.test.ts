@@ -186,4 +186,111 @@ describe('useLetterTemplatePoll', () => {
 
     expect(mockRefresh).toHaveBeenCalledTimes(10);
   });
+
+  describe('forcePolling', () => {
+    it('starts polling when forcePolling is true even if shouldPoll returns false', () => {
+      const { result } = renderHook(() =>
+        useLetterTemplatePoll({
+          template: renderedTemplate,
+          shouldPoll: () => false,
+          forcePolling: true,
+        })
+      );
+
+      expect(result.current.isPolling).toBe(true);
+    });
+
+    it('re-starts polling when forcePolling transitions from false to true', () => {
+      const { result, rerender } = renderHook(
+        ({ forcePolling }: { forcePolling: boolean }) =>
+          useLetterTemplatePoll({
+            template: renderedTemplate,
+            shouldPoll: () => false,
+            forcePolling,
+          }),
+        { initialProps: { forcePolling: false } }
+      );
+
+      expect(result.current.isPolling).toBe(false);
+
+      act(() => {
+        rerender({ forcePolling: true });
+      });
+
+      expect(result.current.isPolling).toBe(true);
+    });
+
+    it('does not stop polling while forcePolling is true even if shouldPoll returns false', () => {
+      const { result, rerender } = renderHook(
+        ({
+          template,
+          forcePolling,
+        }: {
+          template: AuthoringLetterTemplate;
+          forcePolling: boolean;
+        }) =>
+          useLetterTemplatePoll({
+            template,
+            shouldPoll: (t) => t.files.initialRender.status === 'PENDING',
+            forcePolling,
+          }),
+        {
+          initialProps: {
+            template: renderedTemplate,
+            forcePolling: true,
+          },
+        }
+      );
+
+      expect(result.current.isPolling).toBe(true);
+
+      act(() => {
+        rerender({ template: renderedTemplate, forcePolling: true });
+      });
+
+      expect(result.current.isPolling).toBe(true);
+    });
+
+    it('stops polling after timeout even with forcePolling', () => {
+      const { result } = renderHook(() =>
+        useLetterTemplatePoll({
+          template: renderedTemplate,
+          shouldPoll: () => false,
+          forcePolling: true,
+        })
+      );
+
+      expect(result.current.isPolling).toBe(true);
+
+      act(() => {
+        jest.advanceTimersByTime(RENDER_TIMEOUT_MS);
+      });
+
+      expect(result.current.isPolling).toBe(false);
+    });
+
+    it('calls router.refresh while forcePolling is active', () => {
+      renderHook(() =>
+        useLetterTemplatePoll({
+          template: renderedTemplate,
+          shouldPoll: () => false,
+          forcePolling: true,
+        })
+      );
+
+      expect(mockRefresh).not.toHaveBeenCalled();
+
+      act(() => {
+        jest.advanceTimersByTime(POLL_INTERVAL_MS);
+      });
+
+      expect(mockRefresh).toHaveBeenCalledTimes(1);
+
+      act(() => {
+        jest.advanceTimersByTime(POLL_INTERVAL_MS);
+      });
+
+      expect(mockRefresh).toHaveBeenCalledTimes(2);
+    });
+  });
 });
