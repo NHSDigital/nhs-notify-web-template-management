@@ -123,7 +123,6 @@ export default async function PreviewLetterTemplatePage({
                     className='nhsuk-button'
                     data-testid='preview-letter-template-cta'
                     id='preview-letter-template-cta'
-                    disabled
                   >
                     {submitText}
                   </button>
