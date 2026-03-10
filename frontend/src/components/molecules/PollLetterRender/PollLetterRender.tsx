@@ -28,18 +28,18 @@ function shouldPollLetterRender(
   };
 }
 
-type RenderPollProps = PropsWithChildren<{
+type PollLetterRenderProps = PropsWithChildren<{
   template: AuthoringLetterTemplate;
   mode: RenderKey;
   loadingElement: ReactNode;
 }>;
 
-export function RenderPoll({
+export function PollLetterRender({
   template,
   children,
   mode,
   loadingElement,
-}: Readonly<RenderPollProps>) {
+}: Readonly<PollLetterRenderProps>) {
   const { isPolling } = useLetterTemplatePoll({
     template,
     shouldPoll: shouldPollLetterRender(mode),

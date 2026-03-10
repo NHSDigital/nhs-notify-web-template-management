@@ -1,5 +1,5 @@
 import { render, screen, act } from '@testing-library/react';
-import { RenderPoll } from '@molecules/RenderPoll/RenderPoll';
+import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import {
   RENDER_TIMEOUT_MS,
   POLL_INTERVAL_MS,
@@ -60,7 +60,7 @@ const renderedRender: RenderDetails = {
   pageCount: 2,
 };
 
-describe('RenderPoll', () => {
+describe('PollLetterRender', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers({ now: NOW });
@@ -72,13 +72,13 @@ describe('RenderPoll', () => {
 
   it('renders children when the render is already RENDERED', () => {
     render(
-      <RenderPoll
+      <PollLetterRender
         template={baseTemplate}
         mode='initialRender'
         loadingElement={<p>{'loading'}</p>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -92,13 +92,13 @@ describe('RenderPoll', () => {
     };
 
     render(
-      <RenderPoll
+      <PollLetterRender
         template={template}
         mode='initialRender'
         loadingElement={<h1>{'loading'}</h1>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(
@@ -115,13 +115,13 @@ describe('RenderPoll', () => {
     };
 
     render(
-      <RenderPoll
+      <PollLetterRender
         template={template}
         mode='initialRender'
         loadingElement={<p>{'loading'}</p>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -136,13 +136,13 @@ describe('RenderPoll', () => {
     };
 
     render(
-      <RenderPoll
+      <PollLetterRender
         template={template}
         mode='initialRender'
         loadingElement={<p>{'loading'}</p>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -151,13 +151,13 @@ describe('RenderPoll', () => {
 
   it('renders children when the render file for the mode is absent', () => {
     render(
-      <RenderPoll
+      <PollLetterRender
         template={baseTemplate}
         mode='longFormRender'
         loadingElement={<p>{'loading'}</p>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -171,13 +171,13 @@ describe('RenderPoll', () => {
     };
 
     render(
-      <RenderPoll
+      <PollLetterRender
         template={template}
         mode='shortFormRender'
         loadingElement={<h1>{'loading'}</h1>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(
@@ -199,13 +199,13 @@ describe('RenderPoll', () => {
     };
 
     const { rerender } = render(
-      <RenderPoll
+      <PollLetterRender
         template={pendingTemplate}
         mode='initialRender'
         loadingElement={<h1>{'loading'}</h1>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
@@ -215,13 +215,13 @@ describe('RenderPoll', () => {
     ).toBeInTheDocument();
 
     rerender(
-      <RenderPoll
+      <PollLetterRender
         template={renderedTemplate}
         mode='initialRender'
         loadingElement={<h1>{'loading'}</h1>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -235,13 +235,13 @@ describe('RenderPoll', () => {
     };
 
     render(
-      <RenderPoll
+      <PollLetterRender
         template={template}
         mode='initialRender'
         loadingElement={<h1>{'loading'}</h1>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
@@ -261,13 +261,13 @@ describe('RenderPoll', () => {
     };
 
     render(
-      <RenderPoll
+      <PollLetterRender
         template={template}
         mode='initialRender'
         loadingElement={<h1>{'loading'}</h1>}
       >
         <div data-testid='page-content'>content</div>
-      </RenderPoll>
+      </PollLetterRender>
     );
 
     expect(mockRefresh).not.toHaveBeenCalled();
