@@ -25,6 +25,8 @@ import { getTestContext } from 'helpers/context/context';
 const templateStorageHelper = new TemplateStorageHelper();
 const templateIds = {
   AUTHORING: randomUUID(),
+  AUTHORING_INITIAL_SPINNER: randomUUID(),
+  AUTHORING_MISSING_ADDRESS: randomUUID(),
   LETTER: randomUUID(),
   LETTER_ERROR: randomUUID(),
   LETTER_SUBMITTED: randomUUID(),
@@ -50,6 +52,16 @@ test.beforeAll(async () => {
     templateIds.AUTHORING,
     authoringEnabledWithMultipleCampaignsUser,
     `Authoring letter template - ${templateIds.AUTHORING}`
+  );
+
+  const authoringMissingAddress = TemplateFactory.createAuthoringLetterTemplate(
+    templateIds.AUTHORING_MISSING_ADDRESS,
+    authoringEnabledWithMultipleCampaignsUser,
+    `Authoring letter template (missing address) - ${templateIds.AUTHORING_MISSING_ADDRESS}`,
+    'VALIDATION_FAILED',
+    {
+      validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
+    }
   );
 
   const letter = TemplateFactory.uploadLetterTemplate(
@@ -87,6 +99,7 @@ test.beforeAll(async () => {
 
   await templateStorageHelper.seedTemplateData([
     authoring,
+    authoringMissingAddress,
     letter,
     letterWithError,
     letterSubmitted,
@@ -233,6 +246,62 @@ test.describe('Letter templates', () => {
         new TemplateMgmtChoosePrintingAndPostagePage(page)
           .setPathParam('templateId', templateIds.AUTHORING)
           .setSearchParam('lockNumber', '0')
+      ));
+
+    test('Preview letter page - initial spinner', async ({ page, analyze }) => {
+      // seed template close to the time of running the test to avoid spinner timeout
+      await templateStorageHelper.seedTemplateData([
+        TemplateFactory.createAuthoringLetterTemplate(
+          templateIds.AUTHORING_INITIAL_SPINNER,
+          authoringEnabledWithMultipleCampaignsUser,
+          `Authoring letter template (initial spinner) - ${templateIds.AUTHORING_INITIAL_SPINNER}`,
+          'PENDING_VALIDATION',
+          {
+            longFormRender: false,
+            shortFormRender: false,
+            initialRender: {
+              status: 'PENDING',
+              requestedAt: new Date().toDateString(),
+            },
+          }
+        ),
+      ]);
+
+      return analyze(
+        new TemplateMgmtPreviewLetterPage(page).setPathParam(
+          'templateId',
+          templateIds.AUTHORING_INITIAL_SPINNER
+        ),
+        {
+          beforeAnalyze: async (p) => {
+            await p.pageSpinner.isVisible();
+          },
+        }
+      );
+    });
+
+    test('Preview letter page', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtPreviewLetterPage(page).setPathParam(
+          'templateId',
+          templateIds.AUTHORING
+        )
+      ));
+
+    test('Preview letter page - missing address lines error', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new TemplateMgmtPreviewLetterPage(page).setPathParam(
+          'templateId',
+          templateIds.AUTHORING_MISSING_ADDRESS
+        ),
+        {
+          beforeAnalyze: async (p) => {
+            await p.errorSummary.isVisible();
+          },
+        }
       ));
 
     test('Edit template campaign', async ({ page, analyze }) =>

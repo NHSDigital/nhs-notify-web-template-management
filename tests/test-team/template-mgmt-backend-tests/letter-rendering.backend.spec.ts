@@ -6,6 +6,7 @@ import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-pay
 import { docxFixtures } from '../fixtures/letters';
 import type { Template } from '../helpers/types';
 import { getTestContext } from 'helpers/context/context';
+import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
 const context = getTestContext();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -150,7 +151,6 @@ test.describe('Letter rendering', () => {
         request,
         docxFixtures.fakeVirus.open(),
         (t: Template) => {
-          expect(t.files?.initialRender).toBeUndefined();
           expect(t.customPersonalisation).toBeUndefined();
           expect(t.systemPersonalisation).toBeUndefined();
 
@@ -162,6 +162,10 @@ test.describe('Letter rendering', () => {
                 docxTemplate: expect.objectContaining({
                   virusScanStatus: 'FAILED',
                 }),
+                initialRender: {
+                  status: 'PENDING',
+                  requestedAt: expect.stringMatching(isoDateRegExp),
+                },
               },
             })
           );
@@ -186,7 +190,6 @@ test.describe('Letter rendering', () => {
         request,
         docxFixtures.password.open(),
         (t: Template) => {
-          expect(t.files?.initialRender).toBeUndefined();
           expect(t.customPersonalisation).toBeUndefined();
           expect(t.systemPersonalisation).toBeUndefined();
 
@@ -198,6 +201,10 @@ test.describe('Letter rendering', () => {
                 docxTemplate: expect.objectContaining({
                   virusScanStatus: 'FAILED',
                 }),
+                initialRender: {
+                  status: 'PENDING',
+                  requestedAt: expect.stringMatching(isoDateRegExp),
+                },
               },
             })
           );

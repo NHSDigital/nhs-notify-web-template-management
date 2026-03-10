@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoadingSpinner component renders component correctly 1`] = `
+<DocumentFragment>
+  <div
+    aria-live="polite"
+    class="nhsuk-loader"
+    role="status"
+  >
+    <span
+      aria-hidden="true"
+      class="nhsuk-loader__spinner"
+    />
+    <div
+      class="nhsuk-loader__text"
+    >
+      <h1>
+        loading text
+      </h1>
+    </div>
+  </div>
+</DocumentFragment>
+`;

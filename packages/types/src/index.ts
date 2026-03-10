@@ -116,7 +116,6 @@ export type {
   PatchV1TemplateByTemplateIdSubmitResponses,
   PdfLetterFiles,
   PdfLetterProperties,
-  PersonalisedRenderDetails,
   PostV1DocxLetterTemplateData,
   PostV1DocxLetterTemplateError,
   PostV1DocxLetterTemplateErrors,

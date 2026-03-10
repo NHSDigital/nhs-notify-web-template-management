@@ -1,6 +1,5 @@
 import type {
   LetterVersion,
-  PersonalisedRenderDetails,
   RenderDetails,
   TemplateStatus,
   TemplateType,
@@ -100,7 +99,7 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  setShortFormRender(details: PersonalisedRenderDetails) {
+  setShortFormRender(details: RenderDetails) {
     this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
     return this;
   }

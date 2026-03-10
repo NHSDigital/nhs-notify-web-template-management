@@ -10,30 +10,16 @@
             "$ref": "#/components/schemas/RenderDetails"
           },
           "longFormRender": {
-            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+            "$ref": "#/components/schemas/RenderDetails"
           },
           "shortFormRender": {
-            "$ref": "#/components/schemas/PersonalisedRenderDetails"
+            "$ref": "#/components/schemas/RenderDetails"
           }
         },
         "required": [
-          "docxTemplate"
+          "docxTemplate",
+          "initialRender"
         ],
-        "type": "object"
-      },
-      "LetterPatch": {
-        "additionalProperties": false,
-        "properties": {
-          "campaignId": {
-            "type": "string"
-          },
-          "letterVariantId": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
         "type": "object"
       },
       "AuthoringLetterProperties": {
@@ -682,6 +668,21 @@
         ],
         "type": "string"
       },
+      "LetterPatch": {
+        "additionalProperties": false,
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "letterVariantId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
       "LetterProperties": {
         "oneOf": [
           {
@@ -898,31 +899,6 @@
           }
         ]
       },
-      "PersonalisedRenderDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/RenderDetails"
-          },
-          {
-            "properties": {
-              "personalisationParameters": {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              "systemPersonalisationPackId": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "personalisationParameters",
-              "systemPersonalisationPackId"
-            ],
-            "type": "object"
-          }
-        ]
-      },
       "ProofFileDetails": {
         "properties": {
           "fileName": {
@@ -943,15 +919,33 @@
         "type": "object"
       },
       "RenderDetails": {
-        "oneOf": [
+        "allOf": [
           {
-            "$ref": "#/components/schemas/RenderDetailsFailed"
+            "properties": {
+              "personalisationParameters": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "systemPersonalisationPackId": {
+                "type": "string"
+              }
+            },
+            "type": "object"
           },
           {
-            "$ref": "#/components/schemas/RenderDetailsPending"
-          },
-          {
-            "$ref": "#/components/schemas/RenderDetailsRendered"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RenderDetailsFailed"
+              },
+              {
+                "$ref": "#/components/schemas/RenderDetailsPending"
+              },
+              {
+                "$ref": "#/components/schemas/RenderDetailsRendered"
+              }
+            ]
           }
         ]
       },
@@ -971,6 +965,9 @@
       },
       "RenderDetailsPending": {
         "properties": {
+          "requestedAt": {
+            "type": "string"
+          },
           "status": {
             "enum": [
               "PENDING"
@@ -979,6 +976,7 @@
           }
         },
         "required": [
+          "requestedAt",
           "status"
         ],
         "type": "object"

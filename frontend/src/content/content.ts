@@ -518,10 +518,13 @@ const previewLetterPreSubmissionText = {
     "If you're happy with this template proof, approve it. Then your template will be ready to add to a message plan.",
 };
 
+const previewLetterTitle = generatePageTitle('Preview letter template');
+
 const previewLetterTemplate = {
-  pageTitle: generatePageTitle('Preview letter template'),
+  pageTitle: previewLetterTitle,
   backLinkText: backToAllTemplates,
   submitText: 'Submit template',
+  loadingText: 'Uploading letter template',
   approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,
@@ -560,6 +563,10 @@ const previewLetterTemplate = {
     requestProofOfTemplate:
       '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
   },
+};
+
+const previewSubmittedLetterTemplate = {
+  pageTitle: previewLetterTitle,
 };
 
 const letterRender = {
@@ -1363,6 +1370,10 @@ const chooseLargePrintLetterTemplate = {
   noTemplatesText: 'You do not have any large print letter templates yet.',
 };
 
+const previewStandardEnglishLetterTemplate = {
+  pageTitle: previewLetterTitle,
+};
+
 const previewLargePrintLetterTemplate = {
   pageTitle: generatePageTitle('Preview large print letter template'),
 };
@@ -1894,7 +1905,6 @@ const content = {
     personalisation,
     previewDigitalTemplate,
     previewEmailTemplate,
-    previewLetterTemplate,
     previewNHSAppTemplate,
     previewSMSTemplate,
     previewTemplateDetails,
@@ -1933,8 +1943,11 @@ const content = {
     messagePlansPage,
     messageTemplates,
     previewLargePrintLetterTemplate,
-    previewOtherLanguageLetterTemplate,
+    previewLetterTemplate,
     previewMessagePlan,
+    previewOtherLanguageLetterTemplate,
+    previewStandardEnglishLetterTemplate,
+    previewSubmittedLetterTemplate,
     reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,
