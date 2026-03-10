@@ -30,6 +30,7 @@ const templateId = 'E1F5088E5B77';
 const templateName = 'template-name';
 const versionId = '28F-D4-72-A93-A6';
 const defaultLetterSupplier = 'SUPPLIER';
+const NOW = '2026-02-27T09:08:07.161Z';
 
 const setup = () => {
   const templateRepository = mock<TemplateRepository>();
@@ -88,6 +89,11 @@ describe('templateClient', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     jest.mocked(randomUUID).mockReturnValue(versionId);
+  });
+
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date(NOW));
   });
 
   describe('isCampaignIdValid', () => {
@@ -360,28 +366,27 @@ describe('templateClient', () => {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
 
-      const filesWithVersions: AuthoringLetterFiles = {
+      const files: AuthoringLetterFiles = {
         docxTemplate: {
           fileName: docxFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
+        initialRender: { status: 'PENDING', requestedAt: NOW },
       };
 
       const dataWithFiles: CreateUpdateTemplate & {
         files: AuthoringLetterFiles;
       } = {
         ...data,
-        files: filesWithVersions,
+        files,
       };
-
-      const creationTime = '2025-03-12T08:41:08.805Z';
 
       const createdTemplate: DatabaseTemplate = {
         ...dataWithFiles,
         id: templateId,
-        createdAt: creationTime,
-        updatedAt: creationTime,
+        createdAt: NOW,
+        updatedAt: NOW,
         templateStatus: 'PENDING_UPLOAD',
         owner: `CLIENT#${user.clientId}`,
         version: 1,
@@ -611,6 +616,7 @@ describe('templateClient', () => {
             currentVersion: versionId,
             virusScanStatus: 'PENDING',
           },
+          initialRender: { status: 'PENDING', requestedAt: NOW },
         },
       };
 
@@ -715,11 +721,15 @@ describe('templateClient', () => {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
 
-      const filesWithVersions: AuthoringLetterFiles = {
+      const files: AuthoringLetterFiles = {
         docxTemplate: {
           fileName: 'template.docx',
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
+        },
+        initialRender: {
+          status: 'PENDING',
+          requestedAt: NOW,
         },
       };
 
@@ -727,7 +737,7 @@ describe('templateClient', () => {
         files: AuthoringLetterFiles;
       } = {
         ...data,
-        files: filesWithVersions,
+        files,
       };
 
       const expectedTemplateDto: TemplateDto = {
