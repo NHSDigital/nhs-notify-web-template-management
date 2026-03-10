@@ -12,7 +12,7 @@ import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
-import { RenderPoll } from '@molecules/RenderPoll/RenderPoll';
+import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getTemplate } from '@utils/form-actions';
 import { submitAuthoringLetterAction } from './server-action';
@@ -83,7 +83,7 @@ export default async function PreviewLetterTemplatePage({
         }}
         serverAction={submitAuthoringLetterAction}
       >
-        <RenderPoll
+        <PollLetterRender
           template={validatedTemplate}
           mode='initialRender'
           loadingElement={<h1>{loadingText}</h1>}
@@ -133,7 +133,7 @@ export default async function PreviewLetterTemplatePage({
               </p>
             </NHSNotifyContainer>
           </NHSNotifyMain>
-        </RenderPoll>
+        </PollLetterRender>
       </NHSNotifyFormProvider>
     </NHSNotifyContainer>
   );
