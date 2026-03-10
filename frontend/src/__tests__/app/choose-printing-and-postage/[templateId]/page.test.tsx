@@ -38,6 +38,10 @@ const mockTemplate: TemplateDto = {
       fileName: 'name.pdf',
       virusScanStatus: 'PASSED',
     },
+    initialRender: {
+      status: 'PENDING',
+      requestedAt: '2026-01-01T00:00:00.000Z',
+    },
   },
 };
 

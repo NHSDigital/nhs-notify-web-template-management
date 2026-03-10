@@ -11,12 +11,6 @@ export type AuthoringLetterFiles = {
   shortFormRender?: RenderDetails;
 };
 
-export type LetterPatch = {
-  campaignId?: string;
-  letterVariantId?: string;
-  name?: string;
-};
-
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
   clientId: string;
   customPersonalisation?: Array<string>;
@@ -213,6 +207,12 @@ export type Language =
   | 'tr'
   | 'ur'
   | 'zh';
+
+export type LetterPatch = {
+  campaignId?: string;
+  letterVariantId?: string;
+  name?: string;
+};
 
 export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
