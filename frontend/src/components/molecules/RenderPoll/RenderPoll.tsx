@@ -9,7 +9,7 @@ import {
 } from '@hooks/use-letter-template-poll';
 import type { RenderKey } from '@utils/types';
 
-export function shouldPollRender(
+function shouldPollLetterRender(
   mode: RenderKey
 ): (template: AuthoringLetterTemplate) => boolean {
   return ({ files, templateStatus }: AuthoringLetterTemplate): boolean => {
@@ -42,7 +42,7 @@ export function RenderPoll({
 }: Readonly<RenderPollProps>) {
   const { isPolling } = useLetterTemplatePoll({
     template,
-    shouldPoll: shouldPollRender(mode),
+    shouldPoll: shouldPollLetterRender(mode),
   });
 
   if (isPolling) {
