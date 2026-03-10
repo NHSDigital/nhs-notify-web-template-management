@@ -34,7 +34,7 @@ export function PreviewPdfLetterTemplate({
     validationErrorAction,
     virusScanError,
     virusScanErrorAction,
-  } = content.components.previewLetterTemplate;
+  } = content.pages.previewLetterTemplate;
 
   const basePath = getBasePath();
   const { proofing } = useFeatureFlags();

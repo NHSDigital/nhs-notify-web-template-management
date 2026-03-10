@@ -9,12 +9,12 @@ import {
 } from '@content/example-recipients';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
-import type { RenderTab } from './types';
+import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
-  tab: RenderTab;
+  tab: PersonalisedRenderKey;
 };
 
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {

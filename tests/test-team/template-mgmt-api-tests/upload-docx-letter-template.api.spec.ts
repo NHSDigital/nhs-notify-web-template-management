@@ -87,6 +87,10 @@ test.describe('POST /v1/docx-letter-template', () => {
             fileName: 'template.docx',
             virusScanStatus: 'PENDING',
           },
+          initialRender: {
+            requestedAt: expect.stringMatching(isoDateRegExp),
+            status: 'PENDING',
+          },
         },
         id: expect.stringMatching(uuidRegExp),
         language: 'en',
@@ -104,6 +108,11 @@ test.describe('POST /v1/docx-letter-template', () => {
     });
 
     expect(result.data.createdAt).toBeDateRoughlyBetween([start, new Date()]);
+
+    expect(result.data.files.initialRender.requestedAt).toBeDateRoughlyBetween([
+      start,
+      new Date(),
+    ]);
   });
 
   test('returns 401 if no auth token', async ({ request }) => {

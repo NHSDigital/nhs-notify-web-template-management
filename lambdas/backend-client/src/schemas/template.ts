@@ -13,7 +13,6 @@ import type {
   LetterType,
   LetterValidationError,
   NhsAppProperties,
-  PersonalisedRenderDetails,
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
@@ -36,7 +35,6 @@ import {
   LANGUAGE_LIST,
   LETTER_TYPE_LIST,
   LETTER_VALIDATION_ERROR_LIST,
-  RENDER_STATUS_LIST,
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
   VIRUS_SCAN_STATUS_LIST,
@@ -77,15 +75,24 @@ export const $PdfLetterFiles = schemaFor<PdfLetterFiles>()(
   })
 );
 
+const $RenderDetailsBase = z.object({
+  systemPersonalisationPackId: z.string().optional(),
+  personalisationParameters: z.record(z.string(), z.string()).optional(),
+});
+
 const $RenderDetailsFailed = z.object({
+  ...$RenderDetailsBase.shape,
   status: z.literal('FAILED'),
 });
 
 const $RenderDetailsPending = z.object({
+  ...$RenderDetailsBase.shape,
   status: z.literal('PENDING'),
+  requestedAt: z.string(),
 });
 
 const $RenderDetailsRendered = z.object({
+  ...$RenderDetailsBase.shape,
   currentVersion: z.string(),
   fileName: $PdfFilename,
   pageCount: z.number().int(),
@@ -100,23 +107,12 @@ const $RenderDetails = schemaFor<RenderDetails>()(
   ])
 );
 
-const $PersonalisedRenderDetails = schemaFor<PersonalisedRenderDetails>()(
-  z.object({
-    currentVersion: z.string(),
-    fileName: $PdfFilename,
-    pageCount: z.number().int(),
-    personalisationParameters: z.record(z.string(), z.string()),
-    systemPersonalisationPackId: z.string(),
-    status: z.enum(RENDER_STATUS_LIST),
-  })
-);
-
 export const $AuthoringLetterFiles = schemaFor<AuthoringLetterFiles>()(
   z.object({
     docxTemplate: $VersionedFileDetails,
-    initialRender: $RenderDetails.optional(),
-    longFormRender: $PersonalisedRenderDetails.optional(),
-    shortFormRender: $PersonalisedRenderDetails.optional(),
+    initialRender: $RenderDetails,
+    longFormRender: $RenderDetails.optional(),
+    shortFormRender: $RenderDetails.optional(),
   })
 );
 
