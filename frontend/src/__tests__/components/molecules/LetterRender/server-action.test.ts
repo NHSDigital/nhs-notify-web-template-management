@@ -7,14 +7,12 @@ const mockGenerateLetterProof = jest.mocked(generateLetterProof);
 
 beforeEach(() => {
   jest.clearAllMocks();
-  mockGenerateLetterProof.mockResolvedValue({} as Awaited<
-    ReturnType<typeof generateLetterProof>
-  >);
+  mockGenerateLetterProof.mockResolvedValue(
+    {} as Awaited<ReturnType<typeof generateLetterProof>>
+  );
 });
 
-function buildValidFormData(
-  overrides: Record<string, string> = {}
-): FormData {
+function buildValidFormData(overrides: Record<string, string> = {}): FormData {
   const defaults: Record<string, string> = {
     systemPersonalisationPackId: 'short-1',
     templateId: 'template-123',
@@ -37,7 +35,7 @@ describe('updateLetterPreview', () => {
     const formState: FormState = {};
 
     const formData = buildValidFormData({
-      '__personalisation__appointmentDate': '2025-01-15',
+      __personalisation__appointmentDate: '2025-01-15',
     });
 
     const result = await updateLetterPreview(formState, formData);
@@ -71,8 +69,8 @@ describe('updateLetterPreview', () => {
     const formState: FormState = {};
 
     const formData = buildValidFormData({
-      '__personalisation__appointmentDate': '2025-01-15',
-      '__personalisation__clinicName': 'Main Street Clinic',
+      __personalisation__appointmentDate: '2025-01-15',
+      __personalisation__clinicName: 'Main Street Clinic',
     });
 
     const result = await updateLetterPreview(formState, formData);
@@ -92,7 +90,7 @@ describe('updateLetterPreview', () => {
     const formState: FormState = {};
 
     const formData = buildValidFormData({
-      '__personalisation__appointmentDate': '',
+      __personalisation__appointmentDate: '',
     });
 
     const result = await updateLetterPreview(formState, formData);
@@ -168,8 +166,6 @@ describe('updateLetterPreview', () => {
   it('falls back to empty personalisation when recipient ID is not in the selected tab list', async () => {
     const formState: FormState = {};
 
-    // 'long-1' is a valid EXAMPLE_RECIPIENT_ID but won't be found in
-    // SHORT_EXAMPLE_RECIPIENTS when tab is 'shortFormRender', exercising the ?? {} branch.
     const formData = buildValidFormData({
       systemPersonalisationPackId: 'long-1',
       tab: 'shortFormRender',
@@ -179,7 +175,6 @@ describe('updateLetterPreview', () => {
 
     expect(result.errorState).toBeUndefined();
 
-    // generateLetterProof should still be called — with empty system personalisation
     expect(mockGenerateLetterProof).toHaveBeenCalledWith(
       'template-123',
       1,
@@ -198,7 +193,7 @@ describe('updateLetterPreview', () => {
 
     const formData = buildValidFormData({
       systemPersonalisationPackId: '',
-      '__personalisation__appointmentDate': '2025-01-15',
+      __personalisation__appointmentDate: '2025-01-15',
     });
 
     const result = await updateLetterPreview(formState, formData);

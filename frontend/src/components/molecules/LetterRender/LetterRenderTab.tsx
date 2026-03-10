@@ -15,7 +15,7 @@ import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
-import { RenderPoll } from '@molecules/RenderPoll/RenderPoll';
+import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -94,14 +94,14 @@ function LetterRenderTabContent({
       </div>
 
       <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
-        <RenderPoll
+        <PollLetterRender
           template={template}
           mode={tab}
           loadingElement={<p>loading</p>}
           forcePolling={isPending}
         >
           <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
-        </RenderPoll>
+        </PollLetterRender>
       </div>
     </div>
   );

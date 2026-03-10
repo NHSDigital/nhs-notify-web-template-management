@@ -32,6 +32,7 @@ type PollLetterRenderProps = PropsWithChildren<{
   template: AuthoringLetterTemplate;
   mode: RenderKey;
   loadingElement: ReactNode;
+  forcePolling?: boolean;
 }>;
 
 export function PollLetterRender({
@@ -39,10 +40,12 @@ export function PollLetterRender({
   children,
   mode,
   loadingElement,
+  forcePolling,
 }: Readonly<PollLetterRenderProps>) {
   const { isPolling } = useLetterTemplatePoll({
     template,
     shouldPoll: shouldPollLetterRender(mode),
+    forcePolling,
   });
 
   if (isPolling) {
