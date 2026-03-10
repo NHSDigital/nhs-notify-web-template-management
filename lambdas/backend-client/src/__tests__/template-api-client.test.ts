@@ -593,15 +593,13 @@ describe('TemplateAPIClient', () => {
     };
 
     test('should return error', async () => {
-      axiosMock
-        .onPost('/v1/template/real-id/letter-proof')
-        .reply(400, {
-          statusCode: 400,
-          technicalMessage: 'Bad request',
-          details: {
-            message: 'Template cannot generate letter proof',
-          },
-        });
+      axiosMock.onPost('/v1/template/real-id/letter-proof').reply(400, {
+        statusCode: 400,
+        technicalMessage: 'Bad request',
+        details: {
+          message: 'Template cannot generate letter proof',
+        },
+      });
 
       const result = await client.generateLetterProof(
         'real-id',

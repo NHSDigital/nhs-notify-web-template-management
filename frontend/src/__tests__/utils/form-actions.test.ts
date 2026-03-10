@@ -1064,6 +1064,23 @@ describe('form-actions', () => {
         createdAt: '2025-01-13T10:19:25.579Z',
         updatedAt: '2025-01-13T10:19:25.579Z',
         lockNumber: 2,
+        files: {
+          docxTemplate: {
+            currentVersion: 'a',
+            fileName: 'a.docx',
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'a',
+            fileName: 'a.pdf',
+            pageCount: 1,
+          },
+          longFormRender: {
+            status: 'PENDING',
+            requestedAt: '2026-03-10T15:54:14.171Z',
+          },
+        },
       } satisfies TemplateDto;
 
       mockedTemplateClient.generateLetterProof.mockResolvedValueOnce({
