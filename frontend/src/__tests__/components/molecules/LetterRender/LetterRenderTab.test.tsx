@@ -64,7 +64,7 @@ function createMockState(overrides: Partial<FormState> = {}): FormState {
   return {
     fields: {
       systemPersonalisationPackId: '',
-      __personalisation__appointmentDate: '',
+      'personalisation|appointmentDate': '',
     },
     ...overrides,
   };
@@ -471,12 +471,12 @@ describe('LetterRenderTab', () => {
       expect(formState).toEqual({
         fields: {
           systemPersonalisationPackId: '',
-          __personalisation__appointmentDate: '',
+          'personalisation|appointmentDate': '',
         },
       } satisfies FormState);
 
       expect(formData.get('systemPersonalisationPackId')).toBe('short-1');
-      expect(formData.get('__personalisation__appointmentDate')).toBe(
+      expect(formData.get('personalisation|appointmentDate')).toBe(
         '2025-06-15'
       );
     });
@@ -510,12 +510,12 @@ describe('LetterRenderTab', () => {
       expect(formState).toEqual({
         fields: {
           systemPersonalisationPackId: '',
-          __personalisation__appointmentDate: '',
+          'personalisation|appointmentDate': '',
         },
       } satisfies FormState);
 
       expect(formData.get('systemPersonalisationPackId')).toBe('long-1');
-      expect(formData.get('__personalisation__appointmentDate')).toBe(
+      expect(formData.get('personalisation|appointmentDate')).toBe(
         '2025-07-20'
       );
     });

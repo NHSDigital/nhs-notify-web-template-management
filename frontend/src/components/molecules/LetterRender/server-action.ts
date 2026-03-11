@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-commented-code */
 'use server';
 
 import { z } from 'zod/v4';
@@ -13,6 +12,7 @@ import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
 import { $LockNumber } from 'nhs-notify-backend-client';
 import { generateLetterProof } from '@utils/form-actions';
 import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
+import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 
 const { pdsSection } = copy.components.letterRender;
 
@@ -26,7 +26,7 @@ const $FormSchema = z.object({
 });
 
 export async function updateLetterPreview(
-  state: FormState,
+  _: FormState,
   formData: FormData
 ): Promise<FormState> {
   const result = $FormSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -46,15 +46,17 @@ export async function updateLetterPreview(
 
   const customPersonalisation = Object.fromEntries(
     Object.entries(fields).flatMap(([k, v]) =>
-      k.startsWith('__personalisation__') ? [[k.slice(19), String(v)]] : []
+      k.startsWith(PERSONALISATION_FORMDATA_PREFIX)
+        ? [[k.slice(PERSONALISATION_FORMDATA_PREFIX.length), String(v)]]
+        : []
     )
   );
 
-  const systemPersonalisation =
-    (tab === 'longFormRender'
+  const systemPersonalisation = (
+    tab === 'longFormRender'
       ? LONG_EXAMPLE_RECIPIENTS
       : SHORT_EXAMPLE_RECIPIENTS
-    ).find((r) => r.id === systemPersonalisationPackId)?.data ?? {};
+  ).find((r) => r.id === systemPersonalisationPackId)?.data;
 
   const personalisation = {
     ...customPersonalisation,

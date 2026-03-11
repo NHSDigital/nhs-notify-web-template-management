@@ -208,7 +208,7 @@ describe('LetterRenderForm', () => {
       const initialState = createInitialFormState({
         fields: {
           systemPersonalisationPackId: '',
-          __personalisation__appointmentDate: '2025-01-15',
+          'personalisation|appointmentDate': '2025-01-15',
         },
       });
 

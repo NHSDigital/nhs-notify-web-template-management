@@ -16,6 +16,7 @@ import { updateLetterPreview } from './server-action';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
+import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -68,7 +69,7 @@ function initialiseFormState(
   return {
     fields: Object.fromEntries([
       ...customPersonalisationFields.map((f) => [
-        `__personalisation__${f}`,
+        `${PERSONALISATION_FORMDATA_PREFIX}${f}`,
         personalisationParameters?.[f] ?? '',
       ]),
       ['systemPersonalisationPackId', systemPersonalisationPackId ?? ''],

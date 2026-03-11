@@ -11,3 +11,7 @@ export const INVALID_PERSONALISATION_FIELDS = [
   'address_line_6',
   'address_line_7',
 ] as const;
+
+// pipes are banned in personalisation keys, so this
+// cannot clash with user provided keys
+export const PERSONALISATION_FORMDATA_PREFIX = 'personalisation|';

@@ -16,8 +16,8 @@ import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import { getTemplate } from '@utils/form-actions';
+import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { submitAuthoringLetterAction } from './server-action';
-import { LetterSubmitButton } from './LetterSubmitButton';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 

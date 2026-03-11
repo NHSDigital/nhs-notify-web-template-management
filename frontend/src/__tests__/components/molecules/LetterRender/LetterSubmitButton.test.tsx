@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { LetterSubmitButton } from '@app/preview-letter-template/[templateId]/LetterSubmitButton';
+import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
 
 jest.mock('@providers/letter-render-polling-provider');

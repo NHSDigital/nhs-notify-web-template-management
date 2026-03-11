@@ -35,7 +35,7 @@ describe('updateLetterPreview', () => {
     const formState: FormState = {};
 
     const formData = buildValidFormData({
-      __personalisation__appointmentDate: '2025-01-15',
+      'personalisation|appointmentDate': '2025-01-15',
     });
 
     const result = await updateLetterPreview(formState, formData);
@@ -43,7 +43,7 @@ describe('updateLetterPreview', () => {
     expect(result).toEqual({
       fields: {
         systemPersonalisationPackId: 'short-1',
-        __personalisation__appointmentDate: '2025-01-15',
+        'personalisation|appointmentDate': '2025-01-15',
         templateId: 'template-123',
         lockNumber: '1',
         tab: 'shortFormRender',
@@ -69,16 +69,16 @@ describe('updateLetterPreview', () => {
     const formState: FormState = {};
 
     const formData = buildValidFormData({
-      __personalisation__appointmentDate: '2025-01-15',
-      __personalisation__clinicName: 'Main Street Clinic',
+      'personalisation|appointmentDate': '2025-01-15',
+      'personalisation|clinicName': 'Main Street Clinic',
     });
 
     const result = await updateLetterPreview(formState, formData);
 
     expect(result.fields).toEqual({
       systemPersonalisationPackId: 'short-1',
-      __personalisation__appointmentDate: '2025-01-15',
-      __personalisation__clinicName: 'Main Street Clinic',
+      'personalisation|appointmentDate': '2025-01-15',
+      'personalisation|clinicName': 'Main Street Clinic',
       templateId: 'template-123',
       lockNumber: '1',
       tab: 'shortFormRender',
@@ -90,12 +90,12 @@ describe('updateLetterPreview', () => {
     const formState: FormState = {};
 
     const formData = buildValidFormData({
-      __personalisation__appointmentDate: '',
+      'personalisation|appointmentDate': '',
     });
 
     const result = await updateLetterPreview(formState, formData);
 
-    expect(result.fields?.__personalisation__appointmentDate).toBe('');
+    expect(result.fields?.['personalisation|appointmentDate']).toBe('');
     expect(result.errorState).toBeUndefined();
   });
 
@@ -193,13 +193,13 @@ describe('updateLetterPreview', () => {
 
     const formData = buildValidFormData({
       systemPersonalisationPackId: '',
-      __personalisation__appointmentDate: '2025-01-15',
+      'personalisation|appointmentDate': '2025-01-15',
     });
 
     const result = await updateLetterPreview(formState, formData);
 
     expect(result.errorState).toBeDefined();
-    expect(result.fields?.__personalisation__appointmentDate).toBe(
+    expect(result.fields?.['personalisation|appointmentDate']).toBe(
       '2025-01-15'
     );
   });

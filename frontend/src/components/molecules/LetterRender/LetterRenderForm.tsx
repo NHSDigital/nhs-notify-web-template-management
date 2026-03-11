@@ -12,6 +12,7 @@ import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
+import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
@@ -70,7 +71,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
                 <NHSNotifyForm.Input
                   type='text'
                   id={id}
-                  name={`__personalisation__${field}`}
+                  name={`${PERSONALISATION_FORMDATA_PREFIX}${field}`}
                   maxLength={500}
                   autoComplete='on'
                 />
