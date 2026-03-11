@@ -5,14 +5,15 @@ import {
   LetterRenderPollingProvider,
   useLetterRenderPolling,
 } from '@providers/letter-render-polling-provider';
-import type { PropsWithChildren } from 'react';
 import type {
   AuthoringLetterTemplate,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@providers/letter-render-polling-provider', () => {
-  const actual = jest.requireActual('@providers/letter-render-polling-provider');
+  const actual = jest.requireActual(
+    '@providers/letter-render-polling-provider'
+  );
   return {
     ...actual,
     useLetterRenderPolling: jest.fn(actual.useLetterRenderPolling),

@@ -79,9 +79,12 @@ describe('LetterRenderTab', () => {
 
   describe('buildPdfUrl', () => {
     it('builds URL from initialRender when no variant render exists', () => {
-      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />, {
-        wrapper: Wrapper,
-      });
+      render(
+        <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
+        {
+          wrapper: Wrapper,
+        }
+      );
 
       const iframe = screen.getByTitle('Letter preview - short examples');
       expect(iframe).toHaveAttribute(
@@ -252,9 +255,12 @@ describe('LetterRenderTab', () => {
 
   describe('getInitialState', () => {
     it('uses initial empty state when no variant render exists', () => {
-      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />, {
-        wrapper: Wrapper,
-      });
+      render(
+        <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
+        {
+          wrapper: Wrapper,
+        }
+      );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -434,9 +440,12 @@ describe('LetterRenderTab', () => {
 
   describe('form submission', () => {
     it('calls updateLetterPreview with form state and form data for short tab', async () => {
-      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />, {
-        wrapper: Wrapper,
-      });
+      render(
+        <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
+        {
+          wrapper: Wrapper,
+        }
+      );
 
       const dropdown = screen.getByRole('combobox', {
         name: 'Example recipient',
@@ -523,9 +532,12 @@ describe('LetterRenderTab', () => {
         })
       );
 
-      render(<LetterRenderTab template={baseTemplate} tab='shortFormRender' />, {
-        wrapper: Wrapper,
-      });
+      render(
+        <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
+        {
+          wrapper: Wrapper,
+        }
+      );
 
       const submitButton = screen.getByRole('button', {
         name: 'Update preview',
