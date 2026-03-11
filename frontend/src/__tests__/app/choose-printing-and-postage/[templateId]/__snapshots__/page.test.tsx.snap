@@ -112,6 +112,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                         Select 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Select First Class Option
@@ -146,6 +147,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                         Name 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Name 
@@ -169,6 +171,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                         Details 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Details 
@@ -214,6 +217,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                         Select 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Select Economy Option
@@ -247,6 +251,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                         Name 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Name 
@@ -270,6 +275,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                         Details 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Details 
@@ -482,6 +488,7 @@ exports[`valid template renders errors when no variant is selected and error sta
                         Select 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Select First Class Option
@@ -515,6 +522,7 @@ exports[`valid template renders errors when no variant is selected and error sta
                         Name 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Name 
@@ -538,6 +546,7 @@ exports[`valid template renders errors when no variant is selected and error sta
                         Details 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Details 
@@ -583,6 +592,7 @@ exports[`valid template renders errors when no variant is selected and error sta
                         Select 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Select Economy Option
@@ -616,6 +626,7 @@ exports[`valid template renders errors when no variant is selected and error sta
                         Name 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Name 
@@ -639,6 +650,7 @@ exports[`valid template renders errors when no variant is selected and error sta
                         Details 
                       </span>
                       <span
+                        aria-hidden="true"
                         class="nhsuk-table-responsive__heading"
                       >
                         Details 

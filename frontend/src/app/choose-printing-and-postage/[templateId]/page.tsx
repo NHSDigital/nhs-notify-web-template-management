@@ -125,7 +125,10 @@ export default async function ChoosePrintingAndPostagePage(
                       {variants.map((variant) => (
                         <TableRow key={variant.id}>
                           <TableCell>
-                            <span className='nhsuk-table-responsive__heading'>
+                            <span
+                              className='nhsuk-table-responsive__heading'
+                              aria-hidden
+                            >
                               {
                                 content.form.letterVariantId.table.headers
                                   .select
@@ -143,7 +146,10 @@ export default async function ChoosePrintingAndPostagePage(
                             </div>
                           </TableCell>
                           <TableCell>
-                            <span className='nhsuk-table-responsive__heading'>
+                            <span
+                              className='nhsuk-table-responsive__heading'
+                              aria-hidden
+                            >
                               {
                                 content.form.letterVariantId.table.headers.name
                               }{' '}
@@ -156,7 +162,10 @@ export default async function ChoosePrintingAndPostagePage(
                             </Label>
                           </TableCell>
                           <TableCell>
-                            <span className='nhsuk-table-responsive__heading'>
+                            <span
+                              className='nhsuk-table-responsive__heading'
+                              aria-hidden
+                            >
                               {
                                 content.form.letterVariantId.table.headers
                                   .details
