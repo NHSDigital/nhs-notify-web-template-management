@@ -2335,9 +2335,9 @@
         }
       }
     },
-    "/v1/template/{templateId}/letter-proof": {
+    "/v1/template/{templateId}/generate-letter-proof": {
       "post": {
-        "description": "Request a personalised letter proof",
+        "description": "Generate a personalised letter proof",
         "parameters": [
           {
             "description": "ID of the template to request a proof of",
@@ -2416,7 +2416,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LETTER_PROOF_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GENERATE_LETTER_PROOF_LAMBDA_ARN}/invocations"
         }
       }
     },

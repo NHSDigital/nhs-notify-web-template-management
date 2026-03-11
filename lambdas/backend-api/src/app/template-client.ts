@@ -903,7 +903,7 @@ export class TemplateClient {
     return success(proofLetterValidationResult.data);
   }
 
-  async letterProof(
+  async generateLetterProof(
     templateId: string,
     user: User,
     lockNumberRaw: string,

@@ -11,7 +11,7 @@ import { docxFixtures } from 'fixtures/letters';
 import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
-test.describe('POST /v1/template/:templateId/letter-proof', () => {
+test.describe('POST /v1/template/:templateId/generate-letter-proof', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
@@ -34,7 +34,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/some-template/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/some-template/generate-letter-proof`,
       {
         headers: {
           'X-Lock-Number': '0',
@@ -53,7 +53,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
 
   test('returns 404 if template does not exist', async ({ request }) => {
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/noexist/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/noexist/generate-letter-proof`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
@@ -88,7 +88,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     await templateStorageHelper.seedTemplateData([template]);
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/generate-letter-proof`,
       {
         headers: {
           Authorization: await differentClientUser.getAccessToken(),
@@ -123,7 +123,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     await templateStorageHelper.seedTemplateData([template]);
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/generate-letter-proof`,
       {
         headers: {
           Authorization: await differentClientUser.getAccessToken(),
@@ -184,7 +184,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     };
 
     const requestProofResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/generate-letter-proof`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
@@ -266,7 +266,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     await templateStorageHelper.seedTemplateData([template]);
 
     const proofResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/generate-letter-proof`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
@@ -305,7 +305,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     await templateStorageHelper.seedTemplateData([template]);
 
     const proofResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/generate-letter-proof`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
@@ -366,7 +366,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     const start = new Date();
 
     const requestProofResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/generate-letter-proof`,
       {
         headers: {
           Authorization: await sameClientUser.getAccessToken(),
@@ -421,7 +421,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     await templateStorageHelper.seedTemplateData([template]);
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/generate-letter-proof`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
@@ -469,7 +469,7 @@ test.describe('POST /v1/template/:templateId/letter-proof', () => {
     await templateStorageHelper.seedTemplateData([template]);
 
     const response = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/generate-letter-proof`,
       {
         headers: {
           Authorization: await user.getAccessToken(),

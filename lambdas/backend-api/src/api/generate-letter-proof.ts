@@ -19,7 +19,7 @@ export function createHandler({
 
     const body = JSON.parse(event.body || '{}');
 
-    const { data, error } = await templateClient.letterProof(
+    const { data, error } = await templateClient.generateLetterProof(
       templateId,
       {
         internalUserId,

@@ -173,12 +173,12 @@ curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/proof" \
 --header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
-### POST - /v1/template/:templateId/letter-proof - Request a personalised proof of a template
+### POST - /v1/template/:templateId/generate-letter-proof - Generate a personalised proof of a template
 
 Will trigger a proof request for the template.
 
 ```bash
-curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/letter-proof" \
+curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/generate-letter-proof" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN" \
 --header "X-Lock-Number: $CURRENT_LOCK_NUMBER" \

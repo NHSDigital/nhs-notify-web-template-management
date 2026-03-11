@@ -898,7 +898,7 @@ export type PutV1TemplateByTemplateIdResponses = {
 export type PutV1TemplateByTemplateIdResponse =
   PutV1TemplateByTemplateIdResponses[keyof PutV1TemplateByTemplateIdResponses];
 
-export type PostV1TemplateByTemplateIdLetterProofData = {
+export type PostV1TemplateByTemplateIdGenerateLetterProofData = {
   /**
    * Template to update
    */
@@ -916,28 +916,28 @@ export type PostV1TemplateByTemplateIdLetterProofData = {
     templateId: string;
   };
   query?: never;
-  url: '/v1/template/{templateId}/letter-proof';
+  url: '/v1/template/{templateId}/generate-letter-proof';
 };
 
-export type PostV1TemplateByTemplateIdLetterProofErrors = {
+export type PostV1TemplateByTemplateIdGenerateLetterProofErrors = {
   /**
    * Error
    */
   default: Failure;
 };
 
-export type PostV1TemplateByTemplateIdLetterProofError =
-  PostV1TemplateByTemplateIdLetterProofErrors[keyof PostV1TemplateByTemplateIdLetterProofErrors];
+export type PostV1TemplateByTemplateIdGenerateLetterProofError =
+  PostV1TemplateByTemplateIdGenerateLetterProofErrors[keyof PostV1TemplateByTemplateIdGenerateLetterProofErrors];
 
-export type PostV1TemplateByTemplateIdLetterProofResponses = {
+export type PostV1TemplateByTemplateIdGenerateLetterProofResponses = {
   /**
    * 201 response
    */
   201: TemplateSuccess;
 };
 
-export type PostV1TemplateByTemplateIdLetterProofResponse =
-  PostV1TemplateByTemplateIdLetterProofResponses[keyof PostV1TemplateByTemplateIdLetterProofResponses];
+export type PostV1TemplateByTemplateIdGenerateLetterProofResponse =
+  PostV1TemplateByTemplateIdGenerateLetterProofResponses[keyof PostV1TemplateByTemplateIdGenerateLetterProofResponses];
 
 export type PostV1TemplateByTemplateIdProofData = {
   body?: never;
