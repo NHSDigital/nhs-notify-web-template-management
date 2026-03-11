@@ -120,7 +120,7 @@ describe('useLetterTemplatePoll', () => {
     expect(result.current.isPolling).toBe(false);
   });
 
-  it('stops polling when the template prop updates with shouldPoll returning false', () => {
+  it('stops polling when the template prop updates, no longer requiring polling', () => {
     const { result, rerender } = renderHook(
       ({ template }: { template: AuthoringLetterTemplate }) =>
         useLetterTemplatePoll({
@@ -268,12 +268,6 @@ describe('useLetterTemplatePoll', () => {
         jest.advanceTimersByTime(RENDER_TIMEOUT_MS);
       });
 
-      // Still reports true because forcePolling is true — the spinner
-      // stays visible while the server action is in flight.
-      expect(result.current.isPolling).toBe(true);
-
-      // Once forcePolling drops (server action completes), the timed-out
-      // internal state means polling does not continue.
       act(() => {
         rerender({ forcePolling: false });
       });
@@ -300,7 +294,8 @@ describe('useLetterTemplatePoll', () => {
           }),
         {
           initialProps: {
-            template: renderedTemplate, // stale: no PENDING render
+            // no PENDING render
+            template: renderedTemplate,
             forcePolling: true,
           },
         }

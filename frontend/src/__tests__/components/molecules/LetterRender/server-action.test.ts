@@ -1,18 +1,18 @@
 import { updateLetterPreview } from '@molecules/LetterRender/server-action';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { generateLetterProof } from '@utils/form-actions';
+import { AUTHORING_LETTER_TEMPLATE } from '@testhelpers/helpers';
 
 jest.mock('@utils/form-actions');
+
 const mockGenerateLetterProof = jest.mocked(generateLetterProof);
 
 beforeEach(() => {
   jest.clearAllMocks();
-  mockGenerateLetterProof.mockResolvedValue(
-    {} as Awaited<ReturnType<typeof generateLetterProof>>
-  );
+  mockGenerateLetterProof.mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
 });
 
-function buildValidFormData(overrides: Record<string, string> = {}): FormData {
+function buildFormData(overrides: Record<string, string> = {}): FormData {
   const defaults: Record<string, string> = {
     systemPersonalisationPackId: 'short-1',
     templateId: 'template-123',
@@ -31,14 +31,12 @@ function buildValidFormData(overrides: Record<string, string> = {}): FormData {
 }
 
 describe('updateLetterPreview', () => {
-  it('returns updated fields when recipient is valid', async () => {
-    const formState: FormState = {};
-
-    const formData = buildValidFormData({
+  it('returns updated fields when systemPersonalisationPackId is valid', async () => {
+    const formData = buildFormData({
       'personalisation|appointmentDate': '2025-01-15',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result).toEqual({
       fields: {
@@ -51,34 +49,30 @@ describe('updateLetterPreview', () => {
     });
   });
 
-  it('returns updated fields for long tab with valid recipient', async () => {
-    const formState: FormState = {};
-
-    const formData = buildValidFormData({
+  it('returns updated fields for long tab with valid systemPersonalisationPackId', async () => {
+    const formData = buildFormData({
       systemPersonalisationPackId: 'long-1',
       tab: 'longFormRender',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.fields?.systemPersonalisationPackId).toBe('long-1');
     expect(result.errorState).toBeUndefined();
   });
 
   it('handles multiple custom personalisation fields', async () => {
-    const formState: FormState = {};
-
-    const formData = buildValidFormData({
+    const formData = buildFormData({
       'personalisation|appointmentDate': '2025-01-15',
-      'personalisation|clinicName': 'Main Street Clinic',
+      'personalisation|clinicName': 'Town Centre Clinic',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.fields).toEqual({
       systemPersonalisationPackId: 'short-1',
       'personalisation|appointmentDate': '2025-01-15',
-      'personalisation|clinicName': 'Main Street Clinic',
+      'personalisation|clinicName': 'Town Centre Clinic',
       templateId: 'template-123',
       lockNumber: '1',
       tab: 'shortFormRender',
@@ -86,14 +80,32 @@ describe('updateLetterPreview', () => {
     expect(result.errorState).toBeUndefined();
   });
 
-  it('handles empty custom personalisation field values', async () => {
-    const formState: FormState = {};
+  it('strips the personalisation prefix from custom fields before calling generateLetterProof', async () => {
+    const formData = buildFormData({
+      'personalisation|appointmentDate': '2025-01-15',
+      'personalisation|clinicName': 'Town Centre Clinic',
+    });
 
-    const formData = buildValidFormData({
+    await updateLetterPreview({}, formData);
+
+    expect(mockGenerateLetterProof).toHaveBeenCalledWith(
+      'template-123',
+      1,
+      expect.objectContaining({
+        personalisation: expect.objectContaining({
+          appointmentDate: '2025-01-15',
+          clinicName: 'Town Centre Clinic',
+        }),
+      })
+    );
+  });
+
+  it('handles empty custom personalisation field values', async () => {
+    const formData = buildFormData({
       'personalisation|appointmentDate': '',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.fields?.['personalisation|appointmentDate']).toBe('');
     expect(result.errorState).toBeUndefined();
@@ -109,7 +121,7 @@ describe('updateLetterPreview', () => {
       },
     };
 
-    const formData = buildValidFormData();
+    const formData = buildFormData();
 
     const result = await updateLetterPreview(formState, formData);
 
@@ -117,13 +129,11 @@ describe('updateLetterPreview', () => {
   });
 
   it('returns validation error when systemPersonalisationPackId is empty', async () => {
-    const formState: FormState = {};
-
-    const formData = buildValidFormData({
+    const formData = buildFormData({
       systemPersonalisationPackId: '',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
       'systemPersonalisationPackId'
@@ -132,14 +142,12 @@ describe('updateLetterPreview', () => {
   });
 
   it('returns validation error when systemPersonalisationPackId is missing', async () => {
-    const formState: FormState = {};
-
     const formData = new FormData();
     formData.append('templateId', 'template-123');
     formData.append('lockNumber', '1');
     formData.append('tab', 'shortFormRender');
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
       'systemPersonalisationPackId'
@@ -147,13 +155,11 @@ describe('updateLetterPreview', () => {
   });
 
   it('returns validation error when systemPersonalisationPackId is invalid', async () => {
-    const formState: FormState = {};
-
-    const formData = buildValidFormData({
+    const formData = buildFormData({
       systemPersonalisationPackId: 'invalid-recipient-id',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
       'systemPersonalisationPackId'
@@ -164,14 +170,12 @@ describe('updateLetterPreview', () => {
   });
 
   it('falls back to empty personalisation when recipient ID is not in the selected tab list', async () => {
-    const formState: FormState = {};
-
-    const formData = buildValidFormData({
+    const formData = buildFormData({
       systemPersonalisationPackId: 'long-1',
       tab: 'shortFormRender',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState).toBeUndefined();
 
@@ -189,18 +193,37 @@ describe('updateLetterPreview', () => {
   });
 
   it('preserves custom field values on validation error', async () => {
-    const formState: FormState = {};
-
-    const formData = buildValidFormData({
+    const formData = buildFormData({
       systemPersonalisationPackId: '',
       'personalisation|appointmentDate': '2025-01-15',
     });
 
-    const result = await updateLetterPreview(formState, formData);
+    const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState).toBeDefined();
     expect(result.fields?.['personalisation|appointmentDate']).toBe(
       '2025-01-15'
     );
+  });
+
+  it('includes todays date in personalisation, formatted', async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
+
+    const formData = buildFormData();
+
+    await updateLetterPreview({}, formData);
+
+    expect(mockGenerateLetterProof).toHaveBeenCalledWith(
+      'template-123',
+      1,
+      expect.objectContaining({
+        personalisation: expect.objectContaining({
+          date: '11 March 2026',
+        }),
+      })
+    );
+
+    jest.useRealTimers();
   });
 });

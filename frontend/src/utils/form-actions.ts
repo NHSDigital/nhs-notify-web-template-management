@@ -236,8 +236,8 @@ export async function generateLetterProof(
   );
 
   if (error) {
-    logger.error('Failed to initiale letter proof generation', error);
-    throw new Error('Failed to initiale letter proof generation');
+    logger.error('Failed to initiate letter proof generation', error);
+    throw new Error('Failed to initiate letter proof generation');
   }
 
   return data;

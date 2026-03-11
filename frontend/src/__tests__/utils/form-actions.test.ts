@@ -1111,7 +1111,7 @@ describe('form-actions', () => {
 
       await expect(
         generateLetterProof('template-id', 1, request)
-      ).rejects.toThrow('Failed to initiale letter proof generation');
+      ).rejects.toThrow('Failed to initiate letter proof generation');
 
       expect(mockedTemplateClient.generateLetterProof).toHaveBeenCalledWith(
         'template-id',

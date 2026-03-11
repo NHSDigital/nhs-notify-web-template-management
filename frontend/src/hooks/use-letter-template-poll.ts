@@ -17,6 +17,7 @@ export function useLetterTemplatePoll({
   forcePolling?: boolean;
 }) {
   const router = useRouter();
+
   const [isPolling, setIsPolling] = useState(
     () => forcePolling || shouldPoll(template)
   );
@@ -24,21 +25,26 @@ export function useLetterTemplatePoll({
   const shouldPollRef = useRef(shouldPoll);
   shouldPollRef.current = shouldPoll;
 
-  const prevForcePollingRef = useRef(forcePolling);
+  // was the force flag set on the previous render?
+  const alreadyForcedRef = useRef(forcePolling);
 
+  // did forced polling end on the previous render?
   const staleTemplateRef = useRef<AuthoringLetterTemplate | null>(null);
 
   useEffect(() => {
-    if (!prevForcePollingRef.current && forcePolling && !isPolling) {
+    // transition from non-polling state to forced polling
+    if (!alreadyForcedRef.current && forcePolling && !isPolling) {
       setIsPolling(true);
     }
 
-    if (prevForcePollingRef.current && !forcePolling) {
+    // Polling is no longer forced, track template ref, waiting for fresh data
+    if (alreadyForcedRef.current && !forcePolling) {
       staleTemplateRef.current = template;
     }
 
-    prevForcePollingRef.current = forcePolling;
+    alreadyForcedRef.current = forcePolling;
 
+    // template has updated, clear the ref so polling can end
     if (staleTemplateRef.current && staleTemplateRef.current !== template) {
       staleTemplateRef.current = null;
     }

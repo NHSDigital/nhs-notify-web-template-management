@@ -13,6 +13,7 @@ import { $LockNumber } from 'nhs-notify-backend-client';
 import { generateLetterProof } from '@utils/form-actions';
 import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
+import { format as formatDate } from 'date-fns';
 
 const { pdsSection } = copy.components.letterRender;
 
@@ -34,7 +35,6 @@ export async function updateLetterPreview(
   const fields = formDataToFormStateFields(formData);
 
   if (result.error) {
-    console.log(result.error);
     return {
       errorState: z.flattenError(result.error),
       fields,
@@ -61,7 +61,7 @@ export async function updateLetterPreview(
   const personalisation = {
     ...customPersonalisation,
     ...systemPersonalisation,
-    date: new Date().toISOString(),
+    date: formatDate(new Date(), 'd LLLL yyyy'),
   };
 
   const request: LetterProofRequest = {

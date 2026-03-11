@@ -9,7 +9,7 @@ import {
 function TestConsumer() {
   const { isAnyTabPolling } = useLetterRenderPolling();
 
-  return <p data-testid='polling-state'>{String(isAnyTabPolling)}</p>;
+  return <p data-testid='polling-state'>{isAnyTabPolling.toString()}</p>;
 }
 
 describe('LetterRenderPollingProvider', () => {
@@ -45,7 +45,7 @@ describe('LetterRenderPollingProvider', () => {
     expect(result.current.isAnyTabPolling).toBe(false);
   });
 
-  it('tracks multiple keys independently', () => {
+  it('tracks multiple keys', () => {
     const wrapper = ({ children }: PropsWithChildren) => (
       <LetterRenderPollingProvider>{children}</LetterRenderPollingProvider>
     );
