@@ -8,7 +8,7 @@
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
-    "markdown-it": "^13.0.2",
+    "markdown-it": "^14.1.1",
     "markdown-to-jsx": "^7.7.10",
     "next": "^15.5.11",
     "next-client-cookies": "^2.1.0",
