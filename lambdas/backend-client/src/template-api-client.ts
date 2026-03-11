@@ -300,7 +300,7 @@ export const templateApiClient = {
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.post<TemplateSuccess>(
-        `/v1/template/${encodeURIComponent(templateId)}/letter-proof`,
+        `/v1/template/${encodeURIComponent(templateId)}/generate-letter-proof`,
         letterProofRequest,
         {
           headers: {
