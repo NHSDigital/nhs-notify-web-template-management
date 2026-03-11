@@ -41,7 +41,7 @@ import { RoutingChooseMessageOrderPage } from '../pages/routing/choose-message-o
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
 import { RoutingMessagePlansPage } from '../pages/routing/message-plans-page';
-import { RoutingChooseTemplatesPage } from 'pages/routing/choose-templates-page';
+import { RoutingEditMessagePlanPage } from 'pages/routing/edit-message-plan-page';
 import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
 import { RoutingInvalidMessagePlanPage } from 'pages/routing/invalid-message-plan-page';
 import { RoutingChooseEmailTemplatePage } from 'pages/routing/email/choose-email-template-page';
@@ -66,8 +66,8 @@ test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
   RoutingChooseMessageOrderPage,
-  RoutingChooseTemplatesPage,
   RoutingCreateMessagePlanPage,
+  RoutingEditMessagePlanPage,
   RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,

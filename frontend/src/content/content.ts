@@ -518,10 +518,13 @@ const previewLetterPreSubmissionText = {
     "If you're happy with this template proof, approve it. Then your template will be ready to add to a message plan.",
 };
 
+const previewLetterTitle = generatePageTitle('Preview letter template');
+
 const previewLetterTemplate = {
-  pageTitle: generatePageTitle('Preview letter template'),
+  pageTitle: previewLetterTitle,
   backLinkText: backToAllTemplates,
   submitText: 'Submit template',
+  loadingText: 'Uploading letter template',
   approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,
@@ -560,6 +563,10 @@ const previewLetterTemplate = {
     requestProofOfTemplate:
       '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
   },
+};
+
+const previewSubmittedLetterTemplate = {
+  pageTitle: previewLetterTitle,
 };
 
 const letterRender = {
@@ -1286,7 +1293,7 @@ const messagePlanCascadePreview = {
   },
 };
 
-const chooseTemplatesForMessagePlan = {
+const editMessagePlan = {
   pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
   changeNameLink: {
@@ -1366,6 +1373,10 @@ const chooseLargePrintLetterTemplate = {
   noTemplatesText: 'You do not have any large print letter templates yet.',
 };
 
+const previewStandardEnglishLetterTemplate = {
+  pageTitle: previewLetterTitle,
+};
+
 const previewLargePrintLetterTemplate = {
   pageTitle: generatePageTitle('Preview large print letter template'),
 };
@@ -1406,7 +1417,7 @@ const chooseChannelTemplate = {
     },
     backLink: {
       text: 'Go back',
-      href: '/message-plans/choose-templates/{{routingConfigId}}',
+      href: '/message-plans/edit-message-plan/{{routingConfigId}}',
     },
   },
 };
@@ -1546,7 +1557,7 @@ const messagePlansListComponent = {
   copiedText: 'Names and IDs copied to clipboard',
   copiedFailedText: 'Failed copying names and IDs to clipboard',
   messagePlanLink: {
-    DRAFT: '/message-plans/choose-templates/{{routingConfigId}}',
+    DRAFT: '/message-plans/edit-message-plan/{{routingConfigId}}',
     COMPLETED: '/message-plans/preview-message-plan/{{routingConfigId}}',
   } satisfies Record<RoutingConfigStatusActive, string>,
 };
@@ -1572,7 +1583,7 @@ const editMessagePlanSettings = {
   pageTitle: generatePageTitle('Edit message plan settings'),
   pageHeading: 'Edit message plan settings',
   backLink: (id: string) => ({
-    href: `/message-plans/choose-templates/${id}`,
+    href: `/message-plans/edit-message-plan/${id}`,
     text: 'Go back',
   }),
 };
@@ -1781,7 +1792,7 @@ const reviewAndMoveToProduction = {
     },
     keepInDraft: {
       text: 'Keep in draft',
-      href: '{{basePath}}/message-plans/choose-templates/{{routingConfigId}}',
+      href: '{{basePath}}/message-plans/edit-message-plan/{{routingConfigId}}',
     },
   },
 };
@@ -1852,7 +1863,6 @@ const content = {
     personalisation,
     previewDigitalTemplate,
     previewEmailTemplate,
-    previewLetterTemplate,
     previewNHSAppTemplate,
     previewSMSTemplate,
     previewTemplateDetails,
@@ -1875,10 +1885,10 @@ const content = {
     chooseNhsAppTemplate,
     chooseOtherLanguageLetterTemplate,
     chooseStandardEnglishLetterTemplate,
-    chooseTemplatesForMessagePlan,
     chooseTextMessageTemplate,
     createMessagePlan,
     deleteTemplateErrorPage,
+    editMessagePlan,
     editMessagePlanSettings,
     editTemplateCampaignPage,
     editTemplateNamePage,
@@ -1890,8 +1900,11 @@ const content = {
     messagePlansPage,
     messageTemplates,
     previewLargePrintLetterTemplate,
-    previewOtherLanguageLetterTemplate,
+    previewLetterTemplate,
     previewMessagePlan,
+    previewOtherLanguageLetterTemplate,
+    previewStandardEnglishLetterTemplate,
+    previewSubmittedLetterTemplate,
     reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,

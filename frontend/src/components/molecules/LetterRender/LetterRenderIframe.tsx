@@ -1,7 +1,7 @@
-import type { RenderTab } from './types';
+import type { PersonalisedRenderKey } from '@utils/types';
 
 type LetterRenderIframeProps = {
-  tab: RenderTab;
+  tab: PersonalisedRenderKey;
   pdfUrl: string | null;
 };
 

@@ -48,6 +48,7 @@ export type RenderFile = {
   currentVersion: string;
   status: string;
   pageCount: number;
+  requestedAt?: string;
   systemPersonalisationPackId?: string;
   personalisationParameters?: Record<string, string>;
 };

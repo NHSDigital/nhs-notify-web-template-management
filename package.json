@@ -29,13 +29,15 @@
   "name": "nhs-notify-web-template-management",
   "overrides": {
     "fast-xml-parser": "^5.3.6",
+    "immutable": "^5.1.5",
     "nhsuk-react-components": {
       "nhsuk-frontend": "^10.3.1"
     },
     "pretty-format": {
       "react-is": "19.0.0"
     },
-    "react": "^19.0.0"
+    "react": "^19.0.0",
+    "underscore": "^1.13.8"
   },
   "scripts": {
     "build": "npm run create-env-file && npm run build --workspace frontend",
@@ -64,7 +66,6 @@
     "lambdas/sftp-letters",
     "packages/event-schemas",
     "packages/types",
-    "tests/accessibility",
     "tests/contracts/provider",
     "tests/test-team",
     "utils/backend-config",

@@ -9,12 +9,12 @@ export default defineConfig({
     {
       name: 'backend:setup',
       testMatch: 'backend.setup.ts',
+      teardown: 'backend:teardown',
     },
     {
       name: 'backend',
       testMatch: '*.backend.spec.ts',
       dependencies: ['backend:setup'],
-      teardown: 'backend:teardown',
     },
     {
       name: 'backend:teardown',

@@ -13,7 +13,7 @@ import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/Prev
 import { $LockNumber } from 'nhs-notify-backend-client';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-const { pageTitle } = content.components.previewLetterTemplate;
+const { pageTitle } = content.pages.previewStandardEnglishLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -31,7 +31,7 @@ const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
 
   if (!lockNumberResult.success) {
     return redirect(
-      `/message-plans/choose-templates/${routingConfigId}`,
+      `/message-plans/edit-message-plan/${routingConfigId}`,
       RedirectType.replace
     );
   }
