@@ -252,18 +252,30 @@ describe('useLetterTemplatePoll', () => {
     });
 
     it('stops polling after timeout even with forcePolling', () => {
-      const { result } = renderHook(() =>
-        useLetterTemplatePoll({
-          template: renderedTemplate,
-          shouldPoll: () => false,
-          forcePolling: true,
-        })
+      const { result, rerender } = renderHook(
+        ({ forcePolling }: { forcePolling: boolean }) =>
+          useLetterTemplatePoll({
+            template: renderedTemplate,
+            shouldPoll: () => false,
+            forcePolling,
+          }),
+        { initialProps: { forcePolling: true } }
       );
 
       expect(result.current.isPolling).toBe(true);
 
       act(() => {
         jest.advanceTimersByTime(RENDER_TIMEOUT_MS);
+      });
+
+      // Still reports true because forcePolling is true — the spinner
+      // stays visible while the server action is in flight.
+      expect(result.current.isPolling).toBe(true);
+
+      // Once forcePolling drops (server action completes), the timed-out
+      // internal state means polling does not continue.
+      act(() => {
+        rerender({ forcePolling: false });
       });
 
       expect(result.current.isPolling).toBe(false);

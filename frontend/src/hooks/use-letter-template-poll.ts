@@ -70,5 +70,5 @@ export function useLetterTemplatePoll({
     };
   }, [isPolling, router]);
 
-  return { isPolling };
+  return { isPolling: isPolling || forcePolling };
 }
