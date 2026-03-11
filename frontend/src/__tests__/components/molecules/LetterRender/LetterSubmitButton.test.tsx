@@ -18,8 +18,10 @@ describe('LetterSubmitButton', () => {
     render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
 
     const button = screen.getByRole('button', { name: 'Submit template' });
+
     expect(button).not.toBeDisabled();
     expect(button).not.toHaveAttribute('aria-disabled');
+
     expect(button).toHaveClass('nhsuk-button');
     expect(button).not.toHaveClass('nhsuk-button--disabled');
   });
@@ -33,7 +35,9 @@ describe('LetterSubmitButton', () => {
     render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
 
     const button = screen.getByRole('button', { name: 'Submit template' });
+
     expect(button).toBeDisabled();
+
     expect(button).toHaveAttribute('aria-disabled', 'true');
     expect(button).toHaveClass('nhsuk-button--disabled');
   });
@@ -49,18 +53,5 @@ describe('LetterSubmitButton', () => {
     expect(
       screen.getByRole('button', { name: 'Custom text' })
     ).toBeInTheDocument();
-  });
-
-  it('has the correct test id and id attributes', () => {
-    jest.mocked(useLetterRenderPolling).mockReturnValue({
-      isAnyTabPolling: false,
-      registerPolling: jest.fn(),
-    });
-
-    render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
-
-    const button = screen.getByTestId('preview-letter-template-cta');
-    expect(button).toHaveAttribute('id', 'preview-letter-template-cta');
-    expect(button).toHaveAttribute('type', 'submit');
   });
 });

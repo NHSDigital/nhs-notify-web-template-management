@@ -7,7 +7,6 @@ import type {
   FormState,
 } from 'nhs-notify-web-template-management-utils';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
-import { useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
 import type { PropsWithChildren } from 'react';
 
 jest.mock('@utils/csrf-utils');
@@ -16,9 +15,6 @@ jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 jest.mock('@molecules/LetterRender/server-action');
 
 jest.mock('next/navigation');
-jest.mock('@hooks/use-letter-template-poll');
-
-const mockUseLetterTemplatePoll = jest.mocked(useLetterTemplatePoll);
 
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
@@ -26,7 +22,7 @@ jest.mock('@utils/get-base-path', () => ({
 
 const mockUpdateLetterPreview = jest.mocked(updateLetterPreview);
 
-function Wrapper({ children }: PropsWithChildren) {
+function Provider({ children }: PropsWithChildren) {
   return <LetterRenderPollingProvider>{children}</LetterRenderPollingProvider>;
 }
 
@@ -74,7 +70,6 @@ describe('LetterRenderTab', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUpdateLetterPreview.mockResolvedValue(createMockState());
-    mockUseLetterTemplatePoll.mockReturnValue({ isPolling: false });
   });
 
   describe('buildPdfUrl', () => {
@@ -82,7 +77,7 @@ describe('LetterRenderTab', () => {
       render(
         <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
         {
-          wrapper: Wrapper,
+          wrapper: Provider,
         }
       );
 
@@ -117,7 +112,7 @@ describe('LetterRenderTab', () => {
           template={templateWithShortRender}
           tab='shortFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const iframe = screen.getByTitle('Letter preview - short examples');
@@ -152,7 +147,7 @@ describe('LetterRenderTab', () => {
           template={templateWithLongRender}
           tab='longFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const iframe = screen.getByTitle('Letter preview - long examples');
@@ -184,7 +179,7 @@ describe('LetterRenderTab', () => {
           template={templateWithFailedRender}
           tab='shortFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const iframe = screen.getByTitle('Letter preview - short examples');
@@ -217,7 +212,7 @@ describe('LetterRenderTab', () => {
           template={templateWithPendingRender}
           tab='longFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const iframe = screen.getByTitle('Letter preview - long examples');
@@ -246,7 +241,7 @@ describe('LetterRenderTab', () => {
 
       render(
         <LetterRenderTab template={templateNoRenders} tab='shortFormRender' />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       expect(screen.getByText('No preview available')).toBeInTheDocument();
@@ -258,7 +253,7 @@ describe('LetterRenderTab', () => {
       render(
         <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
         {
-          wrapper: Wrapper,
+          wrapper: Provider,
         }
       );
 
@@ -280,7 +275,7 @@ describe('LetterRenderTab', () => {
           template={templateWithoutCustom}
           tab='shortFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -313,7 +308,7 @@ describe('LetterRenderTab', () => {
           template={templateWithPendingRender}
           tab='shortFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -348,7 +343,7 @@ describe('LetterRenderTab', () => {
           template={templateWithFailedRender}
           tab='longFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -386,7 +381,7 @@ describe('LetterRenderTab', () => {
           template={templateWithShortRender}
           tab='shortFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -424,7 +419,7 @@ describe('LetterRenderTab', () => {
           template={templateWithLongRender}
           tab='longFormRender'
         />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       const dropdown = screen.getByRole('combobox', {
@@ -443,7 +438,7 @@ describe('LetterRenderTab', () => {
       render(
         <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
         {
-          wrapper: Wrapper,
+          wrapper: Provider,
         }
       );
 
@@ -483,7 +478,7 @@ describe('LetterRenderTab', () => {
 
     it('calls updateLetterPreview with form state and form data for long tab', async () => {
       render(<LetterRenderTab template={baseTemplate} tab='longFormRender' />, {
-        wrapper: Wrapper,
+        wrapper: Provider,
       });
 
       const dropdown = screen.getByRole('combobox', {
@@ -535,7 +530,7 @@ describe('LetterRenderTab', () => {
       render(
         <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
         {
-          wrapper: Wrapper,
+          wrapper: Provider,
         }
       );
 
@@ -558,7 +553,7 @@ describe('LetterRenderTab', () => {
     it('matches snapshot for short tab', () => {
       const { asFragment } = render(
         <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       expect(asFragment()).toMatchSnapshot();
@@ -567,7 +562,7 @@ describe('LetterRenderTab', () => {
     it('matches snapshot for long tab', () => {
       const { asFragment } = render(
         <LetterRenderTab template={baseTemplate} tab='longFormRender' />,
-        { wrapper: Wrapper }
+        { wrapper: Provider }
       );
 
       expect(asFragment()).toMatchSnapshot();

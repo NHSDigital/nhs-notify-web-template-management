@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import type { PropsWithChildren } from 'react';
 import { LetterRender } from '@molecules/LetterRender';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
-import { useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
 
 jest.mock('@utils/csrf-utils');
 jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
@@ -11,13 +11,14 @@ jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 jest.mock('@molecules/LetterRender/server-action');
 
 jest.mock('next/navigation');
-jest.mock('@hooks/use-letter-template-poll');
-
-const mockUseLetterTemplatePoll = jest.mocked(useLetterTemplatePoll);
 
 jest.mock('@utils/get-base-path', () => ({
   getBasePath: jest.fn(() => '/templates'),
 }));
+
+function Provider({ children }: PropsWithChildren) {
+  return <LetterRenderPollingProvider>{children}</LetterRenderPollingProvider>;
+}
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -52,26 +53,17 @@ const baseTemplate: AuthoringLetterTemplate = {
 describe('LetterRender', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseLetterTemplatePoll.mockReturnValue({ isPolling: false });
   });
 
   it('renders tabs for short and long examples', () => {
-    render(
-      <LetterRenderPollingProvider>
-        <LetterRender template={baseTemplate} />
-      </LetterRenderPollingProvider>
-    );
+    render(<LetterRender template={baseTemplate} />, { wrapper: Provider });
 
     expect(screen.getByText('Short examples')).toBeInTheDocument();
     expect(screen.getByText('Long examples')).toBeInTheDocument();
   });
 
   it('renders tab content for both tabs', () => {
-    render(
-      <LetterRenderPollingProvider>
-        <LetterRender template={baseTemplate} />
-      </LetterRenderPollingProvider>
-    );
+    render(<LetterRender template={baseTemplate} />, { wrapper: Provider });
 
     // Both tab contents should be rendered (tabs component renders both, CSS hides inactive)
     const tabContents = screen.getAllByRole('tabpanel', { hidden: true });
@@ -79,12 +71,10 @@ describe('LetterRender', () => {
   });
 
   it('matches snapshot', () => {
-    const container = render(
-      <LetterRenderPollingProvider>
-        <LetterRender template={baseTemplate} />
-      </LetterRenderPollingProvider>
-    );
+    const { asFragment } = render(<LetterRender template={baseTemplate} />, {
+      wrapper: Provider,
+    });
 
-    expect(container.asFragment()).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 });
