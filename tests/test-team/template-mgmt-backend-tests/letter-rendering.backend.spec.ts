@@ -459,8 +459,8 @@ test.describe('Letter rendering', () => {
       expect(t.templateStatus).toBe('NOT_YET_SUBMITTED');
     });
 
-    const requestProofResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-proof`,
+    const generateProofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${template.id}/generate-letter-proof`,
       {
         headers: {
           Authorization: await user.getAccessToken(),
@@ -473,8 +473,8 @@ test.describe('Letter rendering', () => {
       }
     );
 
-    const debugProof = JSON.stringify(await requestProofResponse.json());
-    expect(requestProofResponse.status(), debugProof).toBe(201);
+    const debugProof = JSON.stringify(await generateProofResponse.json());
+    expect(generateProofResponse.status(), debugProof).toBe(201);
 
     let updatedTemplate: Template | undefined;
 
