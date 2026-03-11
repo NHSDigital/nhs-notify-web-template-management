@@ -24,23 +24,34 @@ export function useLetterTemplatePoll({
   const shouldPollRef = useRef(shouldPoll);
   shouldPollRef.current = shouldPoll;
 
-  const templateRef = useRef(template);
-  templateRef.current = template;
+  const prevForcePollingRef = useRef(forcePolling);
 
-  const timedOutRef = useRef(false);
+  const staleTemplateRef = useRef<AuthoringLetterTemplate | null>(null);
 
-  // When forcePolling transitions to true, restart polling (unless timed out).
-  // When forcePolling transitions to false, reset the timedOut flag so a
-  // future forcePolling=true cycle can start fresh.
   useEffect(() => {
-    if (forcePolling && !isPolling && !timedOutRef.current) {
+    if (!prevForcePollingRef.current && forcePolling && !isPolling) {
       setIsPolling(true);
     }
 
-    if (!forcePolling) {
-      timedOutRef.current = false;
+    if (prevForcePollingRef.current && !forcePolling) {
+      staleTemplateRef.current = template;
     }
-  }, [forcePolling, isPolling]);
+
+    prevForcePollingRef.current = forcePolling;
+
+    if (staleTemplateRef.current && staleTemplateRef.current !== template) {
+      staleTemplateRef.current = null;
+    }
+
+    if (
+      isPolling &&
+      !forcePolling &&
+      !staleTemplateRef.current &&
+      !shouldPollRef.current(template)
+    ) {
+      setIsPolling(false);
+    }
+  }, [template, forcePolling, isPolling]);
 
   useEffect(() => {
     if (!isPolling) return;
@@ -50,7 +61,6 @@ export function useLetterTemplatePoll({
     }, POLL_INTERVAL_MS);
 
     const timeoutTimerId = setTimeout(() => {
-      timedOutRef.current = true;
       setIsPolling(false);
     }, RENDER_TIMEOUT_MS);
 
@@ -59,16 +69,6 @@ export function useLetterTemplatePoll({
       clearTimeout(timeoutTimerId);
     };
   }, [isPolling, router]);
-
-  useEffect(() => {
-    if (
-      isPolling &&
-      !forcePolling &&
-      !shouldPollRef.current(templateRef.current)
-    ) {
-      setIsPolling(false);
-    }
-  }, [template, isPolling, forcePolling]);
 
   return { isPolling };
 }

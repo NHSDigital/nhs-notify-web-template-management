@@ -10,13 +10,10 @@ export function LetterRenderIframe({ tab, pdfUrl }: LetterRenderIframeProps) {
   const tabDescription = tab === 'shortFormRender' ? 'short' : 'long';
 
   return (
-    <>
-      <p>{pdfUrl}</p>
-      <iframe
-        src={pdfUrl}
-        title={`Letter preview - ${tabDescription} examples`}
-        aria-label={`PDF preview of letter template with ${tabDescription} example personalisation data`}
-      />
-    </>
+    <iframe
+      src={pdfUrl}
+      title={`Letter preview - ${tabDescription} examples`}
+      aria-label={`PDF preview of letter template with ${tabDescription} example personalisation data`}
+    />
   );
 }

@@ -269,6 +269,52 @@ describe('useLetterTemplatePoll', () => {
       expect(result.current.isPolling).toBe(false);
     });
 
+    it('keeps polling after forcePolling drops until template refreshes', () => {
+      const shouldPoll = (t: AuthoringLetterTemplate) =>
+        t.files.initialRender.status === 'PENDING';
+
+      const { result, rerender } = renderHook(
+        ({
+          template,
+          forcePolling,
+        }: {
+          template: AuthoringLetterTemplate;
+          forcePolling: boolean;
+        }) =>
+          useLetterTemplatePoll({
+            template,
+            shouldPoll,
+            forcePolling,
+          }),
+        {
+          initialProps: {
+            template: renderedTemplate, // stale: no PENDING render
+            forcePolling: true,
+          },
+        }
+      );
+
+      expect(result.current.isPolling).toBe(true);
+
+      act(() => {
+        rerender({ template: renderedTemplate, forcePolling: false });
+      });
+
+      expect(result.current.isPolling).toBe(true);
+
+      act(() => {
+        rerender({ template: pendingTemplate, forcePolling: false });
+      });
+
+      expect(result.current.isPolling).toBe(true);
+
+      act(() => {
+        rerender({ template: renderedTemplate, forcePolling: false });
+      });
+
+      expect(result.current.isPolling).toBe(false);
+    });
+
     it('calls router.refresh while forcePolling is active', () => {
       renderHook(() =>
         useLetterTemplatePoll({
