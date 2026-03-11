@@ -394,6 +394,39 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
+  describe('expectLetterVersion', () => {
+    test('adds letterVersion condition', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectLetterVersion('AUTHORING')
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_1_letterVersion': 'AUTHORING',
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#letterVersion': 'letterVersion',
+        },
+        ConditionExpression: '#letterVersion = :condition_1_letterVersion',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
+      });
+    });
+  });
+
   describe('expectClientId', () => {
     test('adds clientId condition', () => {
       const builder = new TemplateUpdateBuilder(
@@ -755,36 +788,44 @@ describe('TemplateUpdateBuilder', () => {
     });
   });
 
-  describe('setShortFormRender', () => {
-    test('sets shortFormRender in files map', () => {
-      const builder = new TemplateUpdateBuilder(
-        mockTableName,
-        mockOwner,
-        mockId
-      );
+  describe('setPersonalisedRender', () => {
+    test.each([
+      ['short', 'shortFormRender'],
+      ['long', 'longFormRender'],
+    ] as const)(
+      'sets %s variant render in files map',
+      (variant, expectedKey) => {
+        const builder = new TemplateUpdateBuilder(
+          mockTableName,
+          mockOwner,
+          mockId
+        );
 
-      const renderDetails = {
-        status: 'RENDERED' as const,
-        fileName: 'short-form.pdf',
-        currentVersion: 'v2',
-        pageCount: 1,
-        systemPersonalisationPackId: 'pack-1',
-        personalisationParameters: { firstName: 'John' },
-      };
+        const renderDetails = {
+          status: 'RENDERED' as const,
+          fileName: `${variant}-form.pdf`,
+          currentVersion: 'v2',
+          pageCount: 1,
+          systemPersonalisationPackId: 'pack-1',
+          personalisationParameters: { firstName: 'John' },
+        };
 
-      const res = builder.setShortFormRender(renderDetails).build();
+        const res = builder
+          .setPersonalisedRender(variant, renderDetails)
+          .build();
 
-      expect(res).toMatchObject({
-        ExpressionAttributeNames: {
-          '#files': 'files',
-          '#shortFormRender': 'shortFormRender',
-        },
-        ExpressionAttributeValues: {
-          ':shortFormRender': renderDetails,
-        },
-        UpdateExpression: 'SET #files.#shortFormRender = :shortFormRender',
-      });
-    });
+        expect(res).toMatchObject({
+          ExpressionAttributeNames: {
+            '#files': 'files',
+            [`#${expectedKey}`]: expectedKey,
+          },
+          ExpressionAttributeValues: {
+            [`:${expectedKey}`]: renderDetails,
+          },
+          UpdateExpression: `SET #files.#${expectedKey} = :${expectedKey}`,
+        });
+      }
+    );
   });
 
   describe('appendValidationErrors', () => {

@@ -38,7 +38,7 @@ export const createHandler =
       requestType: 'initial',
       clientId,
       templateId,
-      currentVersion,
+      docxCurrentVersion: currentVersion,
     };
 
     logger.info('Forwarding initial render request', request);

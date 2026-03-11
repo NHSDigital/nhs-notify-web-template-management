@@ -15,6 +15,7 @@ import type {
   CreateUpdateTemplate,
   PatchTemplate,
   PdfLetterFiles,
+  PersonalisedRenderRequestVariant,
   ProofFileDetails,
   TemplateDto,
   TemplateStatus,
@@ -723,6 +724,67 @@ export class TemplateRepository {
         .expectProofingEnabled()
         .expectLockNumber(lockNumber)
         .incrementLockNumber()
+        .build();
+
+      const response = await this.client.send(new UpdateCommand(update));
+      return success(response.Attributes as DatabaseTemplate);
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
+          return failure(ErrorCase.NOT_FOUND, `Template not found`);
+        }
+
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
+        }
+
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Template cannot be proofed',
+          error
+        );
+      }
+
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
+    }
+  }
+
+  async letterProofUpdate(
+    templateId: string,
+    user: User,
+    lockNumber: number,
+    personalisation: Record<string, string>,
+    requestTypeVariant: PersonalisedRenderRequestVariant,
+    systemPersonalisationPackId: string
+  ) {
+    try {
+      const update = new TemplateUpdateBuilder(
+        this.templatesTableName,
+        user.clientId,
+        templateId,
+        {
+          ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+          ReturnValues: 'ALL_NEW',
+        }
+      )
+        .expectStatus('NOT_YET_SUBMITTED')
+        .expectTemplateType('LETTER')
+        .expectLetterVersion('AUTHORING')
+        .expectLockNumber(lockNumber)
+        .incrementLockNumber()
+        .setUpdatedByUserAt(this.internalUserKey(user))
+        .setPersonalisedRender(requestTypeVariant, {
+          systemPersonalisationPackId,
+          personalisationParameters: personalisation,
+          status: 'PENDING',
+          requestedAt: new Date().toISOString(),
+        })
         .build();
 
       const response = await this.client.send(new UpdateCommand(update));
