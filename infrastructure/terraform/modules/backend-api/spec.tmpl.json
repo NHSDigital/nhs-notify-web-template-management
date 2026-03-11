@@ -2335,9 +2335,9 @@
         }
       }
     },
-    "/v1/template/{templateId}/letter-proof": {
+    "/v1/template/{templateId}/generate-letter-proof": {
       "post": {
-        "description": "Request a personalised letter proof",
+        "description": "Generate a personalised letter proof",
         "parameters": [
           {
             "description": "ID of the template to request a proof of",

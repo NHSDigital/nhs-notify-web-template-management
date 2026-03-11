@@ -916,7 +916,7 @@ export type PostV1TemplateByTemplateIdLetterProofData = {
     templateId: string;
   };
   query?: never;
-  url: '/v1/template/{templateId}/letter-proof';
+  url: '/v1/template/{templateId}/generate-letter-proof';
 };
 
 export type PostV1TemplateByTemplateIdLetterProofErrors = {

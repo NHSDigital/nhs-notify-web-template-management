@@ -1,4 +1,4 @@
-import { createHandler } from './api/letter-proof';
+import { createHandler } from './api/generate-letter-proof';
 import { templatesContainer } from './container/templates';
 
 export const handler = createHandler(templatesContainer());

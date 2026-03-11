@@ -26,7 +26,7 @@ npx esbuild \
     src/get-routing-config.ts \
     src/get-routing-configs-by-template-id.ts \
     src/get.ts \
-    src/letter-proof.ts \
+    src/generate-letter-proof.ts \
     src/list-routing-configs.ts \
     src/list.ts \
     src/patch-template.ts \

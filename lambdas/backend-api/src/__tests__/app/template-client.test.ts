@@ -3590,7 +3590,7 @@ describe('templateClient', () => {
     });
   });
 
-  describe('letterProof', () => {
+  describe('generateLetterProof', () => {
     const validBody = {
       personalisation: { name: 'Test Name' },
       requestTypeVariant: 'short' as const,
@@ -3600,9 +3600,14 @@ describe('templateClient', () => {
     test('returns failure result when body validation fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
-      const result = await templateClient.letterProof(templateId, user, '1', {
-        invalid: 'body',
-      } as unknown as LetterProofRequest);
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        {
+          invalid: 'body',
+        } as unknown as LetterProofRequest
+      );
 
       expect(mocks.templateRepository.letterProofUpdate).not.toHaveBeenCalled();
 
@@ -3626,7 +3631,7 @@ describe('templateClient', () => {
     test('returns failure result when lock number is invalid', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
-      const result = await templateClient.letterProof(
+      const result = await templateClient.generateLetterProof(
         templateId,
         user,
         '',
@@ -3667,7 +3672,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.letterProof(
+      const result = await templateClient.generateLetterProof(
         templateId,
         user,
         '1',
@@ -3736,7 +3741,7 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.letterProof(
+      const result = await templateClient.generateLetterProof(
         templateId,
         user,
         '1',
@@ -3782,7 +3787,7 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.letterProof(
+      const result = await templateClient.generateLetterProof(
         templateId,
         user,
         '1',
@@ -3828,7 +3833,7 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.letterProof(
+      const result = await templateClient.generateLetterProof(
         templateId,
         user,
         '1',
@@ -3892,7 +3897,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.letterProof(
+      const result = await templateClient.generateLetterProof(
         templateId,
         user,
         '1',
@@ -3972,7 +3977,7 @@ describe('templateClient', () => {
         data: { $metadata: {} },
       });
 
-      const result = await templateClient.letterProof(
+      const result = await templateClient.generateLetterProof(
         templateId,
         user,
         '1',
@@ -4046,7 +4051,12 @@ describe('templateClient', () => {
         data: { $metadata: {} },
       });
 
-      await templateClient.letterProof(templateId, user, '10', validBody);
+      await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '10',
+        validBody
+      );
 
       expect(mocks.templateRepository.letterProofUpdate).toHaveBeenCalledWith(
         templateId,

@@ -1,6 +1,6 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { createHandler } from '../../api/letter-proof';
+import { createHandler } from '../../api/generate-letter-proof';
 import { TemplateClient } from '../../app/template-client';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
@@ -12,7 +12,7 @@ const setup = () => {
   return { handler, mocks: { templateClient } };
 };
 
-describe('Template API - letter proof', () => {
+describe('Template API - generate letter proof', () => {
   beforeEach(jest.resetAllMocks);
 
   test.each([
@@ -41,7 +41,7 @@ describe('Template API - letter proof', () => {
         }),
       });
 
-      expect(mocks.templateClient.letterProof).not.toHaveBeenCalled();
+      expect(mocks.templateClient.generateLetterProof).not.toHaveBeenCalled();
     }
   );
 
@@ -70,13 +70,13 @@ describe('Template API - letter proof', () => {
       }),
     });
 
-    expect(mocks.templateClient.letterProof).not.toHaveBeenCalled();
+    expect(mocks.templateClient.generateLetterProof).not.toHaveBeenCalled();
   });
 
   test('should return error when letter proof fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.letterProof.mockResolvedValueOnce({
+    mocks.templateClient.generateLetterProof.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 500,
@@ -111,7 +111,7 @@ describe('Template API - letter proof', () => {
       }),
     });
 
-    expect(mocks.templateClient.letterProof).toHaveBeenCalledWith(
+    expect(mocks.templateClient.generateLetterProof).toHaveBeenCalledWith(
       'template-id',
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       '0',
@@ -126,7 +126,7 @@ describe('Template API - letter proof', () => {
   test('should coerce missing lock number header to empty string', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.letterProof.mockResolvedValueOnce({
+    mocks.templateClient.generateLetterProof.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 409,
@@ -159,7 +159,7 @@ describe('Template API - letter proof', () => {
       }),
     });
 
-    expect(mocks.templateClient.letterProof).toHaveBeenCalledWith(
+    expect(mocks.templateClient.generateLetterProof).toHaveBeenCalledWith(
       'template-id',
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       '',
@@ -170,7 +170,7 @@ describe('Template API - letter proof', () => {
   test('should coerce missing body to empty object', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.letterProof.mockResolvedValueOnce({
+    mocks.templateClient.generateLetterProof.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 400,
@@ -201,7 +201,7 @@ describe('Template API - letter proof', () => {
       }),
     });
 
-    expect(mocks.templateClient.letterProof).toHaveBeenCalledWith(
+    expect(mocks.templateClient.generateLetterProof).toHaveBeenCalledWith(
       'template-id',
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
       '1',
@@ -244,7 +244,7 @@ describe('Template API - letter proof', () => {
       },
     };
 
-    mocks.templateClient.letterProof.mockResolvedValueOnce({
+    mocks.templateClient.generateLetterProof.mockResolvedValueOnce({
       data: response,
     });
 
@@ -271,7 +271,7 @@ describe('Template API - letter proof', () => {
       body: JSON.stringify({ statusCode: 201, data: response }),
     });
 
-    expect(mocks.templateClient.letterProof).toHaveBeenCalledWith(
+    expect(mocks.templateClient.generateLetterProof).toHaveBeenCalledWith(
       'id',
       {
         internalUserId: 'user-1234',
