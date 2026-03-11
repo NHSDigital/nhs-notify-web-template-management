@@ -1,12 +1,13 @@
 'use client';
 
-import type { PropsWithChildren, ReactNode } from 'react';
+import { type PropsWithChildren, type ReactNode, useEffect } from 'react';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LoadingSpinner } from '@atoms/LoadingSpinner/LoadingSpinner';
 import {
   useLetterTemplatePoll,
   RENDER_TIMEOUT_MS,
 } from '@hooks/use-letter-template-poll';
+import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
 import type { RenderKey } from '@utils/types';
 
 function shouldPollLetterRender(
@@ -47,6 +48,16 @@ export function PollLetterRender({
     shouldPoll: shouldPollLetterRender(mode),
     forcePolling,
   });
+
+  const { registerPolling } = useLetterRenderPolling();
+
+  useEffect(() => {
+    registerPolling(mode, isPolling);
+
+    return () => {
+      registerPolling(mode, false);
+    };
+  }, [mode, isPolling, registerPolling]);
 
   if (isPolling) {
     return <LoadingSpinner>{loadingElement}</LoadingSpinner>;

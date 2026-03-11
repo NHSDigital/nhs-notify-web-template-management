@@ -1,10 +1,23 @@
 import { render, screen } from '@testing-library/react';
 import { LetterRenderForm } from '@molecules/LetterRender/LetterRenderForm';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
+import {
+  LetterRenderPollingProvider,
+  useLetterRenderPolling,
+} from '@providers/letter-render-polling-provider';
+import type { PropsWithChildren } from 'react';
 import type {
   AuthoringLetterTemplate,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
+
+jest.mock('@providers/letter-render-polling-provider', () => {
+  const actual = jest.requireActual('@providers/letter-render-polling-provider');
+  return {
+    ...actual,
+    useLetterRenderPolling: jest.fn(actual.useLetterRenderPolling),
+  };
+});
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -51,12 +64,14 @@ function renderWithProvider(
   initialState: FormState = createInitialFormState()
 ) {
   return render(
-    <NHSNotifyFormProvider
-      initialState={initialState}
-      serverAction={mockServerAction}
-    >
-      {form}
-    </NHSNotifyFormProvider>
+    <LetterRenderPollingProvider>
+      <NHSNotifyFormProvider
+        initialState={initialState}
+        serverAction={mockServerAction}
+      >
+        {form}
+      </NHSNotifyFormProvider>
+    </LetterRenderPollingProvider>
   );
 }
 
@@ -218,6 +233,30 @@ describe('LetterRenderForm', () => {
       expect(
         screen.getByRole('button', { name: 'Update preview' })
       ).toBeInTheDocument();
+    });
+
+    it('renders the update preview button as enabled when no tab is polling', () => {
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />
+      );
+
+      const button = screen.getByRole('button', { name: 'Update preview' });
+      expect(button).not.toBeDisabled();
+    });
+
+    it('renders the update preview button as disabled when a tab is polling', () => {
+      jest.mocked(useLetterRenderPolling).mockReturnValueOnce({
+        isAnyTabPolling: true,
+        registerPolling: jest.fn(),
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />
+      );
+
+      const button = screen.getByRole('button', { name: 'Update preview' });
+      expect(button).toBeDisabled();
+      expect(button).toHaveAttribute('aria-disabled', 'true');
     });
   });
 

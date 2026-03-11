@@ -4,6 +4,7 @@ import {
   RENDER_TIMEOUT_MS,
   POLL_INTERVAL_MS,
 } from '@hooks/use-letter-template-poll';
+import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 
@@ -72,13 +73,15 @@ describe('PollLetterRender', () => {
 
   it('renders children when the render is already RENDERED', () => {
     render(
-      <PollLetterRender
-        template={baseTemplate}
-        mode='initialRender'
-        loadingElement={<p>{'loading'}</p>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={baseTemplate}
+          mode='initialRender'
+          loadingElement={<p>{'loading'}</p>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -92,13 +95,15 @@ describe('PollLetterRender', () => {
     };
 
     render(
-      <PollLetterRender
-        template={template}
-        mode='initialRender'
-        loadingElement={<h1>{'loading'}</h1>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={template}
+          mode='initialRender'
+          loadingElement={<h1>{'loading'}</h1>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(
@@ -115,13 +120,15 @@ describe('PollLetterRender', () => {
     };
 
     render(
-      <PollLetterRender
-        template={template}
-        mode='initialRender'
-        loadingElement={<p>{'loading'}</p>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={template}
+          mode='initialRender'
+          loadingElement={<p>{'loading'}</p>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -136,13 +143,15 @@ describe('PollLetterRender', () => {
     };
 
     render(
-      <PollLetterRender
-        template={template}
-        mode='initialRender'
-        loadingElement={<p>{'loading'}</p>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={template}
+          mode='initialRender'
+          loadingElement={<p>{'loading'}</p>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -151,13 +160,15 @@ describe('PollLetterRender', () => {
 
   it('renders children when the render file for the mode is absent', () => {
     render(
-      <PollLetterRender
-        template={baseTemplate}
-        mode='longFormRender'
-        loadingElement={<p>{'loading'}</p>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={baseTemplate}
+          mode='longFormRender'
+          loadingElement={<p>{'loading'}</p>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -171,13 +182,15 @@ describe('PollLetterRender', () => {
     };
 
     render(
-      <PollLetterRender
-        template={template}
-        mode='shortFormRender'
-        loadingElement={<h1>{'loading'}</h1>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={template}
+          mode='shortFormRender'
+          loadingElement={<h1>{'loading'}</h1>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(
@@ -199,13 +212,15 @@ describe('PollLetterRender', () => {
     };
 
     const { rerender } = render(
-      <PollLetterRender
-        template={pendingTemplate}
-        mode='initialRender'
-        loadingElement={<h1>{'loading'}</h1>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={pendingTemplate}
+          mode='initialRender'
+          loadingElement={<h1>{'loading'}</h1>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
@@ -215,13 +230,15 @@ describe('PollLetterRender', () => {
     ).toBeInTheDocument();
 
     rerender(
-      <PollLetterRender
-        template={renderedTemplate}
-        mode='initialRender'
-        loadingElement={<h1>{'loading'}</h1>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={renderedTemplate}
+          mode='initialRender'
+          loadingElement={<h1>{'loading'}</h1>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(screen.getByTestId('page-content')).toBeInTheDocument();
@@ -235,13 +252,15 @@ describe('PollLetterRender', () => {
     };
 
     render(
-      <PollLetterRender
-        template={template}
-        mode='initialRender'
-        loadingElement={<h1>{'loading'}</h1>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={template}
+          mode='initialRender'
+          loadingElement={<h1>{'loading'}</h1>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
@@ -261,13 +280,15 @@ describe('PollLetterRender', () => {
     };
 
     render(
-      <PollLetterRender
-        template={template}
-        mode='initialRender'
-        loadingElement={<h1>{'loading'}</h1>}
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={template}
+          mode='initialRender'
+          loadingElement={<h1>{'loading'}</h1>}
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(mockRefresh).not.toHaveBeenCalled();
@@ -287,14 +308,16 @@ describe('PollLetterRender', () => {
 
   it('shows loading element when forcePolling is true even if render is RENDERED', () => {
     render(
-      <PollLetterRender
-        template={baseTemplate}
-        mode='initialRender'
-        loadingElement={<h1>{'loading'}</h1>}
-        forcePolling
-      >
-        <div data-testid='page-content'>content</div>
-      </PollLetterRender>
+      <LetterRenderPollingProvider>
+        <PollLetterRender
+          template={baseTemplate}
+          mode='initialRender'
+          loadingElement={<h1>{'loading'}</h1>}
+          forcePolling
+        >
+          <div data-testid='page-content'>content</div>
+        </PollLetterRender>
+      </LetterRenderPollingProvider>
     );
 
     expect(

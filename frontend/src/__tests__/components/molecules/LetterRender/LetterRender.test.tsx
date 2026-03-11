@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { LetterRender } from '@molecules/LetterRender';
+import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { useLetterTemplatePoll } from '@hooks/use-letter-template-poll';
@@ -55,14 +56,22 @@ describe('LetterRender', () => {
   });
 
   it('renders tabs for short and long examples', () => {
-    render(<LetterRender template={baseTemplate} />);
+    render(
+      <LetterRenderPollingProvider>
+        <LetterRender template={baseTemplate} />
+      </LetterRenderPollingProvider>
+    );
 
     expect(screen.getByText('Short examples')).toBeInTheDocument();
     expect(screen.getByText('Long examples')).toBeInTheDocument();
   });
 
   it('renders tab content for both tabs', () => {
-    render(<LetterRender template={baseTemplate} />);
+    render(
+      <LetterRenderPollingProvider>
+        <LetterRender template={baseTemplate} />
+      </LetterRenderPollingProvider>
+    );
 
     // Both tab contents should be rendered (tabs component renders both, CSS hides inactive)
     const tabContents = screen.getAllByRole('tabpanel', { hidden: true });
@@ -70,7 +79,11 @@ describe('LetterRender', () => {
   });
 
   it('matches snapshot', () => {
-    const container = render(<LetterRender template={baseTemplate} />);
+    const container = render(
+      <LetterRenderPollingProvider>
+        <LetterRender template={baseTemplate} />
+      </LetterRenderPollingProvider>
+    );
 
     expect(container.asFragment()).toMatchSnapshot();
   });

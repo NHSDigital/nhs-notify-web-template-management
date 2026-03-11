@@ -9,6 +9,7 @@ import {
 } from '@content/example-recipients';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
+import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
 
@@ -19,6 +20,7 @@ type LetterRenderFormProps = {
 
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
+  const { isAnyTabPolling } = useLetterRenderPolling();
 
   const exampleRecipients =
     tab === 'shortFormRender'
@@ -82,7 +84,12 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <input type='hidden' name='lockNumber' value={template.lockNumber} />
       <input type='hidden' name='tab' value={tab} />
 
-      <NHSNotifyButton type='submit' secondary className='nhsuk-u-margin-top-4'>
+      <NHSNotifyButton
+        type='submit'
+        secondary
+        className='nhsuk-u-margin-top-4'
+        disabled={isAnyTabPolling}
+      >
         {copy.updatePreviewButton}
       </NHSNotifyButton>
     </NHSNotifyForm.Form>

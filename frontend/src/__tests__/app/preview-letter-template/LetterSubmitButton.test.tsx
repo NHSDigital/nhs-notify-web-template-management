@@ -1,0 +1,66 @@
+import { render, screen } from '@testing-library/react';
+import { LetterSubmitButton } from '@app/preview-letter-template/[templateId]/LetterSubmitButton';
+import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
+
+jest.mock('@providers/letter-render-polling-provider');
+
+describe('LetterSubmitButton', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('renders an enabled submit button when no tab is polling', () => {
+    jest.mocked(useLetterRenderPolling).mockReturnValue({
+      isAnyTabPolling: false,
+      registerPolling: jest.fn(),
+    });
+
+    render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
+
+    const button = screen.getByRole('button', { name: 'Submit template' });
+    expect(button).not.toBeDisabled();
+    expect(button).not.toHaveAttribute('aria-disabled');
+    expect(button).toHaveClass('nhsuk-button');
+    expect(button).not.toHaveClass('nhsuk-button--disabled');
+  });
+
+  it('renders a disabled submit button when a tab is polling', () => {
+    jest.mocked(useLetterRenderPolling).mockReturnValue({
+      isAnyTabPolling: true,
+      registerPolling: jest.fn(),
+    });
+
+    render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
+
+    const button = screen.getByRole('button', { name: 'Submit template' });
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-disabled', 'true');
+    expect(button).toHaveClass('nhsuk-button--disabled');
+  });
+
+  it('renders children as button text', () => {
+    jest.mocked(useLetterRenderPolling).mockReturnValue({
+      isAnyTabPolling: false,
+      registerPolling: jest.fn(),
+    });
+
+    render(<LetterSubmitButton>Custom text</LetterSubmitButton>);
+
+    expect(
+      screen.getByRole('button', { name: 'Custom text' })
+    ).toBeInTheDocument();
+  });
+
+  it('has the correct test id and id attributes', () => {
+    jest.mocked(useLetterRenderPolling).mockReturnValue({
+      isAnyTabPolling: false,
+      registerPolling: jest.fn(),
+    });
+
+    render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
+
+    const button = screen.getByTestId('preview-letter-template-cta');
+    expect(button).toHaveAttribute('id', 'preview-letter-template-cta');
+    expect(button).toHaveAttribute('type', 'submit');
+  });
+});

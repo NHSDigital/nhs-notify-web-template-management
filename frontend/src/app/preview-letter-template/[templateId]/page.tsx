@@ -14,8 +14,10 @@ import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDet
 import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
+import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import { getTemplate } from '@utils/form-actions';
 import { submitAuthoringLetterAction } from './server-action';
+import { LetterSubmitButton } from './LetterSubmitButton';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -83,57 +85,52 @@ export default async function PreviewLetterTemplatePage({
         }}
         serverAction={submitAuthoringLetterAction}
       >
-        <PollLetterRender
-          template={validatedTemplate}
-          mode='initialRender'
-          loadingElement={<h1>{loadingText}</h1>}
-        >
-          <NHSNotifyContainer>
-            <NHSNotifyBackLink href={links.messageTemplates}>
-              {backLinkText}
-            </NHSNotifyBackLink>
-          </NHSNotifyContainer>
-          <NHSNotifyMain>
+        <LetterRenderPollingProvider>
+          <PollLetterRender
+            template={validatedTemplate}
+            mode='initialRender'
+            loadingElement={<h1>{loadingText}</h1>}
+          >
             <NHSNotifyContainer>
-              <NHSNotifyForm.ErrorSummary />
-              <div className='nhsuk-grid-row'>
-                <div className='nhsuk-grid-column-full'>
-                  <PreviewTemplateDetailsAuthoringLetter
-                    template={validatedTemplate}
-                  />
+              <NHSNotifyBackLink href={links.messageTemplates}>
+                {backLinkText}
+              </NHSNotifyBackLink>
+            </NHSNotifyContainer>
+            <NHSNotifyMain>
+              <NHSNotifyContainer>
+                <NHSNotifyForm.ErrorSummary />
+                <div className='nhsuk-grid-row'>
+                  <div className='nhsuk-grid-column-full'>
+                    <PreviewTemplateDetailsAuthoringLetter
+                      template={validatedTemplate}
+                    />
+                  </div>
                 </div>
-              </div>
-            </NHSNotifyContainer>
-            {showRenderer && <LetterRender template={validatedTemplate} />}
-            <NHSNotifyContainer fullWidth={showRenderer}>
-              {showSubmitForm && (
-                <NHSNotifyForm.Form formId='preview-letter-template'>
-                  <input
-                    type='hidden'
-                    name='templateId'
-                    value={validatedTemplate.id}
-                  />
-                  <input
-                    type='hidden'
-                    name='lockNumber'
-                    value={validatedTemplate.lockNumber}
-                  />
-                  <button
-                    type='submit'
-                    className='nhsuk-button'
-                    data-testid='preview-letter-template-cta'
-                    id='preview-letter-template-cta'
-                  >
-                    {submitText}
-                  </button>
-                </NHSNotifyForm.Form>
-              )}
-              <p>
-                <Link href={links.messageTemplates}>{backLinkText}</Link>
-              </p>
-            </NHSNotifyContainer>
-          </NHSNotifyMain>
-        </PollLetterRender>
+              </NHSNotifyContainer>
+              {showRenderer && <LetterRender template={validatedTemplate} />}
+              <NHSNotifyContainer fullWidth={showRenderer}>
+                {showSubmitForm && (
+                  <NHSNotifyForm.Form formId='preview-letter-template'>
+                    <input
+                      type='hidden'
+                      name='templateId'
+                      value={validatedTemplate.id}
+                    />
+                    <input
+                      type='hidden'
+                      name='lockNumber'
+                      value={validatedTemplate.lockNumber}
+                    />
+                    <LetterSubmitButton>{submitText}</LetterSubmitButton>
+                  </NHSNotifyForm.Form>
+                )}
+                <p>
+                  <Link href={links.messageTemplates}>{backLinkText}</Link>
+                </p>
+              </NHSNotifyContainer>
+            </NHSNotifyMain>
+          </PollLetterRender>
+        </LetterRenderPollingProvider>
       </NHSNotifyFormProvider>
     </NHSNotifyContainer>
   );
