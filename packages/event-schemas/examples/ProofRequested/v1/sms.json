@@ -1,0 +1,24 @@
+{
+  "data": {
+    "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "templateId": "7b69c481-86bc-5899-b86f-de3683b79634",
+    "templateType": "SMS",
+    "testPatientNhsNumber": "9000000009",
+    "contactDetails": {
+      "sms": "07700900000"
+    },
+    "personalisation": {
+      "firstName": "Jane"
+    }
+  },
+  "datacontenttype": "application/json",
+  "dataschema": "https://notify.nhs.uk/events/schemas/ProofRequested/v1.json",
+  "dataschemaversion": "1.0.0",
+  "id": "a2b3c4d5-e6f7-8901-abcd-ef1234567891",
+  "plane": "data",
+  "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",
+  "specversion": "1.0",
+  "subject": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+  "time": "2025-07-29T10:05:45.145Z",
+  "type": "uk.nhs.notify.template-management.ProofRequested.v1"
+}
