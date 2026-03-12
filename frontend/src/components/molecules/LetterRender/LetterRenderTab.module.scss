@@ -1,9 +1,13 @@
 .iframeColumn {
-  height: 1200px;
+  :root {
+    --tab-height: 1200px
+  }
+
+  height: var(--tab-height);
 
   iframe {
     width: 100%;
-    height: 100%;
+    height: var(--tab-height);
     border: none;
   }
 }
