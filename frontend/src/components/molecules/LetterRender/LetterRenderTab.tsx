@@ -35,7 +35,7 @@ function getPersonalisedRender(
   return template.files[tab];
 }
 
-function initialisePdfUrl(
+function getPdfUrl(
   template: AuthoringLetterTemplate,
   tab: PersonalisedRenderKey
 ): string | null {
@@ -52,7 +52,7 @@ function initialisePdfUrl(
     : null;
 }
 
-function initialiseFormState(
+function getFormState(
   template: AuthoringLetterTemplate,
   tab: PersonalisedRenderKey
 ): FormState {
@@ -109,8 +109,8 @@ function LetterRenderTabContent({
 }
 
 export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
-  const formState = initialiseFormState(template, tab);
-  const pdfUrl = initialisePdfUrl(template, tab);
+  const formState = getFormState(template, tab);
+  const pdfUrl = getPdfUrl(template, tab);
 
   return (
     <NHSNotifyFormProvider
