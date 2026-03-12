@@ -17,6 +17,9 @@ import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
+import content from '@content/content';
+
+const { loadingText } = content.components.letterRender;
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -98,7 +101,7 @@ function LetterRenderTabContent({
         <PollLetterRender
           template={template}
           mode={tab}
-          loadingElement={<p>loading</p>}
+          loadingElement={<p>{loadingText}</p>}
           forcePolling={isPending}
         >
           <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
