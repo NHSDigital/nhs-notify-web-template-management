@@ -33,13 +33,13 @@ export type NHSNotifyRadioButtonFormProps = {
     text: string;
     url: string;
   };
-  isLetterAuthoringEnabled?: boolean;
+  children?: React.ReactNode;
 };
 
 const normaliseId = (id: string) =>
   id.toLowerCase().replaceAll('_', '').replaceAll(',', '-');
 
-export const NHSNotifyRadioButtonForm = ({
+export const ChooseTemplateTypeRadios = ({
   formId,
   radiosId,
   action,
@@ -53,6 +53,7 @@ export const NHSNotifyRadioButtonForm = ({
   learnMoreLink = '',
   learnMoreText = '',
   backLink,
+  children,
 }: NHSNotifyRadioButtonFormProps) => (
   <NHSNotifyFormWrapper
     action={action}
@@ -94,6 +95,8 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
+    {/* Render any passed children here */}
+    {children}
     <NHSNotifyButton
       type='submit'
       data-testid='submit-button'
