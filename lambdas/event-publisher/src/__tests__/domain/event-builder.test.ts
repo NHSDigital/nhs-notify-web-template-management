@@ -23,11 +23,13 @@ const { logger: mockLogger } = createMockLogger();
 const tables = {
   templates: 'templates-table',
   routing: 'routing-config-table',
+  proofRequests: 'proof-request-table',
 };
 
 const eventBuilder = new EventBuilder(
   tables.templates,
   tables.routing,
+  tables.proofRequests,
   'event-source',
   mockLogger
 );
@@ -378,6 +380,67 @@ const expectedRoutingConfigEvent = (
   },
 });
 
+const publishableProofRequestEventRecord = (): PublishableEventRecord => ({
+  dynamodb: {
+    SequenceNumber: '4',
+    NewImage: {
+      id: {
+        S: '92b676e9-470f-4d04-ab14-965ef145e15d',
+      },
+      templateId: {
+        S: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
+      },
+      templateType: {
+        S: 'SMS',
+      },
+      testPatientNhsNumber: {
+        S: '9000000009',
+      },
+      contactDetails: {
+        M: {
+          sms: {
+            S: '07700900000',
+          },
+        },
+      },
+      personalisation: {
+        M: {
+          firstName: {
+            S: 'Jane',
+          },
+        },
+      },
+    },
+  },
+  eventID: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
+  tableName: tables.proofRequests,
+});
+
+const expectedProofRequestedEvent = () => ({
+  id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
+  datacontenttype: 'application/json',
+  time: '2022-01-01T09:00:00.000Z',
+  source: 'event-source',
+  type: 'uk.nhs.notify.template-management.ProofRequested.v1',
+  specversion: '1.0',
+  dataschema: 'https://notify.nhs.uk/events/schemas/ProofRequested/v1.json',
+  dataschemaversion: VERSION,
+  plane: 'data',
+  subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
+  data: {
+    id: '92b676e9-470f-4d04-ab14-965ef145e15d',
+    templateId: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
+    templateType: 'SMS',
+    testPatientNhsNumber: '9000000009',
+    contactDetails: {
+      sms: '07700900000',
+    },
+    personalisation: {
+      firstName: 'Jane',
+    },
+  },
+});
+
 test('errors on unrecognised event table source', () => {
   const invalidpublishableTemplateEventRecord = {
     ...publishableTemplateEventRecord('SUBMITTED'),
@@ -629,6 +692,58 @@ describe('routing config events', () => {
 
     const event = eventBuilder.buildEvent(
       hardDeletePublishableRoutingConfigEventRecord
+    );
+
+    expect(event).toEqual(undefined);
+  });
+});
+
+describe('proof request events', () => {
+  test('builds proof requested event', () => {
+    const event = eventBuilder.buildEvent(publishableProofRequestEventRecord());
+
+    expect(event).toEqual(expectedProofRequestedEvent());
+  });
+
+  test('errors on output schema validation failure after input parsing', () => {
+    const valid = publishableProofRequestEventRecord();
+
+    const invalidDomainEventRecord: PublishableEventRecord = {
+      ...valid,
+      dynamodb: {
+        ...valid.dynamodb,
+        NewImage: {
+          ...valid.dynamodb.NewImage,
+          templateType: { S: 'LETTER' },
+        },
+      },
+    };
+
+    expect(() => eventBuilder.buildEvent(invalidDomainEventRecord)).toThrow(
+      expect.objectContaining({
+        name: 'ZodError',
+        issues: [
+          expect.objectContaining({
+            code: 'invalid_value',
+            values: ['NHS_APP', 'SMS', 'EMAIL'],
+            path: ['data', 'templateType'],
+          }),
+        ],
+      })
+    );
+  });
+
+  test('does not build proof request event on hard delete', () => {
+    const hardDeletePublishableProofRequestEventRecord = {
+      ...publishableProofRequestEventRecord(),
+      dynamodb: {
+        SequenceNumber: '4',
+        NewImage: undefined,
+      },
+    };
+
+    const event = eventBuilder.buildEvent(
+      hardDeletePublishableProofRequestEventRecord
     );
 
     expect(event).toEqual(undefined);
