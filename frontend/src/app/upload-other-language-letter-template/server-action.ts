@@ -2,7 +2,7 @@
 
 import { z } from 'zod/v4';
 import { redirect, RedirectType } from 'next/navigation';
-import { LANGUAGE_LIST } from 'nhs-notify-backend-client';
+import { LANGUAGE_LIST } from 'nhs-notify-backend-client/schemas';
 import type {
   FormState,
   UploadLetterTemplate,

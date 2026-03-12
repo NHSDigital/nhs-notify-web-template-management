@@ -72,3 +72,5 @@ export const catchAxiosError = async <T>(
 };
 
 export type AxiosRetryClient = ReturnType<typeof createAxiosClient>;
+
+export const httpClient = createAxiosClient();

@@ -2,7 +2,7 @@ import type { ValidationErrorDetail } from 'nhs-notify-web-template-management-t
 import {
   ADDRESS_PERSONALISATIONS,
   DEFAULT_PERSONALISATION_LIST,
-} from 'nhs-notify-backend-client/src/schemas/constants';
+} from 'nhs-notify-backend-client/schemas';
 
 type ClassifiedMarkers = {
   valid: Set<string>;

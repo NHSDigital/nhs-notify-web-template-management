@@ -1,6 +1,6 @@
 import { eventBridgeS3ObjectCreatedValidator } from 'nhs-notify-web-template-management-utils';
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
-import type { InitialRenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
+import type { InitialRenderRequest } from 'nhs-notify-backend-client/types';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 

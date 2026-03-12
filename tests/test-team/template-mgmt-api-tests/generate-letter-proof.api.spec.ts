@@ -1,29 +1,28 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { randomUUID } from 'node:crypto';
 import { docxFixtures } from 'fixtures/letters';
 import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('POST /v1/template/:templateId/generate-letter-proof', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
   let differentClientUser: TestUser;
   let sameClientUser: TestUser;
 
   test.beforeAll(async () => {
-    user = await authHelper.getTestUser(
+    user = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
-    differentClientUser = await authHelper.getTestUser(testUsers.User2.userId);
-    sameClientUser = await authHelper.getTestUser(
+    differentClientUser = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
+    sameClientUser = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabledSharedClient.userId
     );
   });

@@ -1,10 +1,8 @@
 import { $ClientConfiguration } from './schemas/client';
 import type { ClientConfiguration } from 'nhs-notify-web-template-management-types';
-import { catchAxiosError, createAxiosClient } from './axios-client';
+import { catchAxiosError, httpClient } from './axios-client';
 import { Result } from './types/result';
 import { ErrorCase } from './types/error-cases';
-
-export const httpClient = createAxiosClient();
 
 export const clientConfigurationApiClient = {
   async fetch(token: string): Promise<Result<ClientConfiguration | null>> {

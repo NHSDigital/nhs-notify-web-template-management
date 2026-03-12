@@ -1,13 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { test } from 'fixtures/accessibility-analyze';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtPreviewLetterPage,
@@ -23,6 +20,7 @@ import {
 } from 'pages/letter';
 import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-page';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { getTestContext } from 'helpers/context/context';
 
 const templateStorageHelper = new TemplateStorageHelper();
 const templateIds = {
@@ -40,13 +38,13 @@ let userWithProofingDisabled: TestUser;
 let authoringEnabledWithMultipleCampaignsUser: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
 
-  defaultUser = await authHelper.getTestUser(testUsers.User1.userId);
-  userWithProofingDisabled = await authHelper.getTestUser(
+  defaultUser = await context.auth.getTestUser(testUsers.User1.userId);
+  userWithProofingDisabled = await context.auth.getTestUser(
     testUsers.User3.userId
   );
-  authoringEnabledWithMultipleCampaignsUser = await authHelper.getTestUser(
+  authoringEnabledWithMultipleCampaignsUser = await context.auth.getTestUser(
     testUsers.UserWithMultipleCampaigns.userId
   );
 
@@ -243,6 +241,13 @@ test.describe('Letter templates', () => {
         },
       }));
 
+    test('Choose printing and postage', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtChoosePrintingAndPostagePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
+      ));
+
     test('Preview letter page - initial spinner', async ({ page, analyze }) => {
       // seed template close to the time of running the test to avoid spinner timeout
       await templateStorageHelper.seedTemplateData([
@@ -301,18 +306,16 @@ test.describe('Letter templates', () => {
 
     test('Edit template campaign', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        )
+        new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Edit template campaign error', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        ),
+        new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0'),
         {
           beforeAnalyze: async (p) => {
             await p.campaignSelect.selectOption('');
@@ -324,18 +327,16 @@ test.describe('Letter templates', () => {
 
     test('Edit template name', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        )
+        new TemplateMgmtEditTemplateNamePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Edit template name error', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        ),
+        new TemplateMgmtEditTemplateNamePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0'),
         {
           beforeAnalyze: async (p) => {
             await p.nameInput.fill('');
