@@ -146,6 +146,15 @@ export const testUsers: Record<
   },
 
   /**
+   * UserLetterAuthoringEnabledSharedClient shares a client with UserLetterAuthoringEnabled
+   */
+  UserLetterAuthoringEnabledSharedClient: {
+    userId: 'UserLetterAuthoringEnabledSharedClient',
+    internalUserId: 'InternalUserLetterAuthoringEnabledSharedClient',
+    clientKey: 'ClientLetterAuthoringEnabled',
+  },
+
+  /**
    * UserDigitalProofingEnabled belongs to an alternate client with all digital proofing flags enabled
    */
   UserDigitalProofingEnabled: {

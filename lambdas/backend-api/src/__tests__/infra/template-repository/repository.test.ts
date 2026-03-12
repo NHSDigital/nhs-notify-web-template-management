@@ -2388,4 +2388,259 @@ describe('templateRepository', () => {
       });
     });
   });
+
+  describe('letterProofUpdate', () => {
+    const personalisation = { name: 'Test Name' };
+    const requestTypeVariant = 'short' as const;
+    const systemPersonalisationPackId = 'pack-id';
+
+    it('updates template with personalised render details', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(UpdateCommand).resolvesOnce({
+        Attributes: {
+          id: 'template-id',
+          templateStatus: 'NOT_YET_SUBMITTED',
+        },
+      });
+
+      const result = await templateRepository.letterProofUpdate(
+        'template-id',
+        user,
+        1,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        data: { id: 'template-id', templateStatus: 'NOT_YET_SUBMITTED' },
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression:
+          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #letterVersion = :condition_3_letterVersion AND (#lockNumber = :condition_4_1_lockNumber OR attribute_not_exists (#lockNumber))',
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#templateType': 'templateType',
+          '#letterVersion': 'letterVersion',
+          '#lockNumber': 'lockNumber',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+          '#files': 'files',
+          '#shortFormRender': 'shortFormRender',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_2_templateType': 'LETTER',
+          ':condition_3_letterVersion': 'AUTHORING',
+          ':condition_4_1_lockNumber': 1,
+          ':lockNumber': 1,
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
+          ':shortFormRender': {
+            systemPersonalisationPackId,
+            personalisationParameters: personalisation,
+            status: 'PENDING',
+            requestedAt: '2024-12-27T00:00:00.000Z',
+          },
+        },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        TableName: 'templates',
+        UpdateExpression:
+          'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy, #files.#shortFormRender = :shortFormRender ADD #lockNumber :lockNumber',
+      });
+    });
+
+    it('updates template with long form render variant', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(UpdateCommand).resolvesOnce({
+        Attributes: {
+          id: 'template-id',
+        },
+      });
+
+      await templateRepository.letterProofUpdate(
+        'template-id',
+        user,
+        0,
+        personalisation,
+        'long',
+        systemPersonalisationPackId
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        ExpressionAttributeNames: expect.objectContaining({
+          '#longFormRender': 'longFormRender',
+        }),
+        ExpressionAttributeValues: expect.objectContaining({
+          ':longFormRender': expect.objectContaining({
+            status: 'PENDING',
+          }),
+        }),
+        UpdateExpression: expect.stringContaining('#files.#longFormRender'),
+      });
+    });
+
+    it('returns 404 error response when conditional check fails due to template not existing', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.letterProofUpdate(
+        'template-id',
+        user,
+        0,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
+        },
+      });
+    });
+
+    it('returns 404 error response when conditional check fails due to template being deleted', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+        Item: {
+          templateStatus: { S: 'DELETED' },
+          lockNumber: { N: '0' },
+        },
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.letterProofUpdate(
+        'template-id',
+        user,
+        0,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
+        },
+      });
+    });
+
+    it('returns 409 error response when conditional check fails due to lock number mismatch', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+        Item: {
+          templateStatus: { S: 'NOT_YET_SUBMITTED' },
+          lockNumber: { N: '5' },
+        },
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.letterProofUpdate(
+        'template-id',
+        user,
+        0,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 409,
+            description:
+              'Lock number mismatch - Template has been modified since last read',
+          },
+        },
+      });
+    });
+
+    it('returns 400 error response when conditional check fails for other reasons (wrong status/type)', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+        Item: {
+          templateStatus: { S: 'SUBMITTED' },
+          lockNumber: { N: '0' },
+        },
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.letterProofUpdate(
+        'template-id',
+        user,
+        0,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 400,
+            description: 'Template cannot be proofed',
+          },
+        },
+      });
+    });
+
+    it('returns 500 error response when update fails for reason other than conditional check', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new Error('Database error');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.letterProofUpdate(
+        'template-id',
+        user,
+        0,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+    });
+  });
 });

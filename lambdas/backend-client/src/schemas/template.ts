@@ -1,7 +1,6 @@
 import { z } from 'zod/v4';
 import type {
   AuthoringLetterFiles,
-  LetterPatch,
   AuthoringLetterProperties,
   BaseCreatedTemplate,
   BaseTemplate,
@@ -10,6 +9,8 @@ import type {
   CreateUpdateTemplate,
   EmailProperties,
   Language,
+  LetterPatch,
+  LetterProofRequest,
   LetterType,
   LetterValidationError,
   NhsAppProperties,
@@ -22,8 +23,8 @@ import type {
   TemplateStatus,
   TemplateStatusActive,
   TemplateType,
-  VersionedFileDetails,
   ValidationErrorDetail,
+  VersionedFileDetails,
 } from 'nhs-notify-web-template-management-types';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -259,6 +260,16 @@ export const $LetterPatch = schemaFor<LetterPatch>()(
       (data) => Object.values(data).some((value) => value !== undefined),
       { error: 'Unexpected empty object' }
     )
+);
+
+const $RenderRequestTypeVariant = z.enum(['long', 'short']);
+
+export const $LetterProofRequest = schemaFor<LetterProofRequest>()(
+  z.object({
+    systemPersonalisationPackId: z.string(),
+    personalisation: z.record(z.string(), z.string()),
+    requestTypeVariant: $RenderRequestTypeVariant,
+  })
 );
 
 export const $LockNumber = z.coerce

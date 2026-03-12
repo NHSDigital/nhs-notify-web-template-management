@@ -4,10 +4,10 @@ import { makeSQSRecord } from 'nhs-notify-web-template-management-test-helper-ut
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { createHandler } from '../../api/sqs-handler';
 import type { App } from '../../app/app';
-import type {
-  InitialRenderRequest,
-  PersonalisedRenderRequest,
-} from 'nhs-notify-backend-client/types';
+import {
+  createInitialRequest,
+  createPersonalisedRequest,
+} from '../fixtures/create-request';
 
 function setup() {
   const app = mock<App>();
@@ -18,47 +18,38 @@ function setup() {
   return { handler, mocks: { app }, logMessages };
 }
 
-const initialRequest: InitialRenderRequest = {
-  requestType: 'initial',
-  clientId: 'test-client',
-  templateId: 'test-template',
-  currentVersion: 'test-version',
-};
-
-const personalisedRequest: PersonalisedRenderRequest = {
-  requestType: 'personalised',
-  requestTypeVariant: 'short',
-  clientId: 'test-client',
-  templateId: 'test-template',
-  currentVersion: 'test-version',
-  personalisation: { first_name: 'Test' },
-  lockNumber: 1,
-};
-
 describe('createHandler', () => {
   test('parses request and calls app.renderInitial for initial request', async () => {
     const { handler, mocks } = setup();
 
+    const request = createInitialRequest();
+
     mocks.app.renderInitial.mockResolvedValue('rendered');
 
     const record = makeSQSRecord({
-      body: JSON.stringify(initialRequest),
+      body: JSON.stringify(request),
     });
 
     await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
 
-    expect(mocks.app.renderInitial).toHaveBeenCalledWith(initialRequest);
+    expect(mocks.app.renderInitial).toHaveBeenCalledWith(request);
+    expect(mocks.app.renderPersonalised).not.toHaveBeenCalled();
   });
 
-  test('returns early without calling app for personalised request', async () => {
+  test('parses request and calls app.renderPersonalised for personalised request', async () => {
     const { handler, mocks } = setup();
 
+    const request = createPersonalisedRequest();
+
+    mocks.app.renderPersonalised.mockResolvedValue('rendered');
+
     const record = makeSQSRecord({
-      body: JSON.stringify(personalisedRequest),
+      body: JSON.stringify(request),
     });
 
     await handler({ Records: [record] }, mock<Context>(), mock<Callback>());
 
+    expect(mocks.app.renderPersonalised).toHaveBeenCalledWith(request);
     expect(mocks.app.renderInitial).not.toHaveBeenCalled();
   });
 
@@ -85,11 +76,13 @@ describe('createHandler', () => {
   test('throws when event contains multiple records', async () => {
     const { handler } = setup();
 
+    const request = createInitialRequest();
+
     const record1 = makeSQSRecord({
-      body: JSON.stringify(initialRequest),
+      body: JSON.stringify(request),
     });
     const record2 = makeSQSRecord({
-      body: JSON.stringify(initialRequest),
+      body: JSON.stringify(request),
     });
 
     await expect(

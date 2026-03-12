@@ -214,6 +214,14 @@ export type LetterPatch = {
   name?: string;
 };
 
+export type LetterProofRequest = {
+  personalisation: {
+    [key: string]: string;
+  };
+  requestTypeVariant: PersonalisedRenderRequestVariant;
+  systemPersonalisationPackId: string;
+};
+
 export type LetterProperties = AuthoringLetterProperties | PdfLetterProperties;
 
 export type LetterType = 'q4' | 'x0' | 'x1';
@@ -274,6 +282,8 @@ export type PdfLetterProperties = BaseLetterTemplateProperties & {
     [key: string]: string;
   };
 };
+
+export type PersonalisedRenderRequestVariant = 'long' | 'short';
 
 export type ProofFileDetails = {
   fileName: string;
@@ -947,6 +957,47 @@ export type PutV1TemplateByTemplateIdResponses = {
 
 export type PutV1TemplateByTemplateIdResponse =
   PutV1TemplateByTemplateIdResponses[keyof PutV1TemplateByTemplateIdResponses];
+
+export type PostV1TemplateByTemplateIdGenerateLetterProofData = {
+  /**
+   * Template to update
+   */
+  body: LetterProofRequest;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
+  path: {
+    /**
+     * ID of the template to request a proof of
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/generate-letter-proof';
+};
+
+export type PostV1TemplateByTemplateIdGenerateLetterProofErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1TemplateByTemplateIdGenerateLetterProofError =
+  PostV1TemplateByTemplateIdGenerateLetterProofErrors[keyof PostV1TemplateByTemplateIdGenerateLetterProofErrors];
+
+export type PostV1TemplateByTemplateIdGenerateLetterProofResponses = {
+  /**
+   * 201 response
+   */
+  201: TemplateSuccess;
+};
+
+export type PostV1TemplateByTemplateIdGenerateLetterProofResponse =
+  PostV1TemplateByTemplateIdGenerateLetterProofResponses[keyof PostV1TemplateByTemplateIdGenerateLetterProofResponses];
 
 export type GetV1TemplateByTemplateIdLetterVariantsData = {
   body?: never;

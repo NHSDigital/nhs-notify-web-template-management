@@ -1,7 +1,7 @@
 import type { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod/v4';
-import { failure, success, validate } from '@backend-api/utils/index';
+
 import {
   LETTER_MULTIPART,
   $LetterPatch,
@@ -9,6 +9,7 @@ import {
   $LockNumber,
   $TemplateDto,
   $TemplateFilter,
+  $LetterProofRequest,
 } from 'nhs-notify-backend-client/schemas';
 import {
   ErrorCase,
@@ -22,33 +23,35 @@ import type {
   CreateUpdateTemplate,
   LetterType,
   LetterVariant,
+  LetterProofRequest,
   PdfLetterFiles,
   TemplateDto,
 } from 'nhs-notify-web-template-management-types';
 import {
   $UploadPdfLetterTemplate,
   $UploadDocxLetterTemplate,
-  DatabaseTemplate,
-  User,
+  type DatabaseTemplate,
+  type User,
   $PdfLetterTemplate,
   AuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import type { ProofingQueue } from '../infra/proofing-queue';
-import type { ClientConfigRepository } from '../infra/client-config-repository';
-import type {
-  LetterUploadRepository,
-  TemplateRepository,
-} from '@backend-api/infra';
-import type { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+
+import type { ClientConfigRepository } from '@backend-api/infra/client-config-repository';
+import type { LetterUploadRepository } from '@backend-api/infra/letter-upload-repository';
 import type {
   LetterVariantQueryFilters,
   LetterVariantRepository,
 } from '@backend-api/infra/letter-variant-repository';
+import type { ProofingQueue } from '@backend-api/infra/proofing-queue';
+import type { TemplateRepository } from '@backend-api/infra/template-repository';
+import type { RenderQueue } from '@backend-api/infra/render-queue';
+import type { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+import { failure, success, validate } from '@backend-api/utils';
 
 export class TemplateClient {
-  private $LetterForProofing = z.intersection(
+  private $LetterForPdfProofing = z.intersection(
     $PdfLetterTemplate,
     z.object({
       templateType: z.literal('LETTER'),
@@ -61,6 +64,7 @@ export class TemplateClient {
     private readonly templateRepository: TemplateRepository,
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
+    private readonly renderQueue: RenderQueue,
     private readonly defaultLetterSupplier: string,
     private readonly clientConfigRepository: ClientConfigRepository,
     private readonly routingConfigRepository: RoutingConfigRepository,
@@ -395,7 +399,7 @@ export class TemplateClient {
     templateId: string,
     template: CreateUpdateTemplate,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -444,11 +448,11 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async patchLetterAuthoringTemplate(
+  async patchLetterTemplate(
     templateId: string,
     updates: LetterPatch,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -472,7 +476,7 @@ export class TemplateClient {
       return lockNumberValidation;
     }
 
-    const normalisedPatchResult = await this.normaliseLetterAuthoringPatch(
+    const normalisedPatchResult = await this.normaliseLetterPatch(
       templateId,
       validationResult.data,
       user,
@@ -512,7 +516,7 @@ export class TemplateClient {
   async submitTemplate(
     templateId: string,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -593,7 +597,7 @@ export class TemplateClient {
   async deleteTemplate(
     templateId: string,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
@@ -727,7 +731,7 @@ export class TemplateClient {
   async requestProof(
     templateId: string,
     user: User,
-    lockNumber: number | string
+    lockNumber: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -779,7 +783,7 @@ export class TemplateClient {
       return proofRequestUpdateResult;
     }
 
-    const proofLetterValidationResult = this.$LetterForProofing.safeParse(
+    const proofLetterValidationResult = this.$LetterForPdfProofing.safeParse(
       proofRequestUpdateResult.data
     );
 
@@ -843,7 +847,104 @@ export class TemplateClient {
       return templateResult;
     }
 
-    return this.queryLetterVariantsForAuthoringTemplate(templateResult.data);
+    return this.queryLetterVariantsForTemplate(templateResult.data);
+  }
+
+  async generateLetterProof(
+    templateId: string,
+    user: User,
+    lockNumberRaw: string,
+    body: LetterProofRequest
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({ templateId, user });
+
+    const validationResult = await validate($LetterProofRequest, body);
+
+    if (validationResult.error) {
+      log
+        .child(validationResult.error.errorMeta)
+        .error(
+          'Invalid letter proof request',
+          validationResult.error.actualError
+        );
+
+      return validationResult;
+    }
+
+    const { personalisation, systemPersonalisationPackId, requestTypeVariant } =
+      validationResult.data;
+
+    const lockNumberValidation = $LockNumber.safeParse(lockNumberRaw);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    const { data: lockNumber } = lockNumberValidation;
+
+    const pendingProofUpdateResult =
+      await this.templateRepository.letterProofUpdate(
+        templateId,
+        user,
+        lockNumber,
+        personalisation,
+        requestTypeVariant,
+        systemPersonalisationPackId
+      );
+
+    if (pendingProofUpdateResult.error) {
+      log
+        .child(pendingProofUpdateResult.error.errorMeta)
+        .error(pendingProofUpdateResult.error.actualError);
+
+      return pendingProofUpdateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(
+      pendingProofUpdateResult.data
+    );
+
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
+
+    if (
+      templateDTO.templateType !== 'LETTER' ||
+      templateDTO.letterVersion !== 'AUTHORING'
+    ) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Unexpectedly found template unsuitable for proofing'
+      );
+    }
+
+    const sendQueueResult = await this.renderQueue.send(
+      templateId,
+      user.clientId,
+      lockNumberValidation.data,
+      personalisation,
+      requestTypeVariant,
+      systemPersonalisationPackId,
+      templateDTO.files.docxTemplate.currentVersion
+    );
+
+    if (sendQueueResult.error) {
+      log
+        .child(sendQueueResult.error.errorMeta)
+        .error(sendQueueResult.error.actualError);
+
+      return sendQueueResult;
+    }
+
+    return success(templateDTO);
   }
 
   isCampaignIdValid(
@@ -904,7 +1005,7 @@ export class TemplateClient {
     return parseResult.data;
   }
 
-  private async queryLetterVariantsForAuthoringTemplate(
+  private async queryLetterVariantsForTemplate(
     template: AuthoringLetterTemplate
   ) {
     // x0 = standard, x1 = large print, q4 = BSL - ie all types are currently a standard letter from a variant/printing perspective
@@ -975,7 +1076,7 @@ export class TemplateClient {
     return success(template);
   }
 
-  private async normaliseLetterAuthoringPatch(
+  private async normaliseLetterPatch(
     templateId: string,
     patchInput: LetterPatch,
     user: User,
@@ -1026,7 +1127,7 @@ export class TemplateClient {
     };
 
     const variantsResult =
-      await this.queryLetterVariantsForAuthoringTemplate(effectiveTemplate);
+      await this.queryLetterVariantsForTemplate(effectiveTemplate);
 
     if (variantsResult.error) {
       return variantsResult;

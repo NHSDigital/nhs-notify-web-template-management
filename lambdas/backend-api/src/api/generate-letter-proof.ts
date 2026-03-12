@@ -1,6 +1,6 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from '@backend-api/api/responses';
-import type { TemplateClient } from '@backend-api/app/template-client';
+import { TemplateClient } from '@backend-api/app/template-client';
 import { toHeaders } from '@backend-api/utils/headers';
 
 export function createHandler({
@@ -13,17 +13,20 @@ export function createHandler({
 
     const templateId = event.pathParameters?.templateId;
 
-    const updates = JSON.parse(event.body || '{}');
-
     if (!internalUserId || !templateId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 
-    const { data, error } = await templateClient.patchLetterTemplate(
+    const body = JSON.parse(event.body || '{}');
+
+    const { data, error } = await templateClient.generateLetterProof(
       templateId,
-      updates,
-      { internalUserId, clientId },
-      toHeaders(event.headers).get('X-Lock-Number') ?? ''
+      {
+        internalUserId,
+        clientId,
+      },
+      toHeaders(event.headers).get('X-Lock-Number') ?? '',
+      body
     );
 
     if (error) {
@@ -34,6 +37,6 @@ export function createHandler({
       );
     }
 
-    return apiSuccess(200, data);
+    return apiSuccess(201, data);
   };
 }

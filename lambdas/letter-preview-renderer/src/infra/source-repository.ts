@@ -25,12 +25,12 @@ export class SourceRepository {
   async getSource({
     templateId,
     clientId,
-    currentVersion,
+    docxCurrentVersion,
   }: RenderRequest): Promise<SourceHandle> {
     const path = this.tempPath();
 
     const stream = await this.s3.getObjectStream(
-      this.sourcePathS3(templateId, clientId, currentVersion)
+      this.sourcePathS3(templateId, clientId, docxCurrentVersion)
     );
 
     await pipeline(stream, createWriteStream(path));

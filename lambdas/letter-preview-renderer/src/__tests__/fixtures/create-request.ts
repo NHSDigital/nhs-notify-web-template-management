@@ -1,6 +1,6 @@
 import type {
   InitialRenderRequest,
-  ShortPersonalisedRenderRequest,
+  PersonalisedRenderRequest,
 } from 'nhs-notify-backend-client/types';
 
 export const createInitialRequest = (
@@ -9,19 +9,20 @@ export const createInitialRequest = (
   requestType: 'initial',
   clientId: 'test-client',
   templateId: 'test-template',
-  currentVersion: 'test-version',
+  docxCurrentVersion: 'test-version',
   ...overrides,
 });
 
 export const createPersonalisedRequest = (
-  overrides: Partial<Omit<ShortPersonalisedRenderRequest, 'requestType'>> = {}
-): ShortPersonalisedRenderRequest => ({
+  overrides: Partial<Omit<PersonalisedRenderRequest, 'requestType'>> = {}
+): PersonalisedRenderRequest => ({
   requestType: 'personalised',
   requestTypeVariant: 'short',
   clientId: 'test-client',
   templateId: 'test-template',
-  currentVersion: 'test-version',
+  docxCurrentVersion: 'test-version',
   personalisation: { first_name: 'Test' },
+  systemPersonalisationPackId: 'test-pack-id',
   lockNumber: 1,
   ...overrides,
 });

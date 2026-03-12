@@ -43,9 +43,7 @@ describe('Template API - Patch', () => {
         }),
       });
 
-      expect(
-        mocks.templateClient.patchLetterAuthoringTemplate
-      ).not.toHaveBeenCalled();
+      expect(mocks.templateClient.patchLetterTemplate).not.toHaveBeenCalled();
     }
   );
 
@@ -71,15 +69,13 @@ describe('Template API - Patch', () => {
       }),
     });
 
-    expect(
-      mocks.templateClient.patchLetterAuthoringTemplate
-    ).not.toHaveBeenCalled();
+    expect(mocks.templateClient.patchLetterTemplate).not.toHaveBeenCalled();
   });
 
   test('should return 400 - Invalid request when no body', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.patchLetterAuthoringTemplate.mockResolvedValueOnce({
+    mocks.templateClient.patchLetterTemplate.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 400,
@@ -113,9 +109,7 @@ describe('Template API - Patch', () => {
       }),
     });
 
-    expect(
-      mocks.templateClient.patchLetterAuthoringTemplate
-    ).toHaveBeenCalledWith(
+    expect(mocks.templateClient.patchLetterTemplate).toHaveBeenCalledWith(
       '1-2-3',
       {},
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
@@ -150,15 +144,13 @@ describe('Template API - Patch', () => {
       }),
     });
 
-    expect(
-      mocks.templateClient.patchLetterAuthoringTemplate
-    ).not.toHaveBeenCalled();
+    expect(mocks.templateClient.patchLetterTemplate).not.toHaveBeenCalled();
   });
 
   test('should return error when patching template fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.patchLetterAuthoringTemplate.mockResolvedValueOnce({
+    mocks.templateClient.patchLetterTemplate.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 500,
@@ -191,9 +183,7 @@ describe('Template API - Patch', () => {
       }),
     });
 
-    expect(
-      mocks.templateClient.patchLetterAuthoringTemplate
-    ).toHaveBeenCalledWith(
+    expect(mocks.templateClient.patchLetterTemplate).toHaveBeenCalledWith(
       '1-2-3',
       { name: 'Updated Name' },
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
@@ -234,7 +224,7 @@ describe('Template API - Patch', () => {
       lockNumber: 6,
     };
 
-    mocks.templateClient.patchLetterAuthoringTemplate.mockResolvedValueOnce({
+    mocks.templateClient.patchLetterTemplate.mockResolvedValueOnce({
       data: response,
     });
 
@@ -259,9 +249,7 @@ describe('Template API - Patch', () => {
       body: JSON.stringify({ statusCode: 200, data: response }),
     });
 
-    expect(
-      mocks.templateClient.patchLetterAuthoringTemplate
-    ).toHaveBeenCalledWith(
+    expect(mocks.templateClient.patchLetterTemplate).toHaveBeenCalledWith(
       '1-2-3',
       updates,
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },
@@ -276,7 +264,7 @@ describe('Template API - Patch', () => {
       name: 'Updated Name',
     };
 
-    mocks.templateClient.patchLetterAuthoringTemplate.mockResolvedValueOnce({
+    mocks.templateClient.patchLetterTemplate.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 409,
@@ -309,9 +297,7 @@ describe('Template API - Patch', () => {
       }),
     });
 
-    expect(
-      mocks.templateClient.patchLetterAuthoringTemplate
-    ).toHaveBeenCalledWith(
+    expect(mocks.templateClient.patchLetterTemplate).toHaveBeenCalledWith(
       '1-2-3',
       updates,
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' },

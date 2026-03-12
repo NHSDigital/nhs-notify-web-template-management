@@ -8,6 +8,7 @@ import type {
   ClientConfiguration,
   LetterVariant,
   AuthoringLetterFiles,
+  LetterProofRequest,
 } from 'nhs-notify-web-template-management-types';
 import { TemplateRepository } from '../../infra';
 import { TemplateClient } from '../../app/template-client';
@@ -24,6 +25,7 @@ import { TemplateQuery } from '../../infra/template-repository/query';
 import { TemplateFilter } from 'nhs-notify-backend-client/types';
 import type { LetterVariantRepository } from '@backend-api/infra/letter-variant-repository';
 import { success } from '@backend-api/utils';
+import { RenderQueue } from '@backend-api/infra/render-queue';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/enum');
@@ -40,7 +42,9 @@ const setup = () => {
 
   const letterUploadRepository = mock<LetterUploadRepository>();
 
-  const queueMock = mock<ProofingQueue>();
+  const proofingQueueMock = mock<ProofingQueue>();
+
+  const renderQueueMock = mock<RenderQueue>();
 
   const clientConfigRepository = mock<ClientConfigRepository>();
 
@@ -57,7 +61,8 @@ const setup = () => {
   const templateClient = new TemplateClient(
     templateRepository,
     letterUploadRepository,
-    queueMock,
+    proofingQueueMock,
+    renderQueueMock,
     defaultLetterSupplier,
     clientConfigRepository,
     routingConfigRepository,
@@ -84,7 +89,8 @@ const setup = () => {
     mocks: {
       templateRepository,
       letterUploadRepository,
-      queueMock,
+      proofingQueueMock,
+      renderQueueMock,
       logger,
       clientConfigRepository,
       routingConfigRepository,
@@ -1777,7 +1783,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
@@ -1806,7 +1812,7 @@ describe('templateClient', () => {
         templateId,
         data as unknown as CreateUpdateTemplate,
         user,
-        1
+        '1'
       );
 
       expect(result).toEqual({
@@ -1835,7 +1841,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(result).toEqual({
@@ -1852,12 +1858,10 @@ describe('templateClient', () => {
     });
 
     describe('lock number parsing', () => {
-      const errorCases: [string, string | number][] = [
+      const errorCases: [string, string][] = [
         ['empty', ''],
-        ['negative', -1],
-        ['negative stringified', -1],
+        ['negative', '-1'],
         ['non-number string', 'a'],
-        ['NaN', Number.NaN],
         ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
@@ -1953,7 +1957,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
@@ -2006,7 +2010,7 @@ describe('templateClient', () => {
         templateId,
         data,
         user,
-        1
+        '1'
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
@@ -2067,11 +2071,11 @@ describe('templateClient', () => {
         data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
-      const result = await templateClient.patchLetterAuthoringTemplate(
+      const result = await templateClient.patchLetterTemplate(
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
@@ -2093,11 +2097,11 @@ describe('templateClient', () => {
         name: '',
       };
 
-      const result = await templateClient.patchLetterAuthoringTemplate(
+      const result = await templateClient.patchLetterTemplate(
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(result).toEqual({
@@ -2115,11 +2119,11 @@ describe('templateClient', () => {
 
       const updates = {};
 
-      const result = await templateClient.patchLetterAuthoringTemplate(
+      const result = await templateClient.patchLetterTemplate(
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(result).toEqual({
@@ -2133,12 +2137,10 @@ describe('templateClient', () => {
     });
 
     describe('lock number parsing', () => {
-      const errorCases: [string, string | number][] = [
+      const errorCases: [string, string][] = [
         ['empty', ''],
-        ['negative', -1],
-        ['negative stringified', -1],
+        ['negative', '-1'],
         ['non-number string', 'a'],
-        ['NaN', Number.NaN],
         ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
@@ -2150,7 +2152,7 @@ describe('templateClient', () => {
             name: 'Updated Name',
           };
 
-          const result = await templateClient.patchLetterAuthoringTemplate(
+          const result = await templateClient.patchLetterTemplate(
             templateId,
             updates,
             user,
@@ -2206,7 +2208,7 @@ describe('templateClient', () => {
           data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
@@ -2240,11 +2242,11 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.patchLetterAuthoringTemplate(
+      const result = await templateClient.patchLetterTemplate(
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
@@ -2308,11 +2310,11 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.patchLetterAuthoringTemplate(
+      const result = await templateClient.patchLetterTemplate(
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.templateRepository.patch).toHaveBeenCalledWith(
@@ -2344,11 +2346,11 @@ describe('templateClient', () => {
           error: { errorMeta: { description: 'err', code: 500 } },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
@@ -2373,11 +2375,11 @@ describe('templateClient', () => {
           data: { features: {}, campaignIds: ['fish-campaign'] },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
@@ -2419,11 +2421,11 @@ describe('templateClient', () => {
           },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -2466,11 +2468,11 @@ describe('templateClient', () => {
           },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -2523,11 +2525,11 @@ describe('templateClient', () => {
           data: { ...template, owner: user.clientId, version: 1 },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -2598,11 +2600,11 @@ describe('templateClient', () => {
           data: { ...updated, owner: `CLIENT#${user.clientId}`, version: 1 },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(result).toEqual({
@@ -2690,11 +2692,11 @@ describe('templateClient', () => {
             }
           );
 
-          const result = await templateClient.patchLetterAuthoringTemplate(
+          const result = await templateClient.patchLetterTemplate(
             templateId,
             updates,
             user,
-            5
+            '5'
           );
 
           expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -2767,11 +2769,11 @@ describe('templateClient', () => {
             success([mock<LetterVariant>({ id: 'some-global-variant' })])
           );
 
-          const result = await templateClient.patchLetterAuthoringTemplate(
+          const result = await templateClient.patchLetterTemplate(
             templateId,
             updates,
             user,
-            5
+            '5'
           );
 
           expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
@@ -2878,11 +2880,11 @@ describe('templateClient', () => {
             ])
           );
 
-          const result = await templateClient.patchLetterAuthoringTemplate(
+          const result = await templateClient.patchLetterTemplate(
             templateId,
             updates,
             user,
-            5
+            '5'
           );
 
           expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
@@ -2944,11 +2946,11 @@ describe('templateClient', () => {
           },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -2984,11 +2986,11 @@ describe('templateClient', () => {
           },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -3034,11 +3036,11 @@ describe('templateClient', () => {
           data: { ...template, owner: user.clientId, version: 1 },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -3099,11 +3101,11 @@ describe('templateClient', () => {
           }
         );
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -3169,11 +3171,11 @@ describe('templateClient', () => {
           }
         );
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(mocks.templateRepository.patch).not.toHaveBeenCalled();
@@ -3244,11 +3246,11 @@ describe('templateClient', () => {
           data: { ...updated, owner: `CLIENT#${user.clientId}`, version: 1 },
         });
 
-        const result = await templateClient.patchLetterAuthoringTemplate(
+        const result = await templateClient.patchLetterTemplate(
           templateId,
           updates,
           user,
-          5
+          '5'
         );
 
         expect(
@@ -3321,11 +3323,11 @@ describe('templateClient', () => {
         data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
-      const result = await templateClient.patchLetterAuthoringTemplate(
+      const result = await templateClient.patchLetterTemplate(
         templateId,
         updates,
         user,
-        5
+        '5'
       );
 
       expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
@@ -3976,7 +3978,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
@@ -4020,7 +4022,7 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
@@ -4061,7 +4063,7 @@ describe('templateClient', () => {
         data: { features: { routing: false } },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
@@ -4090,7 +4092,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 0);
+      const result = await templateClient.submitTemplate(templateId, user, '0');
 
       expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
@@ -4145,7 +4147,7 @@ describe('templateClient', () => {
         data: { ...approvedTemplate, owner: user.internalUserId, version: 2 },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
@@ -4204,7 +4206,7 @@ describe('templateClient', () => {
         data: { ...submittedTemplate, owner: user.internalUserId, version: 2 },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
@@ -4252,7 +4254,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
@@ -4280,7 +4282,7 @@ describe('templateClient', () => {
         error: templateError,
       });
 
-      const result = await templateClient.submitTemplate(templateId, user, 1);
+      const result = await templateClient.submitTemplate(templateId, user, '1');
 
       expect(mocks.templateRepository.submit).not.toHaveBeenCalled();
 
@@ -4317,7 +4319,7 @@ describe('templateClient', () => {
         data: { features: { proofing: false } },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -4340,7 +4342,7 @@ describe('templateClient', () => {
         error: { errorMeta: { description: 'err', code: 500 } },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -4384,7 +4386,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -4447,7 +4449,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -4500,7 +4502,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -4552,7 +4554,7 @@ describe('templateClient', () => {
 
       const clientErr = new Error('sqs err');
 
-      mocks.queueMock.send.mockResolvedValueOnce({
+      mocks.proofingQueueMock.send.mockResolvedValueOnce({
         error: {
           actualError: clientErr,
           errorMeta: {
@@ -4571,7 +4573,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -4579,8 +4581,8 @@ describe('templateClient', () => {
         1
       );
 
-      expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
-      expect(mocks.queueMock.send).toHaveBeenCalledWith(
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledTimes(1);
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
         user,
@@ -4646,9 +4648,11 @@ describe('templateClient', () => {
         data: { ...template, owner: `CLIENT#${user.clientId}`, version: 1 },
       });
 
-      mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
+      mocks.proofingQueueMock.send.mockResolvedValueOnce({
+        data: { $metadata: {} },
+      });
 
-      const result = await templateClient.requestProof(templateId, user, 1);
+      const result = await templateClient.requestProof(templateId, user, '1');
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
@@ -4656,8 +4660,8 @@ describe('templateClient', () => {
         1
       );
 
-      expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
-      expect(mocks.queueMock.send).toHaveBeenCalledWith(
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledTimes(1);
+      expect(mocks.proofingQueueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
         user,
@@ -4676,6 +4680,501 @@ describe('templateClient', () => {
     });
   });
 
+  describe('generateLetterProof', () => {
+    const validBody = {
+      personalisation: { name: 'Test Name' },
+      requestTypeVariant: 'short' as const,
+      systemPersonalisationPackId: 'pack-id',
+    };
+
+    test('returns failure result when body validation fails', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        {
+          invalid: 'body',
+        } as unknown as LetterProofRequest
+      );
+
+      expect(mocks.templateRepository.letterProofUpdate).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+          }),
+        }),
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'Invalid letter proof request',
+        })
+      );
+    });
+
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '',
+        validBody
+      );
+
+      expect(mocks.templateRepository.letterProofUpdate).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Invalid lock number provided',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'Lock number failed validation',
+        })
+      );
+    });
+
+    test('returns failure result when repository update fails', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const actualError = new Error('from db');
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        validBody
+      );
+
+      expect(mocks.templateRepository.letterProofUpdate).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'from db',
+        })
+      );
+    });
+
+    test('returns failure result when updated database template is invalid', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        clientId: user.clientId,
+        createdAt: undefined as unknown as string,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        validBody
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: expect.objectContaining({
+            description: 'Failed to parse template',
+          }),
+        })
+      );
+    });
+
+    test('returns failure result when template is not LETTER type', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        clientId: user.clientId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        message: 'message',
+        templateType: 'SMS',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        validBody
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Unexpectedly found template unsuitable for proofing',
+          },
+        },
+      });
+    });
+
+    test('returns failure result when template is LETTER but not AUTHORING', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        clientId: user.clientId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'PDF',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        validBody
+      );
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Unexpectedly found template unsuitable for proofing',
+          },
+        },
+      });
+    });
+
+    test('returns failure result when render queue send fails', async () => {
+      const { templateClient, mocks, logMessages } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        clientId: user.clientId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const actualError = new Error('SQS error');
+
+      mocks.renderQueueMock.send.mockResolvedValueOnce({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to send to render queue',
+          },
+        },
+      });
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        validBody
+      );
+
+      expect(mocks.renderQueueMock.send).toHaveBeenCalledWith(
+        templateId,
+        user.clientId,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId,
+        versionId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to send to render queue',
+          },
+        },
+      });
+
+      expect(logMessages).toContainEqual(
+        expect.objectContaining({
+          level: 'error',
+          message: 'SQS error',
+        })
+      );
+    });
+
+    test('returns updated template on success', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        clientId: user.clientId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+          shortFormRender: {
+            status: 'PENDING',
+            requestedAt: NOW,
+            personalisationParameters: validBody.personalisation,
+            systemPersonalisationPackId: validBody.systemPersonalisationPackId,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      mocks.renderQueueMock.send.mockResolvedValueOnce({
+        data: { $metadata: {} },
+      });
+
+      const result = await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '1',
+        validBody
+      );
+
+      expect(mocks.templateRepository.letterProofUpdate).toHaveBeenCalledWith(
+        templateId,
+        user,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId
+      );
+
+      expect(mocks.renderQueueMock.send).toHaveBeenCalledWith(
+        templateId,
+        user.clientId,
+        1,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId,
+        versionId
+      );
+
+      expect(result).toEqual({
+        data: expect.objectContaining({
+          id: templateId,
+          templateType: 'LETTER',
+          letterVersion: 'AUTHORING',
+        }),
+      });
+    });
+
+    test('coerces stringified lock number to number', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        id: templateId,
+        clientId: user.clientId,
+        createdAt: NOW,
+        updatedAt: NOW,
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: templateName,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        lockNumber: 2,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: versionId,
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            currentVersion: 'render-version',
+            fileName: 'render.pdf',
+            pageCount: 2,
+          },
+        },
+      };
+
+      mocks.templateRepository.letterProofUpdate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      mocks.renderQueueMock.send.mockResolvedValueOnce({
+        data: { $metadata: {} },
+      });
+
+      await templateClient.generateLetterProof(
+        templateId,
+        user,
+        '10',
+        validBody
+      );
+
+      expect(mocks.templateRepository.letterProofUpdate).toHaveBeenCalledWith(
+        templateId,
+        user,
+        10,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId
+      );
+
+      expect(mocks.renderQueueMock.send).toHaveBeenCalledWith(
+        templateId,
+        user.clientId,
+        10,
+        validBody.personalisation,
+        validBody.requestTypeVariant,
+        validBody.systemPersonalisationPackId,
+        versionId
+      );
+    });
+  });
+
   describe('deleteTemplate', () => {
     test('should return nothing when successful (and no routing configs linked)', async () => {
       const { templateClient, mocks } = setup();
@@ -4688,7 +5187,7 @@ describe('templateClient', () => {
         data: null,
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId
@@ -4721,7 +5220,7 @@ describe('templateClient', () => {
         ],
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId
@@ -4776,7 +5275,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId
@@ -4807,12 +5306,10 @@ describe('templateClient', () => {
     });
 
     describe('lock number parsing', () => {
-      const errorCases: [string, string | number][] = [
+      const errorCases: [string, string][] = [
         ['empty', ''],
-        ['negative', -1],
-        ['negative stringified', -1],
+        ['negative', '-1'],
         ['non-number string', 'a'],
-        ['NaN', Number.NaN],
         ['NaN stringified', 'NaN'],
       ];
       test.each(errorCases)(
@@ -4878,7 +5375,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.deleteTemplate(templateId, user, 1);
+      const result = await templateClient.deleteTemplate(templateId, user, '1');
 
       expect(
         mocks.routingConfigRepository.getByTemplateId

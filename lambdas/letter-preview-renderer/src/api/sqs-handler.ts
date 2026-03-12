@@ -20,10 +20,8 @@ export function createHandler({ app, logger }: Dependencies): SQSHandler {
 
     const request = $RenderRequest.parse(JSON.parse(event.Records[0].body));
 
-    if (request.requestType !== 'initial') {
-      return;
-    }
-
-    await app.renderInitial(request);
+    await (request.requestType === 'personalised'
+      ? app.renderPersonalised(request)
+      : app.renderInitial(request));
   };
 }
