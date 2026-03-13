@@ -322,6 +322,63 @@ export class TemplateRepository {
     }
   }
 
+  async approveLetterTemplate(
+    templateId: string,
+    user: User,
+    lockNumber: number
+  ) {
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      user.clientId,
+      templateId,
+      {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ReturnValues: 'ALL_NEW',
+      }
+    )
+      .setStatus('PROOF_APPROVED')
+      .expectStatus('NOT_YET_SUBMITTED')
+      .setUpdatedByUserAt(this.internalUserKey(user))
+      .expectTemplateType('LETTER')
+      .expectClientId(user.clientId)
+      .expectLetterVersion('AUTHORING')
+      .expectLockNumber(lockNumber)
+      .incrementLockNumber()
+      .build();
+
+    try {
+      const response = await this.client.send(new UpdateCommand(update));
+      return success(response.Attributes as DatabaseTemplate);
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
+          return failure(ErrorCase.NOT_FOUND, 'Template not found');
+        }
+
+        const oldItem = unmarshall(error.Item);
+
+        if (oldItem.lockNumber !== lockNumber) {
+          return failure(
+            ErrorCase.CONFLICT,
+            'Lock number mismatch - Template has been modified since last read',
+            error
+          );
+        }
+
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Template cannot be approved',
+          error
+        );
+      }
+
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
+    }
+  }
+
+  /**
+   * @deprecated - PDF letter only
+   */
   async approveProof(templateId: string, user: User, lockNumber: number) {
     const updateExpression = ['#templateStatus = :newStatus'];
 

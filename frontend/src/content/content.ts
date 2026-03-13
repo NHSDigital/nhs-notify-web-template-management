@@ -1791,6 +1791,10 @@ const reviewAndMoveToProduction = {
   },
 };
 
+const reviewAndApproveLetterTemplate = {
+  pageTitle: generatePageTitle('Review and approve letter template'),
+};
+
 const editTemplateNamePage = {
   pageTitle: generatePageTitle('Edit template name'),
   form: {
@@ -1899,6 +1903,7 @@ const content = {
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
+    reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,

@@ -558,6 +558,74 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
+  async approveTemplate(
+    templateId: string,
+    user: User,
+    lockNumber: string
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({ templateId, user });
+
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    const { data: template, error: templateError } = await this.getTemplate(
+      templateId,
+      user
+    );
+
+    if (templateError) {
+      log
+        .child(templateError.errorMeta)
+        .error('Failed to get template', templateError.actualError);
+
+      return { error: templateError };
+    }
+
+    if (template.templateType !== 'LETTER') {
+      log
+        .child({ templateType: template.templateType })
+        .error('Only letters may be approved');
+
+      return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
+    }
+
+    const updateResult = await this.templateRepository.approveLetterTemplate(
+      templateId,
+      user,
+      lockNumberValidation.data
+    );
+
+    if (updateResult.error) {
+      log
+        .child(updateResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          updateResult.error.actualError
+        );
+
+      return updateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
+
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
+  }
+
   async submitTemplate(
     templateId: string,
     user: User,
