@@ -4,24 +4,17 @@ import {
   DEFAULT_PERSONALISATION_LIST,
 } from 'nhs-notify-backend-client/src/schemas/constants';
 
-type ClassifiedMarkers = {
+type Markers = {
   valid: string[];
-  invalidRenderableDataMarkers: string[];
-  invalidRenderableNonDataMarkers: string[];
+  invalidRenderableData: string[];
+  invalidRenderableNonData: string[];
   nonRenderable: string[];
 };
 
-type ReconstructedMarkers = {
-  valid: string[];
-  invalidRenderableDataMarkers: string[];
-  invalidRenderableNonDataMarkers: string[];
-  nonRenderable: string[];
-};
-
-function classifyMarkers(carboneMarkers: Set<string>): ClassifiedMarkers {
+function classifyMarkers(carboneMarkers: Set<string>): Markers {
   const valid: string[] = [];
-  const invalidRenderableDataMarkers: string[] = [];
-  const invalidRenderableNonDataMarkers: string[] = [];
+  const invalidRenderableData: string[] = [];
+  const invalidRenderableNonData: string[] = [];
   const nonRenderable: string[] = [];
 
   for (const marker of carboneMarkers) {
@@ -42,14 +35,14 @@ function classifyMarkers(carboneMarkers: Set<string>): ClassifiedMarkers {
     }
 
     if (!marker.startsWith('d.')) {
-      invalidRenderableNonDataMarkers.push(marker);
+      invalidRenderableNonData.push(marker);
       continue;
     }
 
     const dataMarker = marker.slice(2);
 
     if (!/^[\w-]+$/.test(dataMarker)) {
-      invalidRenderableDataMarkers.push(dataMarker);
+      invalidRenderableData.push(dataMarker);
       continue;
     }
 
@@ -57,8 +50,8 @@ function classifyMarkers(carboneMarkers: Set<string>): ClassifiedMarkers {
   }
 
   return {
-    invalidRenderableDataMarkers,
-    invalidRenderableNonDataMarkers,
+    invalidRenderableData,
+    invalidRenderableNonData,
     nonRenderable,
     valid,
   };
@@ -72,19 +65,19 @@ function passthroughNonData(s: string) {
   return `{${s}}`;
 }
 
-function reconstructMarkers(
-  classified: ClassifiedMarkers
-): ReconstructedMarkers {
+function reconstructMarkers({
+  valid,
+  invalidRenderableData,
+  invalidRenderableNonData,
+  nonRenderable,
+}: Markers): Markers {
   return {
-    valid: classified.valid.map((m) => passthroughData(m)),
-    invalidRenderableDataMarkers: classified.invalidRenderableDataMarkers.map(
-      (m) => passthroughData(m)
+    valid: valid.map((m) => passthroughData(m)),
+    invalidRenderableData: invalidRenderableData.map((m) => passthroughData(m)),
+    invalidRenderableNonData: invalidRenderableNonData.map((m) =>
+      passthroughNonData(m)
     ),
-    invalidRenderableNonDataMarkers:
-      classified.invalidRenderableNonDataMarkers.map((m) =>
-        passthroughNonData(m)
-      ),
-    nonRenderable: classified.nonRenderable.map((m) => passthroughNonData(m)),
+    nonRenderable: nonRenderable.map((m) => passthroughNonData(m)),
   };
 }
 
@@ -104,33 +97,33 @@ function classifyPersonalisation(parameters: string[]) {
 }
 
 function buildPassthroughPersonalisation(
-  classified: ClassifiedMarkers,
-  reconstructed: ReconstructedMarkers
+  classified: Markers,
+  reconstructed: Markers
 ): Record<string, string> {
   const keys = [
     ...classified.valid,
-    ...classified.invalidRenderableDataMarkers,
-    ...classified.invalidRenderableNonDataMarkers,
+    ...classified.invalidRenderableData,
+    ...classified.invalidRenderableNonData,
   ];
   const values = [
     ...reconstructed.valid,
-    ...reconstructed.invalidRenderableDataMarkers,
-    ...reconstructed.invalidRenderableNonDataMarkers,
+    ...reconstructed.invalidRenderableData,
+    ...reconstructed.invalidRenderableNonData,
   ];
 
   return Object.fromEntries(keys.map((k, i) => [k, values[i]]));
 }
 
 function buildValidationErrors(
-  classified: ClassifiedMarkers,
-  reconstructed: ReconstructedMarkers
+  classified: Markers,
+  reconstructed: Markers
 ): ValidationErrorDetail[] {
   const errors: ValidationErrorDetail[] = [];
 
   const invalidMarkers = [
-    ...reconstructed.invalidRenderableDataMarkers,
+    ...reconstructed.invalidRenderableData,
     ...reconstructed.nonRenderable,
-    ...reconstructed.invalidRenderableNonDataMarkers,
+    ...reconstructed.invalidRenderableNonData,
   ];
 
   if (invalidMarkers.length > 0) {

@@ -3,7 +3,7 @@
 exports[`LetterRenderTab snapshots matches snapshot for long tab 1`] = `
 <DocumentFragment>
   <div
-    class="nhsuk-grid-row"
+    class="nhsuk-grid-row tabRow"
   >
     <div
       class="nhsuk-grid-column-one-third"
@@ -174,7 +174,7 @@ exports[`LetterRenderTab snapshots matches snapshot for long tab 1`] = `
 exports[`LetterRenderTab snapshots matches snapshot for short tab 1`] = `
 <DocumentFragment>
   <div
-    class="nhsuk-grid-row"
+    class="nhsuk-grid-row tabRow"
   >
     <div
       class="nhsuk-grid-column-one-third"

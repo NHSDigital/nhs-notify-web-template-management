@@ -272,7 +272,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -421,7 +421,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -821,7 +821,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -970,7 +970,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -1598,7 +1598,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -1747,7 +1747,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"

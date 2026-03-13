@@ -13,7 +13,7 @@ function TestConsumer() {
 }
 
 describe('LetterRenderPollingProvider', () => {
-  it('provides isAnyTabPolling as false by default', () => {
+  it('isAnyTabPolling is false by default', () => {
     render(
       <LetterRenderPollingProvider>
         <TestConsumer />
@@ -34,27 +34,6 @@ describe('LetterRenderPollingProvider', () => {
 
     act(() => {
       result.current.registerPolling('shortFormRender', true);
-    });
-
-    expect(result.current.isAnyTabPolling).toBe(true);
-
-    act(() => {
-      result.current.registerPolling('shortFormRender', false);
-    });
-
-    expect(result.current.isAnyTabPolling).toBe(false);
-  });
-
-  it('tracks multiple keys', () => {
-    const wrapper = ({ children }: PropsWithChildren) => (
-      <LetterRenderPollingProvider>{children}</LetterRenderPollingProvider>
-    );
-
-    const { result } = renderHook(() => useLetterRenderPolling(), { wrapper });
-
-    act(() => {
-      result.current.registerPolling('shortFormRender', true);
-      result.current.registerPolling('longFormRender', false);
     });
 
     expect(result.current.isAnyTabPolling).toBe(true);

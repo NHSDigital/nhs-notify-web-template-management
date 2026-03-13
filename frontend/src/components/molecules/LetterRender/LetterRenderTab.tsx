@@ -31,18 +31,10 @@ function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
   return `${basePath}/files/${template.clientId}/renders/${template.id}/${fileName}`;
 }
 
-function getPersonalisedRender(
+function derivePdfUrl(
   template: AuthoringLetterTemplate,
-  tab: PersonalisedRenderKey
-): RenderDetails | undefined {
-  return template.files[tab];
-}
-
-function getPdfUrl(
-  template: AuthoringLetterTemplate,
-  tab: PersonalisedRenderKey
+  personalisedRender: RenderDetails | undefined
 ): string | null {
-  const personalisedRender = getPersonalisedRender(template, tab);
   const initialRender = template.files.initialRender;
 
   const render =
@@ -55,12 +47,10 @@ function getPdfUrl(
     : null;
 }
 
-function getFormState(
+function deriveFormState(
   template: AuthoringLetterTemplate,
-  tab: PersonalisedRenderKey
+  personalisedRender: RenderDetails | undefined
 ): FormState {
-  const personalisedRender = getPersonalisedRender(template, tab);
-
   const renderedPersonalisation =
     personalisedRender?.status === 'RENDERED' ? personalisedRender : null;
 
@@ -92,7 +82,7 @@ function LetterRenderTabContent({
   const [_state, _dispatch, isPending] = useNHSNotifyForm();
 
   return (
-    <div className='nhsuk-grid-row'>
+    <div className={`nhsuk-grid-row ${styles.tabRow}`}>
       <div className='nhsuk-grid-column-one-third'>
         <LetterRenderForm template={template} tab={tab} />
       </div>
@@ -112,8 +102,10 @@ function LetterRenderTabContent({
 }
 
 export function LetterRenderTab({ template, tab }: LetterRenderTabProps) {
-  const formState = getFormState(template, tab);
-  const pdfUrl = getPdfUrl(template, tab);
+  const personalisedRender = template.files[tab];
+
+  const formState = deriveFormState(template, personalisedRender);
+  const pdfUrl = derivePdfUrl(template, personalisedRender);
 
   return (
     <NHSNotifyFormProvider

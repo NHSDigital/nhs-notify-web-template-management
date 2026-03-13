@@ -66,7 +66,7 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="nhsuk-grid-row"
+          class="nhsuk-grid-row tabRow"
         >
           <div
             class="nhsuk-grid-column-one-third"
@@ -258,7 +258,7 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="nhsuk-grid-row"
+          class="nhsuk-grid-row tabRow"
         >
           <div
             class="nhsuk-grid-column-one-third"

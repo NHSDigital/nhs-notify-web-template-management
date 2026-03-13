@@ -15,7 +15,7 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
-import { RENDER_TIMEOUT_MS } from '@hooks/use-letter-template-poll';
+import { RENDER_TIMEOUT_MS } from '@molecules/PollLetterRender/PollLetterRender';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

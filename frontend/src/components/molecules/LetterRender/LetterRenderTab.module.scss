@@ -1,11 +1,13 @@
-.iframeColumn {
-  --tab-height: 1200px;
+.tabRow {
+  display: flex;
+}
 
-  height: var(--tab-height);
+.iframeColumn {
+  min-height: 1200px;
 
   iframe {
     width: 100%;
-    height: var(--tab-height);
+    height: 100%;
     border: none;
   }
 }
