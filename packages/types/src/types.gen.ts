@@ -898,6 +898,44 @@ export type PutV1TemplateByTemplateIdResponses = {
 export type PutV1TemplateByTemplateIdResponse =
   PutV1TemplateByTemplateIdResponses[keyof PutV1TemplateByTemplateIdResponses];
 
+export type PatchV1TemplateByTemplateIdApproveData = {
+  body?: never;
+  headers: {
+    /**
+     * Lock number of the current version of the template
+     */
+    'X-Lock-Number': number;
+  };
+  path: {
+    /**
+     * ID of template to approve
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/approve';
+};
+
+export type PatchV1TemplateByTemplateIdApproveErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PatchV1TemplateByTemplateIdApproveError =
+  PatchV1TemplateByTemplateIdApproveErrors[keyof PatchV1TemplateByTemplateIdApproveErrors];
+
+export type PatchV1TemplateByTemplateIdApproveResponses = {
+  /**
+   * 200 response
+   */
+  200: TemplateSuccess;
+};
+
+export type PatchV1TemplateByTemplateIdApproveResponse =
+  PatchV1TemplateByTemplateIdApproveResponses[keyof PatchV1TemplateByTemplateIdApproveResponses];
+
 export type PostV1TemplateByTemplateIdGenerateLetterProofData = {
   /**
    * Template to update

@@ -48,6 +48,7 @@ data "aws_iam_policy_document" "api_gateway_execution_policy" {
     ]
 
     resources = [
+      module.approve_template_lambda.function_arn,
       module.authorizer_lambda.function_arn,
       module.upload_docx_letter_template_lambda.function_arn,
       module.upload_letter_template_lambda.function_arn,

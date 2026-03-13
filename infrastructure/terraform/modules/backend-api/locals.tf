@@ -12,6 +12,7 @@ locals {
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
     APIG_EXECUTION_ROLE_ARN                       = aws_iam_role.api_gateway_execution_role.arn
+    APPROVE_TEMPLATE_LAMBDA_ARN                   = module.approve_template_lambda.function_arn
     AUTHORIZER_LAMBDA_ARN                         = module.authorizer_lambda.function_arn
     AWS_REGION                                    = var.region
     COUNT_ROUTING_CONFIGS_LAMBDA_ARN              = module.count_routing_configs_lambda.function_arn
