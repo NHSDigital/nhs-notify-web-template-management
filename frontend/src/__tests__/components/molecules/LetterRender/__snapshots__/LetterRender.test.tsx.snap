@@ -66,7 +66,7 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="nhsuk-grid-row"
+          class="nhsuk-grid-row tabRow"
         >
           <div
             class="nhsuk-grid-column-one-third"
@@ -108,7 +108,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 <select
                   class="nhsuk-select recipientSelect"
                   id="system-personalisation-pack-id-shortFormRender"
-                  name="__systemPersonalisationPackId"
+                  name="systemPersonalisationPackId"
                 >
                   <option
                     selected=""
@@ -192,7 +192,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-appointmentDate-shortFormRender"
                   maxlength="500"
-                  name="appointmentDate"
+                  name="personalisation|appointmentDate"
                   type="text"
                   value=""
                 />
@@ -211,11 +211,26 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-clinicName-shortFormRender"
                   maxlength="500"
-                  name="clinicName"
+                  name="personalisation|clinicName"
                   type="text"
                   value=""
                 />
               </div>
+              <input
+                name="templateId"
+                type="hidden"
+                value="template-123"
+              />
+              <input
+                name="lockNumber"
+                type="hidden"
+                value="1"
+              />
+              <input
+                name="tab"
+                type="hidden"
+                value="shortFormRender"
+              />
               <button
                 aria-disabled="false"
                 class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
@@ -243,7 +258,7 @@ exports[`LetterRender matches snapshot 1`] = `
         role="tabpanel"
       >
         <div
-          class="nhsuk-grid-row"
+          class="nhsuk-grid-row tabRow"
         >
           <div
             class="nhsuk-grid-column-one-third"
@@ -285,7 +300,7 @@ exports[`LetterRender matches snapshot 1`] = `
                 <select
                   class="nhsuk-select recipientSelect"
                   id="system-personalisation-pack-id-longFormRender"
-                  name="__systemPersonalisationPackId"
+                  name="systemPersonalisationPackId"
                 >
                   <option
                     selected=""
@@ -369,7 +384,7 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-appointmentDate-longFormRender"
                   maxlength="500"
-                  name="appointmentDate"
+                  name="personalisation|appointmentDate"
                   type="text"
                   value=""
                 />
@@ -388,11 +403,26 @@ exports[`LetterRender matches snapshot 1`] = `
                   class="nhsuk-input"
                   id="custom-clinicName-longFormRender"
                   maxlength="500"
-                  name="clinicName"
+                  name="personalisation|clinicName"
                   type="text"
                   value=""
                 />
               </div>
+              <input
+                name="templateId"
+                type="hidden"
+                value="template-123"
+              />
+              <input
+                name="lockNumber"
+                type="hidden"
+                value="1"
+              />
+              <input
+                name="tab"
+                type="hidden"
+                value="longFormRender"
+              />
               <button
                 aria-disabled="false"
                 class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"

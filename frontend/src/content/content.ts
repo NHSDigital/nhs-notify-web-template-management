@@ -581,6 +581,7 @@ const letterRender = {
     short: 'Short examples',
     long: 'Long examples',
   },
+  loadingText: 'Loading letter preview',
   pdsSection: {
     heading: 'PDS personalisation fields',
     hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',
