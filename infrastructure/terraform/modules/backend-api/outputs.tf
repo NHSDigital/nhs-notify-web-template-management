@@ -46,6 +46,6 @@ output "routing_config_table_name" {
   value = aws_dynamodb_table.routing_configuration.name
 }
 
-output proof_requests_table_name {
+output "proof_requests_table_name" {
   value = aws_dynamodb_table.proof_requests.name
 }
