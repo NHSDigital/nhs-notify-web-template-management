@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Unique ID for this event"
+    },
+    "time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$",
+      "description": "Time the event was generated"
+    },
+    "type": {
+      "type": "string",
+      "const": "uk.nhs.notify.template-management.ProofRequested.v1"
+    },
+    "source": {
+      "type": "string",
+      "description": "Source of the event"
+    },
+    "specversion": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Version of the envelope event schema"
+    },
+    "datacontenttype": {
+      "type": "string",
+      "const": "application/json",
+      "description": "Always application/json"
+    },
+    "subject": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+      "description": "Unique identifier for the item in the event data"
+    },
+    "dataschema": {
+      "type": "string",
+      "const": "https://notify.nhs.uk/events/schemas/ProofRequested/v1.json"
+    },
+    "dataschemaversion": {
+      "type": "string",
+      "pattern": "^1\\..*"
+    },
+    "plane": {
+      "type": "string",
+      "const": "data"
+    },
+    "data": {
+      "$ref": "#/$defs/ProofRequestEventData"
+    }
+  },
+  "required": [
+    "id",
+    "time",
+    "type",
+    "source",
+    "specversion",
+    "datacontenttype",
+    "subject",
+    "dataschema",
+    "dataschemaversion",
+    "plane",
+    "data"
+  ],
+  "$defs": {
+    "ProofRequestEventData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+          "description": "Unique identifier of the proof request"
+        },
+        "templateId": {
+          "type": "string",
+          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+          "description": "Unique identifier for the template being proofed"
+        },
+        "templateType": {
+          "type": "string",
+          "enum": [
+            "NHS_APP",
+            "SMS",
+            "EMAIL"
+          ],
+          "description": "Template type for the template being proofed"
+        },
+        "testPatientNhsNumber": {
+          "type": "string",
+          "description": "NHS number of test patient to use in the proofing request"
+        },
+        "contactDetails": {
+          "description": "Contact details to send the proof to",
+          "type": "object",
+          "properties": {
+            "sms": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "personalisation": {
+          "description": "Personalisation fields to use in the proof",
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "templateId",
+        "templateType",
+        "testPatientNhsNumber"
+      ]
+    }
+  },
+  "$id": "https://notify.nhs.uk/events/schemas/ProofRequested/v1.json"
+}
