@@ -1,21 +1,20 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
 
 export function LetterSubmitButton({ children }: PropsWithChildren) {
   const { isAnyTabPolling } = useLetterRenderPolling();
 
   return (
-    <button
+    <NHSNotifyButton
       type='submit'
-      className={`nhsuk-button${isAnyTabPolling ? ' nhsuk-button--disabled' : ''}`}
       data-testid='preview-letter-template-cta'
       id='preview-letter-template-cta'
       disabled={isAnyTabPolling}
-      aria-disabled={isAnyTabPolling || undefined}
     >
       {children}
-    </button>
+    </NHSNotifyButton>
   );
 }

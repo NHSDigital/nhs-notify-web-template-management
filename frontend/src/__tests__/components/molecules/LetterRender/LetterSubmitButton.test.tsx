@@ -20,7 +20,7 @@ describe('LetterSubmitButton', () => {
     const button = screen.getByRole('button', { name: 'Submit template' });
 
     expect(button).not.toBeDisabled();
-    expect(button).not.toHaveAttribute('aria-disabled');
+    expect(button).toHaveAttribute('aria-disabled', 'false');
 
     expect(button).toHaveClass('nhsuk-button');
     expect(button).not.toHaveClass('nhsuk-button--disabled');

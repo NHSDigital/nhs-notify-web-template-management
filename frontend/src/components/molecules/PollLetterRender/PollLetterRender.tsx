@@ -63,8 +63,10 @@ export function PollLetterRender({
   );
 
   useEffect(() => {
-    if (!forcedRef.current && forcePolling) {
-      // forced polling has begun, track the template identity
+    const forcedPollingBegan = !forcedRef.current && forcePolling;
+
+    if (forcedPollingBegan) {
+      // track the template identity from before any updates
       staleTemplateRef.current = template;
 
       if (!isPolling) {
@@ -78,7 +80,7 @@ export function PollLetterRender({
       staleTemplateRef.current && staleTemplateRef.current !== template;
 
     if (templateHasUpdated) {
-      // clear the ref so polling can end
+      // clear the ref so once the template is RENDERED, polling can end
       staleTemplateRef.current = null;
     }
 

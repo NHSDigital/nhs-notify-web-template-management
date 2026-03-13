@@ -1920,6 +1920,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             value="1"
           />
           <button
+            aria-disabled="false"
             class="nhsuk-button"
             data-testid="preview-letter-template-cta"
             id="preview-letter-template-cta"
