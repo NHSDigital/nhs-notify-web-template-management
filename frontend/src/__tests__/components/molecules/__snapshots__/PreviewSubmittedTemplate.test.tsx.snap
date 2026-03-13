@@ -29,7 +29,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render PDF le
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example letter
@@ -295,7 +294,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example template
@@ -431,21 +429,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
       <div
         class="nhsuk-grid-column-full"
       >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example authoring letter
-          </h1>
-        </div>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
@@ -655,7 +638,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example Email template
@@ -825,7 +807,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             SMS template
@@ -970,7 +951,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render PDF let
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example letter
@@ -1233,7 +1213,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example template
@@ -1384,21 +1363,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
       <div
         class="nhsuk-grid-column-full"
       >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example authoring letter
-          </h1>
-        </div>
         <div
           class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
         >
@@ -1617,7 +1581,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example Email template
@@ -1802,7 +1765,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             SMS template

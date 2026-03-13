@@ -28,6 +28,8 @@ const {
   shortExampleHeading,
   longExampleHeading,
   submitText,
+  pageHeading,
+  headerCaption,
 } = content.pages.reviewAndApproveLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -69,9 +71,10 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
         <NHSNotifyFormProvider
           serverAction={reviewAndApproveLetterTemplateAction}
         >
-          {/*
-            add step 2 of 3 to details header somehow
-          */}
+          <div className='nhsuk-u-reading-width'>
+            <span className='nhsuk-caption-l'>{headerCaption}</span>
+            <h1 data-testid='preview-message__heading'>{pageHeading}</h1>
+          </div>
           <PreviewTemplateDetailsAuthoringLetter
             template={validatedTemplate}
             hideEditActions

@@ -71,7 +71,6 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                 Template
               </span>
               <h1
-                class="preview__heading"
                 data-testid="preview-message__heading"
               >
                 authoring letter template name
@@ -590,7 +589,6 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                 Template
               </span>
               <h1
-                class="preview__heading"
                 data-testid="preview-message__heading"
               >
                 authoring letter template name
@@ -1102,7 +1100,6 @@ exports[`valid PDF letter template matches snapshot 1`] = `
               Template
             </span>
             <h1
-              class="preview__heading"
               data-testid="preview-message__heading"
             >
               letter template name
@@ -1265,7 +1262,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 Template
               </span>
               <h1
-                class="preview__heading"
                 data-testid="preview-message__heading"
               >
                 authoring letter template name

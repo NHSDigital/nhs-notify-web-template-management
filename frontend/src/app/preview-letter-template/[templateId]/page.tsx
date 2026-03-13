@@ -18,6 +18,7 @@ import { getTemplate } from '@utils/form-actions';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
+import { DetailsHeader } from '@molecules/PreviewTemplateDetails/common';
 
 const {
   pageTitle,
@@ -98,6 +99,7 @@ export default async function PreviewLetterTemplatePage({
               <NHSNotifyForm.ErrorSummary />
               <div className='nhsuk-grid-row'>
                 <div className='nhsuk-grid-column-full'>
+                  <DetailsHeader templateName={validatedTemplate.name} />
                   <PreviewTemplateDetailsAuthoringLetter
                     template={validatedTemplate}
                   />

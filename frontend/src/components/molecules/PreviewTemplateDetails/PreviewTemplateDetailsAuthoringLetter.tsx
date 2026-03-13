@@ -8,7 +8,7 @@ import {
   statusToDisplayMapping,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { DetailSection, DetailsHeader, LockedTemplateWarning } from './common';
+import { DetailSection, LockedTemplateWarning } from './common';
 import { ActionLink } from './ActionLink';
 import concatClassNames from '@utils/concat-class-names';
 import {
@@ -73,8 +73,6 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
   return (
     <>
-      <DetailsHeader templateName={template.name} />
-
       {!hideEditName && (
         <p className='nhsuk-u-margin-bottom-4'>
           <Link

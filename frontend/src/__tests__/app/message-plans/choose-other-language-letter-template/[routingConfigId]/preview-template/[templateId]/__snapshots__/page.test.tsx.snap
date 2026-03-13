@@ -32,7 +32,6 @@ exports[`PreviewOtherLanguageLetterTemplateFromMessagePlan page renders foreign 
               Template
             </span>
             <h1
-              class="preview__heading"
               data-testid="preview-message__heading"
             >
               French letter template

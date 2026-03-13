@@ -1799,6 +1799,8 @@ const reviewAndApproveLetterTemplate = {
   shortExampleHeading: 'Short example preview',
   longExampleHeading: 'Long example preview',
   submitText: 'Approve letter template',
+  pageHeading: `Review and approve '{{templateName}}'`,
+  headerCaption: 'Step 2 of 2',
 };
 
 const editTemplateNamePage = {

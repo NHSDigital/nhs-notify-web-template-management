@@ -10,7 +10,10 @@ import {
   PageComponentProps,
   RoutingSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
-import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
+import {
+  DetailsHeader,
+  PreviewTemplateComponent,
+} from '@molecules/PreviewTemplateDetails/common';
 import { interpolate } from '@utils/interpolate';
 
 export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
@@ -55,6 +58,10 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
+            {template.templateType === 'LETTER' &&
+              template.letterVersion === 'AUTHORING' && (
+                <DetailsHeader templateName={template.name} />
+              )}
             {previewComponent({
               template,
               hideStatus: true,

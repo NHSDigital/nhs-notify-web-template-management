@@ -32,7 +32,6 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
               Template
             </span>
             <h1
-              class="preview__heading"
               data-testid="preview-message__heading"
             >
               email template name
