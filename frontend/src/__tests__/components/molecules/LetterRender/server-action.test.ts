@@ -206,6 +206,80 @@ describe('updateLetterPreview', () => {
     );
   });
 
+  it('merges system personalisation from the short tab recipient into the request', async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
+
+    const formData = buildFormData({
+      'personalisation|appointmentDate': '2025-01-15',
+    });
+
+    await updateLetterPreview({}, formData);
+
+    expect(mockGenerateLetterProof).toHaveBeenCalledWith('template-123', 1, {
+      systemPersonalisationPackId: 'short-1',
+      requestTypeVariant: 'short',
+      personalisation: {
+        appointmentDate: '2025-01-15',
+        nhsNumber: '9728543751',
+        firstName: 'Jo',
+        lastName: 'Bloggs',
+        fullName: 'Jo Bloggs',
+        middleNames: '',
+        namePrefix: '',
+        nameSuffix: '',
+        address_line_1: 'Jo Bloggs',
+        address_line_2: '1 High Street',
+        address_line_3: 'Leeds',
+        address_line_4: 'West Yorkshire',
+        address_line_5: 'LS1 1AA',
+        address_line_6: '',
+        address_line_7: '',
+        date: '11 March 2026',
+      },
+    });
+
+    jest.useRealTimers();
+  });
+
+  it('merges system personalisation from the long tab recipient into the request', async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
+
+    const formData = buildFormData({
+      systemPersonalisationPackId: 'long-1',
+      tab: 'longFormRender',
+      'personalisation|clinicName': 'Town Centre Clinic',
+    });
+
+    await updateLetterPreview({}, formData);
+
+    expect(mockGenerateLetterProof).toHaveBeenCalledWith('template-123', 1, {
+      systemPersonalisationPackId: 'long-1',
+      requestTypeVariant: 'long',
+      personalisation: {
+        clinicName: 'Town Centre Clinic',
+        nhsNumber: '9728543771',
+        firstName: 'Michael',
+        lastName: 'Richardson-Clarke',
+        fullName: 'Mr Michael James Richardson-Clarke',
+        middleNames: 'James',
+        namePrefix: 'Mr',
+        nameSuffix: '',
+        address_line_1: 'Mr Michael James Richardson-Clarke',
+        address_line_2: 'Apartment 42B The Granary Building',
+        address_line_3: 'Wellington Place Business Park',
+        address_line_4: 'Leeds',
+        address_line_5: 'West Yorkshire',
+        address_line_6: 'LS1 4AP',
+        address_line_7: '',
+        date: '11 March 2026',
+      },
+    });
+
+    jest.useRealTimers();
+  });
+
   it('includes todays date in personalisation, formatted', async () => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
