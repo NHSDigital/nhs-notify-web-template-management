@@ -9,7 +9,13 @@ const mockGenerateLetterProof = jest.mocked(generateLetterProof);
 
 beforeEach(() => {
   jest.clearAllMocks();
+  jest.useFakeTimers();
+  jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
   mockGenerateLetterProof.mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
+});
+
+afterEach(() => {
+  jest.useRealTimers();
 });
 
 function buildFormData(overrides: Record<string, string> = {}): FormData {
@@ -207,9 +213,6 @@ describe('updateLetterPreview', () => {
   });
 
   it('merges system personalisation from the short tab recipient into the request', async () => {
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
-
     const formData = buildFormData({
       'personalisation|appointmentDate': '2025-01-15',
     });
@@ -238,14 +241,9 @@ describe('updateLetterPreview', () => {
         date: '11 March 2026',
       },
     });
-
-    jest.useRealTimers();
   });
 
   it('merges system personalisation from the long tab recipient into the request', async () => {
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
-
     const formData = buildFormData({
       systemPersonalisationPackId: 'long-1',
       tab: 'longFormRender',
@@ -276,28 +274,5 @@ describe('updateLetterPreview', () => {
         date: '11 March 2026',
       },
     });
-
-    jest.useRealTimers();
-  });
-
-  it('includes todays date in personalisation, formatted', async () => {
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date('2026-03-11T14:30:00Z'));
-
-    const formData = buildFormData();
-
-    await updateLetterPreview({}, formData);
-
-    expect(mockGenerateLetterProof).toHaveBeenCalledWith(
-      'template-123',
-      1,
-      expect.objectContaining({
-        personalisation: expect.objectContaining({
-          date: '11 March 2026',
-        }),
-      })
-    );
-
-    jest.useRealTimers();
   });
 });
