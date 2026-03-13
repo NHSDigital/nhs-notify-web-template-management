@@ -38,10 +38,12 @@ export default function PreviewTemplateDetailsAuthoringLetter({
   template,
   hideStatus,
   hideEditActions,
+  hideLearnMore,
 }: {
   template: AuthoringLetterTemplate;
   hideStatus?: boolean;
   hideEditActions?: boolean;
+  hideLearnMore?: boolean;
 }) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
@@ -161,6 +163,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 label={actions.learnMore}
                 visuallyHiddenText={visuallyHidden.sheets}
                 testId='sheets-action'
+                hidden={hideLearnMore}
                 external
               />
             </SummaryList.Row>
@@ -205,6 +208,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 label={actions.learnMore}
                 visuallyHiddenText={visuallyHidden.status}
                 testId='status-action'
+                hidden={hideLearnMore}
                 external
               />
             </SummaryList.Row>

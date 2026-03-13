@@ -4,6 +4,7 @@ import { z } from 'zod/v4';
 import { $LockNumber } from 'nhs-notify-backend-client';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
+import { approveTemplate } from '@utils/form-actions';
 
 const $FormSchema = z.object({
   templateId: z.string().nonempty(),
@@ -24,5 +25,7 @@ export async function reviewAndApproveLetterTemplateAction(
 
   const { templateId, lockNumber } = result.data;
 
-  redirect(`/submit-letter-template/${templateId}?lockNumber=${lockNumber}`);
+  await approveTemplate(templateId, lockNumber);
+
+  redirect(`/letter-template-approved/${templateId}`);
 }

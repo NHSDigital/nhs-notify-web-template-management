@@ -110,6 +110,30 @@ export async function saveTemplate(
   return data;
 }
 
+export async function approveTemplate(
+  templateId: string,
+  lockNumber: number
+): Promise<TemplateDto> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.approveTemplate(
+    templateId,
+    accessToken,
+    lockNumber
+  );
+
+  if (error) {
+    logger.error('Failed to approve template', error);
+    throw new Error('Failed to approve template');
+  }
+
+  return data;
+}
+
 export async function patchTemplate(
   templateId: string,
   template: PatchTemplate,

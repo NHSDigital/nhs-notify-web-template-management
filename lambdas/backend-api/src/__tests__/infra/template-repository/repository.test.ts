@@ -968,6 +968,148 @@ describe('templateRepository', () => {
     });
   });
 
+  describe('approveLetterTemplate', () => {
+    test.each([
+      {
+        testName: 'When template does not exist',
+        Item: undefined,
+        code: 404,
+        message: 'Template not found',
+        returnActualError: false,
+      },
+      {
+        testName: 'Fails when template status is DELETED',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'DELETED',
+          lockNumber: 0,
+        }),
+        code: 404,
+        message: 'Template not found',
+        returnActualError: false,
+      },
+      {
+        testName: 'Fails when stored lock number differs from input',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          lockNumber: 1,
+        }),
+        code: 409,
+        message:
+          'Lock number mismatch - Template has been modified since last read',
+        returnActualError: true,
+      },
+      {
+        testName:
+          'Fails when template cannot be approved (condition check fails for other reasons)',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'SUBMITTED',
+          lockNumber: 0,
+        }),
+        code: 400,
+        message: 'Template cannot be approved',
+        returnActualError: true,
+      },
+    ])(
+      'approveLetterTemplate: $testName',
+      async ({ Item, code, message, returnActualError }) => {
+        const { templateRepository, mocks } = setup();
+
+        const error = new ConditionalCheckFailedException({
+          message: 'mocked',
+          $metadata: { httpStatusCode: 400 },
+          Item,
+        });
+
+        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+        const response = await templateRepository.approveLetterTemplate(
+          'abc-def-ghi-jkl-123',
+          user,
+          0
+        );
+
+        expect(response).toEqual({
+          error: {
+            ...(returnActualError ? { actualError: error } : {}),
+            errorMeta: {
+              code,
+              description: message,
+            },
+          },
+        });
+      }
+    );
+
+    test('should return error when an unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new Error('mocked');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.approveLetterTemplate(
+        'abc-def-ghi-jkl-123',
+        user,
+        0
+      );
+
+      expect(response).toEqual({
+        error: {
+          actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+    });
+
+    test('should update template status to PROOF_APPROVED', async () => {
+      const { templateRepository, mocks } = setup();
+      const id = 'abc-def-ghi-jkl-123';
+
+      const databaseTemplate: DatabaseTemplate = {
+        id,
+        owner: ownerWithClientPrefix,
+        version: 1,
+        name: 'updated-name',
+        message: 'updated-message',
+        templateStatus: 'PROOF_APPROVED',
+        templateType: 'LETTER',
+        updatedAt: 'now',
+        createdAt: 'yesterday',
+        lockNumber: 1,
+      };
+
+      mocks.ddbDocClient
+        .on(UpdateCommand, {
+          TableName: templatesTableName,
+          Key: { id, owner: ownerWithClientPrefix },
+        })
+        .resolves({ Attributes: databaseTemplate });
+
+      const response = await templateRepository.approveLetterTemplate(
+        id,
+        user,
+        0
+      );
+
+      expect(response).toEqual({
+        data: databaseTemplate,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'abc-def-ghi-jkl-123', owner: 'CLIENT#client-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+      });
+    });
+  });
+
   describe('approveProof', () => {
     test('should update template status to PROOF_APPROVED', async () => {
       const { templateRepository, mocks } = setup();

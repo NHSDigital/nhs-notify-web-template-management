@@ -19,6 +19,7 @@ import {
   setTemplateToSubmitted,
   requestTemplateProof,
   uploadDocxTemplate,
+  approveTemplate,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
 import {
@@ -880,6 +881,82 @@ describe('form-actions', () => {
       });
 
       await expect(setTemplateToSubmitted('id', 0)).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
+  });
+
+  describe('approveTemplate', () => {
+    test('approveTemplate successfully', async () => {
+      const responseData = {
+        id: 'id',
+        templateType: 'LETTER',
+        templateStatus: 'PROOF_APPROVED',
+        name: 'name',
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
+        lockNumber: 1,
+        language: 'en',
+        letterType: 'x0',
+        letterVersion: 'AUTHORING',
+        files: {
+          docxTemplate: {
+            fileName: 'template.docx',
+            currentVersion: 'v1',
+            virusScanStatus: 'PASSED',
+          },
+          initialRender: {
+            status: 'RENDERED',
+            fileName: 'render.pdf',
+            currentVersion: 'v1',
+            pageCount: 2,
+          },
+        },
+      } satisfies TemplateDto;
+
+      mockedTemplateClient.approveTemplate.mockResolvedValueOnce({
+        data: responseData,
+      });
+
+      const response = await approveTemplate('id', 0);
+
+      expect(mockedTemplateClient.approveTemplate).toHaveBeenCalledWith(
+        'id',
+        'token',
+        0
+      );
+
+      expect(response).toEqual(responseData);
+    });
+
+    test('approveTemplate - should throw error when saving unexpectedly fails', async () => {
+      mockedTemplateClient.approveTemplate.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
+        },
+      });
+
+      await expect(approveTemplate('id', 0)).rejects.toThrow(
+        'Failed to approve template'
+      );
+
+      expect(mockedTemplateClient.approveTemplate).toHaveBeenCalledWith(
+        'id',
+        'token',
+        0
+      );
+    });
+
+    test('approveTemplate - should throw error when no token', async () => {
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        clientId: undefined,
+      });
+
+      await expect(approveTemplate('id', 0)).rejects.toThrow(
         'Failed to get access token'
       );
     });

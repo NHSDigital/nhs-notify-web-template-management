@@ -3,22 +3,32 @@
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import {
+  AuthoringLetterTemplate,
   TemplatePageProps,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import content from '@content/content';
-import { $LockNumber } from 'nhs-notify-backend-client';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import Link from 'next/link';
 import { reviewAndApproveLetterTemplateAction } from './server-action';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
+import { getBasePath } from '@utils/get-base-path';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
+import { interpolate } from '@utils/interpolate';
 
-const { pageTitle } = content.pages.reviewAndApproveLetterTemplate;
+const {
+  pageTitle,
+  goBackButtonText,
+  goBackPath,
+  shortExampleHeading,
+  longExampleHeading,
+  submitText,
+} = content.pages.reviewAndApproveLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,19 +36,24 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
+  const basePath = getBasePath();
+  return `${basePath}/files/${template.clientId}/renders/${template.id}/${fileName}`;
+}
+
+function derivePdfUrl(
+  template: AuthoringLetterTemplate,
+  tab: 'longFormRender' | 'shortFormRender'
+): string | null {
+  const render = template.files[tab];
+
+  return render?.status === 'RENDERED'
+    ? buildPdfUrl(template, render.fileName)
+    : null;
+}
+
 const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
-
-  const searchParams = await props.searchParams;
-
-  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
-
-  if (!lockNumberResult.success) {
-    return redirect(
-      `/preview-letter-template/${templateId}`,
-      RedirectType.replace
-    );
-  }
 
   const template = await getTemplate(templateId);
 
@@ -54,9 +69,26 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
         <NHSNotifyFormProvider
           serverAction={reviewAndApproveLetterTemplateAction}
         >
-          <PreviewTemplateDetailsAuthoringLetter template={validatedTemplate} />
-          <LetterRenderIframe tab='shortFormRender' pdfUrl='' />
-          <LetterRenderIframe tab='longFormRender' pdfUrl='' />
+          {/*
+            add step 2 of 3 to details header somehow
+          */}
+          <PreviewTemplateDetailsAuthoringLetter
+            template={validatedTemplate}
+            hideEditActions
+            hideLearnMore
+          />
+          <h2 className='nhsuk-heading-m'>{shortExampleHeading}</h2>
+          <LetterRenderIframe
+            className={styles.iframe}
+            tab='shortFormRender'
+            pdfUrl={derivePdfUrl(validatedTemplate, 'shortFormRender')}
+          />
+          <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
+          <LetterRenderIframe
+            className={styles.iframe}
+            tab='longFormRender'
+            pdfUrl={derivePdfUrl(validatedTemplate, 'longFormRender')}
+          />
           <NHSNotifyForm.Form formId='preview-letter-template'>
             <input
               type='hidden'
@@ -68,19 +100,29 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               name='lockNumber'
               value={validatedTemplate.lockNumber}
             />
-            <button
-              type='submit'
-              className='nhsuk-button'
-              data-testid='preview-letter-template-cta'
-              id='preview-letter-template-cta'
-            >
-              {'submitText'}
-            </button>
-          </NHSNotifyForm.Form>
+            <div className='nhsuk-form-group'>
+              <NHSNotifyButton
+                type='submit'
+                data-testid='preview-letter-template-cta'
+                id='preview-letter-template-cta'
+              >
+                {submitText}
+              </NHSNotifyButton>
 
-          <p>
-            <Link href={'links.messageTemplates'}>{'backLinkText'}</Link>
-          </p>
+              <NHSNotifyButton
+                secondary
+                id='go-back-button'
+                href={interpolate(goBackPath, {
+                  templateId: validatedTemplate.id,
+                  basePath: getBasePath(),
+                })}
+                data-testid='back-link-bottom'
+                className='nhsuk-u-margin-left-3'
+              >
+                {goBackButtonText}
+              </NHSNotifyButton>
+            </div>
+          </NHSNotifyForm.Form>
         </NHSNotifyFormProvider>
       </NHSNotifyMain>
     </NHSNotifyContainer>

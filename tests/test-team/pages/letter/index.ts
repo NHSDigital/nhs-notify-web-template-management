@@ -2,6 +2,7 @@ export * from './template-mgmt-edit-template-campaign-page';
 export * from './template-mgmt-edit-template-name-page';
 export * from './template-mgmt-preview-letter-page';
 export * from './template-mgmt-preview-submitted-letter-page';
+export * from './template-mgmt-review-and-approve-letter-template-page';
 export * from './template-mgmt-submit-letter-page';
 export * from './template-mgmt-template-submitted-letter-page';
 export * from './template-mgmt-upload-bsl-letter-template-page';

@@ -3202,6 +3202,173 @@ describe('templateClient', () => {
     });
   });
 
+  describe('approveTemplate', () => {
+    const notYetSubmittedLetterDto: TemplateDto = {
+      id: templateId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'name',
+      templateType: 'LETTER',
+      lockNumber: 1,
+      language: 'en',
+      letterType: 'x0',
+      letterVersion: 'AUTHORING',
+      files: {
+        docxTemplate: {
+          fileName: 'template.docx',
+          currentVersion: 'v1',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          status: 'RENDERED',
+          fileName: 'render.pdf',
+          currentVersion: 'v1',
+          pageCount: 2,
+        },
+      },
+    };
+
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.approveTemplate(templateId, user, '');
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Invalid lock number provided',
+          },
+        },
+      });
+    });
+
+    test('should return a failure result when saving to the database fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedLetterDto,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).toHaveBeenCalledWith(templateId, user, 0);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+    });
+
+    test('should return a failure result when updated database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        ...notYetSubmittedLetterDto,
+        createdAt: undefined as unknown as string,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+      };
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedLetterDto,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).toHaveBeenCalledWith(templateId, user, 0);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
+        },
+      });
+    });
+
+    test('should return template approved to PROOF_APPROVED', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedLetterDto,
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedLetterDto,
+          templateStatus: 'PROOF_APPROVED',
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).toHaveBeenCalledWith(templateId, user, 0);
+
+      expect(result).toEqual({
+        data: {
+          ...notYetSubmittedLetterDto,
+          templateStatus: 'PROOF_APPROVED',
+        },
+      });
+    });
+  });
+
   describe('requestProof', () => {
     test('returns failure result when lock number is invalid', async () => {
       const { templateClient, mocks } = setup();

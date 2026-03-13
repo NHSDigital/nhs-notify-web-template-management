@@ -579,27 +579,6 @@ export class TemplateClient {
       );
     }
 
-    const { data: template, error: templateError } = await this.getTemplate(
-      templateId,
-      user
-    );
-
-    if (templateError) {
-      log
-        .child(templateError.errorMeta)
-        .error('Failed to get template', templateError.actualError);
-
-      return { error: templateError };
-    }
-
-    if (template.templateType !== 'LETTER') {
-      log
-        .child({ templateType: template.templateType })
-        .error('Only letters may be approved');
-
-      return failure(ErrorCase.VALIDATION_FAILED, 'Unexpected non-letter');
-    }
-
     const updateResult = await this.templateRepository.approveLetterTemplate(
       templateId,
       user,
