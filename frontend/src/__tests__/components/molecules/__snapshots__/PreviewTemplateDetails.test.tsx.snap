@@ -2,6 +2,20 @@
 
 exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = `
 <DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      data-testid="preview-message__heading"
+    >
+      Authoring Letter
+    </h1>
+  </div>
   <p
     class="nhsuk-u-margin-bottom-4"
   >
@@ -208,6 +222,20 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot 1`] = 
 exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with hideEditActions 1`] = `
 <DocumentFragment>
   <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      data-testid="preview-message__heading"
+    >
+      Authoring Letter
+    </h1>
+  </div>
+  <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
     <dl
@@ -377,6 +405,20 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
 
 exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with initialRender in non-RENDERED status - page counts are not displayed 1`] = `
 <DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      data-testid="preview-message__heading"
+    >
+      Authoring Letter
+    </h1>
+  </div>
   <p
     class="nhsuk-u-margin-bottom-4"
   >
@@ -534,6 +576,20 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with i
 
 exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot without letterVariantId (shows missing value styling) 1`] = `
 <DocumentFragment>
+  <div
+    class="nhsuk-u-reading-width"
+  >
+    <span
+      class="nhsuk-caption-l"
+    >
+      Template
+    </span>
+    <h1
+      data-testid="preview-message__heading"
+    >
+      Authoring Letter
+    </h1>
+  </div>
   <p
     class="nhsuk-u-margin-bottom-4"
   >

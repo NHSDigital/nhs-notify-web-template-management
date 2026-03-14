@@ -14,7 +14,7 @@ import { NHSNotifyFormProvider } from '@providers/form-provider';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { reviewAndApproveLetterTemplateAction } from './server-action';
-import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
+import { PreviewTemplateDetailsAuthoringLetterTable } from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
@@ -75,7 +75,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
             <span className='nhsuk-caption-l'>{headerCaption}</span>
             <h1 data-testid='preview-message__heading'>{pageHeading}</h1>
           </div>
-          <PreviewTemplateDetailsAuthoringLetter
+          <PreviewTemplateDetailsAuthoringLetterTable
             template={validatedTemplate}
             hideEditActions
             hideLearnMore

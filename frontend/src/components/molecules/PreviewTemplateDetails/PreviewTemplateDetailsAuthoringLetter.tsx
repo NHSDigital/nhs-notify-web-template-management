@@ -8,7 +8,7 @@ import {
   statusToDisplayMapping,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { DetailSection, LockedTemplateWarning } from './common';
+import { DetailSection, DetailsHeader, LockedTemplateWarning } from './common';
 import { ActionLink } from './ActionLink';
 import concatClassNames from '@utils/concat-class-names';
 import {
@@ -34,7 +34,7 @@ function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
   return { pages, sheets };
 }
 
-export default function PreviewTemplateDetailsAuthoringLetter({
+export function PreviewTemplateDetailsAuthoringLetterTable({
   template,
   hideStatus,
   hideEditActions,
@@ -213,6 +213,30 @@ export default function PreviewTemplateDetailsAuthoringLetter({
           )}
         </DetailSection>
       </Container>
+    </>
+  );
+}
+
+export default function PreviewTemplateDetailsAuthoringLetter({
+  template,
+  hideStatus,
+  hideEditActions,
+  hideLearnMore,
+}: {
+  template: AuthoringLetterTemplate;
+  hideStatus?: boolean;
+  hideEditActions?: boolean;
+  hideLearnMore?: boolean;
+}) {
+  return (
+    <>
+      <DetailsHeader templateName={template.name} />
+      <PreviewTemplateDetailsAuthoringLetterTable
+        template={template}
+        hideStatus={hideStatus}
+        hideEditActions={hideEditActions}
+        hideLearnMore={hideLearnMore}
+      />
     </>
   );
 }
