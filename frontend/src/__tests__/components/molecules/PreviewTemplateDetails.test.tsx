@@ -459,15 +459,17 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
 
   describe('sheets calculation', () => {
     it.each([
-      { pageCount: 1, expectedSheets: 1 },
-      { pageCount: 2, expectedSheets: 1 },
-      { pageCount: 3, expectedSheets: 2 },
-      { pageCount: 4, expectedSheets: 2 },
-      { pageCount: 5, expectedSheets: 3 },
-      { pageCount: 6, expectedSheets: 3 },
+      { pageCount: 1, expectedSheets: 1, bothSides: true },
+      { pageCount: 2, expectedSheets: 1, bothSides: true },
+      { pageCount: 3, expectedSheets: 2, bothSides: true },
+      { pageCount: 4, expectedSheets: 2, bothSides: true },
+      { pageCount: 5, expectedSheets: 3, bothSides: true },
+      { pageCount: 6, expectedSheets: 3, bothSides: true },
+      { pageCount: 1, expectedSheets: 1, bothSides: false },
+      { pageCount: 6, expectedSheets: 6, bothSides: false },
     ])(
-      'calculates sheets as $expectedSheets when pageCount is $pageCount',
-      ({ pageCount, expectedSheets }) => {
+      'calculates sheets as $expectedSheets when pageCount is $pageCount and bothSides is $bothSides',
+      ({ pageCount, expectedSheets, bothSides }) => {
         render(
           <PreviewTemplateDetailsAuthoringLetter
             template={{
@@ -485,6 +487,19 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
                   pageCount,
                 },
               },
+            }}
+            letterVariant={{
+              bothSides,
+              dispatchTime: '2026-03-16T14:51:43.884Z',
+              envelopeSize: 'C5',
+              id: 'variant-id',
+              maxSheets: 4,
+              name: 'test',
+              postage: 'first',
+              printColour: 'black',
+              sheetSize: 'A4',
+              status: 'PROD',
+              type: 'STANDARD',
             }}
           />
         );

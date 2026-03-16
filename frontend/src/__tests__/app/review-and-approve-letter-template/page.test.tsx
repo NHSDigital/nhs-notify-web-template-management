@@ -16,15 +16,11 @@ import Page, {
   generateMetadata,
 } from '@app/review-and-approve-letter-template/[templateId]/page';
 import { reviewAndApproveLetterTemplateAction } from '@app/review-and-approve-letter-template/[templateId]/server-action';
-import content from '@content/content';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@app/review-and-approve-letter-template/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
-
-const { pageTitle, pageHeading, headerCaption } =
-  content.pages.reviewAndApproveLetterTemplate;
 
 const defaultSearchParams = Promise.resolve({
   lockNumber: String(AUTHORING_LETTER_TEMPLATE.lockNumber),
@@ -39,7 +35,7 @@ beforeEach(() => {
 
 test('metadata', async () => {
   expect(await generateMetadata()).toEqual({
-    title: pageTitle,
+    title: 'Review and approve letter template - NHS Notify',
   });
 });
 
@@ -227,9 +223,9 @@ describe('valid authoring letter template', () => {
     );
 
     expect(screen.getByTestId('preview-message__heading')).toHaveTextContent(
-      pageHeading
+      `Review and approve 'authoring letter template name'`
     );
-    expect(screen.getByText(headerCaption)).toBeInTheDocument();
+    expect(screen.getByText('Step 2 of 2')).toBeInTheDocument();
   });
 
   it('renders hidden templateId and lockNumber inputs', async () => {

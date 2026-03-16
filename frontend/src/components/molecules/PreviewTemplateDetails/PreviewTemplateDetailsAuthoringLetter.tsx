@@ -32,13 +32,18 @@ type PreviewTemplateDetailsAuthoringLetterProps = {
 const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
-function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
+function pagesAndSheetsCount(
+  template: AuthoringLetterTemplate,
+  bothSides = true
+) {
   const pages =
     template.files.initialRender.status === 'RENDERED'
       ? template.files.initialRender.pageCount
       : 0;
 
-  const sheets = Math.ceil(pages / 2);
+  const pagesPerSheet = bothSides ? 2 : 1;
+
+  const sheets = Math.ceil(pages / pagesPerSheet);
 
   return { pages, sheets };
 }
@@ -53,7 +58,10 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
 
-  const { pages, sheets } = pagesAndSheetsCount(template);
+  const { pages, sheets } = pagesAndSheetsCount(
+    template,
+    letterVariant?.bothSides
+  );
 
   const hasSingleCampaign = campaignIds.length === 1;
 

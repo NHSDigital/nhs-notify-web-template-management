@@ -21,6 +21,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
 import { interpolate } from '@utils/interpolate';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
+import concatClassNames from '@utils/concat-class-names';
 
 const {
   pageTitle,
@@ -94,7 +95,11 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
         >
           <div className='nhsuk-u-reading-width'>
             <span className='nhsuk-caption-l'>{headerCaption}</span>
-            <h1 data-testid='preview-message__heading'>{pageHeading}</h1>
+            <h1 data-testid='preview-message__heading'>
+              {interpolate(pageHeading, {
+                templateName: validatedTemplate.name,
+              })}
+            </h1>
           </div>
           <PreviewTemplateDetailsAuthoringLetterTable
             template={validatedTemplate}
@@ -104,13 +109,19 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
           />
           <h2 className='nhsuk-heading-m'>{shortExampleHeading}</h2>
           <LetterRenderIframe
-            className={styles.iframe}
+            className={concatClassNames(
+              styles.iframe,
+              'nhsuk-u-margin-bottom-6'
+            )}
             tab='shortFormRender'
             pdfUrl={derivePdfUrl(validatedTemplate, 'shortFormRender')}
           />
           <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
           <LetterRenderIframe
-            className={styles.iframe}
+            className={concatClassNames(
+              styles.iframe,
+              'nhsuk-u-margin-bottom-6'
+            )}
             tab='longFormRender'
             pdfUrl={derivePdfUrl(validatedTemplate, 'longFormRender')}
           />
