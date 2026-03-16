@@ -200,6 +200,7 @@ describe('Template API - Approve', () => {
 
     const response: TemplateDto = {
       id: '1-2-3',
+      clientId: 'clientid',
       name: 'approved-template',
       templateStatus: 'PROOF_APPROVED',
       templateType: 'LETTER',

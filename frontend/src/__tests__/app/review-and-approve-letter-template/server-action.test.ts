@@ -19,6 +19,7 @@ describe('reviewAndApproveLetterTemplateAction', () => {
   it('should call approveTemplate and redirect on valid form data', async () => {
     approveTemplateMock.mockResolvedValueOnce({
       id: 'template-123',
+      clientId: 'client',
       name: 'name',
       templateStatus: 'PROOF_APPROVED',
       templateType: 'LETTER',

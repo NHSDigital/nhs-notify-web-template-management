@@ -4295,6 +4295,7 @@ describe('templateClient', () => {
   describe('approveTemplate', () => {
     const notYetSubmittedLetterDto: TemplateDto = {
       id: templateId,
+      clientId: 'client',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateStatus: 'NOT_YET_SUBMITTED',

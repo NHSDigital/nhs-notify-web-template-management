@@ -898,6 +898,7 @@ describe('form-actions', () => {
     test('approveTemplate successfully', async () => {
       const responseData = {
         id: 'id',
+        clientId: 'client-id',
         templateType: 'LETTER',
         templateStatus: 'PROOF_APPROVED',
         name: 'name',

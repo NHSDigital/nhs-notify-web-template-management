@@ -2,14 +2,12 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
-import {
-  createAuthHelper,
-  testUsers,
-} from '../../helpers/auth/cognito-auth-helper';
+import { testUsers } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtReviewAndApproveLetterTemplatePage } from '../../pages/letter/template-mgmt-review-and-approve-letter-template-page';
+import { getTestContext } from '../../helpers/context/context';
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+  const user = await getTestContext().auth.getTestUser(testUsers.User1.userId);
   return {
     valid: TemplateFactory.createAuthoringLetterTemplate(
       'e3a1b2c3-d4e5-6f78-9a0b-c1d2e3f4a5b6',

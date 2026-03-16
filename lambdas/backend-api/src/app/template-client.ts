@@ -541,6 +541,7 @@ export class TemplateClient {
       template.templateType !== 'LETTER' ||
       template.letterVersion !== 'AUTHORING' ||
       template.templateStatus !== 'NOT_YET_SUBMITTED' ||
+      !template.clientId ||
       !template.letterVariantId
     ) {
       return failure(ErrorCase.VALIDATION_FAILED, '...');

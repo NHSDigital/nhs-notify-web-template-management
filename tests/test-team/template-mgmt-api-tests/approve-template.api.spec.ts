@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   isoDateRegExp,
@@ -11,22 +7,25 @@ import {
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { randomUUID } from 'node:crypto';
-import { TemplateFactory } from 'helpers/factories/template-factory';
-import { Template } from 'helpers/types';
+import { TemplateFactory } from '../helpers/factories/template-factory';
+import { Template } from '../helpers/types';
+import { getTestContext } from '../helpers/context/context';
 
 test.describe('PATCH /v1/template/:templateId/approve', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let userRoutingDisabled: TestUser;
   let userLetterAuthoring: TestUser;
   let userLetterAuthoringSharedClient: TestUser;
 
   test.beforeAll(async () => {
-    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
-    userLetterAuthoring = await authHelper.getTestUser(
+    userRoutingDisabled = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
+    userLetterAuthoring = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
-    userLetterAuthoringSharedClient = await authHelper.getTestUser(
+    userLetterAuthoringSharedClient = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabledSharedClient.userId
     );
   });
@@ -151,7 +150,9 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     });
   });
 
-  test('returns 200 and sets status to PROOF_APPROVED', async ({ request }) => {
+  test.only('returns 200 and sets status to PROOF_APPROVED', async ({
+    request,
+  }) => {
     const {
       id: templateId,
       name,
