@@ -60,6 +60,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
         },
       }
     );
+
     expect(response.status()).toBe(401);
     expect(await response.json()).toEqual({
       message: 'Unauthorized',
@@ -173,9 +174,9 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(response.status()).toBe(200);
-
     const result = await response.json();
+
+    expect(response.status(), JSON.stringify(result, null, 2)).toBe(200);
 
     expect(result).toEqual({
       statusCode: 200,
@@ -209,9 +210,9 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(response.status()).toBe(200);
-
     const result = await response.json();
+
+    expect(response.status(), JSON.stringify(result, null, 2)).toBe(200);
 
     expect(userLetterAuthoring.clientId).toBe(
       userLetterAuthoringSharedClient.clientId

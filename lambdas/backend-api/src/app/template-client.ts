@@ -544,7 +544,10 @@ export class TemplateClient {
       !template.clientId ||
       !template.letterVariantId
     ) {
-      return failure(ErrorCase.VALIDATION_FAILED, '...');
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'no variant, no cmapaign, not authoring letter'
+      );
     }
 
     const { data: variant, error: getVariantError } =
@@ -569,11 +572,11 @@ export class TemplateClient {
     );
 
     if (pageCounts.length !== 3) {
-      return failure(ErrorCase.VALIDATION_FAILED, '...');
+      return failure(ErrorCase.VALIDATION_FAILED, 'not enough renders');
     }
 
     if (pageCounts.some((c) => Math.ceil(c / 2) > variant.maxSheets)) {
-      return failure(ErrorCase.VALIDATION_FAILED, '...');
+      return failure(ErrorCase.VALIDATION_FAILED, 'page length problem');
     }
 
     const updateResult = await this.templateRepository.approveLetterTemplate(
