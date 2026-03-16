@@ -541,7 +541,7 @@ export class TemplateClient {
       template.templateType !== 'LETTER' ||
       template.letterVersion !== 'AUTHORING' ||
       template.templateStatus !== 'NOT_YET_SUBMITTED' ||
-      !template.clientId ||
+      !template.campaignId ||
       !template.letterVariantId
     ) {
       return failure(
@@ -572,11 +572,21 @@ export class TemplateClient {
     );
 
     if (pageCounts.length !== 3) {
-      return failure(ErrorCase.VALIDATION_FAILED, 'not enough renders');
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'One or more personalised rendered example has not been generated'
+      );
     }
 
-    if (pageCounts.some((c) => Math.ceil(c / 2) > variant.maxSheets)) {
-      return failure(ErrorCase.VALIDATION_FAILED, 'page length problem');
+    const pagesPerSheet = variant.bothSides ? 2 : 1;
+
+    if (
+      pageCounts.some((c) => Math.ceil(c / pagesPerSheet) > variant.maxSheets)
+    ) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Letter template exceeded maximum number of sheets allowed by letter variant'
+      );
     }
 
     const updateResult = await this.templateRepository.approveLetterTemplate(

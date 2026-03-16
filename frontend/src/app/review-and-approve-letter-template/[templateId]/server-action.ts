@@ -7,7 +7,7 @@ import { approveTemplate } from '@utils/form-actions';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 
 const $FormSchema = z.object({
-  templateId: z.string().nonempty(),
+  templateId: z.uuidv4(),
   lockNumber: $LockNumber,
 });
 

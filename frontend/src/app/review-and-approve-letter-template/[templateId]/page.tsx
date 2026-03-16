@@ -20,7 +20,7 @@ import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
 import { interpolate } from '@utils/interpolate';
-import type { LetterVariant } from 'nhs-notify-web-template-management-types';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 
 const {
   pageTitle,
@@ -66,13 +66,25 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  let letterVariant: LetterVariant | undefined;
+  const searchParams = await props.searchParams;
 
-  if (validatedTemplate.letterVariantId) {
-    letterVariant = await getLetterVariantById(
-      validatedTemplate.letterVariantId
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (
+    !lockNumberResult.success ||
+    lockNumberResult.data !== validatedTemplate.lockNumber ||
+    // since lock number is unchanged, this should never be true
+    !validatedTemplate.letterVariantId
+  ) {
+    return redirect(
+      `/preview-letter-template/${templateId}`,
+      RedirectType.replace
     );
   }
+
+  const letterVariant = await getLetterVariantById(
+    validatedTemplate.letterVariantId
+  );
 
   return (
     <NHSNotifyContainer>
