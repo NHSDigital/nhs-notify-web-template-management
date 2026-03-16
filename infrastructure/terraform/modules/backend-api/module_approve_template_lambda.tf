@@ -36,7 +36,7 @@ module "approve_template_lambda" {
 
 data "aws_iam_policy_document" "approve_template_lambda_policy" {
   statement {
-    sid    = "AllowDynamoAccess"
+    sid    = "AllowTemplatesReadWrite"
     effect = "Allow"
 
     actions = [
@@ -46,6 +46,19 @@ data "aws_iam_policy_document" "approve_template_lambda_policy" {
 
     resources = [
       aws_dynamodb_table.templates.arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowGetLetterVariants"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:GetItem",
+    ]
+
+    resources = [
+      aws_dynamodb_table.letter_variants.arn,
     ]
   }
 

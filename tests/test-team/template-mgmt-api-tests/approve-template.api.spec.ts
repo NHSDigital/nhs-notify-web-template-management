@@ -5,21 +5,19 @@ import {
   isoDateRegExp,
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
-import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { Template } from '../helpers/types';
 import { getTestContext } from '../helpers/context/context';
 
 test.describe('PATCH /v1/template/:templateId/approve', () => {
   const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
-  let userRoutingDisabled: TestUser;
+  let userDifferentClient: TestUser;
   let userLetterAuthoring: TestUser;
   let userLetterAuthoringSharedClient: TestUser;
 
   test.beforeAll(async () => {
-    userRoutingDisabled = await context.auth.getTestUser(
+    userDifferentClient = await context.auth.getTestUser(
       testUsers.User2.userId
     );
     userLetterAuthoring = await context.auth.getTestUser(
@@ -34,22 +32,6 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     await templateStorageHelper.deleteAdHocTemplates();
     await templateStorageHelper.deleteSeededTemplates();
   });
-
-  const createAuthoringLetterTemplate = async (
-    user: TestUser,
-    templateStatus = 'NOT_YET_SUBMITTED'
-  ): Promise<Template> => {
-    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
-      user,
-      'Test Authoring Letter template',
-      templateStatus
-    );
-
-    await templateStorageHelper.seedTemplateData([letterTemplate]);
-
-    return letterTemplate;
-  };
 
   test('returns 401 if no auth token', async ({ request }) => {
     const response = await request.patch(
@@ -77,8 +59,11 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
         },
       }
     );
-    expect(response.status()).toBe(404);
-    expect(await response.json()).toEqual({
+
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(404);
+    expect(data).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
     });
@@ -87,21 +72,30 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('returns 404 if template exists but is owned by a different client', async ({
     request,
   }) => {
-    const { id: templateId, lockNumber } =
-      await createAuthoringLetterTemplate(userLetterAuthoring);
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template'
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id: templateId, lockNumber } = letterTemplate;
 
     const response = await request.patch(
       `${process.env.API_BASE_URL}/v1/template/${templateId}/approve`,
       {
         headers: {
-          Authorization: await userRoutingDisabled.getAccessToken(),
+          Authorization: await userDifferentClient.getAccessToken(),
           'X-Lock-Number': String(lockNumber),
         },
       }
     );
 
-    expect(response.status()).toBe(404);
-    expect(await response.json()).toEqual({
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(404);
+    expect(data).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
     });
@@ -110,8 +104,15 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('returns 400 if the lock number header is not set', async ({
     request,
   }) => {
-    const { id: templateId } =
-      await createAuthoringLetterTemplate(userLetterAuthoring);
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template'
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id: templateId } = letterTemplate;
 
     const response = await request.patch(
       `${process.env.API_BASE_URL}/v1/template/${templateId}/approve`,
@@ -122,16 +123,25 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(response.status()).toBe(400);
-    expect(await response.json()).toEqual({
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Invalid lock number provided',
     });
   });
 
   test('returns 409 if the lock number does not match', async ({ request }) => {
-    const { id: templateId, lockNumber } =
-      await createAuthoringLetterTemplate(userLetterAuthoring);
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template'
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id: templateId, lockNumber } = letterTemplate;
 
     const response = await request.patch(
       `${process.env.API_BASE_URL}/v1/template/${templateId}/approve`,
@@ -143,24 +153,35 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(response.status()).toBe(409);
-    expect(await response.json()).toEqual({
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(409);
+    expect(data).toEqual({
       statusCode: 409,
       technicalMessage:
         'Lock number mismatch - Template has been modified since last read',
     });
   });
 
-  test.only('returns 200 and sets status to PROOF_APPROVED', async ({
-    request,
-  }) => {
-    const {
-      id: templateId,
-      name,
-      templateType,
-      createdAt,
-      lockNumber,
-    } = await createAuthoringLetterTemplate(userLetterAuthoring);
+  test('returns 200 and sets status to PROOF_APPROVED', async ({ request }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant.id,
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id: templateId, lockNumber, createdAt, name } = letterTemplate;
 
     const start = new Date();
 
@@ -185,7 +206,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
         id: expect.stringMatching(uuidRegExp),
         name,
         templateStatus: 'PROOF_APPROVED',
-        templateType,
+        templateType: 'LETTER',
         updatedAt: expect.stringMatching(isoDateRegExp),
         lockNumber: lockNumber + 1,
       }),
@@ -198,14 +219,31 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('user belonging to the same client as the creator can approve', async ({
     request,
   }) => {
-    const created = await createAuthoringLetterTemplate(userLetterAuthoring);
+        const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+                letterVariantId: letterVariant.id,
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { createdAt, lockNumber, id } = letterTemplate;
 
     const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${created.id}/approve`,
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
       {
         headers: {
           Authorization: await userLetterAuthoringSharedClient.getAccessToken(),
-          'X-Lock-Number': String(created.lockNumber),
+          'X-Lock-Number': String(lockNumber),
         },
       }
     );
@@ -222,11 +260,11 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       statusCode: 200,
       data: expect.objectContaining({
         clientId: userLetterAuthoring.clientId,
-        createdAt: created.createdAt,
-        id: created.id,
+        createdAt,
+        id,
         templateStatus: 'PROOF_APPROVED',
         updatedAt: expect.stringMatching(isoDateRegExp),
-        lockNumber: created.lockNumber + 1,
+        lockNumber: lockNumber + 1,
         updatedBy: `INTERNAL_USER#${userLetterAuthoringSharedClient.internalUserId}`,
       }),
     });
@@ -235,11 +273,19 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('returns 400 - cannot approve an already approved template', async ({
     request,
   }) => {
-    const { id: templateId, lockNumber } =
-      await createAuthoringLetterTemplate(userLetterAuthoring);
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      {files: }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { lockNumber, id } = letterTemplate;
 
     const approveResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/approve`,
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
       {
         headers: {
           Authorization: await userLetterAuthoring.getAccessToken(),
@@ -256,7 +302,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     ).toBe(200);
 
     const failedResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/approve`,
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
       {
         headers: {
           Authorization: await userLetterAuthoring.getAccessToken(),
@@ -265,8 +311,10 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(failedResponse.status()).toBe(400);
-    expect(await failedResponse.json()).toEqual({
+    const failedResult = await failedResponse.json();
+
+    expect(failedResponse.status(), JSON.stringify(failedResult)).toBe(400);
+    expect(failedResult).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be approved',
     });
@@ -275,37 +323,27 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('returns 400 - cannot approve a non-letter template', async ({
     request,
   }) => {
-    const createResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template`,
-      {
-        headers: {
-          Authorization: await userLetterAuthoring.getAccessToken(),
-        },
-        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-          templateType: 'NHS_APP',
-        }),
-      }
+    const appTemplate = TemplateFactory.createNhsAppTemplate(
+      randomUUID(),
+      userLetterAuthoring
     );
 
-    expect(createResponse.status()).toBe(201);
-    const created = await createResponse.json();
-    templateStorageHelper.addAdHocTemplateKey({
-      templateId: created.data.id,
-      clientId: userLetterAuthoring.clientId,
-    });
+    await templateStorageHelper.seedTemplateData([appTemplate]);
 
     const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${created.data.id}/approve`,
+      `${process.env.API_BASE_URL}/v1/template/${appTemplate.id}/approve`,
       {
         headers: {
           Authorization: await userLetterAuthoring.getAccessToken(),
-          'X-Lock-Number': String(created.data.lockNumber),
+          'X-Lock-Number': String(appTemplate.lockNumber),
         },
       }
     );
 
-    expect(response.status()).toBe(400);
-    expect(await response.json()).toEqual({
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be approved',
     });
@@ -332,8 +370,10 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(response.status()).toBe(400);
-    expect(await response.json()).toEqual({
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be approved',
     });
@@ -342,23 +382,19 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('returns 404 - cannot approve a deleted template', async ({
     request,
   }) => {
-    const { id: templateId, lockNumber } =
-      await createAuthoringLetterTemplate(userLetterAuthoring);
-
-    const deleteResponse = await request.delete(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}`,
-      {
-        headers: {
-          Authorization: await userLetterAuthoring.getAccessToken(),
-          'X-Lock-Number': String(lockNumber),
-        },
-      }
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'DELETED'
     );
 
-    expect(deleteResponse.status()).toBe(204);
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
 
-    const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/approve`,
+    const { lockNumber, id } = letterTemplate;
+
+    const deleteResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
       {
         headers: {
           Authorization: await userLetterAuthoring.getAccessToken(),
@@ -367,8 +403,10 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(response.status()).toBe(404);
-    expect(await response.json()).toEqual({
+    const data = await deleteResponse.json();
+
+    expect(deleteResponse.status(), JSON.stringify(data)).toBe(404);
+    expect(data).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
     });

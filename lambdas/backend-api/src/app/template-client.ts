@@ -546,7 +546,7 @@ export class TemplateClient {
     ) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
-        'no variant, no cmapaign, not authoring letter'
+        'Template cannot be approved'
       );
     }
 
