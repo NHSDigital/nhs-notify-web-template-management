@@ -32,7 +32,7 @@ export function useLetterRenderPolling() {
 export function LetterRenderPollingProvider({ children }: PropsWithChildren) {
   const [isAnyTabPolling, setIsAnyTabPolling] = useState(false);
 
-  const pollingMapRef = useRef<Record<string, boolean>>({});
+  const pollingMapRef = useRef<Record<RenderKey, boolean>>({});
 
   const registerPolling = useCallback((key: string, polling: boolean) => {
     pollingMapRef.current[key] = polling;
