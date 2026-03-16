@@ -133,10 +133,19 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   });
 
   test('returns 409 if the lock number does not match', async ({ request }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template'
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant.id,
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
     );
 
     await templateStorageHelper.seedTemplateData([letterTemplate]);
@@ -219,7 +228,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('user belonging to the same client as the creator can approve', async ({
     request,
   }) => {
-        const [letterVariant] =
+    const [letterVariant] =
       await context.letterVariants.getGlobalLetterVariants();
 
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
@@ -228,7 +237,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       'Test Authoring Letter template',
       'NOT_YET_SUBMITTED',
       {
-                letterVariantId: letterVariant.id,
+        letterVariantId: letterVariant.id,
         longFormRender: { status: 'RENDERED' },
         shortFormRender: { status: 'RENDERED' },
       }
@@ -273,11 +282,19 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('returns 400 - cannot approve an already approved template', async ({
     request,
   }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
       'Test Authoring Letter template',
-      {files: }
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant.id,
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
     );
 
     await templateStorageHelper.seedTemplateData([letterTemplate]);
