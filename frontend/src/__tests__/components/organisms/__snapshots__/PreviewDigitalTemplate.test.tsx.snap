@@ -383,11 +383,11 @@ exports[`PreviewDigitalTemplate Routing enabled matches snapshot 1`] = `
     >
       This is only a basic preview. 
       <a
-        href="https://notify.nhs.uk/using-nhs-notify/approve-your-messages"
-        rel="noopener noreferrer"
-        target="_blank"
+        href="/templates/request-a-proof/app-template-id"
+        rel=""
+        target=""
       >
-        Request a proof (opens in a new tab)
+        Request a proof
       </a>
        to preview this template properly.
     </div>

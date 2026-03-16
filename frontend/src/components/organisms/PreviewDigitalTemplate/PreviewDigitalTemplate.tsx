@@ -44,8 +44,11 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
   const showMessageBanner =
     !isDigitalProofingEnabledForType || canSendTestMessage;
 
-  const bannerContent = isDigitalProofingEnabledForType
-    ? testMessageBanner[template.templateType]
+  const banner = isDigitalProofingEnabledForType
+    ? {
+        content: testMessageBanner[template.templateType],
+        overrides: undefined,
+      }
     : requestProofBanner;
 
   return (
@@ -71,9 +74,9 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
                 className={styles['message-banner__callout']}
               >
                 <MarkdownContent
-                  content={bannerContent}
                   variables={{ templateId: template.id }}
                   mode='inline'
+                  {...banner}
                 />
               </NHSNotifyWarningCallout>
             </div>

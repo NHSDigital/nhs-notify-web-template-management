@@ -961,11 +961,11 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
           >
             This is only a basic preview. 
             <a
-              href="https://notify.nhs.uk/using-nhs-notify/approve-your-messages"
-              rel="noopener noreferrer"
-              target="_blank"
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
             >
-              Request a proof (opens in a new tab)
+              Request a proof
             </a>
              to preview this template properly.
           </div>
@@ -1387,11 +1387,11 @@ exports[`Preview email form renders matches snapshot when navigating from manage
           >
             This is only a basic preview. 
             <a
-              href="https://notify.nhs.uk/using-nhs-notify/approve-your-messages"
-              rel="noopener noreferrer"
-              target="_blank"
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
             >
-              Request a proof (opens in a new tab)
+              Request a proof
             </a>
              to preview this template properly.
           </div>

@@ -1,12 +1,13 @@
 import { randomUUID } from 'node:crypto';
 import { test } from 'fixtures/accessibility-analyze';
-import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
 import { TemplateMgmtChoosePage } from 'pages/template-mgmt-choose-page';
-import { TemplateMgmtStartPage } from 'pages/template-mgmt-start-page';
 import { TemplateMgmtCopyPage } from 'pages/template-mgmt-copy-page';
-import { TemplateMgmtDeletePage } from 'pages/template-mgmt-delete-page';
 import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
+import { TemplateMgmtDeletePage } from 'pages/template-mgmt-delete-page';
 import { TemplateMgmtInvalidTemplatePage } from 'pages/template-mgmt-invalid-tempate-page';
+import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
+import { TemplateMgmtRequestADigitalProofPage } from 'pages/template-mgmt-request-a-digital-proof-page';
+import { TemplateMgmtStartPage } from 'pages/template-mgmt-start-page';
 import {
   createAuthHelper,
   TestUser,
@@ -139,3 +140,11 @@ test('Delete template error', async ({ page, analyze }) =>
 
 test('Invalid template', async ({ page, analyze }) =>
   analyze(new TemplateMgmtInvalidTemplatePage(page)));
+
+test('Request a proof', async ({ page, analyze }) =>
+  analyze(
+    new TemplateMgmtRequestADigitalProofPage(page).setPathParam(
+      'templateId',
+      templateIds.TEMPLATE
+    )
+  ));

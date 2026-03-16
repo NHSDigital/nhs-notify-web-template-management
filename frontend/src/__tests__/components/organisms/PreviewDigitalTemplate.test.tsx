@@ -262,7 +262,7 @@ describe('PreviewDigitalTemplate', () => {
 
           expect(
             screen.queryByRole('link', {
-              name: 'Request a proof (opens in a new tab)',
+              name: 'Request a proof',
             })
           ).toBeVisible();
         }
@@ -337,7 +337,7 @@ describe('PreviewDigitalTemplate', () => {
 
           expect(
             screen.queryByRole('link', {
-              name: 'Request a proof (opens in a new tab)',
+              name: 'Request a proof',
             })
           ).toBeVisible();
         }
@@ -415,7 +415,7 @@ describe('PreviewDigitalTemplate', () => {
 
           expect(
             screen.queryByRole('link', {
-              name: 'Request a proof (opens in a new tab)',
+              name: 'Request a proof',
             })
           ).toBeVisible();
         }
@@ -451,7 +451,7 @@ describe('PreviewDigitalTemplate', () => {
 
           expect(
             screen.getByRole('link', {
-              name: 'Request a proof (opens in a new tab)',
+              name: 'Request a proof',
             })
           ).toBeVisible();
 

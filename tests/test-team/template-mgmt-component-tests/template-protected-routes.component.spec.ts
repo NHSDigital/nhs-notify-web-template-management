@@ -23,6 +23,7 @@ import { TemplateMgmtPreviewSubmittedLetterPage } from '../pages/letter/template
 import { TemplateMgmtPreviewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
 import { TemplateMgmtPreviewSubmittedSmsPage } from '../pages/sms/template-mgmt-preview-submitted-sms-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
+import { TemplateMgmtRequestADigitalProofPage } from 'pages/template-mgmt-request-a-digital-proof-page';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
@@ -110,6 +111,7 @@ const protectedPages = [
   TemplateMgmtPreviewSubmittedNhsAppPage,
   TemplateMgmtPreviewSubmittedSmsPage,
   TemplateMgmtRequestProofPage,
+  TemplateMgmtRequestADigitalProofPage,
   TemplateMgmtSubmitEmailPage,
   TemplateMgmtSubmitLetterPage,
   TemplateMgmtSubmitNhsAppPage,
