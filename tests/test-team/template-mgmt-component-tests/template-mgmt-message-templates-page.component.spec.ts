@@ -11,10 +11,8 @@ import {
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template } from '../helpers/types';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import {
-  createAuthHelper,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 
 function createTemplates(owner: string) {
   return {
@@ -90,7 +88,8 @@ test.describe('Manage templates page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
     templates = createTemplates(`CLIENT#${user.clientId}`);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

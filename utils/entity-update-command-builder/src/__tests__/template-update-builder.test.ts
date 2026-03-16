@@ -856,4 +856,57 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('setLetterVariantId', () => {
+    test('sets letterVariantId field to provided value', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setLetterVariantId('76e5bbce-0f2d-4bfd-bebe-108d75ff761a')
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':letterVariantId': '76e5bbce-0f2d-4bfd-bebe-108d75ff761a',
+        },
+        ExpressionAttributeNames: {
+          '#letterVariantId': 'letterVariantId',
+        },
+        UpdateExpression: 'SET #letterVariantId = :letterVariantId',
+      });
+    });
+  });
+
+  describe('removeLetterVariantId', () => {
+    test('removes the letterVariantId field', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder.removeLetterVariantId().build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwnerKey,
+          id: mockId,
+        },
+        ExpressionAttributeNames: {
+          '#letterVariantId': 'letterVariantId',
+        },
+        UpdateExpression: 'REMOVE #letterVariantId',
+      });
+    });
+  });
 });

@@ -14,6 +14,7 @@ jest.mock('next/navigation', () => ({
 
 const pendingTemplate: AuthoringLetterTemplate = {
   id: 'template-abc',
+  clientId: 'client-id',
   name: 'Test Letter',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',

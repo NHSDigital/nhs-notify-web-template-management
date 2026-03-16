@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { HintText, InsetText, Label } from 'nhsuk-react-components';
-import { LANGUAGE_LIST } from 'nhs-notify-backend-client';
+import { LANGUAGE_LIST } from 'nhs-notify-backend-client/schemas';
 import {
   isLanguage,
   isRightToLeft,

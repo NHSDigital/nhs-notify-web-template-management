@@ -1,7 +1,6 @@
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { failure, success } from '@backend-api/utils/result';
-import { ErrorCase } from 'nhs-notify-backend-client';
-import type { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
+import { ErrorCase, type RenderRequest } from 'nhs-notify-backend-client/types';
 import type { PersonalisedRenderRequestVariant } from 'nhs-notify-web-template-management-types';
 
 export class RenderQueue {

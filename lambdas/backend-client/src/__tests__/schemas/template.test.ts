@@ -7,7 +7,7 @@ import {
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
   $LetterProperties,
-  $PatchTemplate,
+  $LetterPatch,
   $PdfLetterProperties,
   $TemplateDto,
   $TemplateFilter,
@@ -314,6 +314,7 @@ describe('Template schemas', () => {
 
   describe('$AuthoringLetterProperties', () => {
     const validAuthoringLetter = {
+      clientId: 'client-id',
       templateType: 'LETTER',
       letterType: 'x0',
       language: 'en',
@@ -361,7 +362,8 @@ describe('Template schemas', () => {
 
       expect(result.success).toBe(false);
       expect(result.error?.flatten().fieldErrors).toEqual({
-        files: expect.any(Array),
+        files: expect.arrayContaining([expect.any(String)]),
+        clientId: expect.arrayContaining([expect.any(String)]),
       });
     });
   });
@@ -533,6 +535,7 @@ describe('Template schemas', () => {
     test('should pass validation for AUTHORING letter', () => {
       const authoringLetter = {
         templateType: 'LETTER',
+        clientId: 'client-id',
         letterType: 'x0',
         language: 'en',
         letterVersion: 'AUTHORING',
@@ -714,6 +717,7 @@ describe('Template schemas', () => {
     test('should pass validation for AUTHORING letter template', () => {
       const authoringLetter = {
         id: 'test-id',
+        clientId: 'client-id',
         name: 'Test Authoring Letter',
         templateType: 'LETTER',
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -770,9 +774,9 @@ describe('Template schemas', () => {
     });
   });
 
-  describe('$PatchTemplate', () => {
+  describe('$LetterPatch', () => {
     it('should pass validation when name is provided', () => {
-      const result = $PatchTemplate.safeParse({
+      const result = $LetterPatch.safeParse({
         name: 'Updated Template Name',
       });
 
@@ -783,7 +787,7 @@ describe('Template schemas', () => {
     });
 
     it('should pass validation when campaignId is provided', () => {
-      const result = $PatchTemplate.safeParse({
+      const result = $LetterPatch.safeParse({
         campaignId: 'Updated Campaign',
       });
 
@@ -793,8 +797,19 @@ describe('Template schemas', () => {
       });
     });
 
+    it('should pass validation when letterVariantId is provided', () => {
+      const result = $LetterPatch.safeParse({
+        letterVariantId: 'new-variant-id',
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        letterVariantId: 'new-variant-id',
+      });
+    });
+
     it('should fail validation when name is empty', () => {
-      const result = $PatchTemplate.safeParse({
+      const result = $LetterPatch.safeParse({
         name: '',
       });
 
@@ -808,7 +823,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when name is whitespace only', () => {
-      const result = $PatchTemplate.safeParse({
+      const result = $LetterPatch.safeParse({
         name: '   ',
       });
 
@@ -822,7 +837,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when campaignId is empty', () => {
-      const result = $PatchTemplate.safeParse({
+      const result = $LetterPatch.safeParse({
         campaignId: '',
       });
 
@@ -836,7 +851,7 @@ describe('Template schemas', () => {
     });
 
     it('should fail validation when campaignId is whitespace only', () => {
-      const result = $PatchTemplate.safeParse({
+      const result = $LetterPatch.safeParse({
         campaignId: '   ',
       });
 
@@ -849,8 +864,40 @@ describe('Template schemas', () => {
       );
     });
 
+    it('should fail validation when letterVariantId is empty', () => {
+      const result = $LetterPatch.safeParse({
+        letterVariantId: '',
+      });
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            letterVariantId: [
+              'Too small: expected string to have >=1 characters',
+            ],
+          },
+        })
+      );
+    });
+
+    it('should fail validation when letterVariantId is whitespace only', () => {
+      const result = $LetterPatch.safeParse({
+        letterVariantId: '   ',
+      });
+
+      expect(result.error?.flatten()).toEqual(
+        expect.objectContaining({
+          fieldErrors: {
+            letterVariantId: [
+              'Too small: expected string to have >=1 characters',
+            ],
+          },
+        })
+      );
+    });
+
     it('should fail validation when no fields are provided', () => {
-      const result = $PatchTemplate.safeParse({});
+      const result = $LetterPatch.safeParse({});
 
       expect(result.error?.flatten()).toEqual(
         expect.objectContaining({

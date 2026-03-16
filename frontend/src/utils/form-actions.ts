@@ -1,17 +1,21 @@
 'use server';
 
 import { getSessionServer } from '@utils/amplify-utils';
-import { $TemplateDto } from 'nhs-notify-backend-client';
+import {
+  letterVariantApiClient,
+  templateApiClient,
+} from 'nhs-notify-backend-client';
+import { $TemplateDto } from 'nhs-notify-backend-client/schemas';
+import type { TemplateFilter } from 'nhs-notify-backend-client/types';
 import type {
   CreateUpdateTemplate,
-  PatchTemplate,
+  LetterPatch,
   TemplateDto,
+  LetterVariant,
 } from 'nhs-notify-web-template-management-types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { sortAscByUpdatedAt } from './sort';
-import { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { sortAscByUpdatedAt } from './sort';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -136,7 +140,7 @@ export async function approveTemplate(
 
 export async function patchTemplate(
   templateId: string,
-  template: PatchTemplate,
+  template: LetterPatch,
   lockNumber: number
 ): Promise<TemplateDto> {
   const { accessToken } = await getSessionServer();
@@ -305,4 +309,46 @@ export async function getForeignLanguageLetterTemplates(
     excludeLanguage: 'en',
     ...filters,
   })) as LetterTemplate[];
+}
+
+export async function getLetterVariantsForTemplate(
+  templateId: string
+): Promise<LetterVariant[] | undefined> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.getTemplateLetterVariants(
+    templateId,
+    accessToken
+  );
+
+  if (error) {
+    logger.error('Failed to get available letter variants for template', error);
+  }
+
+  return data;
+}
+
+export async function getLetterVariantById(
+  letterVariantId: string
+): Promise<LetterVariant | undefined> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await letterVariantApiClient.getLetterVariant(
+    letterVariantId,
+    accessToken
+  );
+
+  if (error) {
+    logger.error('Failed to get letter variant', error);
+  }
+
+  return data;
 }

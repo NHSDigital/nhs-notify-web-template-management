@@ -392,7 +392,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
               >
                 <iframe
                   aria-label="PDF preview of letter template with short example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
               </div>
@@ -526,7 +526,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
               >
                 <iframe
                   aria-label="PDF preview of letter template with long example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
               </div>
@@ -910,7 +910,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
               >
                 <iframe
                   aria-label="PDF preview of letter template with short example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
               </div>
@@ -1044,7 +1044,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
               >
                 <iframe
                   aria-label="PDF preview of letter template with long example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
               </div>
@@ -1272,7 +1272,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             >
               <a
                 data-testid="edit-name-link"
-                href="/edit-template-name/authoring-letter-template-id"
+                href="/edit-template-name/authoring-letter-template-id?lockNumber=1"
               >
                 Edit name
                 <span
@@ -1340,7 +1340,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   >
                     <a
                       data-testid="campaign-action"
-                      href="/edit-template-campaign/authoring-letter-template-id"
+                      href="/edit-template-campaign/authoring-letter-template-id?lockNumber=1"
                     >
                       Edit
                       <span
@@ -1401,6 +1401,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 </div>
                 <div
                   class="nhsuk-summary-list__row"
+                  id="printing-and-postage"
                 >
                   <dt
                     class="nhsuk-summary-list__key"
@@ -1410,14 +1411,14 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   <dd
                     class="nhsuk-summary-list__value"
                   >
-                    variant-123
+                    Example Letter Variant
                   </dd>
                   <dd
                     class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
                   >
                     <a
                       data-testid="printing-postage-action"
-                      href="/choose-printing-and-postage/authoring-letter-template-id"
+                      href="/choose-printing-and-postage/authoring-letter-template-id?lockNumber=1"
                     >
                       Edit
                       <span
@@ -1655,7 +1656,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with short example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
               </div>
@@ -1789,7 +1790,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with long example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
               </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { Container, SummaryList, Tag } from 'nhsuk-react-components';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import {
   letterTypeDisplayMappings,
   AuthoringLetterTemplate,
@@ -36,11 +37,13 @@ function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
 
 export function PreviewTemplateDetailsAuthoringLetterTable({
   template,
+  letterVariant,
   hideStatus,
   hideEditActions,
   hideLearnMore,
 }: {
   template: AuthoringLetterTemplate;
+  letterVariant?: LetterVariant;
   hideStatus?: boolean;
   hideEditActions?: boolean;
   hideLearnMore?: boolean;
@@ -78,6 +81,7 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
           <Link
             href={interpolate(links.editTemplateName, {
               templateId: template.id,
+              lockNumber: template.lockNumber,
             })}
             data-testid='edit-name-link'
           >
@@ -133,6 +137,7 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
               <ActionLink
                 href={interpolate(links.editTemplateCampaign, {
                   templateId: template.id,
+                  lockNumber: template.lockNumber,
                 })}
                 label={actions.edit}
                 visuallyHiddenText={visuallyHidden.campaign}
@@ -170,15 +175,17 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
           {/* Printing and postage */}
           {!hidePostageRow && (
             <SummaryList.Row
-              className={template.letterVariantId ? undefined : 'missing-value'}
+              id='printing-and-postage'
+              className={letterVariant ? undefined : 'missing-value'}
             >
               <SummaryList.Key>
                 {rowHeadings.printingAndPostage}
               </SummaryList.Key>
-              <SummaryList.Value>{template.letterVariantId}</SummaryList.Value>
+              <SummaryList.Value>{letterVariant?.name}</SummaryList.Value>
               <ActionLink
                 href={interpolate(links.choosePrintingAndPostage, {
                   templateId: template.id,
+                  lockNumber: template.lockNumber,
                 })}
                 label={actions.edit}
                 visuallyHiddenText={visuallyHidden.printingAndPostage}
