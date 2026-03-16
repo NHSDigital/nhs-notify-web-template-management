@@ -125,7 +125,12 @@ export default async function PreviewLetterTemplatePage({
                   </NHSNotifyForm.Form>
                 )}
                 <p>
-                  <Link href={links.messageTemplates}>{backLinkText}</Link>
+                  <Link
+                    data-testid='back-link-bottom'
+                    href={links.messageTemplates}
+                  >
+                    {backLinkText}
+                  </Link>
                 </p>
               </NHSNotifyContainer>
             </NHSNotifyMain>

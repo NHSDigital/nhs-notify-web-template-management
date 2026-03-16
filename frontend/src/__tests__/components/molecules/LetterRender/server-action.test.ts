@@ -18,10 +18,12 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
+const templateId = '20f1dd29-89ab-430e-9f5e-8009cbc4ca6c';
+
 function buildFormData(overrides: Record<string, string> = {}): FormData {
   const defaults: Record<string, string> = {
     systemPersonalisationPackId: 'short-1',
-    templateId: 'template-123',
+    templateId,
     lockNumber: '1',
     tab: 'shortFormRender',
   };
@@ -48,7 +50,7 @@ describe('updateLetterPreview', () => {
       fields: {
         systemPersonalisationPackId: 'short-1',
         'personalisation|appointmentDate': '2025-01-15',
-        templateId: 'template-123',
+        templateId,
         lockNumber: '1',
         tab: 'shortFormRender',
       },
@@ -79,7 +81,7 @@ describe('updateLetterPreview', () => {
       systemPersonalisationPackId: 'short-1',
       'personalisation|appointmentDate': '2025-01-15',
       'personalisation|clinicName': 'Town Centre Clinic',
-      templateId: 'template-123',
+      templateId,
       lockNumber: '1',
       tab: 'shortFormRender',
     });
@@ -95,7 +97,7 @@ describe('updateLetterPreview', () => {
     await updateLetterPreview({}, formData);
 
     expect(mockGenerateLetterProof).toHaveBeenCalledWith(
-      'template-123',
+      templateId,
       1,
       expect.objectContaining({
         personalisation: expect.objectContaining({
@@ -149,7 +151,7 @@ describe('updateLetterPreview', () => {
 
   it('returns validation error when systemPersonalisationPackId is missing', async () => {
     const formData = new FormData();
-    formData.append('templateId', 'template-123');
+    formData.append('templateId', templateId);
     formData.append('lockNumber', '1');
     formData.append('tab', 'shortFormRender');
 
@@ -210,7 +212,7 @@ describe('updateLetterPreview', () => {
 
     await updateLetterPreview({}, formData);
 
-    expect(mockGenerateLetterProof).toHaveBeenCalledWith('template-123', 1, {
+    expect(mockGenerateLetterProof).toHaveBeenCalledWith(templateId, 1, {
       systemPersonalisationPackId: 'short-1',
       requestTypeVariant: 'short',
       personalisation: {
@@ -243,7 +245,7 @@ describe('updateLetterPreview', () => {
 
     await updateLetterPreview({}, formData);
 
-    expect(mockGenerateLetterProof).toHaveBeenCalledWith('template-123', 1, {
+    expect(mockGenerateLetterProof).toHaveBeenCalledWith(templateId, 1, {
       systemPersonalisationPackId: 'long-1',
       requestTypeVariant: 'long',
       personalisation: {

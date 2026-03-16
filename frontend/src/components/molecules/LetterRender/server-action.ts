@@ -21,7 +21,7 @@ const $FormSchema = z.object({
   systemPersonalisationPackId: z.enum(EXAMPLE_RECIPIENT_IDS, {
     message: pdsSection.error.invalid,
   }),
-  templateId: z.string().nonempty(),
+  templateId: z.uuidv4(),
   lockNumber: $LockNumber,
   tab: z.enum(['longFormRender', 'shortFormRender']),
 });
