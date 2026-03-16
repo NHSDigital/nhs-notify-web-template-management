@@ -40,6 +40,7 @@ data "aws_iam_policy_document" "approve_template_lambda_policy" {
     effect = "Allow"
 
     actions = [
+      "dynamodb:GetItem",
       "dynamodb:UpdateItem",
     ]
 

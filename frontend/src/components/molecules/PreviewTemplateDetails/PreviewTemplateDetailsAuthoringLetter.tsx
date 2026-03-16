@@ -21,6 +21,14 @@ import { toKebabCase } from '@utils/kebab-case';
 import styles from './PreviewTemplateDetails.module.scss';
 import { interpolate } from '@utils/interpolate';
 
+type PreviewTemplateDetailsAuthoringLetterProps = {
+  template: AuthoringLetterTemplate;
+  letterVariant?: LetterVariant;
+  hideStatus?: boolean;
+  hideEditActions?: boolean;
+  hideLearnMore?: boolean;
+};
+
 const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
@@ -41,13 +49,7 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
   hideStatus,
   hideEditActions,
   hideLearnMore,
-}: {
-  template: AuthoringLetterTemplate;
-  letterVariant?: LetterVariant;
-  hideStatus?: boolean;
-  hideEditActions?: boolean;
-  hideLearnMore?: boolean;
-}) {
+}: PreviewTemplateDetailsAuthoringLetterProps) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
 
@@ -224,29 +226,13 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
   );
 }
 
-export default function PreviewTemplateDetailsAuthoringLetter({
-  template,
-  letterVariant,
-  hideStatus,
-  hideEditActions,
-  hideLearnMore,
-}: {
-  template: AuthoringLetterTemplate;
-  letterVariant?: LetterVariant;
-  hideStatus?: boolean;
-  hideEditActions?: boolean;
-  hideLearnMore?: boolean;
-}) {
+export default function PreviewTemplateDetailsAuthoringLetter(
+  props: PreviewTemplateDetailsAuthoringLetterProps
+) {
   return (
     <>
-      <DetailsHeader templateName={template.name} />
-      <PreviewTemplateDetailsAuthoringLetterTable
-        template={template}
-        letterVariant={letterVariant}
-        hideStatus={hideStatus}
-        hideEditActions={hideEditActions}
-        hideLearnMore={hideLearnMore}
-      />
+      <DetailsHeader templateName={props.template.name} />
+      <PreviewTemplateDetailsAuthoringLetterTable {...props} />
     </>
   );
 }

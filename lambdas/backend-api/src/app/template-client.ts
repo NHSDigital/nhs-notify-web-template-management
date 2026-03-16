@@ -520,18 +520,59 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
 
-    if (!lockNumberValidation.success) {
-      log.error(
-        'Lock number failed validation',
-        z.treeifyError(lockNumberValidation.error)
-      );
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
+    }
 
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid lock number provided'
-      );
+    const { data: template, error: getTemplateError } =
+      await this.templateRepository.get(templateId, user.clientId);
+
+    if (getTemplateError) {
+      log
+        .child(getTemplateError.errorMeta)
+        .error('Failed to get template', getTemplateError.actualError);
+
+      return { error: getTemplateError };
+    }
+
+    if (
+      template.templateType !== 'LETTER' ||
+      template.letterVersion !== 'AUTHORING' ||
+      template.templateStatus !== 'NOT_YET_SUBMITTED' ||
+      !template.letterVariantId
+    ) {
+      return failure(ErrorCase.VALIDATION_FAILED, '...');
+    }
+
+    const { data: variant, error: getVariantError } =
+      await this.letterVariantRepository.getById(template.letterVariantId);
+
+    if (getVariantError) {
+      log
+        .child({
+          ...getVariantError.errorMeta,
+          letterVariantId: template.letterVariantId,
+        })
+        .error('Failed to get letter variant', getVariantError.actualError);
+
+      return { error: getVariantError };
+    }
+
+    const { initialRender, shortFormRender, longFormRender } =
+      template.files ?? {};
+
+    const pageCounts = [initialRender, shortFormRender, longFormRender].flatMap(
+      (r) => (r?.status === 'RENDERED' ? [r.pageCount] : [])
+    );
+
+    if (pageCounts.length !== 3) {
+      return failure(ErrorCase.VALIDATION_FAILED, '...');
+    }
+
+    if (pageCounts.some((c) => Math.ceil(c / 2) > variant.maxSheets)) {
+      return failure(ErrorCase.VALIDATION_FAILED, '...');
     }
 
     const updateResult = await this.templateRepository.approveLetterTemplate(
