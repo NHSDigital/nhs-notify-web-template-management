@@ -139,9 +139,7 @@ describe('PreviewDigitalTemplate', () => {
         screen.queryByTestId('edit-template-button')
       ).not.toBeInTheDocument();
 
-      expect(
-        screen.queryByTestId('test-message-banner')
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId('message-banner')).not.toBeInTheDocument();
 
       expect(
         screen.queryByRole('button', { name: 'Send a test message' })
@@ -218,7 +216,7 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
         });
 
-        expect(screen.getByTestId('test-message-banner')).toBeVisible();
+        expect(screen.getByTestId('message-banner')).toBeVisible();
         expect(
           screen.getByRole('link', { name: 'Send a test NHS App message' })
         ).toHaveAttribute(
@@ -260,12 +258,13 @@ describe('PreviewDigitalTemplate', () => {
             templateStatus: 'NOT_YET_SUBMITTED',
           });
 
+          expect(screen.queryByTestId('message-banner')).toBeVisible();
+
           expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
-          expect(
-            screen.queryByRole('button', { name: 'Send a test message' })
-          ).not.toBeInTheDocument();
+            screen.queryByRole('link', {
+              name: 'Request a proof (opens in a new tab)',
+            })
+          ).toBeVisible();
         }
       );
 
@@ -275,9 +274,7 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'SUBMITTED',
         });
 
-        expect(
-          screen.queryByTestId('test-message-banner')
-        ).not.toBeInTheDocument();
+        expect(screen.queryByTestId('message-banner')).not.toBeInTheDocument();
         expect(
           screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
@@ -297,7 +294,7 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
         });
 
-        expect(screen.getByTestId('test-message-banner')).toBeVisible();
+        expect(screen.getByTestId('message-banner')).toBeVisible();
         expect(
           screen.getByRole('link', { name: 'Send a test email' })
         ).toHaveAttribute('href', '/templates/send-test-email/template-456');
@@ -336,12 +333,13 @@ describe('PreviewDigitalTemplate', () => {
             templateStatus: 'NOT_YET_SUBMITTED',
           });
 
+          expect(screen.queryByTestId('message-banner')).toBeVisible();
+
           expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
-          expect(
-            screen.queryByRole('button', { name: 'Send a test message' })
-          ).not.toBeInTheDocument();
+            screen.queryByRole('link', {
+              name: 'Request a proof (opens in a new tab)',
+            })
+          ).toBeVisible();
         }
       );
 
@@ -351,9 +349,7 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'SUBMITTED',
         });
 
-        expect(
-          screen.queryByTestId('test-message-banner')
-        ).not.toBeInTheDocument();
+        expect(screen.queryByTestId('message-banner')).not.toBeInTheDocument();
         expect(
           screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
@@ -373,7 +369,7 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
         });
 
-        expect(screen.getByTestId('test-message-banner')).toBeVisible();
+        expect(screen.getByTestId('message-banner')).toBeVisible();
         expect(
           screen.getByRole('link', { name: 'Send a test text message' })
         ).toHaveAttribute(
@@ -415,12 +411,13 @@ describe('PreviewDigitalTemplate', () => {
             templateStatus: 'NOT_YET_SUBMITTED',
           });
 
+          expect(screen.queryByTestId('message-banner')).toBeVisible();
+
           expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
-          expect(
-            screen.queryByRole('button', { name: 'Send a test message' })
-          ).not.toBeInTheDocument();
+            screen.queryByRole('link', {
+              name: 'Request a proof (opens in a new tab)',
+            })
+          ).toBeVisible();
         }
       );
 
@@ -430,9 +427,7 @@ describe('PreviewDigitalTemplate', () => {
           templateStatus: 'SUBMITTED',
         });
 
-        expect(
-          screen.queryByTestId('test-message-banner')
-        ).not.toBeInTheDocument();
+        expect(screen.queryByTestId('message-banner')).not.toBeInTheDocument();
         expect(
           screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
@@ -452,9 +447,14 @@ describe('PreviewDigitalTemplate', () => {
             templateStatus: 'NOT_YET_SUBMITTED',
           });
 
+          expect(screen.getByTestId('message-banner')).toBeVisible();
+
           expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
+            screen.getByRole('link', {
+              name: 'Request a proof (opens in a new tab)',
+            })
+          ).toBeVisible();
+
           expect(
             screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();

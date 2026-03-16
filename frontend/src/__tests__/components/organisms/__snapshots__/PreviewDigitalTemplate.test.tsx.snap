@@ -9,11 +9,11 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingEmail is en
   </div>
   Preview
   <div
-    class="nhsuk-summary-list test-message-banner"
+    class="nhsuk-summary-list message-banner"
   >
     <div
-      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
-      data-testid="test-message-banner"
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="message-banner"
     >
       This is only a basic preview. 
       <a
@@ -58,11 +58,11 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingNhsApp is e
   </div>
   Preview
   <div
-    class="nhsuk-summary-list test-message-banner"
+    class="nhsuk-summary-list message-banner"
   >
     <div
-      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
-      data-testid="test-message-banner"
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="message-banner"
     >
       This is only a basic preview. 
       <a
@@ -107,11 +107,11 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingSms is enab
   </div>
   Preview
   <div
-    class="nhsuk-summary-list test-message-banner"
+    class="nhsuk-summary-list message-banner"
   >
     <div
-      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
-      data-testid="test-message-banner"
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="message-banner"
     >
       This is only a basic preview. 
       <a
@@ -374,6 +374,24 @@ exports[`PreviewDigitalTemplate Routing enabled matches snapshot 1`] = `
     Template saved
   </div>
   Preview
+  <div
+    class="nhsuk-summary-list message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="https://notify.nhs.uk/using-nhs-notify/approve-your-messages"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Request a proof (opens in a new tab)
+      </a>
+       to preview this template properly.
+    </div>
+  </div>
   <a
     aria-disabled="false"
     class="nhsuk-button nhsuk-button--secondary"

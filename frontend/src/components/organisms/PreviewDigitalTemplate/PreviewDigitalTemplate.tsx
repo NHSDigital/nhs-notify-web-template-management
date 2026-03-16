@@ -19,7 +19,8 @@ import styles from './PreviewDigitalTemplate.module.scss';
 const { editButton, sendTestMessageButton } =
   content.components.previewDigitalTemplate;
 
-const { testMessageBanner } = content.components.previewDigitalTemplate;
+const { testMessageBanner, requestProofBanner } =
+  content.components.previewDigitalTemplate;
 
 export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
   const features = useFeatureFlags();
@@ -33,8 +34,19 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
   };
 
   const isDigitalProofingEnabledForType =
-    !!featureFlagMap[template.templateType] &&
+    !!featureFlagMap[template.templateType];
+
+  const canSendTestMessage =
+    isDigitalProofingEnabledForType &&
     template.templateStatus === 'NOT_YET_SUBMITTED';
+
+  // Do not show the banner when digital proofing is enabled and the template is already submitted
+  const showMessageBanner =
+    !isDigitalProofingEnabledForType || canSendTestMessage;
+
+  const bannerContent = isDigitalProofingEnabledForType
+    ? testMessageBanner[template.templateType]
+    : requestProofBanner;
 
   return (
     <>
@@ -47,19 +59,19 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
         <>
           {props.previewDetailsComponent}
 
-          {isDigitalProofingEnabledForType && (
+          {showMessageBanner && (
             <div
               className={classNames(
                 'nhsuk-summary-list',
-                styles['test-message-banner']
+                styles['message-banner']
               )}
             >
               <NHSNotifyWarningCallout
-                data-testid='test-message-banner'
-                className={styles['test-message-banner__callout']}
+                data-testid='message-banner'
+                className={styles['message-banner__callout']}
               >
                 <MarkdownContent
-                  content={testMessageBanner[template.templateType]}
+                  content={bannerContent}
                   variables={{ templateId: template.id }}
                   mode='inline'
                 />
@@ -73,7 +85,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
             </Button>
           </Link>
 
-          {isDigitalProofingEnabledForType && (
+          {canSendTestMessage && (
             <Link
               href={sendDigitalTemplateTestMessageUrl(
                 template.templateType,

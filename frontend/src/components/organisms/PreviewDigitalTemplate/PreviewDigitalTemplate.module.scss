@@ -1,4 +1,4 @@
-.test-message-banner {
+.message-banner {
   margin-top: -40px;
 
   &:global(.nhsuk-summary-list) {
@@ -6,7 +6,7 @@
   }
 }
 
-.test-message-banner__callout {
+.message-banner__callout {
   margin: 1rem !important;
   max-width: initial;
 }

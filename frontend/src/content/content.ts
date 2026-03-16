@@ -1216,6 +1216,8 @@ const previewDigitalTemplate = {
     EMAIL:
       'This is only a basic preview. [Send a test email](/templates/send-test-email/{{templateId}}) to preview this message properly.',
   } as Record<DigitalTemplateType, string>,
+  requestProofBanner:
+    'This is only a basic preview. [Request a proof (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/approve-your-messages) to preview this template properly.',
 };
 
 const messagePlanFallbackConditions: Record<
