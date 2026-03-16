@@ -140,8 +140,9 @@ function buildValidationErrors(
 
   const addressLinePattern = /^address_line_\d+$/;
 
-  const unexpectedAddressLineIssues = classified.valid.flatMap((m, i) =>
-    addressLinePattern.test(m) && !ADDRESS_PERSONALISATIONS.includes(m)
+  const unexpectedAddressLineIssues = classified.valid.flatMap((marker, i) =>
+    addressLinePattern.test(marker) &&
+    !ADDRESS_PERSONALISATIONS.includes(marker)
       ? [reconstructed.valid[i]]
       : []
   );
