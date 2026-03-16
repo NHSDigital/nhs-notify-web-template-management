@@ -175,7 +175,7 @@ describe('updateLetterPreview', () => {
     );
   });
 
-  it('falls back to empty personalisation when recipient ID is not in the selected tab list', async () => {
+  it('returns validation error when systemPersonalisationPackId is not in the selected tab list', async () => {
     const formData = buildFormData({
       systemPersonalisationPackId: 'long-1',
       tab: 'shortFormRender',
@@ -183,19 +183,10 @@ describe('updateLetterPreview', () => {
 
     const result = await updateLetterPreview({}, formData);
 
-    expect(result.errorState).toBeUndefined();
-
-    expect(mockGenerateLetterProof).toHaveBeenCalledWith(
-      'template-123',
-      1,
-      expect.objectContaining({
-        systemPersonalisationPackId: 'long-1',
-        requestTypeVariant: 'short',
-        personalisation: expect.objectContaining({
-          date: expect.any(String),
-        }),
-      })
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'systemPersonalisationPackId'
     );
+    expect(result.fields?.systemPersonalisationPackId).toBe('long-1');
   });
 
   it('preserves custom field values on validation error', async () => {

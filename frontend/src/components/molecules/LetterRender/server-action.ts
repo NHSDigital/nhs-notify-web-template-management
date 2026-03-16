@@ -58,6 +58,17 @@ export async function updateLetterPreview(
       : SHORT_EXAMPLE_RECIPIENTS
   ).find((r) => r.id === systemPersonalisationPackId)?.data;
 
+  if (!systemPersonalisation) {
+    return {
+      errorState: {
+        fieldErrors: {
+          systemPersonalisationPackId: [pdsSection.error.invalid],
+        },
+      },
+      fields,
+    };
+  }
+
   const personalisation = {
     ...customPersonalisation,
     ...systemPersonalisation,
