@@ -11,7 +11,7 @@ export const createContainer = () => {
     ROUTING_CONFIG_TABLE_NAME,
     SNS_TOPIC_ARN,
     TEMPLATES_TABLE_NAME,
-    PROOF_REQUEST_TABLE_NAME,
+    PROOF_REQUESTS_TABLE_NAME,
   } = loadConfig();
 
   const snsClient = new SNSClient({ region: 'eu-west-2' });
@@ -21,7 +21,7 @@ export const createContainer = () => {
   const eventBuilder = new EventBuilder(
     TEMPLATES_TABLE_NAME,
     ROUTING_CONFIG_TABLE_NAME,
-    PROOF_REQUEST_TABLE_NAME,
+    PROOF_REQUESTS_TABLE_NAME,
     EVENT_SOURCE,
     logger
   );

@@ -17,7 +17,7 @@ export class EventBuilder {
   constructor(
     private readonly templatesTableName: string,
     private readonly routingConfigTableName: string,
-    private readonly proofRequestTableName: string,
+    private readonly proofRequestsTableName: string,
     private readonly eventSource: string,
     private readonly logger: Logger
   ) {}
@@ -176,7 +176,7 @@ export class EventBuilder {
     publishableEventRecord: PublishableEventRecord
   ): Event | undefined {
     if (!publishableEventRecord.dynamodb.NewImage) {
-      // No need to publish an event if a proof request has been deleted.
+      // Do not publish an event if a proof-request record is deleted
       this.logger.debug({
         description: 'No new image found',
         publishableEventRecord,
@@ -221,7 +221,7 @@ export class EventBuilder {
       case this.routingConfigTableName: {
         return this.buildRoutingConfigDatabaseEvent(publishableEventRecord);
       }
-      case this.proofRequestTableName: {
+      case this.proofRequestsTableName: {
         return this.buildProofRequestedEvent(publishableEventRecord);
       }
       default: {
