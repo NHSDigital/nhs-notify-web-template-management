@@ -1,5 +1,6 @@
 'use client';
 
+import { RenderKey } from '@utils/types';
 import {
   createContext,
   useCallback,
@@ -11,7 +12,7 @@ import {
 
 type LetterRenderPollingContextValue = {
   isAnyTabPolling: boolean;
-  registerPolling: (key: string, polling: boolean) => void;
+  registerPolling: (key: RenderKey, polling: boolean) => void;
 };
 
 const LetterRenderPollingContext =
@@ -32,7 +33,7 @@ export function useLetterRenderPolling() {
 export function LetterRenderPollingProvider({ children }: PropsWithChildren) {
   const [isAnyTabPolling, setIsAnyTabPolling] = useState(false);
 
-  const pollingMapRef = useRef<Record<RenderKey, boolean>>({});
+  const pollingMapRef = useRef<Partial<Record<RenderKey, boolean>>>({});
 
   const registerPolling = useCallback((key: RenderKey, polling: boolean) => {
     pollingMapRef.current[key] = polling;
