@@ -226,11 +226,13 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
 
 export default function PreviewTemplateDetailsAuthoringLetter({
   template,
+  letterVariant,
   hideStatus,
   hideEditActions,
   hideLearnMore,
 }: {
   template: AuthoringLetterTemplate;
+  letterVariant?: LetterVariant;
   hideStatus?: boolean;
   hideEditActions?: boolean;
   hideLearnMore?: boolean;
@@ -240,6 +242,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
       <DetailsHeader templateName={template.name} />
       <PreviewTemplateDetailsAuthoringLetterTable
         template={template}
+        letterVariant={letterVariant}
         hideStatus={hideStatus}
         hideEditActions={hideEditActions}
         hideLearnMore={hideLearnMore}

@@ -7,7 +7,7 @@ import {
   TemplatePageProps,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { getTemplate } from '@utils/form-actions';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
@@ -20,6 +20,7 @@ import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
 import { interpolate } from '@utils/interpolate';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 const {
   pageTitle,
@@ -65,6 +66,14 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
+  let letterVariant: LetterVariant | undefined;
+
+  if (validatedTemplate.letterVariantId) {
+    letterVariant = await getLetterVariantById(
+      validatedTemplate.letterVariantId
+    );
+  }
+
   return (
     <NHSNotifyContainer>
       <NHSNotifyMain>
@@ -77,6 +86,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
           </div>
           <PreviewTemplateDetailsAuthoringLetterTable
             template={validatedTemplate}
+            letterVariant={letterVariant}
             hideEditActions
             hideLearnMore
           />
