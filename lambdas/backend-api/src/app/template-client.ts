@@ -565,7 +565,7 @@ export class TemplateClient {
     }
 
     const { initialRender, shortFormRender, longFormRender } =
-      template.files ?? {};
+      template.files as AuthoringLetterFiles;
 
     const pageCounts = [initialRender, shortFormRender, longFormRender].flatMap(
       (r) => (r?.status === 'RENDERED' ? [r.pageCount] : [])

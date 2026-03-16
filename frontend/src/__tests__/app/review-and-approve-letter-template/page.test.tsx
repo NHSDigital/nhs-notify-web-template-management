@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
-import { getTemplate } from '@utils/form-actions';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import {
   AUTHORING_LETTER_TEMPLATE,
@@ -9,6 +9,7 @@ import {
   NHS_APP_TEMPLATE,
   PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
+  makeLetterVariant,
 } from '@testhelpers/helpers';
 import { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import Page, {
@@ -22,12 +23,18 @@ jest.mock('next/navigation');
 jest.mock('@app/review-and-approve-letter-template/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
 
-const { pageTitle } = content.pages.reviewAndApproveLetterTemplate;
+const { pageTitle, pageHeading, headerCaption } =
+  content.pages.reviewAndApproveLetterTemplate;
+
+const defaultSearchParams = Promise.resolve({
+  lockNumber: String(AUTHORING_LETTER_TEMPLATE.lockNumber),
+});
 
 beforeEach(() => {
   jest.resetAllMocks();
   jest.mocked(reviewAndApproveLetterTemplateAction).mockResolvedValue({});
   jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
+  jest.mocked(getLetterVariantById).mockResolvedValue(makeLetterVariant());
 });
 
 test('metadata', async () => {
@@ -44,6 +51,7 @@ describe('template does not exist', () => {
   it('redirects to invalid template page', async () => {
     await Page({
       params: Promise.resolve({ templateId: 'template-123' }),
+      searchParams: defaultSearchParams,
     });
 
     expect(redirect).toHaveBeenCalledWith(
@@ -59,6 +67,7 @@ describe('template is not a letter', () => {
 
     await Page({
       params: Promise.resolve({ templateId: EMAIL_TEMPLATE.id }),
+      searchParams: defaultSearchParams,
     });
 
     expect(redirect).toHaveBeenCalledWith(
@@ -72,6 +81,7 @@ describe('template is not a letter', () => {
 
     await Page({
       params: Promise.resolve({ templateId: SMS_TEMPLATE.id }),
+      searchParams: defaultSearchParams,
     });
 
     expect(redirect).toHaveBeenCalledWith(
@@ -85,6 +95,7 @@ describe('template is not a letter', () => {
 
     await Page({
       params: Promise.resolve({ templateId: NHS_APP_TEMPLATE.id }),
+      searchParams: defaultSearchParams,
     });
 
     expect(redirect).toHaveBeenCalledWith(
@@ -100,10 +111,82 @@ describe('template is a PDF letter (not AUTHORING)', () => {
 
     await Page({
       params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+      searchParams: defaultSearchParams,
     });
 
     expect(redirect).toHaveBeenCalledWith(
       '/invalid-template',
+      RedirectType.replace
+    );
+  });
+});
+
+describe('lockNumber validation', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
+  });
+
+  it('redirects to preview page when lockNumber is missing from searchParams', async () => {
+    await Page({
+      params: Promise.resolve({
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
+      }),
+      searchParams: Promise.resolve({}),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to preview page when lockNumber does not match template', async () => {
+    await Page({
+      params: Promise.resolve({
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
+      }),
+      searchParams: Promise.resolve({ lockNumber: '999' }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to preview page when lockNumber is not a valid number', async () => {
+    await Page({
+      params: Promise.resolve({
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
+      }),
+      searchParams: Promise.resolve({ lockNumber: 'abc' }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to preview page when template has no letterVariantId', async () => {
+    const templateWithoutVariant: AuthoringLetterTemplate = {
+      ...AUTHORING_LETTER_TEMPLATE,
+      letterVariantId: undefined as unknown as string,
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateWithoutVariant);
+
+    await Page({
+      params: Promise.resolve({
+        templateId: templateWithoutVariant.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: String(templateWithoutVariant.lockNumber),
+      }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-letter-template/${templateWithoutVariant.id}`,
       RedirectType.replace
     );
   });
@@ -117,16 +200,43 @@ describe('valid authoring letter template', () => {
   it('renders the page without redirecting', async () => {
     const page = await Page({
       params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      searchParams: defaultSearchParams,
     });
 
     expect(page).toBeTruthy();
     expect(redirect).not.toHaveBeenCalled();
   });
 
+  it('calls getLetterVariantById with the template letterVariantId', async () => {
+    await Page({
+      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      searchParams: defaultSearchParams,
+    });
+
+    expect(getLetterVariantById).toHaveBeenCalledWith(
+      AUTHORING_LETTER_TEMPLATE.letterVariantId
+    );
+  });
+
+  it('renders the heading and caption', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        searchParams: defaultSearchParams,
+      })
+    );
+
+    expect(screen.getByTestId('preview-message__heading')).toHaveTextContent(
+      pageHeading
+    );
+    expect(screen.getByText(headerCaption)).toBeInTheDocument();
+  });
+
   it('renders hidden templateId and lockNumber inputs', async () => {
     render(
       await Page({
         params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        searchParams: defaultSearchParams,
       })
     );
 
@@ -140,6 +250,7 @@ describe('valid authoring letter template', () => {
     render(
       await Page({
         params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        searchParams: defaultSearchParams,
       })
     );
 
@@ -188,6 +299,9 @@ describe('rendered PDF previews', () => {
       await Page({
         params: Promise.resolve({
           templateId: templateWithRenderedFiles.id,
+        }),
+        searchParams: Promise.resolve({
+          lockNumber: String(templateWithRenderedFiles.lockNumber),
         }),
       })
     );

@@ -582,7 +582,6 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with l
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       Authoring Letter

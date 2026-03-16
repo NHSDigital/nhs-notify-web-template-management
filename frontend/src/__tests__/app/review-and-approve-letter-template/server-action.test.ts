@@ -11,6 +11,8 @@ jest.mock('@utils/form-actions');
 const redirectMock = jest.mocked(redirect);
 const approveTemplateMock = jest.mocked(approveTemplate);
 
+const validTemplateId = 'f47ac10b-58cc-4372-a567-0e02b2c3d479';
+
 describe('reviewAndApproveLetterTemplateAction', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -18,7 +20,7 @@ describe('reviewAndApproveLetterTemplateAction', () => {
 
   it('should call approveTemplate and redirect on valid form data', async () => {
     approveTemplateMock.mockResolvedValueOnce({
-      id: 'template-123',
+      id: validTemplateId,
       clientId: 'client',
       name: 'name',
       templateStatus: 'PROOF_APPROVED',
@@ -45,14 +47,14 @@ describe('reviewAndApproveLetterTemplateAction', () => {
     });
 
     const formData = new FormData();
-    formData.append('templateId', 'template-123');
+    formData.append('templateId', validTemplateId);
     formData.append('lockNumber', '1');
 
     await reviewAndApproveLetterTemplateAction({}, formData);
 
-    expect(approveTemplateMock).toHaveBeenCalledWith('template-123', 1);
+    expect(approveTemplateMock).toHaveBeenCalledWith(validTemplateId, 1);
     expect(redirectMock).toHaveBeenCalledWith(
-      '/letter-template-approved/template-123'
+      `/letter-template-approved/${validTemplateId}`
     );
   });
 
@@ -69,7 +71,7 @@ describe('reviewAndApproveLetterTemplateAction', () => {
 
   it('should return error state when lockNumber is missing', async () => {
     const formData = new FormData();
-    formData.append('templateId', 'template-123');
+    formData.append('templateId', validTemplateId);
 
     const result = await reviewAndApproveLetterTemplateAction({}, formData);
 
@@ -80,7 +82,7 @@ describe('reviewAndApproveLetterTemplateAction', () => {
 
   it('should return error state when lockNumber is invalid', async () => {
     const formData = new FormData();
-    formData.append('templateId', 'template-123');
+    formData.append('templateId', validTemplateId);
     formData.append('lockNumber', 'not-a-number');
 
     const result = await reviewAndApproveLetterTemplateAction({}, formData);
@@ -93,6 +95,18 @@ describe('reviewAndApproveLetterTemplateAction', () => {
   it('should return error state when templateId is empty', async () => {
     const formData = new FormData();
     formData.append('templateId', '');
+    formData.append('lockNumber', '1');
+
+    const result = await reviewAndApproveLetterTemplateAction({}, formData);
+
+    expect(result).toHaveProperty('errorState');
+    expect(approveTemplateMock).not.toHaveBeenCalled();
+    expect(redirectMock).not.toHaveBeenCalled();
+  });
+
+  it('should return error state when templateId is not a valid UUID', async () => {
+    const formData = new FormData();
+    formData.append('templateId', 'not-a-uuid');
     formData.append('lockNumber', '1');
 
     const result = await reviewAndApproveLetterTemplateAction({}, formData);

@@ -7,12 +7,41 @@ import { TemplateMgmtReviewAndApproveLetterTemplatePage } from '../../pages/lett
 import { getTestContext } from '../../helpers/context/context';
 
 async function createTemplates() {
-  const user = await getTestContext().auth.getTestUser(testUsers.User1.userId);
+  const context = getTestContext();
+  const user = await context.auth.getTestUser(testUsers.User1.userId);
+
+  const [globalVariant] =
+    await context.letterVariants.getGlobalLetterVariants();
+
   return {
     valid: TemplateFactory.createAuthoringLetterTemplate(
       'e3a1b2c3-d4e5-6f78-9a0b-c1d2e3f4a5b6',
       user,
       'review-approve-valid',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: globalVariant.id,
+        shortFormRender: {},
+        longFormRender: {},
+      }
+    ),
+
+    validForApproval: TemplateFactory.createAuthoringLetterTemplate(
+      'e3a1b2c3-d4e5-6f78-9a0b-c1d2e3f4a5b7',
+      user,
+      'review-approve-submit',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: globalVariant.id,
+        shortFormRender: {},
+        longFormRender: {},
+      }
+    ),
+
+    withoutLetterVariantId: TemplateFactory.createAuthoringLetterTemplate(
+      'e3a1b2c3-d4e5-6f78-9a0b-c1d2e3f4a5b8',
+      user,
+      'review-approve-no-variant',
       'NOT_YET_SUBMITTED',
       {
         shortFormRender: {},
@@ -57,9 +86,9 @@ test.describe('Review and Approve Letter Template Page', () => {
   test('when user visits page, then page is loaded with correct heading and approve button', async ({
     page,
   }) => {
-    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(
-      page
-    ).setPathParam('templateId', templates.valid.id);
+    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+      .setPathParam('templateId', templates.valid.id)
+      .setSearchParam('lockNumber', String(templates.valid.lockNumber));
 
     await reviewPage.loadPage();
 
@@ -78,9 +107,12 @@ test.describe('Review and Approve Letter Template Page', () => {
     page,
     baseURL,
   }) => {
-    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(
-      page
-    ).setPathParam('templateId', templates.valid.id);
+    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+      .setPathParam('templateId', templates.validForApproval.id)
+      .setSearchParam(
+        'lockNumber',
+        String(templates.validForApproval.lockNumber)
+      );
 
     await reviewPage.loadPage();
 
@@ -89,7 +121,52 @@ test.describe('Review and Approve Letter Template Page', () => {
     await reviewPage.clickApproveButton();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/letter-template-approved/${templates.valid.id}`
+      `${baseURL}/templates/letter-template-approved/${templates.validForApproval.id}`
+    );
+  });
+
+  test('redirects to preview page when lockNumber query parameter is missing', async ({
+    page,
+  }) => {
+    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(
+      page
+    ).setPathParam('templateId', templates.valid.id);
+
+    await reviewPage.loadPage();
+
+    await expect(page).toHaveURL(
+      `/templates/preview-letter-template/${templates.valid.id}`
+    );
+  });
+
+  test('redirects to preview page when lockNumber query parameter is invalid', async ({
+    page,
+  }) => {
+    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+      .setPathParam('templateId', templates.valid.id)
+      .setSearchParam('lockNumber', 'invalid');
+
+    await reviewPage.loadPage();
+
+    await expect(page).toHaveURL(
+      `/templates/preview-letter-template/${templates.valid.id}`
+    );
+  });
+
+  test('redirects to preview page when template has no letterVariantId', async ({
+    page,
+  }) => {
+    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+      .setPathParam('templateId', templates.withoutLetterVariantId.id)
+      .setSearchParam(
+        'lockNumber',
+        String(templates.withoutLetterVariantId.lockNumber)
+      );
+
+    await reviewPage.loadPage();
+
+    await expect(page).toHaveURL(
+      `/templates/preview-letter-template/${templates.withoutLetterVariantId.id}`
     );
   });
 
@@ -97,9 +174,9 @@ test.describe('Review and Approve Letter Template Page', () => {
     page,
     baseURL,
   }) => {
-    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(
-      page
-    ).setPathParam('templateId', templates.nonLetterSms.id);
+    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+      .setPathParam('templateId', templates.nonLetterSms.id)
+      .setSearchParam('lockNumber', String(templates.nonLetterSms.lockNumber));
 
     await reviewPage.loadPage();
 
@@ -110,9 +187,9 @@ test.describe('Review and Approve Letter Template Page', () => {
     page,
     baseURL,
   }) => {
-    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(
-      page
-    ).setPathParam('templateId', templates.pdfLetter.id);
+    const reviewPage = new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+      .setPathParam('templateId', templates.pdfLetter.id)
+      .setSearchParam('lockNumber', String(templates.pdfLetter.lockNumber));
 
     await reviewPage.loadPage();
 

@@ -410,7 +410,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
 
     const { lockNumber, id } = letterTemplate;
 
-    const deleteResponse = await request.patch(
+    const approveResponse = await request.patch(
       `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
       {
         headers: {
@@ -420,12 +420,267 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    const data = await deleteResponse.json();
+    const data = await approveResponse.json();
 
-    expect(deleteResponse.status(), JSON.stringify(data)).toBe(404);
+    expect(approveResponse.status(), JSON.stringify(data)).toBe(404);
     expect(data).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
+    });
+  });
+
+  test('returns 400 - cannot approve template without campaignId', async ({
+    request,
+  }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant.id,
+        campaignId: null,
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id, lockNumber } = letterTemplate;
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
+      {
+        headers: {
+          Authorization: await userLetterAuthoring.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Template cannot be approved',
+    });
+  });
+
+  test('returns 400 - cannot approve template without letterVariantId', async ({
+    request,
+  }) => {
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id, lockNumber } = letterTemplate;
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
+      {
+        headers: {
+          Authorization: await userLetterAuthoring.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Template cannot be approved',
+    });
+  });
+
+  test('returns 400 - cannot approve when shortFormRender is missing', async ({
+    request,
+  }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant.id,
+        shortFormRender: false,
+        longFormRender: { status: 'RENDERED' },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id, lockNumber } = letterTemplate;
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
+      {
+        headers: {
+          Authorization: await userLetterAuthoring.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'One or more personalised rendered example has not been generated',
+    });
+  });
+
+  test('returns 400 - cannot approve when longFormRender is missing', async ({
+    request,
+  }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant.id,
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: false,
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id, lockNumber } = letterTemplate;
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
+      {
+        headers: {
+          Authorization: await userLetterAuthoring.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'One or more personalised rendered example has not been generated',
+    });
+  });
+
+  test('returns 400 - cannot approve when renders are not yet complete', async ({
+    request,
+  }) => {
+    const [letterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant.id,
+        shortFormRender: { status: 'PENDING' },
+        longFormRender: { status: 'PENDING' },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id, lockNumber } = letterTemplate;
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
+      {
+        headers: {
+          Authorization: await userLetterAuthoring.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'One or more personalised rendered example has not been generated',
+    });
+  });
+
+  test('returns 400 - page count exceeds max sheets allowed by letter variant', async ({
+    request,
+  }) => {
+    const globalVariants =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    // Pick a variant with maxSheets: 5 and bothSides: true
+    // ceil(11 / 2) = 6 sheets which exceeds maxSheets of 5
+    const letterVariant = globalVariants.find(
+      (v) => v.maxSheets === 5 && v.bothSides
+    );
+
+    expect(letterVariant).toBeDefined();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'Test Authoring Letter template',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: letterVariant!.id,
+        shortFormRender: { status: 'RENDERED', pageCount: 11 },
+        longFormRender: { status: 'RENDERED', pageCount: 11 },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id, lockNumber } = letterTemplate;
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
+      {
+        headers: {
+          Authorization: await userLetterAuthoring.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(400);
+    expect(data).toEqual({
+      statusCode: 400,
+      technicalMessage:
+        'Letter template exceeded maximum number of sheets allowed by letter variant',
     });
   });
 });
