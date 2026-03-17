@@ -70,6 +70,20 @@ describe('LetterRender', () => {
     expect(tabContents).toHaveLength(2);
   });
 
+  it('displays learn more about personalisation link', () => {
+    render(<LetterRender template={baseTemplate} />, { wrapper: Provider });
+
+    const link = screen.getByRole('link');
+
+    expect(link).toHaveTextContent(
+      'Learn more about personalising your letters (opens in a new tab).'
+    );
+    expect(link).toHaveProperty(
+      'href',
+      'https://notify.nhs.uk/using-nhs-notify/personalisation'
+    );
+  });
+
   it('matches snapshot', () => {
     const { asFragment } = render(<LetterRender template={baseTemplate} />, {
       wrapper: Provider,
