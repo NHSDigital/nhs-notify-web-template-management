@@ -5,7 +5,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { DetailedHTMLProps, FormHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
 
-export type NHSNotifyRadioButtonFormProps = {
+type ChooseTemplateTypeRadiosProps = {
   formId: string;
   radiosId: string;
   action: string | ((payload: FormData) => void);
@@ -54,7 +54,7 @@ export const ChooseTemplateTypeRadios = ({
   learnMoreText = '',
   backLink,
   children,
-}: NHSNotifyRadioButtonFormProps) => (
+}: ChooseTemplateTypeRadiosProps) => (
   <NHSNotifyFormWrapper
     action={action}
     formId={formId}

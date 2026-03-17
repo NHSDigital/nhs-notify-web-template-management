@@ -33,7 +33,6 @@ export type NHSNotifyRadioButtonFormProps = {
     text: string;
     url: string;
   };
-  isLetterAuthoringEnabled?: boolean;
 };
 
 const normaliseId = (id: string) =>

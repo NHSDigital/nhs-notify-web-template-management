@@ -62,6 +62,7 @@ describe('Choose template page', () => {
       expect(radioButton).not.toBeChecked();
     }
     expect(submitButton).toBeInTheDocument();
+    expect(screen.queryByTestId('letter-radio')).not.toBeInTheDocument();
 
     for (const [, radioButton] of radioButtons.entries()) {
       // select an option

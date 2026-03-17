@@ -26,11 +26,15 @@ const templateStorageHelper = new TemplateStorageHelper();
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 let userWithNoTemplateData: TestUser;
 let userWithTemplateData: TestUser;
+let userWithLetterAuthoringEnabled: TestUser;
 
 test.beforeAll(async () => {
   const authHelper = createAuthHelper();
   userWithNoTemplateData = await authHelper.getTestUser(testUsers.User2.userId);
   userWithTemplateData = await authHelper.getTestUser(testUsers.User1.userId);
+  userWithLetterAuthoringEnabled = await authHelper.getTestUser(
+    testUsers.userWithLetterAuthoringEnabled.userId
+  );
 
   const template = TemplateFactory.createSmsTemplate(
     templateIds.TEMPLATE,
@@ -42,6 +46,12 @@ test.beforeAll(async () => {
     templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN,
     userWithTemplateData,
     `Test NHS App template - ${templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN}`
+  );
+
+  const templateForLetterAuthoring = TemplateFactory.createNhsAppTemplate(
+    templateIds.TEMPLATE,
+    userWithLetterAuthoringEnabled,
+    `Test NHS Letter template - ${templateIds.TEMPLATE}`
   );
 
   const routingPlan = RoutingConfigFactory.createForMessageOrder(
@@ -56,6 +66,7 @@ test.beforeAll(async () => {
   await templateStorageHelper.seedTemplateData([
     template,
     templateForRoutingPlan,
+    templateForLetterAuthoring,
   ]);
 
   await routingConfigStorageHelper.seed([routingPlan.dbEntry]);

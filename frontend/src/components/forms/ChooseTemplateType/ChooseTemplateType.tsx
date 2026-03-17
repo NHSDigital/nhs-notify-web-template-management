@@ -86,7 +86,7 @@ export const ChooseTemplateType = ({
       </Link>
       <NHSNotifyMain>
         <NhsNotifyErrorSummary hint={errorHintText} errorState={errorState} />
-        {/* Replacing the NHSNotifyRadioForm on this page with the ChooseTemplateTypeRadios molecule in other to render the callout for uploading letters pending the completion of the letter authoring feature. */}
+        {/* Replacing the NHSNotifyRadioForm on this page with the ChooseTemplateTypeRadios molecule in order to render the callout for uploading letters pending the completion of the letter authoring feature. */}
         <ChooseTemplateTypeRadios
           formId='choose-a-template-type'
           radiosId='templateType'
