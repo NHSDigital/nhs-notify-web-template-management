@@ -6,6 +6,7 @@ import type {
   LetterPatch,
   LetterVariant,
   LetterVariantListSuccess,
+  LetterProofRequest,
 } from 'nhs-notify-web-template-management-types';
 import { Result } from './types/result';
 import { catchAxiosError, httpClient } from './axios-client';
@@ -301,6 +302,37 @@ export const templateApiClient = {
         {
           headers: {
             Authorization: owner,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
+  async generateLetterProof(
+    templateId: string,
+    owner: string,
+    lockNumber: number,
+    letterProofRequest: LetterProofRequest
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      httpClient.post<TemplateSuccess>(
+        `/v1/template/${encodeURIComponent(templateId)}/generate-letter-proof`,
+        letterProofRequest,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+            'X-Lock-Number': String(lockNumber),
           },
         }
       )

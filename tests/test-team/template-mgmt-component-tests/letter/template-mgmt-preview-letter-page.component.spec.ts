@@ -857,6 +857,135 @@ test.describe('Preview Letter template Page', () => {
         await expect(longDoctorName).toHaveValue('Dr Jones');
       });
 
+      test.describe('polling state for personalised renders', () => {
+        test('shows spinner in tab when personalised render is PENDING', async ({
+          page,
+        }) => {
+          const user = await authHelper.getTestUser(testUsers.User1.userId);
+
+          // Seed here so requestedAt is within the render timeout window
+          const template = TemplateFactory.createAuthoringLetterTemplate(
+            'E1F2A3B4-C5D6-7890-ABCD-111111111111',
+            user,
+            'authoring-pending-short-render',
+            'NOT_YET_SUBMITTED',
+            {
+              letterVariantId: 'variant-pending-short',
+              initialRender: {
+                fileName: 'initial-render.pdf',
+                currentVersion: 'v1-initial',
+                pageCount: 4,
+              },
+              shortFormRender: {
+                status: 'PENDING',
+                requestedAt: new Date().toISOString(),
+                systemPersonalisationPackId: 'short-1',
+                personalisationParameters: {
+                  firstName: 'Jo',
+                  lastName: 'Bloggs',
+                },
+              },
+            }
+          );
+
+          await templateStorageHelper.seedTemplateData([template]);
+
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam('templateId', template.id);
+
+          await previewPage.loadPage();
+
+          await expect(previewPage.shortTab.tabSpinner).toBeVisible();
+
+          await expect(previewPage.shortTab.previewIframe).toBeHidden();
+        });
+
+        test('disables submit button while a tab render is polling', async ({
+          page,
+        }) => {
+          const user = await authHelper.getTestUser(testUsers.User1.userId);
+
+          const template = TemplateFactory.createAuthoringLetterTemplate(
+            'E1F2A3B4-C5D6-7890-ABCD-222222222222',
+            user,
+            'authoring-polling-submit-disabled',
+            'NOT_YET_SUBMITTED',
+            {
+              letterVariantId: 'variant-polling-submit',
+              initialRender: {
+                fileName: 'initial-render.pdf',
+                currentVersion: 'v1-initial',
+                pageCount: 4,
+              },
+              shortFormRender: {
+                status: 'PENDING',
+                requestedAt: new Date().toISOString(),
+                systemPersonalisationPackId: 'short-1',
+                personalisationParameters: {
+                  firstName: 'Jo',
+                  lastName: 'Bloggs',
+                },
+              },
+            }
+          );
+
+          await templateStorageHelper.seedTemplateData([template]);
+
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam('templateId', template.id);
+
+          await previewPage.loadPage();
+
+          await expect(previewPage.continueButton).toBeDisabled();
+        });
+
+        test('disables update preview buttons in both tabs while a tab render is polling', async ({
+          page,
+        }) => {
+          const user = await authHelper.getTestUser(testUsers.User1.userId);
+
+          const template = TemplateFactory.createAuthoringLetterTemplate(
+            'E1F2A3B4-C5D6-7890-ABCD-333333333333',
+            user,
+            'authoring-polling-buttons-disabled',
+            'NOT_YET_SUBMITTED',
+            {
+              letterVariantId: 'variant-polling-buttons',
+              initialRender: {
+                fileName: 'initial-render.pdf',
+                currentVersion: 'v1-initial',
+                pageCount: 4,
+              },
+              shortFormRender: {
+                status: 'PENDING',
+                requestedAt: new Date().toISOString(),
+                systemPersonalisationPackId: 'short-1',
+                personalisationParameters: {
+                  firstName: 'Jo',
+                  lastName: 'Bloggs',
+                },
+              },
+            }
+          );
+
+          await templateStorageHelper.seedTemplateData([template]);
+
+          const previewPage = new TemplateMgmtPreviewLetterPage(
+            page
+          ).setPathParam('templateId', template.id);
+
+          await previewPage.loadPage();
+
+          await expect(previewPage.shortTab.updatePreviewButton).toBeDisabled();
+
+          await previewPage.longTab.clickTab();
+
+          await expect(previewPage.longTab.updatePreviewButton).toBeDisabled();
+        });
+      });
+
       test.describe('existing personalised renders', () => {
         test('short tab displays personalised render when shortFormRender exists', async ({
           page,
