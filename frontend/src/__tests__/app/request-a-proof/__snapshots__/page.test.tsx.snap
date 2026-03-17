@@ -62,7 +62,7 @@ exports[`RequestADigitalProofPage matches snapshot 1`] = `
           >
             This process is for NHS App messages, emails and text messages only. Find out 
             <a
-              href="#"
+              href="https://notify.nhs.uk/using-nhs-notify/approve-your-messages#requesting-letter-proofs"
               rel="noopener noreferrer"
               target="_blank"
             >

@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const channelSlug = {
   NHS_APP: 'nhs-app',
-  SMS: 'sms',
+  SMS: 'text-message',
   EMAIL: 'email',
 };
 

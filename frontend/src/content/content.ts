@@ -1248,7 +1248,7 @@ const howToRequestADigitalProof: {
     },
     {
       type: 'text',
-      text: 'This process is for NHS App messages, emails and text messages only. Find out [how to approve letter templates (opens in a new tab)](#).',
+      text: 'This process is for NHS App messages, emails and text messages only. Find out [how to approve letter templates (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/approve-your-messages#requesting-letter-proofs).',
       overrides: {
         p: { props: { className: 'nhsuk-inset-text' } },
       },

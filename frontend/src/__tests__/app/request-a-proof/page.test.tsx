@@ -48,7 +48,7 @@ describe('RequestADigitalProofPage', () => {
 
   test.each([
     [NHS_APP_TEMPLATE, 'nhs-app'],
-    [SMS_TEMPLATE, 'sms'],
+    [SMS_TEMPLATE, 'text-message'],
     [EMAIL_TEMPLATE, 'email'],
   ])(
     'should render page for %s template type with expected back link',
