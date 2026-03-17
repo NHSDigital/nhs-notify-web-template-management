@@ -22,6 +22,7 @@ import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
 import { interpolate } from '@utils/interpolate';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import concatClassNames from '@utils/concat-class-names';
+import { buildLetterRenderUrl } from '@utils/letter-render-url';
 
 const {
   pageTitle,
@@ -40,11 +41,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
-  const basePath = getBasePath();
-  return `${basePath}/files/${template.clientId}/renders/${template.id}/${fileName}`;
-}
-
 function derivePdfUrl(
   template: AuthoringLetterTemplate,
   tab: 'longFormRender' | 'shortFormRender'
@@ -52,7 +48,7 @@ function derivePdfUrl(
   const render = template.files[tab];
 
   return render?.status === 'RENDERED'
-    ? buildPdfUrl(template, render.fileName)
+    ? buildLetterRenderUrl(template, render.fileName)
     : null;
 }
 
