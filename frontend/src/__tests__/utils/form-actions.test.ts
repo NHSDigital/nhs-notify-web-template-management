@@ -1217,6 +1217,7 @@ describe('form-actions', () => {
       const responseData = {
         templateType: 'LETTER',
         id: 'template-id',
+        clientId: 'client-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',
         letterType: 'x1',

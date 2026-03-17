@@ -861,7 +861,9 @@ test.describe('Preview Letter template Page', () => {
         test('shows spinner in tab when personalised render is PENDING', async ({
           page,
         }) => {
-          const user = await authHelper.getTestUser(testUsers.User1.userId);
+          const user = await getTestContext().auth.getTestUser(
+            testUsers.User1.userId
+          );
 
           // Seed here so requestedAt is within the render timeout window
           const template = TemplateFactory.createAuthoringLetterTemplate(
@@ -904,7 +906,9 @@ test.describe('Preview Letter template Page', () => {
         test('disables submit button while a tab render is polling', async ({
           page,
         }) => {
-          const user = await authHelper.getTestUser(testUsers.User1.userId);
+          const user = await getTestContext().auth.getTestUser(
+            testUsers.User1.userId
+          );
 
           const template = TemplateFactory.createAuthoringLetterTemplate(
             'E1F2A3B4-C5D6-7890-ABCD-222222222222',
@@ -944,7 +948,9 @@ test.describe('Preview Letter template Page', () => {
         test('disables update preview buttons in both tabs while a tab render is polling', async ({
           page,
         }) => {
-          const user = await authHelper.getTestUser(testUsers.User1.userId);
+          const user = await getTestContext().auth.getTestUser(
+            testUsers.User1.userId
+          );
 
           const template = TemplateFactory.createAuthoringLetterTemplate(
             'E1F2A3B4-C5D6-7890-ABCD-333333333333',
