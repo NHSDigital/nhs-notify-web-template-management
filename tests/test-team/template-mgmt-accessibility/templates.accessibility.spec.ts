@@ -26,11 +26,15 @@ const templateStorageHelper = new TemplateStorageHelper();
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 let userWithNoTemplateData: TestUser;
 let userWithTemplateData: TestUser;
+let userWithLetterAuthoringEnabledData: TestUser;
 
 test.beforeAll(async () => {
   const authHelper = createAuthHelper();
   userWithNoTemplateData = await authHelper.getTestUser(testUsers.User2.userId);
   userWithTemplateData = await authHelper.getTestUser(testUsers.User1.userId);
+  userWithLetterAuthoringEnabledData = await authHelper.getTestUser(
+    testUsers.UserLetterAuthoringEnabled.userId
+  );
 
   const template = TemplateFactory.createSmsTemplate(
     templateIds.TEMPLATE,
@@ -42,6 +46,12 @@ test.beforeAll(async () => {
     templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN,
     userWithTemplateData,
     `Test NHS App template - ${templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN}`
+  );
+
+  const templateForLetterAuthoring = TemplateFactory.createNhsAppTemplate(
+    templateIds.TEMPLATE,
+    userWithLetterAuthoringEnabledData,
+    `Test Letter template - ${templateIds.TEMPLATE}`
   );
 
   const routingPlan = RoutingConfigFactory.createForMessageOrder(
@@ -56,6 +66,7 @@ test.beforeAll(async () => {
   await templateStorageHelper.seedTemplateData([
     template,
     templateForRoutingPlan,
+    templateForLetterAuthoring,
   ]);
 
   await routingConfigStorageHelper.seed([routingPlan.dbEntry]);
@@ -90,17 +101,24 @@ test('Choose a template type error', async ({ page, analyze }) =>
     beforeAnalyze: (p) => p.clickContinueButton(),
   }));
 
-test('Choose a template type error (no accessibility type)', async ({
-  page,
-  analyze,
-}) =>
-  analyze(new TemplateMgmtChoosePage(page), {
-    beforeAnalyze: async (p) => {
-      await p.getTemplateTypeRadio('letter').check();
-      await p.clickContinueButton();
-      await p.letterTypeFormError.isVisible();
-    },
-  }));
+test.describe('Template type page with authoring enabled', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test('Choose a template type error (no accessibility type)', async ({
+    page,
+    analyze,
+  }) => {
+    await loginAsUser(userWithLetterAuthoringEnabledData, page);
+
+    await analyze(new TemplateMgmtChoosePage(page), {
+      beforeAnalyze: async (p) => {
+        await p.getTemplateTypeRadio('letter').check();
+        await p.clickContinueButton();
+        await p.letterTypeFormError.isVisible();
+      },
+    });
+  });
+});
 
 test('Copy template', async ({ page, analyze }) =>
   analyze(

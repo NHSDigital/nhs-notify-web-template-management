@@ -851,6 +851,12 @@ const chooseTemplateType = {
     x1: 'Large print letter',
     language: 'Other language letter',
   },
+  warningCalloutContent: {
+    headingLabel: 'To create a letter template',
+    firstParagraph: 'You cannot upload a letter template using this service.',
+    secondParagraph:
+      'Follow our guidance to [upload a letter template (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/upload-a-letter)',
+  },
 };
 
 const templateNameGuidance = (type?: TemplateType) => {
