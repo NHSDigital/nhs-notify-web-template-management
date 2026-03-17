@@ -217,7 +217,7 @@ describe('updateLetterPreview', () => {
       requestTypeVariant: 'short',
       personalisation: {
         appointmentDate: '2025-01-15',
-        nhsNumber: '9728543751',
+        nhsNumber: '972 854 3751',
         firstName: 'Jo',
         lastName: 'Bloggs',
         fullName: 'Jo Bloggs',
@@ -250,7 +250,7 @@ describe('updateLetterPreview', () => {
       requestTypeVariant: 'long',
       personalisation: {
         clinicName: 'Town Centre Clinic',
-        nhsNumber: '9728543771',
+        nhsNumber: '972 854 3771',
         firstName: 'Michael',
         lastName: 'Richardson-Clarke',
         fullName: 'Mr Michael James Richardson-Clarke',
