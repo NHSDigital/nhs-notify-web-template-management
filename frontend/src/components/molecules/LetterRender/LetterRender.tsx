@@ -17,7 +17,9 @@ export function LetterRender({
     <section className='nhsuk-u-margin-top-6'>
       <h2 className='nhsuk-heading-m'>{copy.heading}</h2>
       <p>{copy.guidance}</p>
-      <Link href={copy.guidanceLink.href}>{copy.guidanceLink.text}</Link>
+      <Link href={copy.guidanceLink.href} className='nhsuk-body'>
+        {copy.guidanceLink.text}
+      </Link>
 
       <Tabs className='nhsuk-u-margin-top-6'>
         <Tabs.Title>{copy.tabTitle}</Tabs.Title>
