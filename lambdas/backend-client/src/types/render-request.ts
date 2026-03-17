@@ -1,7 +1,7 @@
 type Common = {
   clientId: string;
   templateId: string;
-  currentVersion: string;
+  docxCurrentVersion: string;
 };
 
 export type InitialRenderRequest = Common & {
@@ -12,6 +12,7 @@ type PersonalisedCommon = Common & {
   requestType: 'personalised';
   personalisation: Record<string, string>;
   lockNumber: number;
+  systemPersonalisationPackId: string;
 };
 
 export type ShortPersonalisedRenderRequest = PersonalisedCommon & {

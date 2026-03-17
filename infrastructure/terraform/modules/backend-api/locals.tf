@@ -23,6 +23,7 @@ locals {
     GET_LAMBDA_ARN                                = module.get_template_lambda.function_arn
     GET_ROUTING_CONFIG_LAMBDA_ARN                 = module.get_routing_config_lambda.function_arn
     GET_ROUTING_CONFIGS_BY_TEMPLATE_ID_LAMBDA_ARN = module.get_routing_configs_by_template_id_lambda.function_arn
+    GENERATE_LETTER_PROOF_LAMBDA_ARN              = module.generate_letter_proof_lambda.function_arn
     LIST_LAMBDA_ARN                               = module.list_template_lambda.function_arn
     LIST_ROUTING_CONFIGS_LAMBDA_ARN               = module.list_routing_configs_lambda.function_arn
     PATCH_TEMPLATE_LAMBDA_ARN                     = module.patch_template_lambda.function_arn

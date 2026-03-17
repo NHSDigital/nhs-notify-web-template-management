@@ -1,4 +1,6 @@
 import type {
+  LetterVersion,
+  PersonalisedRenderRequestVariant,
   RenderDetails,
   TemplateStatus,
   TemplateType,
@@ -98,8 +100,16 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
-  setShortFormRender(details: RenderDetails) {
-    this.updateBuilder.setValueInMap('files', 'shortFormRender', details);
+  setPersonalisedRender(
+    variant: PersonalisedRenderRequestVariant,
+    details: RenderDetails
+  ) {
+    this.updateBuilder.setValueInMap(
+      'files',
+      variant === 'long' ? 'longFormRender' : 'shortFormRender',
+      details
+    );
+
     return this;
   }
 
@@ -133,6 +143,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
 
   expectTemplateType(type: TemplateType) {
     this.updateBuilder.conditions.and('templateType', '=', type);
+    return this;
+  }
+
+  expectLetterVersion(version: LetterVersion) {
+    this.updateBuilder.conditions.and('letterVersion', '=', version);
     return this;
   }
 

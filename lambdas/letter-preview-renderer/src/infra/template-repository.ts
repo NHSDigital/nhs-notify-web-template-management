@@ -2,7 +2,10 @@ import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 import type { ValidationErrorDetail } from 'nhs-notify-web-template-management-types';
 import type { Personalisation } from '../types/types';
-import type { RenderRequest } from 'nhs-notify-backend-client/src/types/render-request';
+import type {
+  InitialRenderRequest,
+  PersonalisedRenderRequest,
+} from 'nhs-notify-backend-client/src/types/render-request';
 
 export class TemplateRepository {
   constructor(
@@ -10,16 +13,14 @@ export class TemplateRepository {
     private readonly templatesTableName: string
   ) {}
 
-  async updateRendered(
-    request: RenderRequest,
+  async updateRenderedInitial(
+    request: InitialRenderRequest,
     personalisation: Personalisation,
     currentVersion: string,
     fileName: string,
     pageCount: number,
     validationErrors?: ValidationErrorDetail[]
   ) {
-    if (request.requestType !== 'initial') return;
-
     const hasValidationErrors = validationErrors && validationErrors.length > 0;
 
     const builder = new TemplateUpdateBuilder(
@@ -48,13 +49,11 @@ export class TemplateRepository {
     return await this.ddb.send(new UpdateCommand(builder.build()));
   }
 
-  async updateFailure(
-    request: RenderRequest,
+  async updateFailureInitial(
+    request: InitialRenderRequest,
     personalisation?: Personalisation,
     validationErrors?: ValidationErrorDetail[]
   ) {
-    if (request.requestType !== 'initial') return;
-
     const builder = new TemplateUpdateBuilder(
       this.templatesTableName,
       request.clientId,
@@ -78,6 +77,50 @@ export class TemplateRepository {
     if (validationErrors && validationErrors.length > 0) {
       builder.appendValidationErrors(validationErrors);
     }
+
+    return await this.ddb.send(new UpdateCommand(builder.build()));
+  }
+
+  async updateRenderedPersonalised(
+    request: PersonalisedRenderRequest,
+    currentVersion: string,
+    fileName: string,
+    pageCount: number
+  ) {
+    const builder = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      request.clientId,
+      request.templateId
+    )
+      .incrementLockNumber()
+      .expectTemplateExists()
+      .expectStatus('NOT_YET_SUBMITTED')
+      .setPersonalisedRender(request.requestTypeVariant, {
+        status: 'RENDERED',
+        currentVersion,
+        fileName,
+        pageCount,
+        systemPersonalisationPackId: request.systemPersonalisationPackId,
+        personalisationParameters: request.personalisation,
+      });
+
+    return await this.ddb.send(new UpdateCommand(builder.build()));
+  }
+
+  async updateFailurePersonalised(request: PersonalisedRenderRequest) {
+    const builder = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      request.clientId,
+      request.templateId
+    )
+      .incrementLockNumber()
+      .expectTemplateExists()
+      .expectStatus('NOT_YET_SUBMITTED')
+      .setPersonalisedRender(request.requestTypeVariant, {
+        status: 'FAILED',
+        systemPersonalisationPackId: request.systemPersonalisationPackId,
+        personalisationParameters: request.personalisation,
+      });
 
     return await this.ddb.send(new UpdateCommand(builder.build()));
   }

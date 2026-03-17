@@ -6,7 +6,13 @@ const config: Config = {
   testEnvironment: 'node',
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
-    'container-*.ts',
+    'src/config.ts',
+    'container-poll.ts',
+    'container-request-proof.ts',
+    'sftp-poll',
+    'sftp-request-proof.ts',
+    'types.ts',
+    'config-poll.ts',
   ],
 };
 
