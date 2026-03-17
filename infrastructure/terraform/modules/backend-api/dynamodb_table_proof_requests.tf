@@ -29,10 +29,6 @@ resource "aws_dynamodb_table" "proof_requests" {
     kms_key_arn = var.kms_key_arn
   }
 
-  tags = {
-    "NHSE-Enable-Dynamo-Backup" = var.enable_backup ? "True" : "False"
-  }
-
   lifecycle {
     ignore_changes = [
       name, # To support backup and restore which will result in a new name otherwise
