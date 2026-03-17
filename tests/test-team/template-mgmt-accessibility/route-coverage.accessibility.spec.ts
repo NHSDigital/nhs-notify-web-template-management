@@ -12,6 +12,7 @@ import { TemplateMgmtCopyPage } from 'pages/template-mgmt-copy-page';
 import { TemplateMgmtDeletePage } from 'pages/template-mgmt-delete-page';
 import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
 import { TemplateMgmtInvalidTemplatePage } from 'pages/template-mgmt-invalid-tempate-page';
+import { TemplateMgmtRequestADigitalProofPage } from 'pages/template-mgmt-request-a-digital-proof-page';
 
 // Email template pages
 import {
@@ -102,6 +103,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtDeletePage,
   TemplateMgmtDeleteErrorPage,
   TemplateMgmtInvalidTemplatePage,
+  TemplateMgmtRequestADigitalProofPage,
 
   // Email
   TemplateMgmtCreateEmailPage,
