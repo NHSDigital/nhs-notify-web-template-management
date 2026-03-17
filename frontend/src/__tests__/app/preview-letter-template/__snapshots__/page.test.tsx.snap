@@ -219,6 +219,11 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
         <p>
           Check how your personalisation fields will appear in your letter.
         </p>
+        <a
+          href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+        >
+          Learn more about personalising your letters (opens in a new tab).
+        </a>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
           data-module="nhsuk-tabs"
@@ -769,6 +774,11 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
         <p>
           Check how your personalisation fields will appear in your letter.
         </p>
+        <a
+          href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+        >
+          Learn more about personalising your letters (opens in a new tab).
+        </a>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
           data-module="nhsuk-tabs"
@@ -1547,6 +1557,11 @@ exports[`valid authoring letter template matches snapshot 1`] = `
         <p>
           Check how your personalisation fields will appear in your letter.
         </p>
+        <a
+          href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+        >
+          Learn more about personalising your letters (opens in a new tab).
+        </a>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
           data-module="nhsuk-tabs"
@@ -1928,7 +1943,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             id="preview-letter-template-cta"
             type="submit"
           >
-            Submit template
+            Approve template
           </button>
         </form>
         <p>

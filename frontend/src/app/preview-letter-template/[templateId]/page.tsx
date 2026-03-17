@@ -22,11 +22,11 @@ import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
 const {
-  pageTitle,
+  approveButtonText,
   backLinkText,
-  submitText,
-  loadingText,
   links,
+  loadingText,
+  pageTitle,
   validationErrorMessages,
 } = content.pages.previewLetterTemplate;
 
@@ -121,7 +121,7 @@ export default async function PreviewLetterTemplatePage({
                       name='lockNumber'
                       value={validatedTemplate.lockNumber}
                     />
-                    <LetterSubmitButton>{submitText}</LetterSubmitButton>
+                    <LetterSubmitButton>{approveButtonText}</LetterSubmitButton>
                   </NHSNotifyForm.Form>
                 )}
                 <p>

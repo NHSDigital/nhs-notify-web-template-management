@@ -523,6 +523,7 @@ const previewLetterTitle = generatePageTitle('Preview letter template');
 const previewLetterTemplate = {
   pageTitle: previewLetterTitle,
   backLinkText: backToAllTemplates,
+  approveButtonText: 'Approve template',
   submitText: 'Submit template',
   loadingText: 'Uploading letter template',
   approveProofText: 'Approve template proof',
@@ -572,9 +573,9 @@ const previewSubmittedLetterTemplate = {
 const letterRender = {
   heading: 'Letter preview',
   guidance: 'Check how your personalisation fields will appear in your letter.',
-  learnMoreLink: {
+  guidanceLink: {
+    text: 'Learn more about personalising your letters (opens in a new tab).',
     href: 'https://notify.nhs.uk/using-nhs-notify/personalisation',
-    text: 'Learn more about personalising your letters (opens in a new tab)',
   },
   tabTitle: 'Example personalisation data',
   tabs: {
