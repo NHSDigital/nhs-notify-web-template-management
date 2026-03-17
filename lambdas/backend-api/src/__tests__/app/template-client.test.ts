@@ -4444,38 +4444,35 @@ describe('templateClient', () => {
         scenario: 'template has no letterVariantId',
         override: { letterVariantId: undefined },
       },
-    ])(
-      'returns 400 when $scenario',
-      async ({ override }) => {
-        const { templateClient, mocks } = setup();
+    ])('returns 400 when $scenario', async ({ override }) => {
+      const { templateClient, mocks } = setup();
 
-        mocks.templateRepository.get.mockResolvedValueOnce({
-          data: {
-            ...dbTemplate,
-            ...override,
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...dbTemplate,
+          ...override,
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Template cannot be approved',
           },
-        });
-
-        const result = await templateClient.approveTemplate(
-          templateId,
-          user,
-          '0'
-        );
-
-        expect(
-          mocks.templateRepository.approveLetterTemplate
-        ).not.toHaveBeenCalled();
-
-        expect(result).toEqual({
-          error: {
-            errorMeta: {
-              code: 400,
-              description: 'Template cannot be approved',
-            },
-          },
-        });
-      }
-    );
+        },
+      });
+    });
 
     test('returns failure result when letter variant fetch fails', async () => {
       const { templateClient, mocks } = setup();
@@ -4551,43 +4548,40 @@ describe('templateClient', () => {
           },
         },
       },
-    ])(
-      'returns 400 when $scenario',
-      async ({ files }) => {
-        const { templateClient, mocks } = setup();
+    ])('returns 400 when $scenario', async ({ files }) => {
+      const { templateClient, mocks } = setup();
 
-        mocks.templateRepository.get.mockResolvedValueOnce({
-          data: {
-            ...dbTemplate,
-            files,
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...dbTemplate,
+          files,
+        },
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: letterVariant,
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description:
+              'One or more personalised rendered example has not been generated',
           },
-        });
-
-        mocks.letterVariantRepository.getById.mockResolvedValueOnce({
-          data: letterVariant,
-        });
-
-        const result = await templateClient.approveTemplate(
-          templateId,
-          user,
-          '0'
-        );
-
-        expect(
-          mocks.templateRepository.approveLetterTemplate
-        ).not.toHaveBeenCalled();
-
-        expect(result).toEqual({
-          error: {
-            errorMeta: {
-              code: 400,
-              description:
-                'One or more personalised rendered example has not been generated',
-            },
-          },
-        });
-      }
-    );
+        },
+      });
+    });
 
     test('returns 400 when page count exceeds maxSheets (bothSides=true)', async () => {
       const { templateClient, mocks } = setup();
