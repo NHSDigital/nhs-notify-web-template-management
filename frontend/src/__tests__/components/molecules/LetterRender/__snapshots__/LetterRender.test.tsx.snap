@@ -14,6 +14,7 @@ exports[`LetterRender matches snapshot 1`] = `
       Check how your personalisation fields will appear in your letter.
     </p>
     <a
+      class="nhsuk-body"
       href="https://notify.nhs.uk/using-nhs-notify/personalisation"
     >
       Learn more about personalising your letters (opens in a new tab).
