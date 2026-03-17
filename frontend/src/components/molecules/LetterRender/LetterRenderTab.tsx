@@ -4,7 +4,6 @@ import type {
   AuthoringLetterTemplate,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
-import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import type { RenderDetails } from 'nhs-notify-web-template-management-types';
 import { LetterRenderForm } from './LetterRenderForm';
@@ -12,16 +11,12 @@ import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
+import { buildLetterRenderUrl } from '@utils/letter-render-url';
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
 };
-
-function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
-  const basePath = getBasePath();
-  return `${basePath}/files/${template.clientId}/renders/${template.id}/${fileName}`;
-}
 
 function getPersonalisedRender(
   template: AuthoringLetterTemplate,
@@ -43,7 +38,7 @@ function initialisePdfUrl(
       : initialRender;
 
   return render?.status === 'RENDERED'
-    ? buildPdfUrl(template, render.fileName)
+    ? buildLetterRenderUrl(template, render.fileName)
     : null;
 }
 
