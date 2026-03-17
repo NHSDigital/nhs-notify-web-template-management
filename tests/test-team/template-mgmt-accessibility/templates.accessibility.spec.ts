@@ -33,7 +33,7 @@ test.beforeAll(async () => {
   userWithNoTemplateData = await authHelper.getTestUser(testUsers.User2.userId);
   userWithTemplateData = await authHelper.getTestUser(testUsers.User1.userId);
   userWithLetterAuthoringEnabledData = await authHelper.getTestUser(
-    testUsers.UserWithLetterAuthoringEnabled.userId
+    testUsers.UserLetterAuthoringEnabled.userId
   );
 
   const template = TemplateFactory.createSmsTemplate(
@@ -51,7 +51,7 @@ test.beforeAll(async () => {
   const templateForLetterAuthoring = TemplateFactory.createNhsAppTemplate(
     templateIds.TEMPLATE,
     userWithLetterAuthoringEnabledData,
-    `Test NHS Letter template - ${templateIds.TEMPLATE}`
+    `Test Letter template - ${templateIds.TEMPLATE}`
   );
 
   const routingPlan = RoutingConfigFactory.createForMessageOrder(
