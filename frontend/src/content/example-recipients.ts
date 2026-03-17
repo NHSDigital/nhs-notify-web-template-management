@@ -9,7 +9,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-1',
     name: 'Jo Bloggs',
     data: {
-      nhsNumber: '9728543751',
+      nhsNumber: '972 854 3751',
       firstName: 'Jo',
       lastName: 'Bloggs',
       fullName: 'Jo Bloggs',
@@ -29,7 +29,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-2',
     name: 'Mr John Smith',
     data: {
-      nhsNumber: '9728543752',
+      nhsNumber: '972 854 3752',
       firstName: 'John',
       lastName: 'Smith',
       fullName: 'Mr John Smith',
@@ -49,7 +49,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-3',
     name: 'Ms Sarah Jones',
     data: {
-      nhsNumber: '9728543753',
+      nhsNumber: '972 854 3753',
       firstName: 'Sarah',
       lastName: 'Jones',
       fullName: 'Ms Sarah Jones',
@@ -69,7 +69,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-4',
     name: 'Dr Li Wei',
     data: {
-      nhsNumber: '9728543754',
+      nhsNumber: '972 854 3754',
       firstName: 'Li',
       lastName: 'Wei',
       fullName: 'Dr Li Wei',
@@ -89,7 +89,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-5',
     name: 'Mrs Mary Brown',
     data: {
-      nhsNumber: '9728543755',
+      nhsNumber: '972 854 3755',
       firstName: 'Mary',
       lastName: 'Brown',
       fullName: 'Mrs Mary Brown',
@@ -109,7 +109,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-6',
     name: 'Rev Mia Dao',
     data: {
-      nhsNumber: '9728543756',
+      nhsNumber: '972 854 3756',
       firstName: 'Mia',
       lastName: 'Dao',
       fullName: 'Rev Mia Dao',
@@ -129,7 +129,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-7',
     name: 'Miss Lucy Taylor',
     data: {
-      nhsNumber: '9728543757',
+      nhsNumber: '972 854 3757',
       firstName: 'Lucy',
       lastName: 'Taylor',
       fullName: 'Miss Lucy Taylor',
@@ -149,7 +149,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-8',
     name: 'Mx Alex Chen',
     data: {
-      nhsNumber: '9728543758',
+      nhsNumber: '972 854 3758',
       firstName: 'Alex',
       lastName: 'Chen',
       fullName: 'Mx Alex Chen',
@@ -169,7 +169,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-9',
     name: 'Prof Ola Fye',
     data: {
-      nhsNumber: '9728543759',
+      nhsNumber: '972 854 3759',
       firstName: 'Ola',
       lastName: 'Fye',
       fullName: 'Prof Ola Fye',
@@ -189,7 +189,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-10',
     name: 'Dr James Patel',
     data: {
-      nhsNumber: '9728543760',
+      nhsNumber: '972 854 3760',
       firstName: 'James',
       lastName: 'Patel',
       fullName: 'Dr James Patel',
@@ -209,7 +209,7 @@ export const SHORT_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'short-11',
     name: 'Ms Claire Davies',
     data: {
-      nhsNumber: '9728543761',
+      nhsNumber: '972 854 3761',
       firstName: 'Claire',
       lastName: 'Davies',
       fullName: 'Ms Claire Davies',
@@ -232,7 +232,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-1',
     name: 'Mr Michael James Richardson-Clarke',
     data: {
-      nhsNumber: '9728543771',
+      nhsNumber: '972 854 3771',
       firstName: 'Michael',
       lastName: 'Richardson-Clarke',
       fullName: 'Mr Michael James Richardson-Clarke',
@@ -252,7 +252,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-2',
     name: 'Dr Elizabeth Anne Thompson',
     data: {
-      nhsNumber: '9728543772',
+      nhsNumber: '972 854 3772',
       firstName: 'Elizabeth',
       lastName: 'Thompson',
       fullName: 'Dr Elizabeth Anne Thompson',
@@ -272,7 +272,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-3',
     name: 'Dame Catherine Elizabeth Montgomery',
     data: {
-      nhsNumber: '9728543773',
+      nhsNumber: '972 854 3773',
       firstName: 'Catherine',
       lastName: 'Montgomery',
       fullName: 'Dame Catherine Elizabeth Montgomery',
@@ -292,7 +292,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-4',
     name: 'Mr Rajesh Kumar Chandrasekaran',
     data: {
-      nhsNumber: '9728543774',
+      nhsNumber: '972 854 3774',
       firstName: 'Rajesh',
       lastName: 'Chandrasekaran',
       fullName: 'Mr Rajesh Kumar Chandrasekaran',
@@ -312,7 +312,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-5',
     name: 'Ms Aminatou Diallo Kouyaté',
     data: {
-      nhsNumber: '9728543775',
+      nhsNumber: '972 854 3775',
       firstName: 'Aminatou',
       lastName: 'Diallo Kouyaté',
       fullName: 'Ms Aminatou Diallo Kouyaté',
@@ -332,7 +332,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-6',
     name: 'Sir William Alexander Fitzgerald',
     data: {
-      nhsNumber: '9728543776',
+      nhsNumber: '972 854 3776',
       firstName: 'William',
       lastName: 'Fitzgerald',
       fullName: 'Sir William Alexander Fitzgerald',
@@ -352,7 +352,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-7',
     name: 'Dr Priya Sharma-Williamson',
     data: {
-      nhsNumber: '9728543777',
+      nhsNumber: '972 854 3777',
       firstName: 'Priya',
       lastName: 'Sharma-Williamson',
       fullName: 'Dr Priya Sharma-Williamson',
@@ -372,7 +372,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-8',
     name: 'Rev Emmanuel Kwabena Adomako',
     data: {
-      nhsNumber: '9728543778',
+      nhsNumber: '972 854 3778',
       firstName: 'Emmanuel',
       lastName: 'Adomako',
       fullName: 'Rev Emmanuel Kwabena Adomako',
@@ -392,7 +392,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-9',
     name: 'Prof Franziska Vogel-Bernhardt',
     data: {
-      nhsNumber: '9728543779',
+      nhsNumber: '972 854 3779',
       firstName: 'Franziska',
       lastName: 'Vogel-Bernhardt',
       fullName: 'Prof Franziska Vogel-Bernhardt',
@@ -412,7 +412,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-10',
     name: "Mrs Margaret Anne O'Sullivan",
     data: {
-      nhsNumber: '9728543780',
+      nhsNumber: '972 854 3780',
       firstName: 'Margaret',
       lastName: "O'Sullivan",
       fullName: "Mrs Margaret Anne O'Sullivan",
@@ -432,7 +432,7 @@ export const LONG_EXAMPLE_RECIPIENTS: ExampleRecipient[] = [
     id: 'long-11',
     name: 'Dr Christopher James Harrington',
     data: {
-      nhsNumber: '9728543781',
+      nhsNumber: '972 854 3781',
       firstName: 'Christopher',
       lastName: 'Harrington',
       fullName: 'Dr Christopher James Harrington',

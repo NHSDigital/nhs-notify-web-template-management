@@ -184,7 +184,7 @@ describe('App', () => {
           currentVersion,
           fileName,
           pageCount,
-          [{ name: 'INVALID_MARKERS', issues: ['nested.object.access'] }]
+          [{ name: 'INVALID_MARKERS', issues: ['{d.nested.object.access}'] }]
         );
       });
     });
@@ -224,7 +224,7 @@ describe('App', () => {
             ],
             custom: ['first_name'],
           },
-          [{ name: 'INVALID_MARKERS', issues: ['c.compliment'] }]
+          [{ name: 'INVALID_MARKERS', issues: ['{c.compliment}'] }]
         );
       });
     });

@@ -15,7 +15,7 @@ import Page, {
 } from '@app/preview-letter-template/[templateId]/page';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
-import { RENDER_TIMEOUT_MS } from '@hooks/use-letter-template-poll';
+import { RENDER_TIMEOUT_MS } from '@molecules/PollLetterRender/PollLetterRender';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -291,7 +291,7 @@ describe('valid authoring letter template', () => {
       })
     );
 
-    await user.click(screen.getByRole('button', { name: 'Submit template' }));
+    await user.click(screen.getByRole('button', { name: 'Approve template' }));
 
     expect(submitAuthoringLetterAction).toHaveBeenCalledTimes(1);
 
@@ -446,7 +446,7 @@ describe('authoring letter template does not show submit form when already submi
     );
 
     expect(
-      screen.queryByRole('button', { name: 'Submit template' })
+      screen.queryByRole('button', { name: 'Approve template' })
     ).not.toBeInTheDocument();
   });
 });

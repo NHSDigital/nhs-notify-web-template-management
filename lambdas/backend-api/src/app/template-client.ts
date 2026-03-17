@@ -979,8 +979,6 @@ export class TemplateClient {
       );
     }
 
-    console.log(JSON.stringify(templateDTO, null, 2));
-
     const sendQueueResult = await this.renderQueue.send(
       templateId,
       user.clientId,
