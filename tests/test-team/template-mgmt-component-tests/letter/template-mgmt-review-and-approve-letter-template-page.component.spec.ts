@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import { Template } from '../../helpers/types';
 import { testUsers } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtReviewAndApproveLetterTemplatePage } from '../../pages/letter/template-mgmt-review-and-approve-letter-template-page';
 import { getTestContext } from '../../helpers/context/context';
@@ -50,17 +49,14 @@ async function createTemplates() {
     ),
 
     nonLetterSms: {
-      id: 'f1a2b3c4-d5e6-7f89-0a1b-c2d3e4f5a6b7',
-      version: 1,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      templateType: 'SMS',
-      templateStatus: 'NOT_YET_SUBMITTED',
+      ...TemplateFactory.createEmailTemplate(
+        'f1a2b3c4-d5e6-7f89-0a1b-c2d3e4f5a6b7',
+        user
+      ),
       name: 'review-approve-non-letter',
-      message: 'test-message',
-      owner: `CLIENT#${user.clientId}`,
-      lockNumber: 0,
-    } as Template,
+      subject: 'review-approve-non-letter',
+      message: 'review-approve-non-letter',
+    },
 
     pdfLetter: TemplateFactory.uploadLetterTemplate(
       'a1b2c3d4-e5f6-7890-abcd-ef1234567890',

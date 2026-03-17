@@ -17,11 +17,11 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   let userLetterAuthoringSharedClient: TestUser;
 
   test.beforeAll(async () => {
-    userDifferentClient = await context.auth.getTestUser(
-      testUsers.User2.userId
-    );
     userLetterAuthoring = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
+    );
+    userDifferentClient = await context.auth.getTestUser(
+      testUsers.User2.userId
     );
     userLetterAuthoringSharedClient = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabledSharedClient.userId
@@ -43,7 +43,9 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       }
     );
 
-    expect(response.status()).toBe(401);
+    const data = await response.json();
+
+    expect(response.status(), JSON.stringify(data)).toBe(401);
     expect(await response.json()).toEqual({
       message: 'Unauthorized',
     });
@@ -640,8 +642,6 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const globalVariants =
       await context.letterVariants.getGlobalLetterVariants();
 
-    // Pick a variant with maxSheets: 5 and bothSides: true
-    // ceil(11 / 2) = 6 sheets which exceeds maxSheets of 5
     const letterVariant = globalVariants.find(
       (v) => v.maxSheets === 5 && v.bothSides
     );

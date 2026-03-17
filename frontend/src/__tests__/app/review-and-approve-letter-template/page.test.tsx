@@ -317,4 +317,19 @@ describe('rendered PDF previews', () => {
       `/templates/files/client-123/renders/${templateWithRenderedFiles.id}/long-form.pdf`
     );
   });
+
+  it('matches snapshot', async () => {
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({
+          templateId: templateWithRenderedFiles.id,
+        }),
+        searchParams: Promise.resolve({
+          lockNumber: String(templateWithRenderedFiles.lockNumber),
+        }),
+      })
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
