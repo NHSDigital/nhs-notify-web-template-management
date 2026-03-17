@@ -101,17 +101,24 @@ test('Choose a template type error', async ({ page, analyze }) =>
     beforeAnalyze: (p) => p.clickContinueButton(),
   }));
 
-test('Choose a template type error (no accessibility type)', async ({
-  page,
-  analyze,
-}) =>
-  analyze(new TemplateMgmtChoosePage(page), {
-    beforeAnalyze: async (p) => {
-      await p.getTemplateTypeRadio('letter').check();
-      await p.clickContinueButton();
-      await p.letterTypeFormError.isVisible();
-    },
-  }));
+test.describe('Template type page with authoring enabled', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test('Choose a template type error (no accessibility type)', async ({
+    page,
+    analyze,
+  }) => {
+    await loginAsUser(userWithLetterAuthoringEnabledData, page);
+
+    await analyze(new TemplateMgmtChoosePage(page), {
+      beforeAnalyze: async (p) => {
+        await p.getTemplateTypeRadio('letter').check();
+        await p.clickContinueButton();
+        await p.letterTypeFormError.isVisible();
+      },
+    });
+  });
+});
 
 test('Copy template', async ({ page, analyze }) =>
   analyze(
