@@ -6,7 +6,7 @@
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 
 : "${PROJECT:?PROJECT is required}"
-: "${REGION:?REGION is required}"
+: "${AWS_REGION:?AWS_REGION is required}"
 : "${COMPONENT:?COMPONENT is required}"
 : "${ENVIRONMENT:?ENVIRONMENT is required}"
 : "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"
@@ -61,7 +61,7 @@ export TF_VAR_container_image_tag_suffix="${CONTAINER_IMAGE_SUFFIX}"
 
 run_or_fail npm ci
 run_or_fail npm run generate-dependencies --workspaces --if-present
-#run_or_fail npm run lambda-build --workspaces --if-present
+run_or_fail npm run lambda-build --workspaces --if-present
 run_or_fail env \
   CONTAINER_IMAGE_PREFIX="${CONTAINER_IMAGE_PREFIX}" \
   CONTAINER_IMAGE_SUFFIX="${CONTAINER_IMAGE_SUFFIX}" \

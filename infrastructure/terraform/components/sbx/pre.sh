@@ -6,7 +6,7 @@
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 
 : "${PROJECT:?PROJECT is required}"
-: "${REGION:?REGION is required}"
+: "${AWS_REGION:?AWS_REGION is required}"
 : "${COMPONENT:?COMPONENT is required}"
 : "${ENVIRONMENT:?ENVIRONMENT is required}"
 : "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"
