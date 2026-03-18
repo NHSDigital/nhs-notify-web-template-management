@@ -717,6 +717,11 @@ const letterTemplateInvalidConfiguration = {
   backLinkUrl: '/choose-a-template-type',
 };
 
+const letterTemplateApproved = {
+  title: generatePageTitle('Letter template approved'),
+  bannerText: 'Letter template approved',
+};
+
 const messagePlanInvalidConfiguration = {
   title: generatePageTitle('Configuration error'),
   heading: 'You cannot create message plans yet',
@@ -1890,6 +1895,7 @@ const content = {
     editTemplateNamePage,
     error404,
     homePage,
+    letterTemplateApproved,
     letterTemplateInvalidConfiguration,
     messagePlanGetReadyToMoveToProduction,
     messagePlanInvalidConfiguration,
