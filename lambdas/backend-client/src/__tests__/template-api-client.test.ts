@@ -585,6 +585,75 @@ describe('TemplateAPIClient', () => {
     });
   });
 
+  describe('generateLetterProof', () => {
+    const letterProofRequest = {
+      systemPersonalisationPackId: 'short-1',
+      personalisation: { firstName: 'Jo' },
+      requestTypeVariant: 'short' as const,
+    };
+
+    test('should return error', async () => {
+      axiosMock
+        .onPost('/v1/template/real-id/generate-letter-proof')
+        .reply(400, {
+          statusCode: 400,
+          technicalMessage: 'Bad request',
+          details: {
+            message: 'Template cannot generate letter proof',
+          },
+        });
+
+      const result = await client.generateLetterProof(
+        'real-id',
+        testToken,
+        5,
+        letterProofRequest
+      );
+
+      expect(result.error).toEqual({
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+          details: {
+            message: 'Template cannot generate letter proof',
+          },
+        },
+      });
+
+      expect(result.data).toBeUndefined();
+
+      expect(axiosMock.history.post.length).toBe(1);
+
+      const headers = axiosMock.history.at(0)?.headers;
+
+      expect(headers ? headers['X-Lock-Number'] : null).toEqual('5');
+    });
+
+    test('should return content', async () => {
+      const data = {
+        id: 'real-id',
+        name: 'name',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        templateType: 'LETTER',
+      };
+
+      axiosMock
+        .onPost('/v1/template/real-id/generate-letter-proof')
+        .reply(200, { data });
+
+      const result = await client.generateLetterProof(
+        'real-id',
+        testToken,
+        5,
+        letterProofRequest
+      );
+
+      expect(result.data).toEqual(data);
+
+      expect(result.error).toBeUndefined();
+    });
+  });
+
   describe('requestProof', () => {
     test('should return error', async () => {
       axiosMock.onPost('/v1/template/real-id/proof').reply(400, {
