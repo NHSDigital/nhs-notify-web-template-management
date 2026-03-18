@@ -14,43 +14,43 @@ async function createTemplates() {
 
   return {
     valid: TemplateFactory.createAuthoringLetterTemplate(
-      'e3a1b2c3-d4e5-6f78-9a0b-c1d2e3f4a5b6',
+      '95e90d9d-4efa-4dd9-a35e-40d71e8e0abb',
       user,
       'review-approve-valid',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: globalVariant.id,
-        shortFormRender: {},
-        longFormRender: {},
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
 
     validForApproval: TemplateFactory.createAuthoringLetterTemplate(
-      'e3a1b2c3-d4e5-6f78-9a0b-c1d2e3f4a5b7',
+      '434bcde9-f1ae-4035-8cd8-80e4cb38756c',
       user,
       'review-approve-submit',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: globalVariant.id,
-        shortFormRender: {},
-        longFormRender: {},
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
 
     withoutLetterVariantId: TemplateFactory.createAuthoringLetterTemplate(
-      'e3a1b2c3-d4e5-6f78-9a0b-c1d2e3f4a5b8',
+      '9cd300e8-4ba2-4d42-bbde-062b32ce3490',
       user,
       'review-approve-no-variant',
       'NOT_YET_SUBMITTED',
       {
-        shortFormRender: {},
-        longFormRender: {},
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
 
     nonLetterSms: {
       ...TemplateFactory.createEmailTemplate(
-        'f1a2b3c4-d5e6-7f89-0a1b-c2d3e4f5a6b7',
+        '0a41e866-171b-42f4-887e-70b75db118ca',
         user
       ),
       name: 'review-approve-non-letter',
@@ -59,7 +59,7 @@ async function createTemplates() {
     },
 
     pdfLetter: TemplateFactory.uploadLetterTemplate(
-      'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+      '7e8a6ac4-8562-4e27-a0a8-5f2b06f60d0f',
       user,
       'review-approve-pdf-letter'
     ),
