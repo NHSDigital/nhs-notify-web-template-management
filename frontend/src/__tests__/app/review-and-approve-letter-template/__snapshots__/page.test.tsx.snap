@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rendered PDF previews matches snapshot 1`] = `
+exports[`valid authoring letter template matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-width-container"

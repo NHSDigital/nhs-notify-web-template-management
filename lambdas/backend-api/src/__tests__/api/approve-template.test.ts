@@ -210,6 +210,7 @@ describe('Template API - Approve', () => {
       language: 'en',
       letterType: 'x0',
       letterVersion: 'AUTHORING',
+      letterVariantId: 'var1',
       files: {
         docxTemplate: {
           fileName: 'template.docx',
@@ -219,6 +220,18 @@ describe('Template API - Approve', () => {
         initialRender: {
           status: 'RENDERED',
           fileName: 'render.pdf',
+          currentVersion: 'v1',
+          pageCount: 2,
+        },
+        shortFormRender: {
+          status: 'RENDERED',
+          fileName: 'render1.pdf',
+          currentVersion: 'v1',
+          pageCount: 2,
+        },
+        longFormRender: {
+          status: 'RENDERED',
+          fileName: 'render2.pdf',
           currentVersion: 'v1',
           pageCount: 2,
         },

@@ -459,17 +459,17 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
 
   describe('sheets calculation', () => {
     it.each([
-      { pageCount: 1, expectedSheets: 1, bothSides: true },
-      { pageCount: 2, expectedSheets: 1, bothSides: true },
-      { pageCount: 3, expectedSheets: 2, bothSides: true },
-      { pageCount: 4, expectedSheets: 2, bothSides: true },
-      { pageCount: 5, expectedSheets: 3, bothSides: true },
-      { pageCount: 6, expectedSheets: 3, bothSides: true },
-      { pageCount: 1, expectedSheets: 1, bothSides: false },
-      { pageCount: 6, expectedSheets: 6, bothSides: false },
+      { pageCount: 1, bothSides: true, expectedSheets: 1 },
+      { pageCount: 2, bothSides: true, expectedSheets: 1 },
+      { pageCount: 3, bothSides: true, expectedSheets: 2 },
+      { pageCount: 4, bothSides: true, expectedSheets: 2 },
+      { pageCount: 5, bothSides: true, expectedSheets: 3 },
+      { pageCount: 6, bothSides: true, expectedSheets: 3 },
+      { pageCount: 1, bothSides: false, expectedSheets: 1 },
+      { pageCount: 6, bothSides: false, expectedSheets: 6 },
     ])(
       'calculates sheets as $expectedSheets when pageCount is $pageCount and bothSides is $bothSides',
-      ({ pageCount, expectedSheets, bothSides }) => {
+      ({ pageCount, bothSides, expectedSheets }) => {
         render(
           <PreviewTemplateDetailsAuthoringLetter
             template={{

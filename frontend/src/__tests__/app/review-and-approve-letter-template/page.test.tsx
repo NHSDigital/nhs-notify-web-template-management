@@ -22,8 +22,28 @@ jest.mock('next/navigation');
 jest.mock('@app/review-and-approve-letter-template/[templateId]/server-action');
 jest.mock('@utils/csrf-utils');
 
+const templateWithRenderedFiles: AuthoringLetterTemplate = {
+  ...AUTHORING_LETTER_TEMPLATE,
+  clientId: 'client-123',
+  files: {
+    ...AUTHORING_LETTER_TEMPLATE.files,
+    shortFormRender: {
+      fileName: 'short-form.pdf',
+      currentVersion: 'v1',
+      status: 'RENDERED',
+      pageCount: 1,
+    },
+    longFormRender: {
+      fileName: 'long-form.pdf',
+      currentVersion: 'v2',
+      status: 'RENDERED',
+      pageCount: 3,
+    },
+  },
+};
+
 const defaultSearchParams = Promise.resolve({
-  lockNumber: String(AUTHORING_LETTER_TEMPLATE.lockNumber),
+  lockNumber: String(templateWithRenderedFiles.lockNumber),
 });
 
 beforeEach(() => {
@@ -119,19 +139,19 @@ describe('template is a PDF letter (not AUTHORING)', () => {
 
 describe('lockNumber validation', () => {
   beforeEach(() => {
-    jest.mocked(getTemplate).mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
+    jest.mocked(getTemplate).mockResolvedValue(templateWithRenderedFiles);
   });
 
   it('redirects to preview page when lockNumber is missing from searchParams', async () => {
     await Page({
       params: Promise.resolve({
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
+        templateId: templateWithRenderedFiles.id,
       }),
       searchParams: Promise.resolve({}),
     });
 
     expect(redirect).toHaveBeenCalledWith(
-      `/preview-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      `/preview-letter-template/${templateWithRenderedFiles.id}`,
       RedirectType.replace
     );
   });
@@ -139,13 +159,13 @@ describe('lockNumber validation', () => {
   it('redirects to preview page when lockNumber does not match template', async () => {
     await Page({
       params: Promise.resolve({
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
+        templateId: templateWithRenderedFiles.id,
       }),
       searchParams: Promise.resolve({ lockNumber: '999' }),
     });
 
     expect(redirect).toHaveBeenCalledWith(
-      `/preview-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      `/preview-letter-template/${templateWithRenderedFiles.id}`,
       RedirectType.replace
     );
   });
@@ -153,21 +173,21 @@ describe('lockNumber validation', () => {
   it('redirects to preview page when lockNumber is not a valid number', async () => {
     await Page({
       params: Promise.resolve({
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
+        templateId: templateWithRenderedFiles.id,
       }),
       searchParams: Promise.resolve({ lockNumber: 'abc' }),
     });
 
     expect(redirect).toHaveBeenCalledWith(
-      `/preview-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      `/preview-letter-template/${templateWithRenderedFiles.id}`,
       RedirectType.replace
     );
   });
 
   it('redirects to preview page when template has no letterVariantId', async () => {
     const templateWithoutVariant: AuthoringLetterTemplate = {
-      ...AUTHORING_LETTER_TEMPLATE,
-      letterVariantId: undefined as unknown as string,
+      ...templateWithRenderedFiles,
+      letterVariantId: undefined,
     };
 
     jest.mocked(getTemplate).mockResolvedValue(templateWithoutVariant);
@@ -186,16 +206,68 @@ describe('lockNumber validation', () => {
       RedirectType.replace
     );
   });
+
+  it('redirects to preview page when template is missing an expected render', async () => {
+    const templateNoLongFormRender: AuthoringLetterTemplate = {
+      ...templateWithRenderedFiles,
+      files: { ...templateWithRenderedFiles.files, longFormRender: undefined },
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templateNoLongFormRender);
+
+    await Page({
+      params: Promise.resolve({
+        templateId: templateNoLongFormRender.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: String(templateNoLongFormRender.lockNumber),
+      }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-letter-template/${templateNoLongFormRender.id}`,
+      RedirectType.replace
+    );
+  });
+
+  it('redirects to preview page when a render is not in expected RENDERED status', async () => {
+    const templatePendingRender: AuthoringLetterTemplate = {
+      ...templateWithRenderedFiles,
+      files: {
+        ...templateWithRenderedFiles.files,
+        shortFormRender: {
+          status: 'PENDING',
+          requestedAt: '2026-03-18T08:08:04.547Z',
+        },
+      },
+    };
+
+    jest.mocked(getTemplate).mockResolvedValue(templatePendingRender);
+
+    await Page({
+      params: Promise.resolve({
+        templateId: templatePendingRender.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: String(templatePendingRender.lockNumber),
+      }),
+    });
+
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-letter-template/${templatePendingRender.id}`,
+      RedirectType.replace
+    );
+  });
 });
 
 describe('valid authoring letter template', () => {
   beforeEach(() => {
-    jest.mocked(getTemplate).mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
+    jest.mocked(getTemplate).mockResolvedValue(templateWithRenderedFiles);
   });
 
   it('renders the page without redirecting', async () => {
     const page = await Page({
-      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      params: Promise.resolve({ templateId: templateWithRenderedFiles.id }),
       searchParams: defaultSearchParams,
     });
 
@@ -205,19 +277,19 @@ describe('valid authoring letter template', () => {
 
   it('calls getLetterVariantById with the template letterVariantId', async () => {
     await Page({
-      params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      params: Promise.resolve({ templateId: templateWithRenderedFiles.id }),
       searchParams: defaultSearchParams,
     });
 
     expect(getLetterVariantById).toHaveBeenCalledWith(
-      AUTHORING_LETTER_TEMPLATE.letterVariantId
+      templateWithRenderedFiles.letterVariantId
     );
   });
 
   it('renders the heading and caption', async () => {
     render(
       await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        params: Promise.resolve({ templateId: templateWithRenderedFiles.id }),
         searchParams: defaultSearchParams,
       })
     );
@@ -231,7 +303,7 @@ describe('valid authoring letter template', () => {
   it('renders hidden templateId and lockNumber inputs', async () => {
     render(
       await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        params: Promise.resolve({ templateId: templateWithRenderedFiles.id }),
         searchParams: defaultSearchParams,
       })
     );
@@ -245,7 +317,7 @@ describe('valid authoring letter template', () => {
 
     render(
       await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        params: Promise.resolve({ templateId: templateWithRenderedFiles.id }),
         searchParams: defaultSearchParams,
       })
     );
@@ -254,40 +326,14 @@ describe('valid authoring letter template', () => {
 
     expect(reviewAndApproveLetterTemplateAction).toHaveBeenCalledTimes(1);
 
-    const callArgs = jest.mocked(reviewAndApproveLetterTemplateAction).mock
-      .calls[0];
-    const formData = callArgs[1] as FormData;
+    const formData = jest.mocked(reviewAndApproveLetterTemplateAction).mock
+      .calls[0][1] as FormData;
 
-    expect(formData.get('templateId')).toBe(AUTHORING_LETTER_TEMPLATE.id);
+    expect(formData.get('templateId')).toBe(templateWithRenderedFiles.id);
+
     expect(formData.get('lockNumber')).toBe(
-      String(AUTHORING_LETTER_TEMPLATE.lockNumber)
+      String(templateWithRenderedFiles.lockNumber)
     );
-  });
-});
-
-describe('rendered PDF previews', () => {
-  const templateWithRenderedFiles: AuthoringLetterTemplate = {
-    ...AUTHORING_LETTER_TEMPLATE,
-    clientId: 'client-123',
-    files: {
-      ...AUTHORING_LETTER_TEMPLATE.files,
-      shortFormRender: {
-        fileName: 'short-form.pdf',
-        currentVersion: 'v1',
-        status: 'RENDERED',
-        pageCount: 1,
-      },
-      longFormRender: {
-        fileName: 'long-form.pdf',
-        currentVersion: 'v2',
-        status: 'RENDERED',
-        pageCount: 3,
-      },
-    },
-  };
-
-  beforeEach(() => {
-    jest.mocked(getTemplate).mockResolvedValue(templateWithRenderedFiles);
   });
 
   it('renders iframes with PDF URLs when renders are available', async () => {
@@ -305,13 +351,13 @@ describe('rendered PDF previews', () => {
     const iframes = document.querySelectorAll('iframe');
     expect(iframes).toHaveLength(2);
 
-    const shortIframe = iframes[0];
-    const longIframe = iframes[1];
+    const [shortIframe, longIframe] = iframes;
 
     expect(shortIframe).toHaveAttribute(
       'src',
       `/templates/files/client-123/renders/${templateWithRenderedFiles.id}/short-form.pdf`
     );
+
     expect(longIframe).toHaveAttribute(
       'src',
       `/templates/files/client-123/renders/${templateWithRenderedFiles.id}/long-form.pdf`

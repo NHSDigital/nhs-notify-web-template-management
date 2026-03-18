@@ -3,7 +3,6 @@
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import {
-  AuthoringLetterTemplate,
   TemplatePageProps,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -41,17 +40,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function derivePdfUrl(
-  template: AuthoringLetterTemplate,
-  tab: 'longFormRender' | 'shortFormRender'
-): string | null {
-  const render = template.files[tab];
-
-  return render?.status === 'RENDERED'
-    ? buildLetterRenderUrl(template, render.fileName)
-    : null;
-}
-
 const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
 
@@ -70,14 +58,18 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
   if (
     !lockNumberResult.success ||
     lockNumberResult.data !== validatedTemplate.lockNumber ||
-    // since lock number is unchanged, this should never be true
-    !validatedTemplate.letterVariantId
+    // since lock number is unchanged, the following should never be true
+    !validatedTemplate.letterVariantId ||
+    validatedTemplate.files.longFormRender?.status !== 'RENDERED' ||
+    validatedTemplate.files.shortFormRender?.status !== 'RENDERED'
   ) {
     return redirect(
       `/preview-letter-template/${templateId}`,
       RedirectType.replace
     );
   }
+
+  const { longFormRender, shortFormRender } = validatedTemplate.files;
 
   const letterVariant = await getLetterVariantById(
     validatedTemplate.letterVariantId
@@ -110,7 +102,10 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               'nhsuk-u-margin-bottom-6'
             )}
             tab='shortFormRender'
-            pdfUrl={derivePdfUrl(validatedTemplate, 'shortFormRender')}
+            pdfUrl={buildLetterRenderUrl(
+              validatedTemplate,
+              shortFormRender.fileName
+            )}
           />
           <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
           <LetterRenderIframe
@@ -119,7 +114,10 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               'nhsuk-u-margin-bottom-6'
             )}
             tab='longFormRender'
-            pdfUrl={derivePdfUrl(validatedTemplate, 'longFormRender')}
+            pdfUrl={buildLetterRenderUrl(
+              validatedTemplate,
+              longFormRender.fileName
+            )}
           />
           <NHSNotifyForm.Form formId='preview-letter-template'>
             <input
