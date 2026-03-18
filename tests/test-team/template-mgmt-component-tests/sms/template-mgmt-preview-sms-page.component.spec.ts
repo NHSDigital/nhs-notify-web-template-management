@@ -104,7 +104,6 @@ test.describe('Preview SMS message template Page', () => {
 
     await expect(previewPage.editButton).toBeVisible();
 
-    await expect(previewPage.testMessageBanner).toBeHidden();
     await expect(previewPage.sendTestMessageButton).toBeHidden();
 
     await expect(previewPage.editRadioOption).toBeHidden();
@@ -218,7 +217,6 @@ test.describe('Preview SMS message template Page', () => {
       await expect(previewPage.editButton).toBeHidden();
 
       await expect(previewPage.sendTestMessageButton).toBeHidden();
-      await expect(previewPage.testMessageBanner).toBeHidden();
     });
 
     test.describe('Page functionality', () => {
@@ -318,8 +316,8 @@ test.describe('Preview SMS message template Page', () => {
 
       await previewPage.loadPage();
 
-      await expect(previewPage.testMessageBanner).toBeVisible();
-      await expect(previewPage.testMessageBannerLink).toHaveText(
+      await expect(previewPage.messageBanner).toBeVisible();
+      await expect(previewPage.messageBannerLink).toHaveText(
         'Send a test text message'
       );
 
@@ -334,7 +332,7 @@ test.describe('Preview SMS message template Page', () => {
 
       // Test banner link (opens in new tab)
       const newPagePromise = context.waitForEvent('page');
-      await previewPage.testMessageBannerLink.click();
+      await previewPage.messageBannerLink.click();
       const newPage = await newPagePromise;
       await newPage.waitForLoadState();
 

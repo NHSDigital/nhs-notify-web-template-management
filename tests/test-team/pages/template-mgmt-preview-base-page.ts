@@ -10,9 +10,9 @@ export abstract class TemplateMgmtPreviewBasePage extends TemplateMgmtBasePage {
 
   readonly summaryList: Locator;
 
-  readonly testMessageBanner: Locator;
+  readonly messageBanner: Locator;
 
-  readonly testMessageBannerLink: Locator;
+  readonly messageBannerLink: Locator;
 
   readonly editButton: Locator;
 
@@ -24,8 +24,8 @@ export abstract class TemplateMgmtPreviewBasePage extends TemplateMgmtBasePage {
     this.templateId = page.getByTestId('preview-template-id');
     this.campaignId = page.locator('[id="campaign-id"]');
     this.summaryList = page.locator('dl.nhsuk-summary-list');
-    this.testMessageBanner = page.getByTestId('test-message-banner');
-    this.testMessageBannerLink = this.testMessageBanner.locator('a');
+    this.messageBanner = page.getByTestId('message-banner');
+    this.messageBannerLink = this.messageBanner.locator('a');
     this.editButton = page.getByTestId('edit-template-button');
     this.sendTestMessageButton = page.getByTestId('send-test-message-button');
   }
