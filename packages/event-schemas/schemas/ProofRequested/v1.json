@@ -67,59 +67,169 @@
   ],
   "$defs": {
     "ProofRequestEventData": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
-          "description": "Unique identifier of the proof request"
-        },
-        "templateId": {
-          "type": "string",
-          "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
-          "description": "Unique identifier for the template being proofed"
-        },
-        "templateType": {
-          "type": "string",
-          "enum": [
-            "NHS_APP",
-            "SMS",
-            "EMAIL"
-          ],
-          "description": "Template type for the template being proofed"
-        },
-        "testPatientNhsNumber": {
-          "type": "string",
-          "description": "NHS number of test patient to use in the proofing request"
-        },
-        "contactDetails": {
-          "description": "Contact details to send the proof to",
+      "oneOf": [
+        {
           "type": "object",
           "properties": {
-            "sms": {
-              "type": "string"
+            "id": {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+              "description": "Unique identifier of the proof request"
             },
-            "email": {
-              "type": "string"
+            "templateId": {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+              "description": "Unique identifier for the template being proofed"
+            },
+            "testPatientNhsNumber": {
+              "type": "string",
+              "description": "NHS number of test patient to use in the proofing request"
+            },
+            "personalisation": {
+              "description": "Personalisation fields to use in the proof",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "templateType": {
+              "type": "string",
+              "const": "NHS_APP",
+              "description": "Template type for the template being proofed"
+            },
+            "contactDetails": {
+              "type": "object",
+              "properties": {
+                "sms": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              },
+              "description": "Contact details to send the proof to"
             }
-          }
-        },
-        "personalisation": {
-          "description": "Personalisation fields to use in the proof",
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
           },
-          "additionalProperties": {
-            "type": "string"
-          }
+          "required": [
+            "id",
+            "templateId",
+            "testPatientNhsNumber",
+            "templateType"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+              "description": "Unique identifier of the proof request"
+            },
+            "templateId": {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+              "description": "Unique identifier for the template being proofed"
+            },
+            "testPatientNhsNumber": {
+              "type": "string",
+              "description": "NHS number of test patient to use in the proofing request"
+            },
+            "personalisation": {
+              "description": "Personalisation fields to use in the proof",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "templateType": {
+              "type": "string",
+              "const": "SMS",
+              "description": "Template type for the template being proofed"
+            },
+            "contactDetails": {
+              "type": "object",
+              "properties": {
+                "sms": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "sms"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "templateId",
+            "testPatientNhsNumber",
+            "templateType",
+            "contactDetails"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+              "description": "Unique identifier of the proof request"
+            },
+            "templateId": {
+              "type": "string",
+              "pattern": "^[\\dA-Fa-f]{8}(?:-[\\dA-Fa-f]{4}){3}-[\\dA-Fa-f]{12}$",
+              "description": "Unique identifier for the template being proofed"
+            },
+            "testPatientNhsNumber": {
+              "type": "string",
+              "description": "NHS number of test patient to use in the proofing request"
+            },
+            "personalisation": {
+              "description": "Personalisation fields to use in the proof",
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "templateType": {
+              "type": "string",
+              "const": "EMAIL",
+              "description": "Template type for the template being proofed"
+            },
+            "contactDetails": {
+              "type": "object",
+              "properties": {
+                "sms": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "email"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "templateId",
+            "testPatientNhsNumber",
+            "templateType",
+            "contactDetails"
+          ]
         }
-      },
-      "required": [
-        "id",
-        "templateId",
-        "templateType",
-        "testPatientNhsNumber"
       ]
     }
   },

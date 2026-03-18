@@ -23,4 +23,28 @@ describe('ProofRequestedEventV1 Zod schema', () => {
       expect(result.success).toBe(true);
     }
   );
+
+  it('fails when SMS proof request does not include contactDetails.sms', () => {
+    const smsEvent = JSON.parse(
+      fs.readFileSync(path.join(examplesDir, 'sms.json'), 'utf8')
+    );
+
+    delete smsEvent.data.contactDetails.sms;
+
+    const result = $ProofRequestedEventV1.safeParse(smsEvent);
+
+    expect(result.success).toBe(false);
+  });
+
+  it('fails when EMAIL proof request does not include contactDetails.email', () => {
+    const emailEvent = JSON.parse(
+      fs.readFileSync(path.join(examplesDir, 'email.json'), 'utf8')
+    );
+
+    delete emailEvent.data.contactDetails.email;
+
+    const result = $ProofRequestedEventV1.safeParse(emailEvent);
+
+    expect(result.success).toBe(false);
+  });
 });

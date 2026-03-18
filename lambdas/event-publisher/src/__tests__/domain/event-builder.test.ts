@@ -714,7 +714,7 @@ describe('proof request events', () => {
         ...valid.dynamodb,
         NewImage: {
           ...valid.dynamodb.NewImage,
-          templateType: { S: 'LETTER' },
+          templateType: { S: 'EMAIL' },
         },
       },
     };
@@ -724,9 +724,8 @@ describe('proof request events', () => {
         name: 'ZodError',
         issues: [
           expect.objectContaining({
-            code: 'invalid_value',
-            values: ['NHS_APP', 'SMS', 'EMAIL'],
-            path: ['data', 'templateType'],
+            code: 'invalid_type',
+            path: ['data', 'contactDetails', 'email'],
           }),
         ],
       })
