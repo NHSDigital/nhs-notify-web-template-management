@@ -104,6 +104,13 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     await this.continueButton.click();
   }
 
+  summaryRowValue(label: string): Locator {
+    return this.page
+      .locator('.nhsuk-summary-list__row')
+      .filter({ hasText: label })
+      .locator('.nhsuk-summary-list__value');
+  }
+
   static getTemplateId(url: string) {
     const matches = url.match(TemplateMgmtPreviewLetterPage.urlRegexp);
 
