@@ -221,6 +221,8 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
         <a
           class="nhsuk-body"
           href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           Learn more about personalising your letters (opens in a new tab).
         </a>
@@ -776,6 +778,8 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
         <a
           class="nhsuk-body"
           href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           Learn more about personalising your letters (opens in a new tab).
         </a>
@@ -1559,6 +1563,8 @@ exports[`valid authoring letter template matches snapshot 1`] = `
         <a
           class="nhsuk-body"
           href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           Learn more about personalising your letters (opens in a new tab).
         </a>
