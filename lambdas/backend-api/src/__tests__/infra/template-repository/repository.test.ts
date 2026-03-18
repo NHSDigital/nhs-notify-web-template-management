@@ -1119,6 +1119,7 @@ describe('templateRepository', () => {
         returnActualError: true,
       },
       {
+        // lock number is currently the only condition, so this case is not expected
         testName:
           'Fails when template cannot be approved (condition check fails for other reasons)',
         Item: marshall({

@@ -44,8 +44,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(401);
+
     expect(await response.json()).toEqual({
       message: 'Unauthorized',
     });
@@ -63,8 +63,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(404);
+
     expect(data).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
@@ -77,7 +77,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template'
+      'other client owned'
     );
 
     await templateStorageHelper.seedTemplateData([letterTemplate]);
@@ -97,6 +97,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const data = await response.json();
 
     expect(response.status(), JSON.stringify(data)).toBe(404);
+
     expect(data).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
@@ -109,7 +110,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template'
+      'no locknumber'
     );
 
     await templateStorageHelper.seedTemplateData([letterTemplate]);
@@ -126,8 +127,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Invalid lock number provided',
@@ -141,7 +142,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'lock mismatch',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -165,8 +166,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(409);
+
     expect(data).toEqual({
       statusCode: 409,
       technicalMessage:
@@ -181,7 +182,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'success',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -207,7 +208,6 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const result = await response.json();
-
     expect(response.status(), JSON.stringify(result, null, 2)).toBe(200);
 
     expect(result).toEqual({
@@ -236,7 +236,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'success shared ownership',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -260,7 +260,6 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const result = await response.json();
-
     expect(response.status(), JSON.stringify(result, null, 2)).toBe(200);
 
     expect(userLetterAuthoring.clientId).toBe(
@@ -290,7 +289,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'already approved',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -360,8 +359,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be approved',
@@ -390,8 +389,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be approved',
@@ -404,7 +403,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'deleted',
       'DELETED'
     );
 
@@ -417,14 +416,14 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
       {
         headers: {
           Authorization: await userLetterAuthoring.getAccessToken(),
-          'X-Lock-Number': String(lockNumber + 1),
+          'X-Lock-Number': String(lockNumber),
         },
       }
     );
 
     const data = await approveResponse.json();
-
     expect(approveResponse.status(), JSON.stringify(data)).toBe(404);
+
     expect(data).toEqual({
       statusCode: 404,
       technicalMessage: 'Template not found',
@@ -440,7 +439,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'no campaign',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -465,8 +464,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be approved',
@@ -479,7 +478,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'no letter variant ID',
       'NOT_YET_SUBMITTED',
       {
         shortFormRender: { status: 'RENDERED' },
@@ -502,11 +501,49 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be approved',
+    });
+  });
+
+  test('returns 404 - cannot approve template where letterVariantId refers to a non-existant variant', async ({
+    request,
+  }) => {
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userLetterAuthoring,
+      'letter variant does not exist',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: 'notavariant',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { id, lockNumber } = letterTemplate;
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
+      {
+        headers: {
+          Authorization: await userLetterAuthoring.getAccessToken(),
+          'X-Lock-Number': String(lockNumber),
+        },
+      }
+    );
+
+    const data = await response.json();
+    expect(response.status(), JSON.stringify(data)).toBe(404);
+
+    expect(data).toEqual({
+      statusCode: 404,
+      technicalMessage: 'Letter variant not found',
     });
   });
 
@@ -519,7 +556,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'no short render',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -543,8 +580,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage:
@@ -561,7 +598,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'no long render',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -585,8 +622,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage:
@@ -603,7 +640,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'pending renders',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant.id,
@@ -627,8 +664,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage:
@@ -651,7 +688,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
-      'Test Authoring Letter template',
+      'renders too long',
       'NOT_YET_SUBMITTED',
       {
         letterVariantId: letterVariant!.id,
@@ -675,8 +712,8 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     );
 
     const data = await response.json();
-
     expect(response.status(), JSON.stringify(data)).toBe(400);
+
     expect(data).toEqual({
       statusCode: 400,
       technicalMessage:

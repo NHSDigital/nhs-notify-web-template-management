@@ -358,13 +358,10 @@ export class TemplateRepository {
       }
     )
       .setStatus('PROOF_APPROVED')
-      .expectStatus('NOT_YET_SUBMITTED')
       .setUpdatedByUserAt(this.internalUserKey(user))
-      .expectTemplateType('LETTER')
-      .expectClientId(user.clientId)
-      .expectLetterVersion('AUTHORING')
-      .expectLockNumber(lockNumber)
       .incrementLockNumber()
+      // template is validated for submission in the template-client layer
+      .expectLockNumber(lockNumber)
       .build();
 
     try {

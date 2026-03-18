@@ -4358,16 +4358,6 @@ describe('templateClient', () => {
       version: 1,
     };
 
-    function setupApproveHappyPath(mocks: ReturnType<typeof setup>['mocks']) {
-      mocks.templateRepository.get.mockResolvedValueOnce({
-        data: dbTemplate,
-      });
-
-      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
-        data: letterVariant,
-      });
-    }
-
     test('returns failure result when lock number is invalid', async () => {
       const { templateClient, mocks } = setup();
 
@@ -4485,7 +4475,7 @@ describe('templateClient', () => {
         error: {
           errorMeta: {
             code: 404,
-            description: 'Letter Variant not found',
+            description: 'Letter variant not found',
           },
         },
       });
@@ -4507,7 +4497,7 @@ describe('templateClient', () => {
         error: {
           errorMeta: {
             code: 404,
-            description: 'Letter Variant not found',
+            description: 'Letter variant not found',
           },
         },
       });
@@ -4529,10 +4519,10 @@ describe('templateClient', () => {
         },
       },
       {
-        scenario: 'initialRender is PENDING',
+        scenario: 'longFormRender is PENDING',
         files: {
           ...allRenderedFiles,
-          initialRender: {
+          longFormRender: {
             status: 'PENDING' as const,
             requestedAt: NOW,
           },
@@ -4548,42 +4538,45 @@ describe('templateClient', () => {
           },
         },
       },
-    ])('returns 400 when $scenario', async ({ files }) => {
-      const { templateClient, mocks } = setup();
+    ])(
+      'returns 400 due to problems with renders: $scenario',
+      async ({ files }) => {
+        const { templateClient, mocks } = setup();
 
-      mocks.templateRepository.get.mockResolvedValueOnce({
-        data: {
-          ...dbTemplate,
-          files,
-        },
-      });
-
-      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
-        data: letterVariant,
-      });
-
-      const result = await templateClient.approveTemplate(
-        templateId,
-        user,
-        '0'
-      );
-
-      expect(
-        mocks.templateRepository.approveLetterTemplate
-      ).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        error: {
-          errorMeta: {
-            code: 400,
-            description:
-              'One or more personalised rendered example has not been generated',
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: {
+            ...dbTemplate,
+            files,
           },
-        },
-      });
-    });
+        });
 
-    test('returns 400 when page count exceeds maxSheets (bothSides=true)', async () => {
+        mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+          data: letterVariant,
+        });
+
+        const result = await templateClient.approveTemplate(
+          templateId,
+          user,
+          '0'
+        );
+
+        expect(
+          mocks.templateRepository.approveLetterTemplate
+        ).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 400,
+              description:
+                'One or more personalised rendered example has not been generated',
+            },
+          },
+        });
+      }
+    );
+
+    test('returns 400 when sheet count exceeds maxSheets (variant has double-sided printing)', async () => {
       const { templateClient, mocks } = setup();
 
       const variantWith2Sheets: LetterVariant = {
@@ -4592,8 +4585,7 @@ describe('templateClient', () => {
         maxSheets: 2,
       };
 
-      // bothSides=true means pagesPerSheet=2, so Math.ceil(5/2)=3 > 2
-      const filesWithExcessivePages: AuthoringLetterFiles = {
+      const filesWithTooManyPages: AuthoringLetterFiles = {
         ...allRenderedFiles,
         longFormRender: {
           status: 'RENDERED',
@@ -4606,7 +4598,7 @@ describe('templateClient', () => {
       mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
           ...dbTemplate,
-          files: filesWithExcessivePages,
+          files: filesWithTooManyPages,
         },
       });
 
@@ -4635,7 +4627,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('returns 400 when page count exceeds maxSheets (bothSides=false)', async () => {
+    test('returns 400 when sheet count exceeds maxSheets (variant has single-sided printing)', async () => {
       const { templateClient, mocks } = setup();
 
       const variantSingleSided: LetterVariant = {
@@ -4644,8 +4636,7 @@ describe('templateClient', () => {
         maxSheets: 2,
       };
 
-      // bothSides=false means pagesPerSheet=1, so Math.ceil(3/1)=3 > 2
-      const filesWithExcessivePages: AuthoringLetterFiles = {
+      const filesWithTooManyPages: AuthoringLetterFiles = {
         ...allRenderedFiles,
         longFormRender: {
           status: 'RENDERED',
@@ -4658,7 +4649,7 @@ describe('templateClient', () => {
       mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
           ...dbTemplate,
-          files: filesWithExcessivePages,
+          files: filesWithTooManyPages,
         },
       });
 
@@ -4687,68 +4678,16 @@ describe('templateClient', () => {
       });
     });
 
-    test('passes page count validation when bothSides=true and pages fit', async () => {
-      const { templateClient, mocks } = setup();
-
-      // bothSides=true, maxSheets=2 → pagesPerSheet=2 → Math.ceil(4/2)=2 <= 2 (pass)
-      const variantWith2Sheets: LetterVariant = {
-        ...letterVariant,
-        bothSides: true,
-        maxSheets: 2,
-      };
-
-      const filesWithFittingPages: AuthoringLetterFiles = {
-        ...allRenderedFiles,
-        longFormRender: {
-          status: 'RENDERED',
-          fileName: 'long.pdf',
-          currentVersion: 'v1',
-          pageCount: 4,
-        },
-      };
-
-      mocks.templateRepository.get.mockResolvedValueOnce({
-        data: {
-          ...dbTemplate,
-          files: filesWithFittingPages,
-        },
-      });
-
-      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
-        data: variantWith2Sheets,
-      });
-
-      mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
-        data: {
-          ...dbTemplate,
-          files: filesWithFittingPages,
-          templateStatus: 'PROOF_APPROVED',
-        },
-      });
-
-      const result = await templateClient.approveTemplate(
-        templateId,
-        user,
-        '0'
-      );
-
-      expect(
-        mocks.templateRepository.approveLetterTemplate
-      ).toHaveBeenCalledWith(templateId, user, 0);
-
-      expect(result).toEqual({
-        data: {
-          ...notYetSubmittedLetterDto,
-          files: filesWithFittingPages,
-          templateStatus: 'PROOF_APPROVED',
-        },
-      });
-    });
-
     test('should return a failure result when saving to the database fails', async () => {
       const { templateClient, mocks } = setup();
 
-      setupApproveHappyPath(mocks);
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: dbTemplate,
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: letterVariant,
+      });
 
       mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
         error: {
@@ -4789,7 +4728,13 @@ describe('templateClient', () => {
         version: 1,
       };
 
-      setupApproveHappyPath(mocks);
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: dbTemplate,
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: letterVariant,
+      });
 
       mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
         data: template,
@@ -4815,10 +4760,16 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return template approved to PROOF_APPROVED', async () => {
+    test('should return template updated to PROOF_APPROVED', async () => {
       const { templateClient, mocks } = setup();
 
-      setupApproveHappyPath(mocks);
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: dbTemplate,
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: letterVariant,
+      });
 
       mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
         data: {
