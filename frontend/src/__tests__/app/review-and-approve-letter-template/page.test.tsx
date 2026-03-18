@@ -308,7 +308,7 @@ describe('valid authoring letter template', () => {
       })
     );
 
-    const form = screen.getByTestId('preview-letter-template-cta');
+    const form = screen.getByTestId('review-and-approve-letter-cta');
     expect(form).toBeInTheDocument();
   });
 
@@ -322,7 +322,7 @@ describe('valid authoring letter template', () => {
       })
     );
 
-    await user.click(screen.getByTestId('preview-letter-template-cta'));
+    await user.click(screen.getByTestId('review-and-approve-letter-cta'));
 
     expect(reviewAndApproveLetterTemplateAction).toHaveBeenCalledTimes(1);
 

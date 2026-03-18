@@ -191,7 +191,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="preview-letter-template"
+          value="review-and-approve-letter"
         />
         <input
           name="csrf_token"
@@ -215,8 +215,8 @@ exports[`valid authoring letter template matches snapshot 1`] = `
           <button
             aria-disabled="false"
             class="nhsuk-button"
-            data-testid="preview-letter-template-cta"
-            id="preview-letter-template-cta"
+            data-testid="review-and-approve-letter-cta"
+            id="review-and-approve-letter-cta"
             type="submit"
           >
             Approve letter template

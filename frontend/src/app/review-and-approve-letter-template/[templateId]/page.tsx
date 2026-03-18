@@ -119,7 +119,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               longFormRender.fileName
             )}
           />
-          <NHSNotifyForm.Form formId='preview-letter-template'>
+          <NHSNotifyForm.Form formId='review-and-approve-letter'>
             <input
               type='hidden'
               name='templateId'
@@ -133,8 +133,8 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
             <div className='nhsuk-form-group'>
               <NHSNotifyButton
                 type='submit'
-                data-testid='preview-letter-template-cta'
-                id='preview-letter-template-cta'
+                data-testid='review-and-approve-letter-cta'
+                id='review-and-approve-letter-cta'
               >
                 {submitText}
               </NHSNotifyButton>
