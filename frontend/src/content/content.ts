@@ -708,6 +708,45 @@ const error404 = {
   },
 };
 
+const getReadyToApproveLetterTemplate = {
+  pageTitle: generatePageTitle('Get ready to approve letter template'),
+  pageHeading: "Get ready to approve '{{templateName}}'",
+  pageSubHeading:
+    'After you approve this letter, you can use it in your message plans.',
+  pageContent1: {
+    title: 'Before you approve',
+    subTitle: 'Make sure:',
+    list: [
+      'the relevant stakeholders in your team have approved your letter template',
+      'your letter does not have any errors',
+    ],
+  },
+  pageContent2: {
+    title: 'Personalisation',
+    subTitle:
+      'Longer personalisation data can affect the final number of pages and price of your letter.',
+  },
+  pageCallout: {
+    label: 'Important',
+    text: {
+      paragraph1:
+        'You cannot change your template settings after you approve this template.',
+      paragraph2:
+        'If you need to make changes, edit your original template file on your computer then upload it as a new template.',
+    },
+  },
+  pageLinkButtons: {
+    approve: {
+      text: 'continue',
+      url: 'to-be-determined',
+    },
+    back: {
+      text: goBackButtonText,
+      url: '/preview-letter-template/{{templateId}}',
+    },
+  },
+};
+
 const letterTemplateInvalidConfiguration = {
   title: generatePageTitle('Configuration error'),
   heading: 'You cannot create letter templates yet',
@@ -1889,6 +1928,7 @@ const content = {
     editTemplateCampaignPage,
     editTemplateNamePage,
     error404,
+    getReadyToApproveLetterTemplate,
     homePage,
     letterTemplateInvalidConfiguration,
     messagePlanGetReadyToMoveToProduction,
