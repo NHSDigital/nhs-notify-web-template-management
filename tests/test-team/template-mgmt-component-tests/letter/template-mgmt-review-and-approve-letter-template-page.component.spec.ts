@@ -97,6 +97,9 @@ test.describe('Review and Approve Letter Template Page', () => {
     await expect(reviewPage.approveButton).toHaveText(
       'Approve letter template'
     );
+
+    await expect(page.getByTestId('sheets-action')).toBeHidden();
+    await expect(page.getByTestId('status-action')).toBeHidden();
   });
 
   test('when user clicks approve, then the template is approved and user is redirected', async ({

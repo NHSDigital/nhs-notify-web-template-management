@@ -622,6 +622,9 @@ test.describe('Preview Letter template Page', () => {
 
       await expect(previewPage.summaryRowValue('Total pages')).toHaveText('4');
       await expect(previewPage.summaryRowValue('Sheets')).toHaveText('2');
+
+      await expect(previewPage.sheetsAction).toBeVisible();
+      await expect(previewPage.statusAction).toBeVisible();
     });
 
     test('when initial render is recently requested (in PENDING status), the spinner is shown', async ({
