@@ -4,9 +4,9 @@ import type {
   TemplateSuccessList,
   TemplateDto,
   LetterPatch,
+  LetterProofRequest,
   LetterVariant,
   LetterVariantListSuccess,
-  LetterProofRequest,
 } from 'nhs-notify-web-template-management-types';
 import { Result } from './types/result';
 import { catchAxiosError, httpClient } from './axios-client';
