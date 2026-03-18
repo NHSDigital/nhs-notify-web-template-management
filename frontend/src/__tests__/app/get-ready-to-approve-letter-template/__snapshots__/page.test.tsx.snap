@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetReadyToApproveLetterTemplatePage matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-two-thirds"
+        >
+          <span
+            class="nhsuk-caption-xl"
+          >
+            Step 1 of 2
+          </span>
+          <h1
+            class="nhsuk-heading-xl"
+          >
+            Get ready to approve 'authoring letter template name'
+          </h1>
+          <p
+            class="nhsuk-body-l"
+          >
+            After you approve this letter, you can use it in your message plans.
+          </p>
+          <h2
+            class="nhsuk-heading-m"
+            id="before-you-approve"
+          >
+            Before you approve
+          </h2>
+          <p>
+            Make sure:
+          </p>
+          <ul>
+            <li>
+              the relevant stakeholders in your team have approved your letter template
+            </li>
+            <li>
+              your letter does not have any errors
+            </li>
+          </ul>
+          <h2
+            class="nhsuk-heading-m"
+            id="personalisation"
+          >
+            Personalisation
+          </h2>
+          <p>
+            Longer personalisation data can affect the final number of pages and price of your letter.
+          </p>
+          <div
+            class="nhsuk-warning-callout"
+          >
+            <h3
+              class="nhsuk-warning-callout__label"
+            >
+              Important
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                :
+              </span>
+            </h3>
+            <p>
+              You cannot change your template settings after you approve this template.
+            </p>
+            <p>
+              If you need to make changes, edit your original template file on your computer then upload it as a new template.
+            </p>
+          </div>
+          <div
+            class="nhsuk-form-group"
+          >
+            <a
+              aria-disabled="false"
+              class="nhsuk-button"
+              data-testid="continue-link"
+              draggable="false"
+              href="/templates/review-and-approve-letter-template/authoring-letter-template-id"
+              role="button"
+            >
+              Continue
+            </a>
+            <a
+              aria-disabled="false"
+              class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-left-3"
+              data-testid="back-link"
+              draggable="false"
+              href="/templates/preview-letter-template/authoring-letter-template-id"
+              role="button"
+            >
+              Go back
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;

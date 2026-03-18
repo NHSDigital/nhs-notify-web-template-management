@@ -47,6 +47,7 @@ import {
 import {
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtSubmitLetterPage,
@@ -128,19 +129,20 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtTemplateSubmittedNhsAppPage,
 
   // Letter
-  TemplateMgmtUploadLetterPage,
-  TemplateMgmtUploadStandardEnglishLetterTemplatePage,
-  TemplateMgmtUploadLargePrintLetterTemplatePage,
-  TemplateMgmtUploadBSLLetterTemplatePage,
-  TemplateMgmtUploadOtherLanguageLetterTemplatePage,
-  TemplateMgmtUploadLetterMissingCampaignClientIdPage,
-  TemplateMgmtEditTemplateNamePage,
   TemplateMgmtEditTemplateCampaignPage,
+  TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
+  TemplateMgmtRequestProofPage,
   TemplateMgmtSubmitLetterPage,
   TemplateMgmtTemplateSubmittedLetterPage,
-  TemplateMgmtRequestProofPage,
+  TemplateMgmtUploadBSLLetterTemplatePage,
+  TemplateMgmtUploadLargePrintLetterTemplatePage,
+  TemplateMgmtUploadLetterMissingCampaignClientIdPage,
+  TemplateMgmtUploadLetterPage,
+  TemplateMgmtUploadOtherLanguageLetterTemplatePage,
+  TemplateMgmtUploadStandardEnglishLetterTemplatePage,
 
   // Routing / Message plans
   RoutingMessagePlansPage,

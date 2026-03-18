@@ -238,7 +238,7 @@ test.describe('Event publishing - Routing Config', () => {
         // Authoring letters don't produce events yet
         match: eventWithIdIn([templates.NHSAPP.id, templates.EMAIL.id]),
       });
-      expect(seedEvents.length).toBe(2);
+      expect(seedEvents).toHaveLength(2);
     }).toPass({ timeout: 60_000 });
 
     const start = new Date();

@@ -1,26 +1,33 @@
-import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
-import { getTemplate } from '@utils/form-actions';
 import { Metadata } from 'next';
-import content from '@content/content';
-import { NHSNotifyContainer } from '@layouts/container/container';
-import { interpolate } from '@utils/interpolate';
 import { redirect, RedirectType } from 'next/navigation';
+import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { getTemplate } from '@utils/form-actions';
+import { interpolate } from '@utils/interpolate';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import content from '@content/content';
 
 const pageContent = content.pages.getReadyToApproveLetterTemplate;
 
-export const metadata: Metadata = {
-  title: pageContent.pageTitle,
-};
-
-const GetReadyToApproveLetterTemplate = async (props: TemplatePageProps) => {
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageContent.pageTitle,
+  };
+}
+const GetReadyToApproveLetterTemplatePage = async (
+  props: TemplatePageProps
+) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
 
-  if (!template || template.templateType !== 'LETTER') {
+  if (
+    !template ||
+    template.templateType !== 'LETTER' ||
+    template.letterVersion !== 'AUTHORING'
+  ) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
@@ -71,4 +78,4 @@ const GetReadyToApproveLetterTemplate = async (props: TemplatePageProps) => {
   );
 };
 
-export default GetReadyToApproveLetterTemplate;
+export default GetReadyToApproveLetterTemplatePage;

@@ -775,7 +775,7 @@ const getReadyToApproveLetterTemplate: {
     ],
   },
   continue: {
-    text: 'continue',
+    text: 'Continue',
     href: (id: string) => `/templates/review-and-approve-letter-template/${id}`,
   },
   back: {

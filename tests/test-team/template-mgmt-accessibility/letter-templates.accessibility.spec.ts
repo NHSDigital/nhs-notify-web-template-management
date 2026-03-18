@@ -10,6 +10,7 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtSubmitLetterPage,
@@ -343,6 +344,14 @@ test.describe('Letter templates', () => {
             await p.errorSummary.isVisible();
           },
         }
+      ));
+
+    test('Get ready to approve letter template', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtGetReadyToApproveLetterTemplatePage(page).setPathParam(
+          'templateId',
+          templateIds.AUTHORING
+        )
       ));
   });
 });
