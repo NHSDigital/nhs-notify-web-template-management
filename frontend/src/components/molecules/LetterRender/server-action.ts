@@ -3,15 +3,27 @@
 import { z } from 'zod/v4';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
-import { EXAMPLE_RECIPIENT_IDS } from '@content/example-recipients';
+import {
+  EXAMPLE_RECIPIENT_IDS,
+  LONG_EXAMPLE_RECIPIENTS,
+  SHORT_EXAMPLE_RECIPIENTS,
+} from '@content/example-recipients';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
+import { generateLetterProof } from '@utils/form-actions';
+import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
+import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
+import { format as formatDate } from 'date-fns';
 
 const { pdsSection } = copy.components.letterRender;
 
 const $FormSchema = z.object({
-  __systemPersonalisationPackId: z.enum(EXAMPLE_RECIPIENT_IDS, {
+  systemPersonalisationPackId: z.enum(EXAMPLE_RECIPIENT_IDS, {
     message: pdsSection.error.invalid,
   }),
+  templateId: z.uuidv4(),
+  lockNumber: $LockNumber,
+  tab: z.enum(['longFormRender', 'shortFormRender']),
 });
 
 export async function updateLetterPreview(
@@ -28,6 +40,48 @@ export async function updateLetterPreview(
       fields,
     };
   }
+
+  const { templateId, systemPersonalisationPackId, tab, lockNumber } =
+    result.data;
+
+  const customPersonalisation = Object.fromEntries(
+    Object.entries(fields).flatMap(([k, v]) =>
+      k.startsWith(PERSONALISATION_FORMDATA_PREFIX)
+        ? [[k.slice(PERSONALISATION_FORMDATA_PREFIX.length), String(v)]]
+        : []
+    )
+  );
+
+  const systemPersonalisation = (
+    tab === 'longFormRender'
+      ? LONG_EXAMPLE_RECIPIENTS
+      : SHORT_EXAMPLE_RECIPIENTS
+  ).find((r) => r.id === systemPersonalisationPackId)?.data;
+
+  if (!systemPersonalisation) {
+    return {
+      errorState: {
+        fieldErrors: {
+          systemPersonalisationPackId: [pdsSection.error.invalid],
+        },
+      },
+      fields,
+    };
+  }
+
+  const personalisation = {
+    ...customPersonalisation,
+    ...systemPersonalisation,
+    date: formatDate(new Date(), 'd LLLL yyyy'),
+  };
+
+  const request: LetterProofRequest = {
+    personalisation,
+    systemPersonalisationPackId,
+    requestTypeVariant: tab === 'longFormRender' ? 'long' : 'short',
+  };
+
+  await generateLetterProof(templateId, lockNumber, request);
 
   return {
     fields,

@@ -343,7 +343,7 @@ test.describe('Letter rendering', () => {
             expect.objectContaining({
               templateStatus: 'VALIDATION_FAILED',
               validationErrors: [
-                { name: 'INVALID_MARKERS', issues: ['c.fullName'] },
+                { name: 'INVALID_MARKERS', issues: ['{c.fullName}'] },
               ],
               files: expect.objectContaining({
                 initialRender: { status: 'FAILED' },
@@ -378,7 +378,7 @@ test.describe('Letter rendering', () => {
             expect.objectContaining({
               templateStatus: 'VALIDATION_FAILED',
               validationErrors: [
-                { name: 'INVALID_MARKERS', issues: ['parameter!'] },
+                { name: 'INVALID_MARKERS', issues: ['{d.parameter!}'] },
               ],
               files: expect.objectContaining({
                 initialRender: expect.objectContaining({ status: 'RENDERED' }),
@@ -415,7 +415,7 @@ test.describe('Letter rendering', () => {
               validationErrors: [
                 {
                   name: 'UNEXPECTED_ADDRESS_LINES',
-                  issues: ['address_line_8'],
+                  issues: ['{d.address_line_8}'],
                 },
               ],
               files: expect.objectContaining({

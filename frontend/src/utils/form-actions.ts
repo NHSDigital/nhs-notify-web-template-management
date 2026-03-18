@@ -10,6 +10,7 @@ import type { TemplateFilter } from 'nhs-notify-backend-client/types';
 import type {
   CreateUpdateTemplate,
   LetterPatch,
+  LetterProofRequest,
   TemplateDto,
   LetterVariant,
 } from 'nhs-notify-web-template-management-types';
@@ -215,6 +216,32 @@ export async function requestTemplateProof(
   if (error) {
     logger.error('Failed to request proof', error);
     throw new Error('Failed to request proof');
+  }
+
+  return data;
+}
+
+export async function generateLetterProof(
+  templateId: string,
+  lockNumber: number,
+  request: LetterProofRequest
+): Promise<TemplateDto> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.generateLetterProof(
+    templateId,
+    accessToken,
+    lockNumber,
+    request
+  );
+
+  if (error) {
+    logger.error('Failed to initiate letter proof generation', error);
+    throw new Error('Failed to initiate letter proof generation');
   }
 
   return data;

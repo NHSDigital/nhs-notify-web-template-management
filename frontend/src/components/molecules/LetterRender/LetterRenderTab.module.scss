@@ -1,7 +1,13 @@
+.tabRow {
+  display: flex;
+}
+
 .iframeColumn {
+  min-height: 1200px;
+
   iframe {
     width: 100%;
-    height: 1200px;
+    height: 100%;
     border: none;
   }
 }

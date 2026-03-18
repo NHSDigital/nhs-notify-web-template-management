@@ -9,8 +9,10 @@ import {
 } from '@content/example-recipients';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
+import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
+import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
@@ -19,6 +21,7 @@ type LetterRenderFormProps = {
 
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
+  const { isAnyTabPolling } = useLetterRenderPolling();
 
   const exampleRecipients =
     tab === 'shortFormRender'
@@ -33,14 +36,14 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup htmlFor='__systemPersonalisationPackId'>
+      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        <NHSNotifyForm.ErrorMessage htmlFor='__systemPersonalisationPackId' />
+        <NHSNotifyForm.ErrorMessage htmlFor='systemPersonalisationPackId' />
         <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
-          name='__systemPersonalisationPackId'
+          name='systemPersonalisationPackId'
           className={styles.recipientSelect}
         >
           <option value=''>{copy.pdsSection.recipientPlaceholder}</option>
@@ -68,7 +71,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
                 <NHSNotifyForm.Input
                   type='text'
                   id={id}
-                  name={field}
+                  name={`${PERSONALISATION_FORMDATA_PREFIX}${field}`}
                   maxLength={500}
                   autoComplete='on'
                 />
@@ -78,7 +81,16 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         </>
       )}
 
-      <NHSNotifyButton type='submit' secondary className='nhsuk-u-margin-top-4'>
+      <input type='hidden' name='templateId' value={template.id} />
+      <input type='hidden' name='lockNumber' value={template.lockNumber} />
+      <input type='hidden' name='tab' value={tab} />
+
+      <NHSNotifyButton
+        type='submit'
+        secondary
+        className='nhsuk-u-margin-top-4'
+        disabled={isAnyTabPolling}
+      >
         {copy.updatePreviewButton}
       </NHSNotifyButton>
     </NHSNotifyForm.Form>
