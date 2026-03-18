@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtGetReadyToApproveLetterTemplatePage } from '../../pages/template-mgmt-get-ready-to-approve-letter-template-page';
+import { TemplateMgmtGetReadyToApproveLetterTemplatePage } from '../../pages/letter/template-mgmt-get-ready-to-approve-letter-template-page';
 import {
   assertFooterLinks,
   assertHeaderLogoLink,
