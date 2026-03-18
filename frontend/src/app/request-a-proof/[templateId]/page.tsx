@@ -1,5 +1,8 @@
 import { Metadata } from 'next';
-import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  previewTemplatePages,
+  TemplatePageProps,
+} from 'nhs-notify-web-template-management-utils';
 import pageContent from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -17,12 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const channelSlug = {
-  NHS_APP: 'nhs-app',
-  SMS: 'text-message',
-  EMAIL: 'email',
-};
-
 const RequestDigitalProofPage = async (props: TemplatePageProps) => {
   const { templateId } = await props.params;
   const template = await getTemplate(templateId);
@@ -34,7 +31,7 @@ const RequestDigitalProofPage = async (props: TemplatePageProps) => {
   return (
     <NHSNotifyContainer>
       <NHSNotifyBackLink
-        href={`/preview-${channelSlug[template.templateType]}-template/${templateId}`}
+        href={`/${previewTemplatePages(template.templateType)}/${templateId}`}
       >
         {backLink.text}
       </NHSNotifyBackLink>
