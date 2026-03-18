@@ -65,8 +65,8 @@ test.beforeAll(async () => {
     `Authoring letter template - ${templateIds.AUTHORING}`,
     'NOT_YET_SUBMITTED',
     {
-      longFormRender: {},
-      shortFormRender: {},
+      longFormRender: { status: 'RENDERED' },
+      shortFormRender: { status: 'RENDERED' },
       letterVariantId: globalLetterVariant.id,
     }
   );
