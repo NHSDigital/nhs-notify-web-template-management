@@ -62,7 +62,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     const panel = this.page.getByRole('tabpanel', { name: tabName });
     const tab = this.page.getByRole('tab', { name: tabName });
     const recipientSelect = panel.locator(
-      'select[name="__systemPersonalisationPackId"]'
+      'select[name="systemPersonalisationPackId"]'
     );
     const updatePreviewButton = panel.getByRole('button', {
       name: 'Update preview',
@@ -72,6 +72,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
       name: 'Custom personalisation fields',
     });
 
+    const tabSpinner = panel.getByRole('status');
+
     return {
       tab,
       panel,
@@ -79,6 +81,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
       updatePreviewButton,
       previewIframe,
       customFieldsHeading,
+      tabSpinner,
       getCustomFieldInput: (fieldName: string): Locator =>
         panel.locator(`input[id="custom-${fieldName}-${variant}"]`),
       getRecipientOptions: (): Locator => recipientSelect.locator('option'),

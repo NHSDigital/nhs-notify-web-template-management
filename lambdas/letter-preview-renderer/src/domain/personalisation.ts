@@ -4,16 +4,18 @@ import {
   DEFAULT_PERSONALISATION_LIST,
 } from 'nhs-notify-backend-client/src/schemas/constants';
 
-type ClassifiedMarkers = {
-  valid: Set<string>;
-  renderable: Set<string>;
-  nonRenderable: Set<string>;
+type Markers = {
+  valid: string[];
+  invalidRenderableData: string[];
+  invalidRenderableNonData: string[];
+  nonRenderable: string[];
 };
 
-function classifyMarkers(carboneMarkers: Set<string>): ClassifiedMarkers {
-  const valid = new Set<string>();
-  const renderable = new Set<string>();
-  const nonRenderable = new Set<string>();
+function classifyMarkers(carboneMarkers: Set<string>): Markers {
+  const valid: string[] = [];
+  const invalidRenderableData: string[] = [];
+  const invalidRenderableNonData: string[] = [];
+  const nonRenderable: string[] = [];
 
   for (const marker of carboneMarkers) {
     if (
@@ -28,29 +30,58 @@ function classifyMarkers(carboneMarkers: Set<string>): ClassifiedMarkers {
       marker.startsWith('#') ||
       /^t\(.*\)/.test(marker)
     ) {
-      nonRenderable.add(marker);
+      nonRenderable.push(marker);
       continue;
     }
 
     if (!marker.startsWith('d.')) {
-      renderable.add(marker);
+      invalidRenderableNonData.push(marker);
       continue;
     }
 
     const dataMarker = marker.slice(2);
 
     if (!/^[\w-]+$/.test(dataMarker)) {
-      renderable.add(dataMarker);
+      invalidRenderableData.push(dataMarker);
       continue;
     }
 
-    valid.add(dataMarker);
+    valid.push(dataMarker);
   }
 
-  return { valid, renderable, nonRenderable };
+  return {
+    invalidRenderableData,
+    invalidRenderableNonData,
+    nonRenderable,
+    valid,
+  };
 }
 
-function classifyPersonalisation(parameters: Set<string>) {
+function passthroughData(s: string) {
+  return `{d.${s}}`;
+}
+
+function passthroughNonData(s: string) {
+  return `{${s}}`;
+}
+
+function reconstructMarkers({
+  valid,
+  invalidRenderableData,
+  invalidRenderableNonData,
+  nonRenderable,
+}: Markers): Markers {
+  return {
+    valid: valid.map((m) => passthroughData(m)),
+    invalidRenderableData: invalidRenderableData.map((m) => passthroughData(m)),
+    invalidRenderableNonData: invalidRenderableNonData.map((m) =>
+      passthroughNonData(m)
+    ),
+    nonRenderable: nonRenderable.map((m) => passthroughNonData(m)),
+  };
+}
+
+function classifyPersonalisation(parameters: string[]) {
   const custom: string[] = [];
   const system: string[] = [];
 
@@ -66,19 +97,33 @@ function classifyPersonalisation(parameters: Set<string>) {
 }
 
 function buildPassthroughPersonalisation(
-  keys: Set<string>
+  classified: Markers,
+  reconstructed: Markers
 ): Record<string, string> {
-  return Object.fromEntries([...keys].map((key) => [key, `{d.${key}}`]));
+  const keys = [
+    ...classified.valid,
+    ...classified.invalidRenderableData,
+    ...classified.invalidRenderableNonData,
+  ];
+  const values = [
+    ...reconstructed.valid,
+    ...reconstructed.invalidRenderableData,
+    ...reconstructed.invalidRenderableNonData,
+  ];
+
+  return Object.fromEntries(keys.map((k, i) => [k, values[i]]));
 }
 
 function buildValidationErrors(
-  classified: ClassifiedMarkers
+  classified: Markers,
+  reconstructed: Markers
 ): ValidationErrorDetail[] {
   const errors: ValidationErrorDetail[] = [];
 
   const invalidMarkers = [
-    ...classified.nonRenderable,
-    ...classified.renderable,
+    ...reconstructed.invalidRenderableData,
+    ...reconstructed.nonRenderable,
+    ...reconstructed.invalidRenderableNonData,
   ];
 
   if (invalidMarkers.length > 0) {
@@ -86,7 +131,7 @@ function buildValidationErrors(
   }
 
   const hasAllAddressLines = ADDRESS_PERSONALISATIONS.every((line) =>
-    classified.valid.has(line)
+    classified.valid.includes(line)
   );
 
   if (!hasAllAddressLines) {
@@ -95,16 +140,17 @@ function buildValidationErrors(
 
   const addressLinePattern = /^address_line_\d+$/;
 
-  const unexpectedAddressLines = [...classified.valid].filter(
-    (marker) =>
-      addressLinePattern.test(marker) &&
-      !ADDRESS_PERSONALISATIONS.includes(marker)
+  const unexpectedAddressLineIssues = classified.valid.flatMap((marker, i) =>
+    addressLinePattern.test(marker) &&
+    !ADDRESS_PERSONALISATIONS.includes(marker)
+      ? [reconstructed.valid[i]]
+      : []
   );
 
-  if (unexpectedAddressLines.length > 0) {
+  if (unexpectedAddressLineIssues.length > 0) {
     errors.push({
       name: 'UNEXPECTED_ADDRESS_LINES',
-      issues: unexpectedAddressLines,
+      issues: unexpectedAddressLineIssues,
     });
   }
 
@@ -120,13 +166,15 @@ export type MarkerAnalysis = {
 
 export function analyseMarkers(markers: Set<string>): MarkerAnalysis {
   const classified = classifyMarkers(markers);
+  const reconstructed = reconstructMarkers(classified);
 
   return {
     personalisation: classifyPersonalisation(classified.valid),
     passthroughPersonalisation: buildPassthroughPersonalisation(
-      classified.valid.union(classified.renderable)
+      classified,
+      reconstructed
     ),
-    validationErrors: buildValidationErrors(classified),
-    canRender: classified.nonRenderable.size === 0,
+    validationErrors: buildValidationErrors(classified, reconstructed),
+    canRender: classified.nonRenderable.length === 0,
   };
 }
