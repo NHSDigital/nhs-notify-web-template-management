@@ -1236,7 +1236,7 @@ const howToRequestADigitalProof: {
     },
     {
       type: 'text',
-      text: 'Only request proofs once your templates are final',
+      text: 'Only request proofs once your templates are final.',
     },
     {
       type: 'text',

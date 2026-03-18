@@ -41,7 +41,7 @@ exports[`RequestADigitalProofPage matches snapshot 1`] = `
             Before you start
           </h2>
           <p>
-            Only request proofs once your templates are final
+            Only request proofs once your templates are final.
           </p>
           <p>
             You can request proofs for one template or a group of templates in a campaign.
