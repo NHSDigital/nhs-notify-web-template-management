@@ -708,42 +708,79 @@ const error404 = {
   },
 };
 
-const getReadyToApproveLetterTemplate = {
+const getReadyToApproveLetterTemplate: {
+  pageTitle: string;
+  stepCounter: string;
+  heading: string;
+  body: ContentBlock[];
+  callout: {
+    label: string;
+    content: ContentBlock[];
+  };
+  continue: {
+    text: string;
+    href: (id: string) => string;
+  };
+  back: {
+    text: string;
+    href: (id: string) => string;
+  };
+} = {
   pageTitle: generatePageTitle('Get ready to approve letter template'),
-  pageHeading: "Get ready to approve '{{templateName}}'",
-  pageSubHeading:
-    'After you approve this letter, you can use it in your message plans.',
-  pageContent1: {
-    title: 'Before you approve',
-    subTitle: 'Make sure:',
-    list: [
-      'the relevant stakeholders in your team have approved your letter template',
-      'your letter does not have any errors',
+  stepCounter: 'Step 1 of 2',
+  heading: "Get ready to approve '{{templateName}}'",
+  body: [
+    {
+      type: 'text',
+      text: 'After you approve this letter, you can use it in your message plans.',
+      overrides: { p: { props: { className: 'nhsuk-body-l' } } },
+    },
+    {
+      type: 'text',
+      text: '## Before you approve',
+      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+    },
+    {
+      type: 'text',
+      text: 'Make sure:',
+    },
+    {
+      type: 'text',
+      text: markdownList('ul', [
+        'the relevant stakeholders in your team have approved your letter template',
+        'your letter does not have any errors',
+      ]),
+    },
+    {
+      type: 'text',
+      text: '## Personalisation',
+      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+    },
+    {
+      type: 'text',
+      text: 'Longer personalisation data can affect the final number of pages and price of your letter.',
+    },
+  ],
+  callout: {
+    label: 'Important',
+    content: [
+      {
+        type: 'text',
+        text: 'You cannot change your template settings after you approve this template.',
+      },
+      {
+        type: 'text',
+        text: 'If you need to make changes, edit your original template file on your computer then upload it as a new template.',
+      },
     ],
   },
-  pageContent2: {
-    title: 'Personalisation',
-    subTitle:
-      'Longer personalisation data can affect the final number of pages and price of your letter.',
+  continue: {
+    text: 'continue',
+    href: (id: string) => `/templates/review-and-approve-letter-template/${id}`,
   },
-  pageCallout: {
-    label: 'Important',
-    text: {
-      paragraph1:
-        'You cannot change your template settings after you approve this template.',
-      paragraph2:
-        'If you need to make changes, edit your original template file on your computer then upload it as a new template.',
-    },
-  },
-  pageLinkButtons: {
-    approve: {
-      text: 'continue',
-      url: 'to-be-determined',
-    },
-    back: {
-      text: goBackButtonText,
-      url: '/preview-letter-template/{{templateId}}',
-    },
+  back: {
+    text: goBackButtonText,
+    href: (id: string) => `/templates/preview-letter-template/${id}`,
   },
 };
 
