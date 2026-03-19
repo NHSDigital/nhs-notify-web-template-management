@@ -28,15 +28,13 @@ const templateIds = {
 
 async function createTemplates() {
   const authHelper = createAuthHelper();
-  user = await authHelper.getTestUser(
-    testUsers.UserLetterAuthoringEnabled.userId
-  );
+  user = await authHelper.getTestUser(testUsers.User1.userId);
 
   return {
     VALID: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.VALID,
       user,
-      'approved-letter-template',
+      `approved-letter-template ${templateIds.VALID}`,
       'PROOF_APPROVED',
       {
         letterVariantId: 'variant',
@@ -48,14 +46,14 @@ async function createTemplates() {
     WRONG_STATUS: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.WRONG_STATUS,
       user,
-      'wrong-status-letter-template',
+      `wrong-status-letter-template ${templateIds.WRONG_STATUS}`,
       'NOT_YET_SUBMITTED'
     ),
 
     PDF_LETTER: TemplateFactory.uploadLetterTemplate(
       templateIds.PDF_LETTER,
       user,
-      'pdf-letter-template',
+      `pdf-letter-template ${templateIds.PDF_LETTER}`,
       'NOT_YET_SUBMITTED'
     ),
 
@@ -113,23 +111,14 @@ test.describe('Letter Template Approved Page', () => {
 
     await approvedPage.loadPage();
 
-    const messagePlansLink = page.getByRole('link', {
-      name: 'message plans',
-    });
-
-    await expect(messagePlansLink).toBeVisible();
-    await expect(messagePlansLink).toHaveAttribute(
+    await expect(approvedPage.messagePlansLink).toBeVisible();
+    await expect(approvedPage.messagePlansLink).toHaveAttribute(
       'href',
       '/templates/message-plans'
     );
 
-    const templatesLink = page.getByRole('link', {
-      name: 'templates',
-      exact: true,
-    });
-
-    await expect(templatesLink).toBeVisible();
-    await expect(templatesLink).toHaveAttribute(
+    await expect(approvedPage.templatesLink).toBeVisible();
+    await expect(approvedPage.templatesLink).toHaveAttribute(
       'href',
       '/templates/message-templates'
     );

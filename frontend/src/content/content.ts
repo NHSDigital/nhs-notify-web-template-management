@@ -725,12 +725,12 @@ const letterTemplateApproved = {
     {
       type: 'text',
       text: 'You can now use this letter in your [message plans]({{basePath}}/message-plans).',
-      overrides: { a: { props: {} } },
+      overrides: { a: { props: { 'data-testid': 'message-plans-link' } } },
     },
     {
       type: 'text',
       text: 'Or go back to your [templates]({{basePath}}/message-templates).',
-      overrides: { a: { props: {} } },
+      overrides: { a: { props: { 'data-testid': 'templates-link' } } },
     },
   ] satisfies ContentBlock[],
 };

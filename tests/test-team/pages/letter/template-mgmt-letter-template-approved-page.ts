@@ -10,8 +10,14 @@ export class TemplateMgmtLetterTemplateApprovedPage extends TemplateMgmtSubmitBa
 
   public readonly templateName: Locator;
 
+  public readonly messagePlansLink: Locator;
+
+  public readonly templatesLink: Locator;
+
   constructor(page: Page) {
     super(page);
     this.templateName = page.getByTestId('template-name');
+    this.messagePlansLink = page.getByTestId('message-plans-link');
+    this.templatesLink = page.getByTestId('templates-link');
   }
 }
