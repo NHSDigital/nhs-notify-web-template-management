@@ -10,8 +10,11 @@ import content from '@content/content';
 import { Metadata } from 'next';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { getBasePath } from '@utils/get-base-path';
 
-const { title, bannerText } = content.pages.letterTemplateApproved;
+const { title, bannerText, nameLabel, doNext } =
+  content.pages.letterTemplateApproved;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -52,6 +55,18 @@ const LetterTemplateApprovedPage = async (props: TemplatePageProps) => {
             </div>
           </div>
         </div>
+        <dl>
+          <dt className='nhsuk-heading-xs nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-1'>
+            {nameLabel}
+          </dt>
+          <dd className='nhsuk-body-s nhsuk-u-margin-left-0'>
+            {validatedTemplate.name}
+          </dd>
+        </dl>
+        <ContentRenderer
+          content={doNext}
+          variables={{ basePath: getBasePath() }}
+        />
       </NHSNotifyMain>
     </NHSNotifyContainer>
   );

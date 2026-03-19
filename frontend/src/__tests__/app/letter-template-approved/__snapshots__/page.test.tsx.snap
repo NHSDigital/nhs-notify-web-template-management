@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LetterTemplateApprovedPage should render page and match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-two-thirds"
+        >
+          <div
+            class="notify-confirmation-panel"
+          >
+            <h1
+              class="nhsuk-heading-l nhsuk-u-margin-bottom-0"
+              id="template-submitted"
+            >
+              Letter template approved
+            </h1>
+          </div>
+        </div>
+      </div>
+      <dl>
+        <dt
+          class="nhsuk-heading-xs nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-1"
+        >
+          Template name
+        </dt>
+        <dd
+          class="nhsuk-body-s nhsuk-u-margin-left-0"
+        >
+          authoring letter template name
+        </dd>
+      </dl>
+      <p>
+        You can now use this letter in your 
+        <a
+          href="/templates/message-plans"
+        >
+          message plans
+        </a>
+        .
+      </p>
+      <p>
+        Or go back to your 
+        <a
+          href="/templates/message-templates"
+        >
+          templates
+        </a>
+        .
+      </p>
+    </main>
+  </div>
+</DocumentFragment>
+`;
