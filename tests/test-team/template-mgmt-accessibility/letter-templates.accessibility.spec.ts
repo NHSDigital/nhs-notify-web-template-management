@@ -9,6 +9,7 @@ import {
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
+  TemplateMgmtReviewAndApproveLetterTemplatePage,
   TemplateMgmtSubmitLetterPage,
   TemplateMgmtTemplateSubmittedLetterPage,
   TemplateMgmtUploadBSLLetterTemplatePage,
@@ -27,6 +28,7 @@ const templateIds = {
   AUTHORING: randomUUID(),
   AUTHORING_INITIAL_SPINNER: randomUUID(),
   AUTHORING_MISSING_ADDRESS: randomUUID(),
+  AUTHORING_WITH_RENDERS: randomUUID(),
   LETTER: randomUUID(),
   LETTER_ERROR: randomUUID(),
   LETTER_SUBMITTED: randomUUID(),
@@ -48,10 +50,25 @@ test.beforeAll(async () => {
     testUsers.UserWithMultipleCampaigns.userId
   );
 
+  const [globalLetterVariant] =
+    await context.letterVariants.getGlobalLetterVariants();
+
   const authoring = TemplateFactory.createAuthoringLetterTemplate(
     templateIds.AUTHORING,
     authoringEnabledWithMultipleCampaignsUser,
     `Authoring letter template - ${templateIds.AUTHORING}`
+  );
+
+  const authoringWithRenders = TemplateFactory.createAuthoringLetterTemplate(
+    templateIds.AUTHORING_WITH_RENDERS,
+    authoringEnabledWithMultipleCampaignsUser,
+    `Authoring letter template - ${templateIds.AUTHORING}`,
+    'NOT_YET_SUBMITTED',
+    {
+      longFormRender: { status: 'RENDERED' },
+      shortFormRender: { status: 'RENDERED' },
+      letterVariantId: globalLetterVariant.id,
+    }
   );
 
   const authoringMissingAddress = TemplateFactory.createAuthoringLetterTemplate(
@@ -100,6 +117,7 @@ test.beforeAll(async () => {
   await templateStorageHelper.seedTemplateData([
     authoring,
     authoringMissingAddress,
+    authoringWithRenders,
     letter,
     letterWithError,
     letterSubmitted,
@@ -344,6 +362,13 @@ test.describe('Letter templates', () => {
             await p.errorSummary.isVisible();
           },
         }
+      ));
+
+    test('Review and approve letter template page', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING_WITH_RENDERS)
+          .setSearchParam('lockNumber', '0')
       ));
   });
 });

@@ -203,6 +203,36 @@ export const templateApiClient = {
     };
   },
 
+  async approveTemplate(
+    templateId: string,
+    owner: string,
+    lockNumber: number
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      httpClient.patch<TemplateSuccess>(
+        `/v1/template/${templateId}/approve`,
+        undefined,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
   async submitTemplate(
     templateId: string,
     owner: string,

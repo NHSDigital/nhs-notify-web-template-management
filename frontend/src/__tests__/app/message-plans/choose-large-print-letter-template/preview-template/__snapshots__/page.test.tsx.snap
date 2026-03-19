@@ -32,7 +32,6 @@ exports[`PreviewLargePrintLetterTemplateFromMessagePlan page renders large print
               Template
             </span>
             <h1
-              class="preview__heading"
               data-testid="preview-message__heading"
             >
               large print letter template name

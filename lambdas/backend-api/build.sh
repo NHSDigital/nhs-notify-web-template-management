@@ -14,6 +14,7 @@ npx esbuild \
     --entry-names=[name]/[name] \
     --outdir=dist \
     --external:pdfjs-dist \
+    src/approve-template.ts \
     src/copy-scanned-object-to-internal.ts \
     src/count-routing-configs.ts \
     src/create-routing-config.ts \
