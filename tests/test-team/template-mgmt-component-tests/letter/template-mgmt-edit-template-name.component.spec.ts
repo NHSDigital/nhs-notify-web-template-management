@@ -243,7 +243,7 @@ test.describe('Edit Template Name page', () => {
       await editPage.loadPage();
 
       await expect(page).toHaveURL(
-        `/templates/preview-submitted-letter-template/${template.id}`
+        `/templates/preview-approved-letter-template/${template.id}`
       );
     });
   });

@@ -11,6 +11,7 @@ import {
   previewTemplatePages,
   templateTypeDisplayMappings,
   previewSubmittedTemplatePages,
+  previewApprovedTemplatePages,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
   statusToDisplayMapping,
@@ -23,6 +24,14 @@ import { useFeatureFlags } from '@providers/client-config-provider';
 const messageTemplatesContent = content.pages.messageTemplates;
 
 const generateViewTemplateLink = (template: TemplateDto): string => {
+  if (
+    template.templateStatus === 'PROOF_APPROVED' &&
+    template.templateType === 'LETTER' &&
+    template.letterVersion === 'AUTHORING'
+  ) {
+    return `/${previewApprovedTemplatePages(template.templateType)}/${template.id}`;
+  }
+
   if (template.templateStatus === 'SUBMITTED') {
     return `/${previewSubmittedTemplatePages(template.templateType)}/${template.id}`;
   }

@@ -10,6 +10,7 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtSubmitLetterPage,
@@ -33,6 +34,7 @@ const templateIds = {
   LETTER_ERROR: randomUUID(),
   LETTER_SUBMITTED: randomUUID(),
   LETTER_PROOF: randomUUID(),
+  LETTER_PROOF_APPROVED: randomUUID(),
   LETTER_PROOF_DISABLED: randomUUID(),
 };
 let defaultUser: TestUser;
@@ -79,6 +81,13 @@ test.beforeAll(async () => {
     'VALIDATION_FAILED'
   );
 
+  const letterProofApproved = TemplateFactory.createAuthoringLetterTemplate(
+    templateIds.LETTER_PROOF_APPROVED,
+    defaultUser,
+    `Proof approved letter template - ${templateIds.LETTER_PROOF_APPROVED}`,
+    'PROOF_APPROVED'
+  );
+
   const letterSubmitted = TemplateFactory.uploadLetterTemplate(
     templateIds.LETTER_SUBMITTED,
     defaultUser,
@@ -107,6 +116,7 @@ test.beforeAll(async () => {
     letterSubmitted,
     letterProof,
     letterProofDisabled,
+    letterProofApproved,
   ]);
 });
 
@@ -152,6 +162,14 @@ test.describe('Letter templates', () => {
       new TemplateMgmtTemplateSubmittedLetterPage(page).setPathParam(
         'templateId',
         templateIds.LETTER_SUBMITTED
+      )
+    ));
+
+  test('Preview approved letter template', async ({ page, analyze }) =>
+    analyze(
+      new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
+        'templateId',
+        templateIds.LETTER_PROOF_APPROVED
       )
     ));
 

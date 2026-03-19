@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
+import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import content from '@content/content';
 import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
@@ -94,7 +94,7 @@ export function PreviewPdfLetterTemplate({
                 }}
               />
             )}
-            <PreviewTemplateDetailsLetter template={template} />
+            <PreviewTemplateDetailsPdfLetter template={template} />
 
             {template.templateStatus === 'PROOF_AVAILABLE' ? (
               <section className='nhsuk-u-reading-width'>

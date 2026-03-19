@@ -167,7 +167,8 @@ export const statusToDisplayMapping = (
     VIRUS_SCAN_FAILED: 'Checks failed',
     WAITING_FOR_PROOF: 'Waiting for proof',
     PROOF_AVAILABLE: 'Proof available',
-    PROOF_APPROVED: 'Proof approved',
+    PROOF_APPROVED:
+      template.letterVersion === 'AUTHORING' ? 'Approved' : 'Proof approved',
   };
 
   return statusToDisplayMappings[template.templateStatus];
@@ -279,6 +280,8 @@ export const previewTemplatePages = (type: TemplateType) =>
   `preview-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
+export const previewApprovedTemplatePages = (type: TemplateType) =>
+  `preview-approved-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 
 export const messagePlanChooseTemplateUrl = (
   type: TemplateType,

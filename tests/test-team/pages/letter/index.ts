@@ -1,5 +1,6 @@
 export * from './template-mgmt-edit-template-campaign-page';
 export * from './template-mgmt-edit-template-name-page';
+export * from './template-mgmt-preview-approved-letter-page';
 export * from './template-mgmt-preview-letter-page';
 export * from './template-mgmt-preview-submitted-letter-page';
 export * from './template-mgmt-submit-letter-page';

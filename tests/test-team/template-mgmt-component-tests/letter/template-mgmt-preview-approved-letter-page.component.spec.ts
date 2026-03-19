@@ -1,14 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtPreviewSubmittedLetterPage } from '../../pages/letter/template-mgmt-preview-submitted-letter-page';
+import { TemplateMgmtPreviewApprovedLetterPage } from '../../pages/letter/template-mgmt-preview-approved-letter-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertBackLinkBottom,
   assertAndClickBackLinkTop,
 } from '../../helpers/template-mgmt-common.steps';
 import {
@@ -18,37 +16,19 @@ import {
 } from '../../helpers/auth/cognito-auth-helper';
 
 function createTemplates(user: TestUser) {
-  const validBase = TemplateFactory.uploadLetterTemplate(
-    '0b5f3591-8a36-4b33-9873-3c4842db4351',
-    user,
-    'valid-letter-template-preview-submitted',
-    'SUBMITTED'
-  );
-
-  const valid: Template = {
-    ...validBase,
-    files: {
-      ...validBase.files,
-      proofs: {
-        'first.pdf': {
-          virusScanStatus: 'PASSED',
-          supplier: 'WTMMOCK',
-          fileName: 'first.pdf',
-        },
-      },
-    },
-  };
-
   return {
-    valid,
-    invalid: {
-      ...TemplateFactory.uploadLetterTemplate(
-        '621456cf-ace3-49c3-941e-4df5eba11373',
-        user,
-        'invalid-letter-template-preview-submitted',
-        'NOT_A_STATUS'
-      ),
-    },
+    valid: TemplateFactory.createAuthoringLetterTemplate(
+      'e8b5f3a1-2c4d-4e6f-8a9b-1c2d3e4f5a6b',
+      user,
+      'authoring-letter-template-preview-approved-valid',
+      'SUBMITTED'
+    ),
+    invalid: TemplateFactory.createAuthoringLetterTemplate(
+      'e2a5b238-ecbf-42c8-90f1-0cf544a9c0ae',
+      user,
+      'authoring-letter-template-preview-approved-invalid',
+      'NOT_A_STATUS'
+    ),
   };
 }
 
@@ -66,12 +46,12 @@ test.describe('Preview submitted Letter message template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('when user visits page, then page is loaded', async ({
+  test('when user visits page, then page is loaded with template details', async ({
     page,
     baseURL,
   }) => {
     const previewSubmittedLetterTemplatePage =
-      new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+      new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
         'templateId',
         templates.valid.id
       );
@@ -79,7 +59,7 @@ test.describe('Preview submitted Letter message template Page', () => {
     await previewSubmittedLetterTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
+      `${baseURL}/templates/preview-approved-letter-template/${templates.valid.id}`
     );
 
     await expect(previewSubmittedLetterTemplatePage.pageHeading).toContainText(
@@ -93,7 +73,7 @@ test.describe('Preview submitted Letter message template Page', () => {
     );
 
     await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
-      'Submitted'
+      'Locked'
     );
 
     await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
@@ -102,7 +82,7 @@ test.describe('Preview submitted Letter message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+        page: new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
           'templateId',
           templates.valid.id
         ),
@@ -113,10 +93,6 @@ test.describe('Preview submitted Letter message template Page', () => {
       await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
-      await assertBackLinkBottom({
-        ...props,
-        expectedUrl: `templates/message-templates`,
-      });
       await assertAndClickBackLinkTop({
         ...props,
         expectedUrl: `templates/message-templates`,
@@ -130,7 +106,7 @@ test.describe('Preview submitted Letter message template Page', () => {
       page,
     }) => {
       const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+        new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
           'templateId',
           templates.invalid.id
         );
@@ -145,7 +121,7 @@ test.describe('Preview submitted Letter message template Page', () => {
       page,
     }) => {
       const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+        new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
           'templateId',
           'fake-template-id'
         );

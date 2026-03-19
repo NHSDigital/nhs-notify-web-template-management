@@ -42,6 +42,7 @@ import {
   isLanguage,
   getMessageOrderOptions,
   MESSAGE_ORDER_OPTIONS_LIST,
+  previewApprovedTemplatePages,
 } from '../enum';
 
 describe('templateTypeDisplayMappings', () => {
@@ -363,6 +364,14 @@ describe('previewSubmittedTemplatePages', () => {
   test('EMAIL', () => {
     expect(previewSubmittedTemplatePages('EMAIL')).toEqual(
       'preview-submitted-email-template'
+    );
+  });
+});
+
+describe('previewApprovedTemplatePages', () => {
+  test('EMAIL', () => {
+    expect(previewApprovedTemplatePages('LETTER')).toEqual(
+      'preview-approved-letter-template'
     );
   });
 });
