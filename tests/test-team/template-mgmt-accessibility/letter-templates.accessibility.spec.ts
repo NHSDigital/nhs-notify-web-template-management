@@ -105,7 +105,12 @@ test.beforeAll(async () => {
     templateIds.LETTER_APPROVED,
     authoringEnabledWithMultipleCampaignsUser,
     `Approved letter template - ${templateIds.LETTER_APPROVED}`,
-    'PROOF_APPROVED'
+    'PROOF_APPROVED',
+    {
+      letterVariantId: 'variant',
+      longFormRender: { status: 'RENDERED' },
+      shortFormRender: { status: 'RENDERED' },
+    }
   );
 
   await templateStorageHelper.seedTemplateData([
