@@ -8,8 +8,10 @@ import Link from 'next/link';
 
 export function LetterRender({
   template,
+  hideEditActions,
 }: {
   template: AuthoringLetterTemplate;
+  hideEditActions?: boolean;
 }) {
   const { letterRender: copy } = content.components;
 
@@ -28,10 +30,18 @@ export function LetterRender({
           <Tabs.ListItem id='tab-long'>{copy.tabs.long}</Tabs.ListItem>
         </Tabs.List>
         <Tabs.Contents id='tab-short'>
-          <LetterRenderTab template={template} tab='shortFormRender' />
+          <LetterRenderTab
+            template={template}
+            tab='shortFormRender'
+            hideEditActions={hideEditActions}
+          />
         </Tabs.Contents>
         <Tabs.Contents id='tab-long'>
-          <LetterRenderTab template={template} tab='longFormRender' />
+          <LetterRenderTab
+            template={template}
+            tab='longFormRender'
+            hideEditActions={hideEditActions}
+          />
         </Tabs.Contents>
       </Tabs>
     </section>

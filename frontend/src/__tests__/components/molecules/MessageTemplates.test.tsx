@@ -139,6 +139,31 @@ describe('MessageTemplates component', () => {
                 },
               },
             },
+            {
+              id: '2',
+              templateType: 'LETTER',
+              templateStatus: 'PROOF_APPROVED',
+              name: 'Template 2',
+              createdAt: '2021-02-01T00:00:00.000Z',
+              letterType: 'x0',
+              letterVersion: 'AUTHORING',
+              language: 'en',
+              updatedAt: '2021-02-01T00:00:00.000Z',
+              lockNumber: 1,
+              files: {
+                docxTemplate: {
+                  currentVersion: 'version-id',
+                  fileName: 'template.docx',
+                  virusScanStatus: 'PASSED',
+                },
+                initialRender: {
+                  fileName: 'render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+              },
+            },
           ],
         }}
       />

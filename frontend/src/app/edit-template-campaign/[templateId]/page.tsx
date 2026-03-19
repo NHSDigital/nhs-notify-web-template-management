@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import { HintText, Label } from '@atoms/nhsuk-components';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
@@ -18,6 +19,26 @@ const content = copy.pages.editTemplateCampaignPage;
 
 export const metadata: Metadata = {
   title: content.pageTitle,
+};
+
+const getPreviewURL = (template: TemplateDto) => {
+  if (
+    template.templateType === 'LETTER' &&
+    template.letterVersion === 'AUTHORING' &&
+    ['PROOF_APPROVED', 'SUBMITTED'].includes(template.templateStatus)
+  ) {
+    return `/preview-approved-letter-template/${template.id}`;
+  }
+
+  if (
+    template.templateType === 'LETTER' &&
+    template.letterVersion === 'PDF' &&
+    template.templateStatus === 'SUBMITTED'
+  ) {
+    return `/preview-submitted-letter-template/${template.id}`;
+  }
+
+  return `/preview-letter-template/${template.id}`;
 };
 
 export default async function EditTemplateCampaignPage({
@@ -39,17 +60,12 @@ export default async function EditTemplateCampaignPage({
     return redirect('/message-templates', RedirectType.replace);
   }
 
-  const previewUrl =
-    template.templateStatus === 'SUBMITTED'
-      ? `/preview-submitted-letter-template/${templateId}`
-      : `/preview-letter-template/${templateId}`;
-
   if (
     template.templateStatus === 'SUBMITTED' ||
     template.letterVersion !== 'AUTHORING' ||
     campaignIds.length < 2
   ) {
-    return redirect(previewUrl, RedirectType.replace);
+    return redirect(getPreviewURL(template), RedirectType.replace);
   }
 
   if (!client?.features.letterAuthoring) {
