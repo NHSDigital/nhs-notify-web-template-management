@@ -308,7 +308,9 @@ describe('valid authoring letter template', () => {
       })
     );
 
-    const form = screen.getByTestId('review-and-approve-letter-cta');
+    const form = screen.getByRole('button', {
+      name: 'Approve letter template',
+    });
     expect(form).toBeInTheDocument();
   });
 
@@ -322,7 +324,9 @@ describe('valid authoring letter template', () => {
       })
     );
 
-    await user.click(screen.getByTestId('review-and-approve-letter-cta'));
+    await user.click(
+      screen.getByRole('button', { name: 'Approve letter template' })
+    );
 
     expect(reviewAndApproveLetterTemplateAction).toHaveBeenCalledTimes(1);
 

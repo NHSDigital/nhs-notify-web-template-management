@@ -14,9 +14,7 @@ export class TemplateMgmtReviewAndApproveLetterTemplatePage extends TemplateMgmt
   constructor(page: Page) {
     super(page);
 
-    this.approveButton = page
-      .locator('[id="review-and-approve-letter-cta"]')
-      .and(page.getByRole('button'));
+    this.approveButton = page.getByRole('button', { name: 'Approve' });
   }
 
   async clickApproveButton() {

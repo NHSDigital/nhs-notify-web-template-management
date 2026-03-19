@@ -215,8 +215,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
           <button
             aria-disabled="false"
             class="nhsuk-button"
-            data-testid="review-and-approve-letter-cta"
-            id="review-and-approve-letter-cta"
             type="submit"
           >
             Approve letter template

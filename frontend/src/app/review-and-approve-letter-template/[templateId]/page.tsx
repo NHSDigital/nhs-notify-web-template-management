@@ -131,13 +131,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               value={validatedTemplate.lockNumber}
             />
             <div className='nhsuk-form-group'>
-              <NHSNotifyButton
-                type='submit'
-                data-testid='review-and-approve-letter-cta'
-                id='review-and-approve-letter-cta'
-              >
-                {submitText}
-              </NHSNotifyButton>
+              <NHSNotifyButton type='submit'>{submitText}</NHSNotifyButton>
 
               <NHSNotifyButton
                 secondary
