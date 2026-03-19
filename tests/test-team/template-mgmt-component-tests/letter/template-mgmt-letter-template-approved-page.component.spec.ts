@@ -37,7 +37,12 @@ async function createTemplates() {
       templateIds.VALID,
       user,
       'approved-letter-template',
-      'PROOF_APPROVED'
+      'PROOF_APPROVED',
+      {
+        letterVariantId: 'variant',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
     ),
 
     WRONG_STATUS: TemplateFactory.createAuthoringLetterTemplate(
