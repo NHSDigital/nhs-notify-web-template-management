@@ -432,7 +432,7 @@ test.describe('Routing', () => {
         {
           template: templates.LARGE_PRINT_LETTER,
           // this was removed before going to production
-          expectedStatus: 'Proof approved',
+          expectedStatus: 'Approved',
         },
       ]);
     });

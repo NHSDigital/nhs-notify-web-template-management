@@ -7,7 +7,6 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertBackLinkBottom,
   assertAndClickBackLinkTop,
 } from '../../helpers/template-mgmt-common.steps';
 import {
@@ -94,10 +93,6 @@ test.describe('Preview submitted Letter message template Page', () => {
       await assertHeaderLogoLink(props);
       await assertSignOutLink(props);
       await assertFooterLinks(props);
-      await assertBackLinkBottom({
-        ...props,
-        expectedUrl: `templates/message-templates`,
-      });
       await assertAndClickBackLinkTop({
         ...props,
         expectedUrl: `templates/message-templates`,

@@ -165,7 +165,7 @@ test.describe('Letter templates', () => {
       )
     ));
 
-  test('Preview submitted letter template', async ({ page, analyze }) =>
+  test('Preview approved letter template', async ({ page, analyze }) =>
     analyze(
       new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
         'templateId',
