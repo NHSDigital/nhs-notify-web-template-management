@@ -180,12 +180,12 @@ test.describe('Routing', () => {
         { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
         { template: templates.EMAIL, expectedStatus: 'Draft' },
         { template: templates.SMS, expectedStatus: 'Draft' },
-        { template: templates.LETTER, expectedStatus: 'Proof approved' },
+        { template: templates.LETTER, expectedStatus: 'Approved' },
         {
           template: templates.LARGE_PRINT_LETTER,
-          expectedStatus: 'Proof approved',
+          expectedStatus: 'Approved',
         },
-        { template: templates.ARABIC_LETTER, expectedStatus: 'Proof approved' },
+        { template: templates.ARABIC_LETTER, expectedStatus: 'Approved' },
       ]);
     });
 

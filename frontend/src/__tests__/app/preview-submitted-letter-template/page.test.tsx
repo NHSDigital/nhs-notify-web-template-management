@@ -9,14 +9,13 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
-  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
   PDF_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -72,31 +71,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       <NHSNotifyContainer>
         <PreviewSubmittedTemplate
           initialState={submittedLetterTemplate}
-          previewComponent={PreviewTemplateDetailsLetter}
-        />
-      </NHSNotifyContainer>
-    );
-  });
-
-  it('should load page with authoring letter template', async () => {
-    const templateDTO = {
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-    } satisfies TemplateDto;
-
-    getTemplateMock.mockResolvedValueOnce(templateDTO);
-
-    const page = await PreviewSubmittedLetterTemplatePage({
-      params: Promise.resolve({
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
-      }),
-    });
-
-    expect(page).toEqual(
-      <NHSNotifyContainer>
-        <PreviewSubmittedTemplate
-          initialState={templateDTO}
-          previewComponent={PreviewTemplateDetailsLetter}
+          previewComponent={PreviewTemplateDetailsPdfLetter}
         />
       </NHSNotifyContainer>
     );
@@ -132,10 +107,6 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     },
     {
       ...PDF_LETTER_TEMPLATE,
-      templateStatus: 'NOT_YET_SUBMITTED' as const,
-    },
-    {
-      ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'NOT_YET_SUBMITTED' as const,
     },
   ])(

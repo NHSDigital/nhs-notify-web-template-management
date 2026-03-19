@@ -1,7 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
-import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import type {
+  AuthoringLetterTemplate,
+  PdfLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { fetchClient } from '@utils/server-features';
 import { getTemplate } from '@utils/form-actions';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
@@ -40,6 +43,27 @@ const mockTemplate: AuthoringLetterTemplate = {
     },
   },
   systemPersonalisation: [],
+};
+
+const mockPdfTemplate: PdfLetterTemplate = {
+  id: 'template-123',
+  name: 'PDF Letter Template',
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  lockNumber: 5,
+  language: 'en',
+  letterType: 'x0',
+  letterVersion: 'PDF',
+  files: {
+    pdfTemplate: {
+      fileName: 'test.pdf',
+      currentVersion: 'v1',
+      virusScanStatus: 'PASSED',
+    },
+  },
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '2026-01-01T00:00:00.000Z',
+  clientId: 'client-123',
 };
 
 beforeEach(() => {
@@ -104,26 +128,7 @@ describe('template is not a letter', () => {
 
 describe('letter version is not AUTHORING', () => {
   beforeEach(() => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      id: 'template-123',
-      name: 'PDF Letter Template',
-      templateType: 'LETTER',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      lockNumber: 5,
-      language: 'en',
-      letterType: 'x0',
-      letterVersion: 'PDF',
-      files: {
-        pdfTemplate: {
-          fileName: 'test.pdf',
-          currentVersion: 'v1',
-          virusScanStatus: 'PASSED',
-        },
-      },
-      createdAt: '2026-01-01T00:00:00.000Z',
-      updatedAt: '2026-01-01T00:00:00.000Z',
-      clientId: 'client-123',
-    });
+    jest.mocked(getTemplate).mockResolvedValue(mockPdfTemplate);
   });
 
   it('redirects to preview letter template page', async () => {
@@ -156,7 +161,25 @@ describe('client has letter authoring feature flag disabled', () => {
   });
 });
 
-describe('template has been submitted', () => {
+describe('template has been submitted - PDF', () => {
+  beforeEach(() => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...mockPdfTemplate,
+      templateStatus: 'SUBMITTED',
+    });
+  });
+
+  it('redirects to preview submitted letter template page', async () => {
+    await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
+
+    expect(redirect).toHaveBeenCalledWith(
+      '/preview-submitted-letter-template/template-123',
+      RedirectType.replace
+    );
+  });
+});
+
+describe('template has been submitted - authoring', () => {
   beforeEach(() => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...mockTemplate,
@@ -168,7 +191,7 @@ describe('template has been submitted', () => {
     await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
 
     expect(redirect).toHaveBeenCalledWith(
-      '/preview-submitted-letter-template/template-123',
+      '/preview-approved-letter-template/template-123',
       RedirectType.replace
     );
   });

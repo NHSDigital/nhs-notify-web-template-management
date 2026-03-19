@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LetterRenderDetails snapshots matches snapshot 1`] = `
+<DocumentFragment>
+  <h3
+    class="nhsuk-heading-s"
+  >
+    PDS personalisation fields
+  </h3>
+  <label
+    class="nhsuk-label nhsuk-label--s"
+  >
+    Example recipient
+  </label>
+  <div
+    class="nhsuk-u-margin-bottom-4"
+  >
+    Jo Bloggs
+  </div>
+  <h3
+    class="nhsuk-heading-s nhsuk-u-padding-top-4"
+  >
+    Custom personalisation fields
+  </h3>
+  <div>
+    <label
+      class="nhsuk-label nhsuk-label--s"
+    >
+      appointmentDate
+    </label>
+    <div
+      class="nhsuk-u-margin-bottom-4"
+    >
+      2025-01-15
+    </div>
+  </div>
+</DocumentFragment>
+`;

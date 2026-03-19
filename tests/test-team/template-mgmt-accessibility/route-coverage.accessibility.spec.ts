@@ -47,6 +47,7 @@ import {
 import {
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtSubmitLetterPage,
@@ -137,6 +138,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtUploadLetterMissingCampaignClientIdPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtEditTemplateCampaignPage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtSubmitLetterPage,

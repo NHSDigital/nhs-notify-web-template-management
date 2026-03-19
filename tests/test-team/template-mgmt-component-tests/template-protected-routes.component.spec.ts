@@ -61,6 +61,7 @@ import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-pla
 import { RoutingReviewAndMoveToProductionPage } from 'pages/routing';
 import { getAppRoutes } from 'helpers/get-app-routes';
 import { TemplateMgmtLetterTemplateApprovedPage } from 'pages/letter/template-mgmt-letter-template-approved-page';
+import { TemplateMgmtPreviewApprovedLetterPage } from 'pages/letter/template-mgmt-preview-approved-letter-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -102,6 +103,7 @@ const protectedPages = [
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtInvalidTemplatePage,
   TemplateMgmtMessageTemplatesPage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewEmailPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewNhsAppPage,
