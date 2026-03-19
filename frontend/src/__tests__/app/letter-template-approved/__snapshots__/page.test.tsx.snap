@@ -36,6 +36,7 @@ exports[`LetterTemplateApprovedPage should render page and match snapshot 1`] = 
         </dt>
         <dd
           class="nhsuk-body-s nhsuk-u-margin-left-0"
+          data-testid="template-name"
         >
           authoring letter template name
         </dd>
