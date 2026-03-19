@@ -3,7 +3,7 @@ import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
 } from '@aws-sdk/lib-dynamodb';
-import type { ProofRequest } from '../types';
+import type { DigitalProofRequest } from '../types';
 
 type ProofRequestKey = { id: string; owner: string };
 
@@ -12,14 +12,14 @@ export class ProofRequestsStorageHelper {
     new DynamoDBClient({ region: 'eu-west-2' })
   );
 
-  private seedData: ProofRequest[] = [];
+  private seedData: DigitalProofRequest[] = [];
 
   private adHocKeys: ProofRequestKey[] = [];
 
   /**
    * Seed a load of proof requests into the database
    */
-  async seed(data: ProofRequest[]) {
+  async seed(data: DigitalProofRequest[]) {
     this.seedData.push(...data);
 
     const chunks = ProofRequestsStorageHelper.chunk(data);

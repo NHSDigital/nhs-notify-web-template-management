@@ -137,7 +137,7 @@ export type FactoryRoutingConfigWithModifiers = FactoryRoutingConfig & {
 
 type DigitalTemplateType = Extract<TemplateType, 'EMAIL' | 'SMS' | 'NHS_APP'>;
 
-export type ProofRequest = {
+export type DigitalProofRequest = {
   id: string;
   owner: string;
   createdAt: string;
