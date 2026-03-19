@@ -44,6 +44,7 @@ exports[`LetterTemplateApprovedPage should render page and match snapshot 1`] = 
       <p>
         You can now use this letter in your 
         <a
+          data-testid="message-plans-link"
           href="/templates/message-plans"
         >
           message plans
@@ -53,6 +54,7 @@ exports[`LetterTemplateApprovedPage should render page and match snapshot 1`] = 
       <p>
         Or go back to your 
         <a
+          data-testid="templates-link"
           href="/templates/message-templates"
         >
           templates
