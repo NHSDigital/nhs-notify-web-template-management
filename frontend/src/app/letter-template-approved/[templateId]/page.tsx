@@ -59,7 +59,10 @@ const LetterTemplateApprovedPage = async (props: TemplatePageProps) => {
           <dt className='nhsuk-heading-xs nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-1'>
             {nameLabel}
           </dt>
-          <dd className='nhsuk-body-s nhsuk-u-margin-left-0'>
+          <dd
+            data-testid='template-name'
+            className='nhsuk-body-s nhsuk-u-margin-left-0'
+          >
             {validatedTemplate.name}
           </dd>
         </dl>

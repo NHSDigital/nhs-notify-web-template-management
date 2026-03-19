@@ -101,9 +101,7 @@ test.describe('Letter Template Approved Page', () => {
       'Letter template approved'
     );
 
-    await expect(
-      page.locator('dd', { hasText: templates.VALID.name })
-    ).toBeVisible();
+    await expect(approvedPage.templateName).toHaveText(templates.VALID.name);
   });
 
   test('when user visits page, then page contains expected links', async ({
