@@ -21,6 +21,7 @@ export type BackendConfig = {
   testEmailBucketPrefix: string;
   userPoolId: string;
   userPoolClientId: string;
+  proofRequestsTableName: string;
 };
 
 export const BackendConfigHelper = {
@@ -31,6 +32,7 @@ export const BackendConfigHelper = {
       clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
       environment: process.env.ENVIRONMENT ?? '',
       eventsSnsTopicArn: process.env.EVENTS_SNS_TOPIC_ARN ?? '',
+      proofRequestsTableName: process.env.PROOF_REQUESTS_TABLE_NAME ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
       routingConfigTableName: process.env.ROUTING_CONFIG_TABLE_NAME ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
@@ -72,6 +74,7 @@ export const BackendConfigHelper = {
     process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
     process.env.TEST_EMAIL_BUCKET_NAME = config.testEmailBucketName;
     process.env.TEST_EMAIL_BUCKET_PREFIX = config.testEmailBucketPrefix;
+    process.env.PROOF_REQUESTS_TABLE_NAME = config.proofRequestsTableName;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
@@ -85,6 +88,8 @@ export const BackendConfigHelper = {
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
       environment: deployment.environment ?? '',
       eventsSnsTopicArn: outputsFileContent.events_sns_topic_arn?.value ?? '',
+      proofRequestsTableName:
+        outputsFileContent.proof_requests_table_name?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
       routingConfigTableName:

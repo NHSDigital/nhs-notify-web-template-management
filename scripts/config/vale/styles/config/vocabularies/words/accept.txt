@@ -27,3 +27,4 @@ Terraform
 toolchain
 Trufflehog
 Zod
+[Vv]alidators

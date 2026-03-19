@@ -68,6 +68,7 @@ No requirements.
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
 | <a name="module_sqs_letter_render"></a> [sqs\_letter\_render](#module\_sqs\_letter\_render) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-sqs.zip | n/a |
+| <a name="module_sqs_proof_requests_table_events_pipe_dlq"></a> [sqs\_proof\_requests\_table\_events\_pipe\_dlq](#module\_sqs\_proof\_requests\_table\_events\_pipe\_dlq) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.6/terraform-sqs.zip | n/a |
 | <a name="module_sqs_routing_config_table_events_pipe_dlq"></a> [sqs\_routing\_config\_table\_events\_pipe\_dlq](#module\_sqs\_routing\_config\_table\_events\_pipe\_dlq) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-sqs.zip | n/a |
 | <a name="module_sqs_sftp_upload"></a> [sqs\_sftp\_upload](#module\_sqs\_sftp\_upload) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-sqs.zip | n/a |
 | <a name="module_sqs_template_mgmt_events"></a> [sqs\_template\_mgmt\_events](#module\_sqs\_template\_mgmt\_events) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.28/terraform-sqs.zip | n/a |
@@ -88,6 +89,7 @@ No requirements.
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
+| <a name="output_proof_requests_table_name"></a> [proof\_requests\_table\_name](#output\_proof\_requests\_table\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
 | <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
 | <a name="output_routing_config_table_name"></a> [routing\_config\_table\_name](#output\_routing\_config\_table\_name) | n/a |
