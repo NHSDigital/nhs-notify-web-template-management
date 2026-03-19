@@ -55,14 +55,16 @@ describe('LetterTemplateApprovedPage', () => {
     );
 
     const messagePlansLink = screen.getByRole('link', {
-      name: /message plans/i,
+      name: 'message plans',
     });
+
     expect(messagePlansLink).toHaveAttribute(
       'href',
       '/templates/message-plans'
     );
 
-    const templatesLink = screen.getByRole('link', { name: /templates/i });
+    const templatesLink = screen.getByRole('link', { name: 'templates' });
+
     expect(templatesLink).toHaveAttribute(
       'href',
       '/templates/message-templates'
