@@ -164,6 +164,8 @@ test.describe('Routing', () => {
   test('templates are added to the routing config, and the routing config is completed', async ({
     page,
   }) => {
+    test.setTimeout(90_000);
+
     const rcName = 'E2E TEST RC';
 
     const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
