@@ -720,6 +720,19 @@ const letterTemplateInvalidConfiguration = {
 const letterTemplateApproved = {
   title: generatePageTitle('Letter template approved'),
   bannerText: 'Letter template approved',
+  nameLabel: 'Template name',
+  doNext: [
+    {
+      type: 'text',
+      text: 'You can now use this letter in your [message plans]({{basePath}}/message-plans).',
+      overrides: { a: { props: {} } },
+    },
+    {
+      type: 'text',
+      text: 'Or go back to your [templates]({{basePath}}/message-templates).',
+      overrides: { a: { props: {} } },
+    },
+  ] satisfies ContentBlock[],
 };
 
 const messagePlanInvalidConfiguration = {
