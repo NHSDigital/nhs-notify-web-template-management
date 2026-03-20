@@ -85,7 +85,6 @@ case "${ACTION}" in
       CONTAINER_IMAGE_SUFFIX="${CONTAINER_IMAGE_SUFFIX}" \
       AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID}" \
       AWS_REGION="${AWS_REGION}" \
-      GITHUB_TOKEN="${GITHUB_TOKEN}" \
       PUBLISH_CONTAINER_IMAGE="${PUBLISH_CONTAINER_IMAGE}" \
       npm run build:container --workspaces --if-present
     run_or_fail lambdas/layers/pdfjs/build.sh
