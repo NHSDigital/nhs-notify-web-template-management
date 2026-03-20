@@ -36,7 +36,7 @@
   "name": "nhs-notify-sftp-letters-lambdas",
   "private": true,
   "scripts": {
-    "lambda-build": "./build.sh",
+    "build:archive": "./build.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",

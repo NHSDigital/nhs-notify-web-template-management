@@ -80,7 +80,7 @@ case "${ACTION}" in
     fi
 
     run_or_fail npm run generate-dependencies --workspaces --if-present
-    run_or_fail npm run lambda-build --workspaces --if-present
+    run_or_fail npm run build:archive --workspaces --if-present
     run_or_fail env \
       CONTAINER_IMAGE_PREFIX="${CONTAINER_IMAGE_PREFIX}" \
       CONTAINER_IMAGE_SUFFIX="${CONTAINER_IMAGE_SUFFIX}" \
