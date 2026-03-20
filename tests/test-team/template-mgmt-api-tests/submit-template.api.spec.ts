@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   isoDateRegExp,
@@ -13,9 +9,10 @@ import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-pay
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { Template } from 'helpers/types';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let userRoutingDisabled: TestUser;
@@ -23,12 +20,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   let proofingDisabledRoutingEnabled: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userRoutingDisabled = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
-    proofingDisabledRoutingEnabled = await authHelper.getTestUser(
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
+    userRoutingDisabled = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
+    proofingDisabledRoutingEnabled = await context.auth.getTestUser(
       testUsers.UserRoutingEnabled.userId
     );
+    userSharedClient = await context.auth.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {

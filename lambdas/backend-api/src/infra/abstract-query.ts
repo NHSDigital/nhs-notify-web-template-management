@@ -6,7 +6,7 @@ import {
   type QueryCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success } from '@backend-api/utils/result';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client/types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export type FilterAction = 'INCLUDE' | 'EXCLUDE';

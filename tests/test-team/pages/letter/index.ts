@@ -1,3 +1,4 @@
+export * from './template-mgmt-choose-printing-and-postage-page';
 export * from './template-mgmt-edit-template-campaign-page';
 export * from './template-mgmt-edit-template-name-page';
 export * from './template-mgmt-preview-letter-page';

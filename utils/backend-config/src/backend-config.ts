@@ -8,6 +8,7 @@ export type BackendConfig = {
   clientSsmPathPrefix: string;
   environment: string;
   eventsSnsTopicArn: string;
+  letterVariantsTableName: string;
   requestProofQueueUrl: string;
   routingConfigTableName: string;
   sftpEnvironment: string;
@@ -32,6 +33,7 @@ export const BackendConfigHelper = {
       environment: process.env.ENVIRONMENT ?? '',
       eventsSnsTopicArn: process.env.EVENTS_SNS_TOPIC_ARN ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
+      letterVariantsTableName: process.env.LETTER_VARIANTS_TABLE_NAME ?? '',
       routingConfigTableName: process.env.ROUTING_CONFIG_TABLE_NAME ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
       sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
@@ -58,6 +60,7 @@ export const BackendConfigHelper = {
     process.env.EVENTS_SNS_TOPIC_ARN = config.eventsSnsTopicArn;
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
+    process.env.LETTER_VARIANTS_TABLE_NAME = config.letterVariantsTableName;
     process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
     process.env.REQUEST_PROOF_QUEUE_URL = config.requestProofQueueUrl;
     process.env.ROUTING_CONFIG_TABLE_NAME = config.routingConfigTableName;
@@ -85,6 +88,8 @@ export const BackendConfigHelper = {
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
       environment: deployment.environment ?? '',
       eventsSnsTopicArn: outputsFileContent.events_sns_topic_arn?.value ?? '',
+      letterVariantsTableName:
+        outputsFileContent.letter_variants_table_name?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
       routingConfigTableName:

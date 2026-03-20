@@ -3,7 +3,7 @@ import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate } from '@utils/form-actions';
 import { format } from 'date-fns/format';
-import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client/schemas';
 import type {
   TemplateDto,
   TemplateType,

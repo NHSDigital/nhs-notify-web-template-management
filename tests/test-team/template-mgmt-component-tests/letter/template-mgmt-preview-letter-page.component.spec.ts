@@ -3,10 +3,10 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
-  createAuthHelper,
   testUsers,
   type TestUser,
 } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../../helpers/context/context';
 import { TemplateMgmtPreviewLetterPage } from '../../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
@@ -287,10 +287,9 @@ test.describe('Preview Letter template Page', () => {
 
   const templateStorageHelper = new TemplateStorageHelper();
 
-  const authHelper = createAuthHelper();
-
   test.beforeAll(async () => {
-    const user = await authHelper.getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
     templates = await createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
@@ -588,7 +587,9 @@ test.describe('Preview Letter template Page', () => {
       page,
       baseURL,
     }) => {
-      const user = await authHelper.getTestUser(testUsers.User1.userId);
+      const user = await getTestContext().auth.getTestUser(
+        testUsers.User1.userId
+      );
 
       // seed the template here to reduce the chance that render timeout expires during the test
       const template = TemplateFactory.createAuthoringLetterTemplate(
@@ -860,7 +861,9 @@ test.describe('Preview Letter template Page', () => {
         test('shows spinner in tab when personalised render is PENDING', async ({
           page,
         }) => {
-          const user = await authHelper.getTestUser(testUsers.User1.userId);
+          const user = await getTestContext().auth.getTestUser(
+            testUsers.User1.userId
+          );
 
           // Seed here so requestedAt is within the render timeout window
           const template = TemplateFactory.createAuthoringLetterTemplate(
@@ -903,7 +906,9 @@ test.describe('Preview Letter template Page', () => {
         test('disables submit button while a tab render is polling', async ({
           page,
         }) => {
-          const user = await authHelper.getTestUser(testUsers.User1.userId);
+          const user = await getTestContext().auth.getTestUser(
+            testUsers.User1.userId
+          );
 
           const template = TemplateFactory.createAuthoringLetterTemplate(
             'E1F2A3B4-C5D6-7890-ABCD-222222222222',
@@ -943,7 +948,9 @@ test.describe('Preview Letter template Page', () => {
         test('disables update preview buttons in both tabs while a tab render is polling', async ({
           page,
         }) => {
-          const user = await authHelper.getTestUser(testUsers.User1.userId);
+          const user = await getTestContext().auth.getTestUser(
+            testUsers.User1.userId
+          );
 
           const template = TemplateFactory.createAuthoringLetterTemplate(
             'E1F2A3B4-C5D6-7890-ABCD-333333333333',
@@ -1265,7 +1272,8 @@ test.describe('Preview Letter template Page', () => {
       let multiCampaignTemplate: Template;
 
       test.beforeAll(async () => {
-        userWithMultipleCampaigns = await createAuthHelper().getTestUser(
+        const context = getTestContext();
+        userWithMultipleCampaigns = await context.auth.getTestUser(
           testUsers.UserWithMultipleCampaigns.userId
         );
 

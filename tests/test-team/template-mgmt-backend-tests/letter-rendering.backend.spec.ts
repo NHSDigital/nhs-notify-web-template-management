@@ -1,18 +1,15 @@
 import { test, expect, APIRequestContext } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { PDFParse } from 'pdf-parse';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { docxFixtures } from '../fixtures/letters';
 import type { Template } from '../helpers/types';
+import { getTestContext } from 'helpers/context/context';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 
-const authHelper = createAuthHelper();
+const context = getTestContext();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const customPersonalisation = [
@@ -39,7 +36,7 @@ test.describe('Letter rendering', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await authHelper.getTestUser(
+    user = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
   });

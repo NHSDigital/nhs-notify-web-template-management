@@ -5,7 +5,7 @@ import {
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
   ROUTING_CONFIG_STATUS_LIST,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/schemas';
 import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 

@@ -13,7 +13,7 @@ import {
   $SmsProperties,
   $TemplateDto,
   TEMPLATE_STATUS_LIST,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/schemas';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 export const zodValidate = <T extends z.Schema>(

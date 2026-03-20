@@ -73,3 +73,7 @@ output "routing_config_table_name" {
 output "events_sns_topic_arn" {
   value = module.eventpub.sns_topic.arn
 }
+
+output "letter_variants_table_name" {
+  value = module.backend_api.letter_variants_table_name
+}

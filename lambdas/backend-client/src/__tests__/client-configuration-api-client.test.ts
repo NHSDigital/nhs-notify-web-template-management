@@ -1,7 +1,5 @@
-import {
-  clientConfigurationApiClient as client,
-  httpClient,
-} from '../client-configuration-api-client';
+import { clientConfigurationApiClient as client } from '../client-configuration-api-client';
+import { httpClient } from '../axios-client';
 import MockAdapter from 'axios-mock-adapter';
 
 describe('ClientConfiguration', () => {
