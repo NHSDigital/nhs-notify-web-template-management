@@ -5,6 +5,14 @@
 # and builds all Lambda functions in the workspace before Terraform provisions infrastructure.
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+if [ -f "${REPO_ROOT}/.env" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "${REPO_ROOT}/.env"
+  set +a
+fi
+
 : "${PROJECT:?PROJECT is required}"
 : "${AWS_REGION:?AWS_REGION is required}"
 : "${COMPONENT:?COMPONENT is required}"
