@@ -89,7 +89,7 @@ describe('analyseMarkers', () => {
       const result = analyseMarkers(markers);
 
       expect(result.validationErrors).toEqual([
-        { name: 'INVALID_MARKERS', issues: ['c.compliment'] },
+        { name: 'INVALID_MARKERS', issues: ['{c.compliment}'] },
       ]);
     });
   });
@@ -102,7 +102,7 @@ describe('analyseMarkers', () => {
 
       expect(result.canRender).toBe(true);
       expect(result.validationErrors).toEqual([
-        { name: 'INVALID_MARKERS', issues: ['no.d'] },
+        { name: 'INVALID_MARKERS', issues: ['{no.d}'] },
       ]);
     });
 
@@ -113,7 +113,7 @@ describe('analyseMarkers', () => {
 
       expect(result.canRender).toBe(true);
       expect(result.validationErrors).toEqual([
-        { name: 'INVALID_MARKERS', issues: ['exclaimation!point'] },
+        { name: 'INVALID_MARKERS', issues: ['{d.exclaimation!point}'] },
       ]);
     });
 
@@ -124,9 +124,33 @@ describe('analyseMarkers', () => {
 
       expect(result.passthroughPersonalisation).toEqual(
         expect.objectContaining({
-          no_prefix: '{d.no_prefix}',
+          no_prefix: '{no_prefix}',
         })
       );
+    });
+
+    it('reconstructs all renderable marker types correctly in passthrough personalisation', () => {
+      const markers = new Set([
+        ...ALL_ADDRESS_MARKERS,
+        'd.customField',
+        'd.nested.object.access',
+        'no_prefix',
+      ]);
+
+      const result = analyseMarkers(markers);
+
+      expect(result.passthroughPersonalisation).toEqual({
+        address_line_1: '{d.address_line_1}',
+        address_line_2: '{d.address_line_2}',
+        address_line_3: '{d.address_line_3}',
+        address_line_4: '{d.address_line_4}',
+        address_line_5: '{d.address_line_5}',
+        address_line_6: '{d.address_line_6}',
+        address_line_7: '{d.address_line_7}',
+        customField: '{d.customField}',
+        'nested.object.access': '{d.nested.object.access}',
+        no_prefix: '{no_prefix}',
+      });
     });
   });
 
@@ -145,7 +169,7 @@ describe('analyseMarkers', () => {
         expect.arrayContaining([
           {
             name: 'INVALID_MARKERS',
-            issues: ['c.compliment', 'no_prefix'],
+            issues: ['{c.compliment}', '{no_prefix}'],
           },
         ])
       );
@@ -197,7 +221,7 @@ describe('analyseMarkers', () => {
       const result = analyseMarkers(markers);
 
       expect(result.validationErrors).toEqual([
-        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_8'] },
+        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['{d.address_line_8}'] },
       ]);
     });
 
@@ -213,7 +237,7 @@ describe('analyseMarkers', () => {
       expect(result.validationErrors).toEqual([
         {
           name: 'UNEXPECTED_ADDRESS_LINES',
-          issues: ['address_line_8', 'address_line_9'],
+          issues: ['{d.address_line_8}', '{d.address_line_9}'],
         },
       ]);
     });
@@ -224,7 +248,7 @@ describe('analyseMarkers', () => {
       const result = analyseMarkers(markers);
 
       expect(result.validationErrors).toEqual([
-        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_0'] },
+        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['{d.address_line_0}'] },
       ]);
     });
 
@@ -239,7 +263,7 @@ describe('analyseMarkers', () => {
 
       expect(result.validationErrors).toEqual([
         { name: 'MISSING_ADDRESS_LINES' },
-        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['address_line_8'] },
+        { name: 'UNEXPECTED_ADDRESS_LINES', issues: ['{d.address_line_8}'] },
       ]);
     });
   });

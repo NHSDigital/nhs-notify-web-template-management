@@ -1,10 +1,24 @@
 import { render, screen } from '@testing-library/react';
 import { LetterRenderForm } from '@molecules/LetterRender/LetterRenderForm';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
+import {
+  LetterRenderPollingProvider,
+  useLetterRenderPolling,
+} from '@providers/letter-render-polling-provider';
 import type {
   AuthoringLetterTemplate,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
+
+jest.mock('@providers/letter-render-polling-provider', () => {
+  const actual = jest.requireActual(
+    '@providers/letter-render-polling-provider'
+  );
+  return {
+    ...actual,
+    useLetterRenderPolling: jest.fn(actual.useLetterRenderPolling),
+  };
+});
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -51,12 +65,14 @@ function renderWithProvider(
   initialState: FormState = createInitialFormState()
 ) {
   return render(
-    <NHSNotifyFormProvider
-      initialState={initialState}
-      serverAction={mockServerAction}
-    >
-      {form}
-    </NHSNotifyFormProvider>
+    <LetterRenderPollingProvider>
+      <NHSNotifyFormProvider
+        initialState={initialState}
+        serverAction={mockServerAction}
+      >
+        {form}
+      </NHSNotifyFormProvider>
+    </LetterRenderPollingProvider>
   );
 }
 
@@ -167,7 +183,7 @@ describe('LetterRenderForm', () => {
     it('displays selected PDS recipient from form state', () => {
       const initialState = createInitialFormState({
         fields: {
-          __systemPersonalisationPackId: 'short-1',
+          systemPersonalisationPackId: 'short-1',
         },
       });
 
@@ -191,8 +207,8 @@ describe('LetterRenderForm', () => {
 
       const initialState = createInitialFormState({
         fields: {
-          __systemPersonalisationPackId: '',
-          appointmentDate: '2025-01-15',
+          systemPersonalisationPackId: '',
+          'personalisation|appointmentDate': '2025-01-15',
         },
       });
 
@@ -219,6 +235,30 @@ describe('LetterRenderForm', () => {
         screen.getByRole('button', { name: 'Update preview' })
       ).toBeInTheDocument();
     });
+
+    it('renders the update preview button as enabled when no tab is polling', () => {
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />
+      );
+
+      const button = screen.getByRole('button', { name: 'Update preview' });
+      expect(button).not.toBeDisabled();
+    });
+
+    it('renders the update preview button as disabled when a tab is polling', () => {
+      jest.mocked(useLetterRenderPolling).mockReturnValueOnce({
+        isAnyTabPolling: true,
+        registerPolling: jest.fn(),
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />
+      );
+
+      const button = screen.getByRole('button', { name: 'Update preview' });
+      expect(button).toBeDisabled();
+      expect(button).toHaveAttribute('aria-disabled', 'true');
+    });
   });
 
   describe('error display', () => {
@@ -227,7 +267,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            __systemPersonalisationPackId: ['Select an example recipient'],
+            systemPersonalisationPackId: ['Select an example recipient'],
           },
         },
       });
@@ -295,7 +335,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            __systemPersonalisationPackId: ['Select an example recipient'],
+            systemPersonalisationPackId: ['Select an example recipient'],
           },
         },
       });
