@@ -5,20 +5,13 @@
 # and builds all Lambda functions in the workspace before Terraform provisions infrastructure.
 # pre.sh runs in the same shell as terraform.sh, not in a subshell
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-if [ -f "${REPO_ROOT}/.env" ]; then
-  set -a
-  # shellcheck disable=SC1090
-  . "${REPO_ROOT}/.env"
-  set +a
-fi
-
 : "${PROJECT:?PROJECT is required}"
 : "${AWS_REGION:?AWS_REGION is required}"
 : "${COMPONENT:?COMPONENT is required}"
 : "${ENVIRONMENT:?ENVIRONMENT is required}"
 : "${AWS_ACCOUNT_ID:?AWS_ACCOUNT_ID is required}"
 : "${ACTION:?ACTION is required}"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 echo "Running app pre.sh"
 echo "ENVIRONMENT=$ENVIRONMENT"
@@ -27,6 +20,7 @@ echo "PROJECT=$PROJECT"
 echo "COMPONENT=$COMPONENT"
 echo "AWS_REGION=$REGION"
 echo "AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
+echo "REPO_ROOT=$REPO_ROOT"
 
 # Calculate container image prefix from PROJECT, ENVIRONMENT, COMPONENT
 CONTAINER_IMAGE_PREFIX="${PROJECT}-${ENVIRONMENT}-${COMPONENT}"
@@ -39,6 +33,13 @@ else
   PUBLISH_CONTAINER_IMAGE="true"
 fi
 
+if [ -f "${REPO_ROOT}/.env" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "${REPO_ROOT}/.env"
+  set +a
+fi
+
 # Helper function for error handling
 run_or_fail() {
   "$@"
@@ -49,7 +50,7 @@ run_or_fail() {
 }
 
 # Switch to repo root
-pushd "$(git rev-parse --show-toplevel)" || exit 1
+pushd "${REPO_ROOT}" || exit 1
 
 # Calculate git-based version suffix
 SHORT_SHA="$(git rev-parse --short HEAD)"

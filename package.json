@@ -42,6 +42,7 @@
   },
   "scripts": {
     "build": "npm run create-env-file && npm run build --workspace frontend",
+    "build:container": "npm run build:container --workspaces --if-present",
     "create-amplify-outputs": "tsx ./scripts/create-amplify-outputs.ts",
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
     "create-env-file": "tsx ./scripts/create-env-file.ts",
