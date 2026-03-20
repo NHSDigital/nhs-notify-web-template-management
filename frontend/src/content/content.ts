@@ -1269,7 +1269,7 @@ const howToRequestADigitalProof: {
       text: markdownList('ul', [
         'the template ID or IDs',
         'the email address you want the proofs sent to',
-        'yo,ur service name',
+        'your service name',
         'the campaign name, if you have one',
       ]),
     },

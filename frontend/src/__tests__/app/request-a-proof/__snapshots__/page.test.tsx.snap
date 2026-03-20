@@ -87,7 +87,7 @@ exports[`RequestADigitalProofPage matches snapshot 1`] = `
               the email address you want the proofs sent to
             </li>
             <li>
-              yo,ur service name
+              your service name
             </li>
             <li>
               the campaign name, if you have one
