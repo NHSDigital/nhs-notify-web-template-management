@@ -17,7 +17,7 @@ echo "ENVIRONMENT=$ENVIRONMENT"
 echo "ACTION=$ACTION"
 echo "PROJECT=$PROJECT"
 echo "COMPONENT=$COMPONENT"
-echo "AWS_REGION=$AWS_REGION"
+echo "AWS_REGION=$REGION"
 echo "AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
 
 # Calculate container image prefix from PROJECT, ENVIRONMENT, COMPONENT
@@ -77,6 +77,7 @@ case "${ACTION}" in
       CONTAINER_IMAGE_SUFFIX="${CONTAINER_IMAGE_SUFFIX}" \
       AWS_ACCOUNT_ID="${AWS_ACCOUNT_ID}" \
       AWS_REGION="${AWS_REGION}" \
+      GITHUB_TOKEN="${GITHUB_TOKEN}" \
       PUBLISH_CONTAINER_IMAGE="${PUBLISH_CONTAINER_IMAGE}" \
       npm run build:container --workspaces --if-present
     run_or_fail lambdas/layers/pdfjs/build.sh
