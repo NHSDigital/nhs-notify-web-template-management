@@ -54,7 +54,7 @@ async function createTemplates() {
       templateIds.PDF_LETTER,
       user,
       `pdf-letter-template ${templateIds.PDF_LETTER}`,
-      'NOT_YET_SUBMITTED'
+      'PROOF_APPROVED'
     ),
 
     INVALID: {
