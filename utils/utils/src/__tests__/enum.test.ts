@@ -4,12 +4,13 @@ import {
   LANGUAGE_LIST,
   TEMPLATE_TYPE_LIST,
 } from 'nhs-notify-backend-client';
-import type {
-  Language,
-  LetterType,
-  TemplateStatus,
-  TemplateType,
-  LetterVersion,
+import {
+  type Language,
+  type LetterType,
+  type TemplateStatus,
+  type TemplateType,
+  type LetterVersion,
+  TemplateDto,
 } from 'nhs-notify-web-template-management-types';
 import {
   alphabeticalLanguageList,
@@ -43,7 +44,9 @@ import {
   getMessageOrderOptions,
   MESSAGE_ORDER_OPTIONS_LIST,
   previewApprovedTemplatePages,
+  getPreviewURL,
 } from '../enum';
+import { mockDeep } from 'jest-mock-extended';
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -373,6 +376,33 @@ describe('previewApprovedTemplatePages', () => {
     expect(previewApprovedTemplatePages('LETTER')).toEqual(
       'preview-approved-letter-template'
     );
+  });
+});
+
+describe('getPreviewUrl', () => {
+  test('for a draft template', () => {
+    expect(getPreviewURL(mockDeep<TemplateDto>({
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      id: 'template-id',
+    }))).toEqual('/preview-email-template/template-id');
+  });
+
+  test('for an approved template', () => {
+    expect(getPreviewURL(mockDeep<TemplateDto>({
+      templateType: 'LETTER',
+      letterVersion: 'AUTHORING',
+      templateStatus: 'PROOF_APPROVED',
+      id: 'template-id',
+    }))).toEqual('/preview-approved-letter-template/template-id');
+  });
+
+  test('for a submitted template', () => {
+    expect(getPreviewURL(mockDeep<TemplateDto>({
+      templateType: 'NHS_APP',
+      templateStatus: 'SUBMITTED',
+      id: 'template-id',
+    }))).toEqual('/preview-submitted-nhs-app-template/template-id');
   });
 });
 
