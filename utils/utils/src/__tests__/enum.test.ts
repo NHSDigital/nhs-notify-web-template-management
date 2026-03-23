@@ -381,28 +381,40 @@ describe('previewApprovedTemplatePages', () => {
 
 describe('getPreviewUrl', () => {
   test('for a draft template', () => {
-    expect(getPreviewURL(mockDeep<TemplateDto>({
-      templateType: 'EMAIL',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      id: 'template-id',
-    }))).toEqual('/preview-email-template/template-id');
+    expect(
+      getPreviewURL(
+        mockDeep<TemplateDto>({
+          templateType: 'EMAIL',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          id: 'template-id',
+        })
+      )
+    ).toEqual('/preview-email-template/template-id');
   });
 
   test('for an approved template', () => {
-    expect(getPreviewURL(mockDeep<TemplateDto>({
-      templateType: 'LETTER',
-      letterVersion: 'AUTHORING',
-      templateStatus: 'PROOF_APPROVED',
-      id: 'template-id',
-    }))).toEqual('/preview-approved-letter-template/template-id');
+    expect(
+      getPreviewURL(
+        mockDeep<TemplateDto>({
+          templateType: 'LETTER',
+          letterVersion: 'AUTHORING',
+          templateStatus: 'PROOF_APPROVED',
+          id: 'template-id',
+        })
+      )
+    ).toEqual('/preview-approved-letter-template/template-id');
   });
 
   test('for a submitted template', () => {
-    expect(getPreviewURL(mockDeep<TemplateDto>({
-      templateType: 'NHS_APP',
-      templateStatus: 'SUBMITTED',
-      id: 'template-id',
-    }))).toEqual('/preview-submitted-nhs-app-template/template-id');
+    expect(
+      getPreviewURL(
+        mockDeep<TemplateDto>({
+          templateType: 'NHS_APP',
+          templateStatus: 'SUBMITTED',
+          id: 'template-id',
+        })
+      )
+    ).toEqual('/preview-submitted-nhs-app-template/template-id');
   });
 });
 
