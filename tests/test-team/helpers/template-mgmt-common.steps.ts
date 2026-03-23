@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import type { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
+import { TemplateMgmtPreviewBasePage } from 'pages/template-mgmt-preview-base-page';
 
 type CommonStepsProps = {
   page: TemplateMgmtBasePage;
@@ -308,3 +309,18 @@ export function assertFooterLinks(props: CommonStepsProps) {
     await Promise.all(promises);
   });
 }
+
+export const assertRequestProofBannerVisible = async (
+  previewPage: TemplateMgmtPreviewBasePage,
+  templateId: string
+) =>
+  test.step('request a proof banner is visible and navigates correctly', async () => {
+    await expect(previewPage.requestProofMessageBanner).toBeVisible();
+    await expect(previewPage.requestProofMessageBannerLink).toContainText(
+      'Request a proof'
+    );
+    await expect(previewPage.requestProofMessageBannerLink).toHaveAttribute(
+      'href',
+      `/templates/request-a-proof/${templateId}`
+    );
+  });

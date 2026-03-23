@@ -95,7 +95,7 @@ exports[`RequestADigitalProofPage matches snapshot 1`] = `
           </ul>
           <p>
             <a
-              href="https://nhsdigitallive.service-now.com/csm?id=sc_cat_item&sys_id=ce81c3ae1b1c5190892d4046b04bcb83"
+              href="https://nhsdigitallive.service-now.com/csm"
               rel="noopener noreferrer"
               target="_blank"
             >

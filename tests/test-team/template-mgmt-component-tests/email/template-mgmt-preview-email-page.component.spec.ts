@@ -6,6 +6,7 @@ import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertBackLinkBottom,
   assertAndClickBackLinkTop,
+  assertRequestProofBannerVisible,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertFooterLinks,
@@ -108,10 +109,13 @@ test.describe('Preview Email message template Page', () => {
 
     await expect(previewPage.editButton).toBeVisible();
 
+    await expect(previewPage.testMessageBanner).toBeHidden();
     await expect(previewPage.sendTestMessageButton).toBeHidden();
 
     await expect(previewPage.editRadioOption).toBeHidden();
     await expect(previewPage.submitRadioOption).toBeHidden();
+
+    await assertRequestProofBannerVisible(previewPage, templates.valid.id);
   });
 
   test.describe('Page functionality', () => {
@@ -219,6 +223,12 @@ test.describe('Preview Email message template Page', () => {
       await expect(previewPage.editButton).toBeHidden();
 
       await expect(previewPage.sendTestMessageButton).toBeHidden();
+      await expect(previewPage.testMessageBanner).toBeHidden();
+
+      await assertRequestProofBannerVisible(
+        previewPage,
+        templates.routingDisabled.id
+      );
     });
 
     test.describe('Page functionality', () => {
@@ -318,8 +328,8 @@ test.describe('Preview Email message template Page', () => {
 
       await previewPage.loadPage();
 
-      await expect(previewPage.messageBanner).toBeVisible();
-      await expect(previewPage.messageBannerLink).toContainText(
+      await expect(previewPage.testMessageBanner).toBeVisible();
+      await expect(previewPage.testMessageBannerLink).toContainText(
         'Send a test email'
       );
 
@@ -331,10 +341,11 @@ test.describe('Preview Email message template Page', () => {
       await expect(previewPage.editRadioOption).toBeHidden();
       await expect(previewPage.submitRadioOption).toBeHidden();
       await expect(previewPage.continueButton).toBeHidden();
+      await expect(previewPage.requestProofMessageBanner).toBeHidden();
 
       // Test banner link (opens in new tab)
       const newPagePromise = context.waitForEvent('page');
-      await previewPage.messageBannerLink.click();
+      await previewPage.testMessageBannerLink.click();
       const newPage = await newPagePromise;
       await newPage.waitForLoadState();
 
