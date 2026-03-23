@@ -23,6 +23,7 @@ on:
         description: "Python version, set by the CI/CD pipeline workflow"
         required: true
         type: string
+      # TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
       # skip_trivy_package:
       #   description: "Skip Trivy package scan when true"
       #   type: boolean
@@ -152,6 +153,7 @@ jobs:
         uses: asdf-vm/actions/setup@1902764435ca0dd2f3388eea723a4f92a4eb8302
       - name: "Lint Terraform"
         uses: ./.github/actions/lint-terraform
+  # TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
   # trivy-iac:
   #   name: "Trivy IaC Scan"
   #   permissions:

@@ -117,7 +117,7 @@ terraform-validate-all: # Validate all Terraform components @Quality
 			cd - > /dev/null; \
 		fi; \
 	done
-
+# TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
 # terraform-sec: # Run Trivy IaC security scanning on Terraform code @Quality
 # 	# Example: make terraform-sec
 # 	./scripts/terraform/trivy-scan.sh --mode iac infrastructure/terraform
@@ -168,6 +168,7 @@ ${VERBOSE}.SILENT: \
 	terraform-output \
 	terraform-plan \
 	terraform-plan-destroy \
+	# TODO - Re-visit Trivy usage https://nhsd-jira.digital.nhs.uk/browse/CCM-15549
 	# terraform-sec \
 	terraform-validate \
 	terraform-validate-all \
