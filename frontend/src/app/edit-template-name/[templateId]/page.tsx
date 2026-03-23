@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
-import type { TemplateDto } from 'nhs-notify-web-template-management-types';
-import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  type TemplatePageProps,
+  getPreviewURL,
+} from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { HintText, Label } from '@atoms/nhsuk-components';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
@@ -19,26 +21,6 @@ const content = copy.pages.editTemplateNamePage;
 
 export const metadata: Metadata = {
   title: content.pageTitle,
-};
-
-const getPreviewURL = (template: TemplateDto) => {
-  if (
-    template.templateType === 'LETTER' &&
-    template.letterVersion === 'AUTHORING' &&
-    ['PROOF_APPROVED', 'SUBMITTED'].includes(template.templateStatus)
-  ) {
-    return `/preview-approved-letter-template/${template.id}`;
-  }
-
-  if (
-    template.templateType === 'LETTER' &&
-    template.letterVersion === 'PDF' &&
-    template.templateStatus === 'SUBMITTED'
-  ) {
-    return `/preview-submitted-letter-template/${template.id}`;
-  }
-
-  return `/preview-letter-template/${template.id}`;
 };
 
 export default async function EditTemplateNamePage({

@@ -1,5 +1,3 @@
-'use client';
-
 import { Label } from 'nhsuk-react-components';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';

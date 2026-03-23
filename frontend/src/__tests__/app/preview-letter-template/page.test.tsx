@@ -445,9 +445,10 @@ describe('authoring letter template does not show submit form when already submi
       })
     );
 
-    expect(
-      screen.queryByRole('button', { name: 'Approve template' })
-    ).not.toBeInTheDocument();
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-approved-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      RedirectType.replace
+    );
   });
 });
 

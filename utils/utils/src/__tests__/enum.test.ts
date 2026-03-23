@@ -369,7 +369,7 @@ describe('previewSubmittedTemplatePages', () => {
 });
 
 describe('previewApprovedTemplatePages', () => {
-  test('EMAIL', () => {
+  test('LETTER', () => {
     expect(previewApprovedTemplatePages('LETTER')).toEqual(
       'preview-approved-letter-template'
     );

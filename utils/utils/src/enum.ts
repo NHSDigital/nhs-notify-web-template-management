@@ -283,6 +283,22 @@ export const previewSubmittedTemplatePages = (type: TemplateType) =>
 export const previewApprovedTemplatePages = (type: TemplateType) =>
   `preview-approved-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 
+export const getPreviewURL = (template: TemplateDto) => {
+  if (
+    template.templateType === 'LETTER' &&
+    template.letterVersion === 'AUTHORING' &&
+    ['PROOF_APPROVED', 'SUBMITTED'].includes(template.templateStatus)
+  ) {
+    return `/preview-approved-${legacyTemplateTypeToUrlTextMappings(template.templateType)}-template/${template.id}`;
+  }
+
+  if (template.templateStatus === 'SUBMITTED') {
+    return `/preview-submitted-${legacyTemplateTypeToUrlTextMappings(template.templateType)}-template/${template.id}`;
+  }
+
+  return `/preview-${legacyTemplateTypeToUrlTextMappings(template.templateType)}-template/${template.id}`;
+};
+
 export const messagePlanChooseTemplateUrl = (
   type: TemplateType,
   letterType?: RoutingSupportedLetterType

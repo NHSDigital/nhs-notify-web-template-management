@@ -116,14 +116,14 @@ test.describe('Preview submitted Letter message template Page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
+    test('when user visits page with a nonexistent template ID, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewSubmittedLetterTemplatePage =
         new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
           'templateId',
-          'fake-template-id'
+          'nonexistent-template-id'
         );
 
       await previewSubmittedLetterTemplatePage.loadPage();

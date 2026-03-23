@@ -87,7 +87,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   />
                 </div>
                 <div
-                  class="nhsuk-summary-list__row missing-value"
+                  class="nhsuk-summary-list__row"
                   id="campaign-id"
                 >
                   <dt
@@ -97,7 +97,9 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   </dt>
                   <dd
                     class="nhsuk-summary-list__value"
-                  />
+                  >
+                    campaign-id
+                  </dd>
                   <dd
                     aria-hidden="true"
                     class="nhsuk-summary-list__actions"
@@ -305,7 +307,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with short example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-id/renders/authoring-letter-template-id/short-render.pdf"
                   title="Letter preview - short examples"
                 />
               </div>
@@ -342,7 +344,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with long example personalisation data"
-                  src="/templates/files/undefined/renders/authoring-letter-template-id/render.pdf"
+                  src="/templates/files/client-id/renders/authoring-letter-template-id/long-render.pdf"
                   title="Letter preview - long examples"
                 />
               </div>

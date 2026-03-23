@@ -5,7 +5,10 @@ import type {
   AuthoringLetterTemplate,
   TemplatePageProps,
 } from 'nhs-notify-web-template-management-utils';
-import { validateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  getPreviewURL,
+  validateLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
@@ -68,6 +71,12 @@ export default async function PreviewLetterTemplatePage({
   }
 
   // AUTHORING letter
+  if (
+    ['SUBMITTED', 'PROOF_APPROVED'].includes(validatedTemplate.templateStatus)
+  ) {
+    return redirect(getPreviewURL(validatedTemplate), RedirectType.replace);
+  }
+
   const showRenderer =
     validatedTemplate.files.initialRender.status === 'RENDERED';
 

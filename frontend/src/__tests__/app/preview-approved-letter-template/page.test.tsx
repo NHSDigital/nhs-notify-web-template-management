@@ -17,6 +17,22 @@ import { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-util
 const mockTemplate: AuthoringLetterTemplate = {
   ...AUTHORING_LETTER_TEMPLATE,
   templateStatus: 'PROOF_APPROVED',
+  files: {
+    ...AUTHORING_LETTER_TEMPLATE.files,
+    shortFormRender: {
+      currentVersion: 'version-id',
+      fileName: 'short-render.pdf',
+      status: 'RENDERED',
+      pageCount: 2,
+    },
+    longFormRender: {
+      currentVersion: 'version-id',
+      fileName: 'long-render.pdf',
+      status: 'RENDERED',
+      pageCount: 2,
+    },
+  },
+  campaignId: 'campaign-id',
 };
 
 jest.mock('@utils/form-actions');

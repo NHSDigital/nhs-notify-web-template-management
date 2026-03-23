@@ -251,7 +251,7 @@ test.describe('Edit Template Campaign page', () => {
       );
     });
 
-    test('redirects to preview submitted template page if template is submitted', async ({
+    test('redirects to preview approved template page if template is submitted', async ({
       page,
     }) => {
       const template = TemplateFactory.createAuthoringLetterTemplate(

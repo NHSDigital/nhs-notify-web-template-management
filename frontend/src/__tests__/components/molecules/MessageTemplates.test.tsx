@@ -162,7 +162,21 @@ describe('MessageTemplates component', () => {
                   status: 'RENDERED',
                   pageCount: 2,
                 },
+                shortFormRender: {
+                  fileName: 'short-render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+                longFormRender: {
+                  fileName: 'long-render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
               },
+              letterVariantId: '2',
+              campaignId: 'campaign-id',
             },
           ],
         }}

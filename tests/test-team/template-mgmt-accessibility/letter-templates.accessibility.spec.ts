@@ -123,7 +123,6 @@ test.beforeAll(async () => {
     letterProof,
     letterProofDisabled,
     letterApproved,
-    letterProofApproved,
   ]);
 });
 

@@ -100,6 +100,7 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
 
 export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   id: 'authoring-letter-template-id',
+  clientId: 'client-id',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x0',

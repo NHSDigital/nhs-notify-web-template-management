@@ -8,36 +8,18 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
-  previewTemplatePages,
   templateTypeDisplayMappings,
-  previewSubmittedTemplatePages,
-  previewApprovedTemplatePages,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
   statusToDisplayMapping,
   statusToColourMapping,
+  getPreviewURL,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import style from './MessageTemplates.module.scss';
 import { useFeatureFlags } from '@providers/client-config-provider';
 
 const messageTemplatesContent = content.pages.messageTemplates;
-
-const generateViewTemplateLink = (template: TemplateDto): string => {
-  if (
-    template.templateStatus === 'PROOF_APPROVED' &&
-    template.templateType === 'LETTER' &&
-    template.letterVersion === 'AUTHORING'
-  ) {
-    return `/${previewApprovedTemplatePages(template.templateType)}/${template.id}`;
-  }
-
-  if (template.templateStatus === 'SUBMITTED') {
-    return `/${previewSubmittedTemplatePages(template.templateType)}/${template.id}`;
-  }
-
-  return `/${previewTemplatePages(template.templateType)}/${template.id}`;
-};
 
 const typeDisplayMappings = (template: TemplateDto): string =>
   template.templateType === 'LETTER' &&
@@ -89,9 +71,7 @@ export function MessageTemplates({
             {templateList.map((template, index) => (
               <Table.Row key={template.id}>
                 <Table.Cell>
-                  <Link href={generateViewTemplateLink(template)}>
-                    {template.name}
-                  </Link>
+                  <Link href={getPreviewURL(template)}>{template.name}</Link>
                 </Table.Cell>
                 <Table.Cell>{template.id}</Table.Cell>
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
