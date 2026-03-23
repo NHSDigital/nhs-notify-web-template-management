@@ -131,6 +131,10 @@ test.describe('Choose Printing and Postage page', () => {
       await expect(choosePage.variantsTable.locator('tbody tr')).toHaveCount(
         expectedVariantCount
       );
+
+      for (const variant of [...globalVariants, ...clientVariants]) {
+        await expect(choosePage.getRadioInput(variant.name)).toBeVisible();
+      }
     });
 
     test('displays available letter variants in a table including the campaign scoped ones when template has a campaign', async ({
@@ -178,6 +182,14 @@ test.describe('Choose Printing and Postage page', () => {
       await expect(choosePage.variantsTable.locator('tbody tr')).toHaveCount(
         expectedVariantCount
       );
+
+      for (const variant of [
+        ...globalVariants,
+        ...clientVariants,
+        ...campaignVariants,
+      ]) {
+        await expect(choosePage.getRadioInput(variant.name)).toBeVisible();
+      }
     });
 
     test('updates the template with selected variant and redirects to preview page', async ({

@@ -3377,7 +3377,7 @@ describe('templateClient', () => {
       ).not.toHaveBeenCalled();
     });
 
-    test('should return failure when template is not an authoring letter template', async () => {
+    test('should return failure when template is not a letter template', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
