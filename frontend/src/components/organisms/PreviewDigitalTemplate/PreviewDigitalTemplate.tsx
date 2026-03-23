@@ -11,15 +11,12 @@ import {
   DigitalTemplateType,
   sendDigitalTemplateTestMessageUrl,
 } from 'nhs-notify-web-template-management-utils';
-import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
-import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
-import classNames from 'classnames';
-import styles from './PreviewDigitalTemplate.module.scss';
+import {
+  DigitalProofingBanner,
+  RequestProofBanner,
+} from './PreviewMessageBanner';
 
 const { editButton, sendTestMessageButton } =
-  content.components.previewDigitalTemplate;
-
-const { testMessageBanner, requestProofBanner } =
   content.components.previewDigitalTemplate;
 
 export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
@@ -36,21 +33,6 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
   const isDigitalProofingEnabledForType =
     !!featureFlagMap[template.templateType];
 
-  const canSendTestMessage =
-    isDigitalProofingEnabledForType &&
-    template.templateStatus === 'NOT_YET_SUBMITTED';
-
-  // Do not show the banner when digital proofing is enabled and the template is already submitted
-  const showMessageBanner =
-    !isDigitalProofingEnabledForType || canSendTestMessage;
-
-  const banner = isDigitalProofingEnabledForType
-    ? {
-        content: testMessageBanner[template.templateType],
-        overrides: undefined,
-      }
-    : requestProofBanner;
-
   return (
     <>
       {sectionHeading && (
@@ -62,25 +44,10 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
         <>
           {props.previewDetailsComponent}
 
-          {showMessageBanner && (
-            <div
-              className={classNames(
-                'nhsuk-summary-list',
-                styles['message-banner']
-              )}
-            >
-              <NHSNotifyWarningCallout
-                data-testid='message-banner'
-                className={styles['message-banner__callout']}
-              >
-                <MarkdownContent
-                  variables={{ templateId: template.id }}
-                  mode='inline'
-                  {...banner}
-                />
-              </NHSNotifyWarningCallout>
-            </div>
-          )}
+          <DigitalProofingBanner
+            template={template}
+            isDigitalProofingEnabled={isDigitalProofingEnabledForType}
+          />
 
           <Link href={editPath} passHref legacyBehavior>
             <Button secondary data-testid='edit-template-button'>
@@ -88,29 +55,31 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
             </Button>
           </Link>
 
-          {canSendTestMessage && (
-            <Link
-              href={sendDigitalTemplateTestMessageUrl(
-                template.templateType,
-                template.id
-              )}
-              passHref
-              legacyBehavior
-            >
-              <Button
-                secondary
-                className='nhsuk-u-margin-left-3'
-                data-testid='send-test-message-button'
+          {isDigitalProofingEnabledForType &&
+            template.templateStatus === 'NOT_YET_SUBMITTED' && (
+              <Link
+                href={sendDigitalTemplateTestMessageUrl(
+                  template.templateType,
+                  template.id
+                )}
+                passHref
+                legacyBehavior
               >
-                {sendTestMessageButton}
-              </Button>
-            </Link>
-          )}
+                <Button
+                  secondary
+                  className='nhsuk-u-margin-left-3'
+                  data-testid='send-test-message-button'
+                >
+                  {sendTestMessageButton}
+                </Button>
+              </Link>
+            )}
         </>
       ) : (
         <>
           <NhsNotifyErrorSummary errorState={props.form.state.errorState} />
           {props.previewDetailsComponent}
+          <RequestProofBanner templateId={template.id} />
           <NHSNotifyRadioButtonForm
             {...props.form}
             legend={{

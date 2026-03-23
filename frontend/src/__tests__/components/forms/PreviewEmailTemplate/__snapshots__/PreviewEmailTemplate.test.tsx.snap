@@ -167,6 +167,24 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -446,6 +464,24 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -705,6 +741,24 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -957,7 +1011,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
         >
           <div
             class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
-            data-testid="message-banner"
+            data-testid="request-proof-message-banner"
           >
             This is only a basic preview. 
             <a
@@ -1135,6 +1189,24 @@ exports[`Preview email form renders matches snapshot when navigating from manage
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
         </div>
         <form
           action="/action"
@@ -1383,7 +1455,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
         >
           <div
             class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
-            data-testid="message-banner"
+            data-testid="request-proof-message-banner"
           >
             This is only a basic preview. 
             <a
