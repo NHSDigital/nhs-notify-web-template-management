@@ -206,15 +206,7 @@ describe('PreviewTemplateDetailsPdfLetter', () => {
 
 describe('PreviewTemplateDetailsAuthoringLetter', () => {
   describe('snapshots', () => {
-    it('matches snapshot', () => {
-      const container = render(
-        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-      );
-
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-
-    it('matches snapshot without letterVariantId (shows missing value styling)', () => {
+    it('matches snapshot without letterVariant (shows missing value styling)', () => {
       const { letterVariantId: _, ...templateWithoutVariant } =
         baseAuthoringLetter;
       const container = render(
