@@ -58,6 +58,7 @@ import {
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
 } from 'pages/letter';
 import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-page';
 
@@ -143,6 +144,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtSubmitLetterPage,
   TemplateMgmtTemplateSubmittedLetterPage,
   TemplateMgmtRequestProofPage,
+  TemplateMgmtLetterTemplateApprovedPage,
 
   // Routing / Message plans
   RoutingMessagePlansPage,
