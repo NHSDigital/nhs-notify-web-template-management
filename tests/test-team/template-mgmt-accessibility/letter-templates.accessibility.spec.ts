@@ -171,14 +171,6 @@ test.describe('Letter templates', () => {
       )
     ));
 
-  test('Preview approved letter template', async ({ page, analyze }) =>
-    analyze(
-      new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
-        'templateId',
-        templateIds.LETTER_APPROVED
-      )
-    ));
-
   test('Preview submitted letter template', async ({ page, analyze }) =>
     analyze(
       new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
@@ -372,6 +364,14 @@ test.describe('Letter templates', () => {
     test('Letter template approved', async ({ page, analyze }) =>
       analyze(
         new TemplateMgmtLetterTemplateApprovedPage(page).setPathParam(
+          'templateId',
+          templateIds.LETTER_APPROVED
+        )
+      ));
+
+    test('Preview approved letter template', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
           'templateId',
           templateIds.LETTER_APPROVED
         )
