@@ -32,6 +32,20 @@ jest.mock('react', () => {
   };
 });
 
+const letterRadioTestId = 'letter-radio';
+const radioTestIds = [
+  'email-radio',
+  'nhsapp-radio',
+  'sms-radio',
+  letterRadioTestId,
+];
+const letterTypeRadioTestIds = [
+  'letter-type-q4-radio',
+  'letter-type-x0-radio',
+  'letter-type-x1-radio',
+  'letter-type-language-radio',
+];
+
 describe('Choose template page', () => {
   const errorLogger = console.error;
 
@@ -44,117 +58,161 @@ describe('Choose template page', () => {
     global.console.error = errorLogger;
   });
 
-  it('selects one radio button at a time', () => {
-    const container = render(
-      <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
-    );
-    expect(container.asFragment()).toMatchSnapshot();
-
-    const radioButtons = [
-      screen.getByTestId('email-radio'),
-      screen.getByTestId('nhsapp-radio'),
-      screen.getByTestId('sms-radio'),
-    ];
-    const submitButton = screen.getByTestId('submit-button');
-
-    for (const radioButton of radioButtons) {
-      expect(radioButton).toBeInTheDocument();
-      expect(radioButton).not.toBeChecked();
-    }
-    expect(submitButton).toBeInTheDocument();
-    expect(screen.queryByTestId('letter-radio')).not.toBeInTheDocument();
-
-    for (const [, radioButton] of radioButtons.entries()) {
-      // select an option
-      fireEvent(radioButton, new MouseEvent('click'));
-
-      expect(radioButton).toBeChecked();
-
-      const notCheckedRadioButtons = radioButtons.filter(
-        (r) => r !== radioButton
+  describe('When letter authoring is disabled', () => {
+    it('lists types excluding letter', () => {
+      const container = render(
+        <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
       );
 
-      for (const button of notCheckedRadioButtons)
-        expect(button).not.toBeChecked();
-    }
+      const radioButtons = radioTestIds
+        .filter((testId) => testId !== letterRadioTestId)
+        .map((testId) => screen.getByTestId(testId));
+      const submitButton = screen.getByTestId('submit-button');
+
+      for (const radioButton of radioButtons) {
+        expect(radioButton).toBeInTheDocument();
+        expect(radioButton).not.toBeChecked();
+      }
+
+      const letterRadioButtons = [
+        letterRadioTestId,
+        ...letterTypeRadioTestIds,
+      ].map((testId) => screen.queryByTestId(testId));
+      for (const radioButton of letterRadioButtons) {
+        expect(radioButton).not.toBeInTheDocument();
+      }
+
+      expect(submitButton).toBeInTheDocument();
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
   });
 
-  it('renders error component', () => {
-    const mockUseActionState = jest.fn().mockReturnValue([
-      {
-        errorState: {
-          formErrors: [],
-          fieldErrors: {
-            page: ['Component error message'],
-          },
-        },
-      },
-      '/action',
-    ]);
-
-    jest.mocked(useActionState).mockImplementationOnce(mockUseActionState);
-
-    const container = render(
-      <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
-    );
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  test('Client-side validation triggers - valid form - no errors', () => {
-    const container = render(
-      <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
-    );
-
-    fireEvent.click(screen.getByTestId('nhsapp-radio'));
-    fireEvent.click(screen.getByTestId('submit-button'));
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  test('Client-side validation triggers - invalid form - errors displayed', () => {
-    const container = render(
-      <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
-    );
-
-    fireEvent.click(screen.getByTestId('submit-button'));
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  describe('when letter authoring is enabled', () => {
+  describe('When letter authoring is enabled', () => {
     beforeEach(() => {
       jest.mocked(useFeatureFlags).mockReturnValue({
         letterAuthoring: true,
       });
     });
 
-    it('shows letter type options once "Letter" template type radio is selected', () => {
+    it('lists types including letter', () => {
+      const container = render(
+        <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
+      );
+
+      const radioButtons = radioTestIds.map((testId) =>
+        screen.getByTestId(testId)
+      );
+
+      for (const radioButton of radioButtons) {
+        expect(radioButton).toBeInTheDocument();
+        expect(radioButton).not.toBeChecked();
+      }
+
+      const letterTypesRadioButtons = letterTypeRadioTestIds.map((testId) =>
+        screen.queryByTestId(testId)
+      );
+      for (const radioButton of letterTypesRadioButtons) {
+        expect(radioButton).not.toBeInTheDocument();
+      }
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('selects one non-letter radio button at a time', () => {
       render(<ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />);
 
-      expect(
-        screen.queryByTestId('letter-type-q4-radio')
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId('letter-type-x0-radio')
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId('letter-type-x1-radio')
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByTestId('letter-type-language-radio')
-      ).not.toBeInTheDocument();
+      const radioButtons = radioTestIds.map((testId) =>
+        screen.getByTestId(testId)
+      );
+
+      for (const radioButton of radioButtons.filter(
+        (r) => r.id !== letterRadioTestId
+      )) {
+        fireEvent(radioButton, new MouseEvent('click'));
+
+        expect(radioButton).toBeChecked();
+
+        const notCheckedRadioButtons = radioButtons.filter(
+          (r) => r !== radioButton
+        );
+
+        for (const button of notCheckedRadioButtons) {
+          expect(button).not.toBeChecked();
+        }
+
+        const letterTypeRadioButtons = letterTypeRadioTestIds.map((testId) =>
+          screen.queryByTestId(testId)
+        );
+
+        for (const letterTypeButton of letterTypeRadioButtons) {
+          expect(letterTypeButton).not.toBeInTheDocument();
+        }
+      }
+    });
+
+    it('lists letter subtypes when letter is selected', () => {
+      const container = render(
+        <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
+      );
 
       const letterRadio = screen.getByTestId('letter-radio');
       fireEvent.click(letterRadio);
 
       expect(letterRadio).toBeChecked();
 
-      expect(screen.getByTestId('letter-type-q4-radio')).toBeInTheDocument();
-      expect(screen.getByTestId('letter-type-x0-radio')).toBeInTheDocument();
-      expect(screen.getByTestId('letter-type-x1-radio')).toBeInTheDocument();
-      expect(
-        screen.getByTestId('letter-type-language-radio')
-      ).toBeInTheDocument();
+      const notCheckedRadioButtons = radioTestIds
+        .filter((r) => r !== 'letter-radio')
+        .map((testId) => screen.getByTestId(testId));
+
+      for (const button of notCheckedRadioButtons) {
+        expect(button).not.toBeChecked();
+      }
+
+      const letterTypeRadioButtons = letterTypeRadioTestIds.map((testId) =>
+        screen.getByTestId(testId)
+      );
+
+      for (const letterTypeButton of letterTypeRadioButtons) {
+        expect(letterTypeButton).toBeInTheDocument();
+        expect(letterTypeButton).not.toBeChecked();
+      }
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('selects letter subtypes one at a time', () => {
+      render(<ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />);
+
+      const letterRadio = screen.getByTestId('letter-radio');
+      fireEvent.click(letterRadio);
+
+      const letterTypeRadioButtons = letterTypeRadioTestIds.map((testId) =>
+        screen.getByTestId(testId)
+      );
+
+      const notCheckedRadioButtons = radioTestIds
+        .filter((r) => r !== 'letter-radio')
+        .map((testId) => screen.getByTestId(testId));
+
+      for (const letterTypeButton of letterTypeRadioButtons) {
+        fireEvent.click(letterTypeButton);
+
+        expect(letterRadio).toBeChecked();
+        expect(letterTypeButton).toBeChecked();
+
+        for (const button of notCheckedRadioButtons) {
+          expect(button).not.toBeChecked();
+        }
+
+        const notCheckedLetterTypeButtons = letterTypeRadioButtons.filter(
+          (b) => b !== letterTypeButton
+        );
+
+        for (const button of notCheckedLetterTypeButtons) {
+          expect(button).not.toBeChecked();
+        }
+      }
     });
 
     it('should show the correct validation errors for both template type and letter type', () => {
@@ -183,6 +241,48 @@ describe('Choose template page', () => {
         'Select a letter template type'
       );
       expect(errorMessages).toHaveLength(2);
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('renders error component', () => {
+      const mockUseActionState = jest.fn().mockReturnValue([
+        {
+          errorState: {
+            formErrors: [],
+            fieldErrors: {
+              page: ['Component error message'],
+            },
+          },
+        },
+        '/action',
+      ]);
+
+      jest.mocked(useActionState).mockImplementationOnce(mockUseActionState);
+
+      const container = render(
+        <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
+      );
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    test('Client-side validation triggers - valid form - no errors', () => {
+      const container = render(
+        <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
+      );
+
+      fireEvent.click(screen.getByTestId('nhsapp-radio'));
+      fireEvent.click(screen.getByTestId('submit-button'));
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    test('Client-side validation triggers - invalid form - errors displayed', () => {
+      const container = render(
+        <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
+      );
+
+      fireEvent.click(screen.getByTestId('submit-button'));
 
       expect(container.asFragment()).toMatchSnapshot();
     });
