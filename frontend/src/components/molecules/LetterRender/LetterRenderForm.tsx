@@ -17,7 +17,6 @@ import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
-  hideEditActions?: boolean;
 };
 
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
