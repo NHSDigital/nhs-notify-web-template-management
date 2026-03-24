@@ -181,14 +181,10 @@ exports[`Choose template page Client-side validation triggers - invalid form - e
           >
             To create a letter template
           </h2>
-          <p
-            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
-          >
+          <p>
             You cannot upload a letter template using this service.
           </p>
-          <p
-            class="nhsuk-card__description"
-          >
+          <p>
             Follow our guidance to 
             <a
               href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
@@ -354,14 +350,10 @@ exports[`Choose template page Client-side validation triggers - valid form - no 
           >
             To create a letter template
           </h2>
-          <p
-            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
-          >
+          <p>
             You cannot upload a letter template using this service.
           </p>
-          <p
-            class="nhsuk-card__description"
-          >
+          <p>
             Follow our guidance to 
             <a
               href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
@@ -557,14 +549,10 @@ exports[`Choose template page renders error component 1`] = `
           >
             To create a letter template
           </h2>
-          <p
-            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
-          >
+          <p>
             You cannot upload a letter template using this service.
           </p>
-          <p
-            class="nhsuk-card__description"
-          >
+          <p>
             Follow our guidance to 
             <a
               href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"
@@ -730,14 +718,10 @@ exports[`Choose template page selects one radio button at a time 1`] = `
           >
             To create a letter template
           </h2>
-          <p
-            class="nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6"
-          >
+          <p>
             You cannot upload a letter template using this service.
           </p>
-          <p
-            class="nhsuk-card__description"
-          >
+          <p>
             Follow our guidance to 
             <a
               href="https://notify.nhs.uk/using-nhs-notify/upload-a-letter"

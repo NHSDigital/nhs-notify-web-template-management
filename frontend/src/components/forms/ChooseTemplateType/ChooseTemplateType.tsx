@@ -19,8 +19,8 @@ import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { useFeatureFlags } from '@providers/client-config-provider';
-import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 const content = copy.components.chooseTemplateType;
 
@@ -105,15 +105,9 @@ export const ChooseTemplateType = ({
                 <h2 className='nhsuk-card__heading'>
                   {content.warningCalloutContent.headingLabel}
                 </h2>
-                <p className='nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6'>
-                  {content.warningCalloutContent.firstParagraph}
-                </p>
-                <p className='nhsuk-card__description'>
-                  <MarkdownContent
-                    content={content.warningCalloutContent.secondParagraph}
-                    mode='inline'
-                  />
-                </p>
+                <ContentRenderer
+                  content={content.warningCalloutContent.paragraphs}
+                />
               </div>
             </div>
           )}

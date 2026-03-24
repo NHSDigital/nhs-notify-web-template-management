@@ -873,9 +873,16 @@ const chooseTemplateType = {
   },
   warningCalloutContent: {
     headingLabel: 'To create a letter template',
-    firstParagraph: 'You cannot upload a letter template using this service.',
-    secondParagraph:
-      'Follow our guidance to [upload a letter template (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/upload-a-letter)',
+    paragraphs: [
+      {
+        type: 'text',
+        text: 'You cannot upload a letter template using this service.',
+      },
+      {
+        type: 'text',
+        text: 'Follow our guidance to [upload a letter template (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/upload-a-letter)',
+      },
+    ] satisfies ContentBlock[],
   },
 };
 
