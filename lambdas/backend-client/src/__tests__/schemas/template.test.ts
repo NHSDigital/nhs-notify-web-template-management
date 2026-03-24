@@ -6,6 +6,7 @@ import {
   $CreatePdfLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
+  $LetterProofRequest,
   $LetterProperties,
   $PatchTemplate,
   $PdfLetterProperties,
@@ -856,6 +857,49 @@ describe('Template schemas', () => {
         expect.objectContaining({
           formErrors: expect.arrayContaining([expect.any(String)]),
         })
+      );
+    });
+  });
+
+  describe('$LetterProofRequest', () => {
+    test('should pass validation for valid letter proof request', () => {
+      const request = {
+        systemPersonalisationPackId: 'short-1',
+        personalisation: { firstName: 'Jo', lastName: 'Bloggs' },
+        requestTypeVariant: 'short',
+      };
+
+      const result = $LetterProofRequest.safeParse(request);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(request);
+    });
+
+    test('should pass validation for long variant', () => {
+      const request = {
+        systemPersonalisationPackId: 'long-1',
+        personalisation: { firstName: 'Michael' },
+        requestTypeVariant: 'long',
+      };
+
+      const result = $LetterProofRequest.safeParse(request);
+
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(request);
+    });
+
+    test('should fail validation for invalid requestTypeVariant', () => {
+      const request = {
+        systemPersonalisationPackId: 'short-1',
+        personalisation: { firstName: 'Jo' },
+        requestTypeVariant: 'invalid',
+      };
+
+      const result = $LetterProofRequest.safeParse(request);
+
+      expect(result.success).toBe(false);
+      expect(result.error?.flatten().fieldErrors).toHaveProperty(
+        'requestTypeVariant'
       );
     });
   });

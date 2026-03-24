@@ -8,7 +8,7 @@
   "name": "cognito-triggers",
   "private": true,
   "scripts": {
-    "lambda-build": "./build.sh",
+    "build:archive": "./build.sh",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "test:unit": "jest",

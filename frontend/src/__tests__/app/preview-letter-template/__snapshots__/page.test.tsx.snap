@@ -219,6 +219,12 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
         <p>
           Check how your personalisation fields will appear in your letter.
         </p>
+        <a
+          class="nhsuk-body"
+          href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+        >
+          Learn more about personalising your letters (opens in a new tab).
+        </a>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
           data-module="nhsuk-tabs"
@@ -272,7 +278,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -314,7 +320,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-shortFormRender"
-                      name="__systemPersonalisationPackId"
+                      name="systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -379,6 +385,21 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                       </option>
                     </select>
                   </div>
+                  <input
+                    name="templateId"
+                    type="hidden"
+                    value="authoring-letter-template-id"
+                  />
+                  <input
+                    name="lockNumber"
+                    type="hidden"
+                    value="1"
+                  />
+                  <input
+                    name="tab"
+                    type="hidden"
+                    value="shortFormRender"
+                  />
                   <button
                     aria-disabled="false"
                     class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
@@ -406,7 +427,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -448,7 +469,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-longFormRender"
-                      name="__systemPersonalisationPackId"
+                      name="systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -513,6 +534,21 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                       </option>
                     </select>
                   </div>
+                  <input
+                    name="templateId"
+                    type="hidden"
+                    value="authoring-letter-template-id"
+                  />
+                  <input
+                    name="lockNumber"
+                    type="hidden"
+                    value="1"
+                  />
+                  <input
+                    name="tab"
+                    type="hidden"
+                    value="longFormRender"
+                  />
                   <button
                     aria-disabled="false"
                     class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
@@ -540,6 +576,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
       >
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -738,6 +775,12 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
         <p>
           Check how your personalisation fields will appear in your letter.
         </p>
+        <a
+          class="nhsuk-body"
+          href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+        >
+          Learn more about personalising your letters (opens in a new tab).
+        </a>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
           data-module="nhsuk-tabs"
@@ -791,7 +834,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -833,7 +876,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-shortFormRender"
-                      name="__systemPersonalisationPackId"
+                      name="systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -898,6 +941,21 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                       </option>
                     </select>
                   </div>
+                  <input
+                    name="templateId"
+                    type="hidden"
+                    value="authoring-letter-template-id"
+                  />
+                  <input
+                    name="lockNumber"
+                    type="hidden"
+                    value="1"
+                  />
+                  <input
+                    name="tab"
+                    type="hidden"
+                    value="shortFormRender"
+                  />
                   <button
                     aria-disabled="false"
                     class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
@@ -925,7 +983,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -967,7 +1025,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-longFormRender"
-                      name="__systemPersonalisationPackId"
+                      name="systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -1032,6 +1090,21 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                       </option>
                     </select>
                   </div>
+                  <input
+                    name="templateId"
+                    type="hidden"
+                    value="authoring-letter-template-id"
+                  />
+                  <input
+                    name="lockNumber"
+                    type="hidden"
+                    value="1"
+                  />
+                  <input
+                    name="tab"
+                    type="hidden"
+                    value="longFormRender"
+                  />
                   <button
                     aria-disabled="false"
                     class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
@@ -1059,6 +1132,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
       >
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -1485,6 +1559,12 @@ exports[`valid authoring letter template matches snapshot 1`] = `
         <p>
           Check how your personalisation fields will appear in your letter.
         </p>
+        <a
+          class="nhsuk-body"
+          href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+        >
+          Learn more about personalising your letters (opens in a new tab).
+        </a>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
           data-module="nhsuk-tabs"
@@ -1538,7 +1618,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -1580,7 +1660,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-shortFormRender"
-                      name="__systemPersonalisationPackId"
+                      name="systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -1645,6 +1725,21 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                       </option>
                     </select>
                   </div>
+                  <input
+                    name="templateId"
+                    type="hidden"
+                    value="authoring-letter-template-id"
+                  />
+                  <input
+                    name="lockNumber"
+                    type="hidden"
+                    value="1"
+                  />
+                  <input
+                    name="tab"
+                    type="hidden"
+                    value="shortFormRender"
+                  />
                   <button
                     aria-disabled="false"
                     class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
@@ -1672,7 +1767,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             role="tabpanel"
           >
             <div
-              class="nhsuk-grid-row"
+              class="nhsuk-grid-row tabRow"
             >
               <div
                 class="nhsuk-grid-column-one-third"
@@ -1714,7 +1809,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                     <select
                       class="nhsuk-select recipientSelect"
                       id="system-personalisation-pack-id-longFormRender"
-                      name="__systemPersonalisationPackId"
+                      name="systemPersonalisationPackId"
                     >
                       <option
                         selected=""
@@ -1779,6 +1874,21 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                       </option>
                     </select>
                   </div>
+                  <input
+                    name="templateId"
+                    type="hidden"
+                    value="authoring-letter-template-id"
+                  />
+                  <input
+                    name="lockNumber"
+                    type="hidden"
+                    value="1"
+                  />
+                  <input
+                    name="tab"
+                    type="hidden"
+                    value="longFormRender"
+                  />
                   <button
                     aria-disabled="false"
                     class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-top-4"
@@ -1830,16 +1940,18 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             value="1"
           />
           <button
+            aria-disabled="false"
             class="nhsuk-button"
             data-testid="preview-letter-template-cta"
             id="preview-letter-template-cta"
             type="submit"
           >
-            Submit template
+            Approve template
           </button>
         </form>
         <p>
           <a
+            data-testid="back-link-bottom"
             href="/message-templates"
           >
             Back to all templates

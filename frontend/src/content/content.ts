@@ -523,6 +523,7 @@ const previewLetterTitle = generatePageTitle('Preview letter template');
 const previewLetterTemplate = {
   pageTitle: previewLetterTitle,
   backLinkText: backToAllTemplates,
+  approveButtonText: 'Approve template',
   submitText: 'Submit template',
   loadingText: 'Uploading letter template',
   approveProofText: 'Approve template proof',
@@ -572,15 +573,16 @@ const previewSubmittedLetterTemplate = {
 const letterRender = {
   heading: 'Letter preview',
   guidance: 'Check how your personalisation fields will appear in your letter.',
-  learnMoreLink: {
+  guidanceLink: {
+    text: 'Learn more about personalising your letters (opens in a new tab).',
     href: 'https://notify.nhs.uk/using-nhs-notify/personalisation',
-    text: 'Learn more about personalising your letters (opens in a new tab)',
   },
   tabTitle: 'Example personalisation data',
   tabs: {
     short: 'Short examples',
     long: 'Long examples',
   },
+  loadingText: 'Loading letter preview',
   pdsSection: {
     heading: 'PDS personalisation fields',
     hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',
@@ -713,6 +715,24 @@ const letterTemplateInvalidConfiguration = {
   insetText: 'Account needs a client ID and campaign ID',
   backLinkText: goBackButtonText,
   backLinkUrl: '/choose-a-template-type',
+};
+
+const letterTemplateApproved = {
+  title: generatePageTitle('Letter template approved'),
+  bannerText: 'Letter template approved',
+  nameLabel: 'Template name',
+  doNext: [
+    {
+      type: 'text',
+      text: 'You can now use this letter in your [message plans]({{basePath}}/message-plans).',
+      overrides: { a: { props: { 'data-testid': 'message-plans-link' } } },
+    },
+    {
+      type: 'text',
+      text: 'Or go back to your [templates]({{basePath}}/message-templates).',
+      overrides: { a: { props: { 'data-testid': 'templates-link' } } },
+    },
+  ] satisfies ContentBlock[],
 };
 
 const messagePlanInvalidConfiguration = {
@@ -1894,6 +1914,7 @@ const content = {
     editTemplateNamePage,
     error404,
     homePage,
+    letterTemplateApproved,
     letterTemplateInvalidConfiguration,
     messagePlanGetReadyToMoveToProduction,
     messagePlanInvalidConfiguration,
