@@ -391,6 +391,24 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <p>
           This template cannot be edited because it has been submitted.
         </p>
@@ -776,6 +794,24 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <p>
           This template cannot be edited because it has been submitted.
         </p>
@@ -920,6 +956,24 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
         </div>
         <p>
           This template cannot be edited because it has been submitted.
@@ -1350,6 +1404,24 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <p>
           <a
             data-testid="back-link-bottom"
@@ -1759,6 +1831,24 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <p>
           <a
             data-testid="back-link-bottom"
@@ -1918,6 +2008,24 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+              rel=""
+              target=""
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
         </div>
         <p>
           <a

@@ -38,8 +38,7 @@
       "react-is": "19.0.0"
     },
     "react": "^19.0.0",
-    "underscore": "^1.13.8",
-    "flatted@3": "3.4.0"
+    "underscore": "^1.13.8"
   },
   "scripts": {
     "build": "npm run create-env-file && npm run build --workspace frontend",

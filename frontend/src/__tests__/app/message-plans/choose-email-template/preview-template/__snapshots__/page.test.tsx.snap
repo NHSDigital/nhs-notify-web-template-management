@@ -133,6 +133,24 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
               </div>
             </dl>
           </div>
+          <div
+            class="nhsuk-summary-list message-banner"
+          >
+            <div
+              class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+              data-testid="request-proof-message-banner"
+            >
+              This is only a basic preview. 
+              <a
+                href="/templates/request-a-proof/email-template-id"
+                rel=""
+                target=""
+              >
+                Request a proof
+              </a>
+               to preview this template properly.
+            </div>
+          </div>
           <a
             class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
             data-testid="back-link-bottom"

@@ -11,10 +11,6 @@ import {
   DigitalTemplateType,
   sendDigitalTemplateTestMessageUrl,
 } from 'nhs-notify-web-template-management-utils';
-import {
-  DigitalProofingBanner,
-  RequestProofBanner,
-} from './PreviewMessageBanner';
 
 const { editButton, sendTestMessageButton } =
   content.components.previewDigitalTemplate;
@@ -31,7 +27,8 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
   };
 
   const isDigitalProofingEnabledForType =
-    !!featureFlagMap[template.templateType];
+    !!featureFlagMap[template.templateType] &&
+    template.templateStatus === 'NOT_YET_SUBMITTED';
 
   return (
     <>
@@ -44,42 +41,35 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
         <>
           {props.previewDetailsComponent}
 
-          <DigitalProofingBanner
-            template={template}
-            isDigitalProofingEnabled={isDigitalProofingEnabledForType}
-          />
-
           <Link href={editPath} passHref legacyBehavior>
             <Button secondary data-testid='edit-template-button'>
               {editButton}
             </Button>
           </Link>
 
-          {isDigitalProofingEnabledForType &&
-            template.templateStatus === 'NOT_YET_SUBMITTED' && (
-              <Link
-                href={sendDigitalTemplateTestMessageUrl(
-                  template.templateType,
-                  template.id
-                )}
-                passHref
-                legacyBehavior
+          {isDigitalProofingEnabledForType && (
+            <Link
+              href={sendDigitalTemplateTestMessageUrl(
+                template.templateType,
+                template.id
+              )}
+              passHref
+              legacyBehavior
+            >
+              <Button
+                secondary
+                className='nhsuk-u-margin-left-3'
+                data-testid='send-test-message-button'
               >
-                <Button
-                  secondary
-                  className='nhsuk-u-margin-left-3'
-                  data-testid='send-test-message-button'
-                >
-                  {sendTestMessageButton}
-                </Button>
-              </Link>
-            )}
+                {sendTestMessageButton}
+              </Button>
+            </Link>
+          )}
         </>
       ) : (
         <>
           <NhsNotifyErrorSummary errorState={props.form.state.errorState} />
           {props.previewDetailsComponent}
-          <RequestProofBanner templateId={template.id} />
           <NHSNotifyRadioButtonForm
             {...props.form}
             legend={{

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import content from '@content/content';
-import styles from './PreviewDigitalTemplate.module.scss';
+import styles from './PreviewTemplateDetails.module.scss';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
 import type { DigitalTemplate } from 'nhs-notify-web-template-management-utils';
@@ -8,7 +8,7 @@ import type { DigitalTemplate } from 'nhs-notify-web-template-management-utils';
 const { testMessageBanner, requestProofBanner } =
   content.components.previewDigitalTemplate;
 
-const PreviewMessageBanner = ({
+const Banner = ({
   templateId,
   testId,
   markdownProps,
@@ -31,28 +31,16 @@ const PreviewMessageBanner = ({
   </div>
 );
 
-export const RequestProofBanner = ({ templateId }: { templateId: string }) => (
-  <PreviewMessageBanner
-    templateId={templateId}
-    testId='request-proof-message-banner'
-    markdownProps={requestProofBanner}
-  />
-);
-
-export function DigitalProofingBanner({
+export const DigitalTemplateBanner = ({
+  digitalProofingEnabled,
   template,
-  isDigitalProofingEnabled,
 }: {
+  digitalProofingEnabled: boolean;
   template: DigitalTemplate;
-  isDigitalProofingEnabled: boolean;
-}) {
-  if (!isDigitalProofingEnabled) {
-    return <RequestProofBanner templateId={template.id} />;
-  }
-
-  if (template.templateStatus === 'NOT_YET_SUBMITTED') {
+}) => {
+  if (digitalProofingEnabled) {
     return (
-      <PreviewMessageBanner
+      <Banner
         templateId={template.id}
         testId='test-message-banner'
         markdownProps={{ content: testMessageBanner[template.templateType] }}
@@ -60,5 +48,11 @@ export function DigitalProofingBanner({
     );
   }
 
-  return null;
-}
+  return (
+    <Banner
+      templateId={template.id}
+      testId='request-proof-message-banner'
+      markdownProps={requestProofBanner}
+    />
+  );
+};

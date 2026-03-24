@@ -15,6 +15,7 @@ import { Container } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { DigitalTemplateBanner } from './DigitalTemplateBanner';
 
 export default function PreviewTemplateDetailsNhsApp({
   template,
@@ -29,11 +30,9 @@ export default function PreviewTemplateDetailsNhsApp({
   return (
     <>
       <DetailsHeader templateName={template.name} />
-
       {features.routing && template.templateStatus === 'SUBMITTED' && (
         <LockedTemplateWarning template={template} />
       )}
-
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >
@@ -52,6 +51,10 @@ export default function PreviewTemplateDetailsNhsApp({
           />
         </DetailSection>
       </Container>
+      <DigitalTemplateBanner
+        digitalProofingEnabled={!!features.digitalProofingNhsApp}
+        template={template}
+      />
     </>
   );
 }

@@ -140,10 +140,6 @@ describe('PreviewDigitalTemplate', () => {
       ).not.toBeInTheDocument();
 
       expect(
-        screen.queryByTestId('request-proof-message-banner')
-      ).toBeInTheDocument();
-
-      expect(
         screen.queryByRole('button', { name: 'Send a test message' })
       ).not.toBeInTheDocument();
     });
