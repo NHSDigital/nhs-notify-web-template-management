@@ -7,6 +7,7 @@ import {
   assertBackLinkBottom,
   assertAndClickBackLinkTop,
   assertRequestProofBannerVisible,
+  assertAndClickTestMessageBanner,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertFooterLinks,
@@ -319,7 +320,6 @@ test.describe('Preview NHS App template Page', () => {
     test('when digitalProofingNhsApp is enabled, then banner and button are visible and both navigate correctly', async ({
       page,
       baseURL,
-      context,
     }) => {
       await loginAsUser(digitalProofingUser, page);
 
@@ -345,22 +345,8 @@ test.describe('Preview NHS App template Page', () => {
       await expect(previewPage.continueButton).toBeHidden();
       await expect(previewPage.requestProofMessageBanner).toBeHidden();
 
-      // Test banner link (opens in new tab)
-      const newPagePromise = context.waitForEvent('page');
-      await previewPage.testMessageBannerLink.click();
-      const newPage = await newPagePromise;
-      await newPage.waitForLoadState();
-
-      await expect(newPage).toHaveURL(
-        `${baseURL}/templates/send-test-nhs-app-message/${templates.digitalProofing.id}`
-      );
-
-      await newPage.close();
-
-      // Test button (same page navigation)
-      await previewPage.sendTestMessageButton.click();
-
-      await expect(page).toHaveURL(
+      await assertAndClickTestMessageBanner(
+        previewPage,
         `${baseURL}/templates/send-test-nhs-app-message/${templates.digitalProofing.id}`
       );
     });

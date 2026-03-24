@@ -324,3 +324,24 @@ export const assertRequestProofBannerVisible = async (
       `/templates/request-a-proof/${templateId}`
     );
   });
+
+export const assertAndClickTestMessageBanner = async (
+  previewPage: TemplateMgmtPreviewBasePage,
+  expectedURL: string
+) =>
+  test.step('when user clicks the test message banner link, then a new tab is opened to the send a test message page', async () => {
+    // Test banner link (opens in new tab)
+    const newPagePromise = previewPage.page.context().waitForEvent('page');
+    await previewPage.testMessageBannerLink.click();
+    const newPage = await newPagePromise;
+    await newPage.waitForLoadState();
+
+    await expect(newPage).toHaveURL(expectedURL);
+
+    await newPage.close();
+
+    // Test button (same page navigation)
+    await previewPage.sendTestMessageButton.click();
+
+    await expect(previewPage.page).toHaveURL(expectedURL);
+  });
