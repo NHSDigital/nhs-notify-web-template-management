@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
+import { TemplateMgmtChoosePrintingAndPostagePage } from 'pages/letter/template-mgmt-choose-printing-and-postage-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
 import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
 import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
@@ -61,6 +62,7 @@ import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page'
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 import { RoutingReviewAndMoveToProductionPage } from 'pages/routing';
 import { getAppRoutes } from 'helpers/get-app-routes';
+import { TemplateMgmtLetterTemplateApprovedPage } from 'pages/letter/template-mgmt-letter-template-approved-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -89,6 +91,7 @@ const protectedPages = [
   RoutingPreviewSmsTemplatePage,
   RoutingReviewAndMoveToProductionPage,
   TemplateMgmtChoosePage,
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
   TemplateMgmtCreateNhsAppPage,
@@ -126,6 +129,7 @@ const protectedPages = [
   TemplateMgmtUploadLargePrintLetterTemplatePage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

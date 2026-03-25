@@ -1,15 +1,12 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import type { FactoryRoutingConfig } from 'helpers/types';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('GET /v1/routing-configurations', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const storageHelper = new RoutingConfigStorageHelper();
   let user1: TestUser;
   let user2: TestUser;
@@ -19,9 +16,9 @@ test.describe('GET /v1/routing-configurations', () => {
   let deletedRoutingConfig: FactoryRoutingConfig;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User7.userId);
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
+    user2 = await context.auth.getTestUser(testUsers.User2.userId);
+    userSharedClient = await context.auth.getTestUser(testUsers.User7.userId);
 
     draftRoutingConfig = RoutingConfigFactory.create(user1, {
       clientId: user1.clientId,

@@ -4,14 +4,16 @@ import { SSMClient } from '@aws-sdk/client-ssm';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import NodeCache from 'node-cache';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { TemplateRepository } from '../infra';
-import { loadConfig } from '../infra/config';
-import { ClientConfigRepository } from '../infra/client-config-repository';
-import { LetterUploadRepository } from '../infra/letter-upload-repository';
-import { ProofingQueue } from '../infra/proofing-queue';
-import { RoutingConfigRepository } from '../infra/routing-config-repository';
-import { TemplateClient } from '../app/template-client';
+
+import { TemplateClient } from '@backend-api/app/template-client';
+import { ClientConfigRepository } from '@backend-api/infra/client-config-repository';
+import { loadConfig } from '@backend-api/infra/config';
+import { LetterUploadRepository } from '@backend-api/infra/letter-upload-repository';
+import { LetterVariantRepository } from '@backend-api/infra/letter-variant-repository';
+import { ProofingQueue } from '@backend-api/infra/proofing-queue';
 import { RenderQueue } from '@backend-api/infra/render-queue';
+import { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+import { TemplateRepository } from '@backend-api/infra/template-repository';
 
 const awsConfig = { region: 'eu-west-2' };
 
@@ -58,6 +60,12 @@ export const templatesContainer = () => {
     config.templatesTableName
   );
 
+  const letterVariantRepository = new LetterVariantRepository(
+    ddbDocClient,
+    config.letterVariantTableName,
+    config.letterVariantCacheTtlMs
+  );
+
   const templateClient = new TemplateClient(
     templateRepository,
     letterUploadRepository,
@@ -66,6 +74,7 @@ export const templatesContainer = () => {
     config.defaultLetterSupplier,
     clientConfigRepository,
     routingConfigRepository,
+    letterVariantRepository,
     logger
   );
 

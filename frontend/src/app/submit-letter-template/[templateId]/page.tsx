@@ -8,7 +8,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';

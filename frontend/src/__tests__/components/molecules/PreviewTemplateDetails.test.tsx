@@ -14,6 +14,7 @@ import {
   LetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { makeLetterVariant } from '@testhelpers/helpers';
 
 jest.mock('@providers/client-config-provider');
 
@@ -49,6 +50,7 @@ const basePdfLetter: PdfLetterTemplate = {
 
 const baseAuthoringLetter: AuthoringLetterTemplate = {
   ...baseTemplate,
+  clientId: 'client-id',
   name: 'Authoring Letter',
   templateStatus: 'NOT_YET_SUBMITTED',
   templateType: 'LETTER',
@@ -204,15 +206,7 @@ describe('PreviewTemplateDetailsPdfLetter', () => {
 
 describe('PreviewTemplateDetailsAuthoringLetter', () => {
   describe('snapshots', () => {
-    it('matches snapshot', () => {
-      const container = render(
-        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-      );
-
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-
-    it('matches snapshot without letterVariantId (shows missing value styling)', () => {
+    it('matches snapshot without letterVariant (shows missing value styling)', () => {
       const { letterVariantId: _, ...templateWithoutVariant } =
         baseAuthoringLetter;
       const container = render(
@@ -225,6 +219,17 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(
         container.container.querySelector('.missing-value')
       ).toBeInTheDocument();
+    });
+
+    it('matches snapshot with letter variant name displayed', () => {
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+          letterVariant={makeLetterVariant({ name: 'Example Variant Name' })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
     });
 
     it('matches snapshot with initialRender in non-RENDERED status - page counts are not displayed', () => {

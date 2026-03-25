@@ -8,7 +8,7 @@ import {
   legacyTemplateTypeToUrlTextMappings,
   validateTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import type { TemplateType } from 'nhs-notify-web-template-management-types';
 
 const $SubmitTemplateFormData = z.object({

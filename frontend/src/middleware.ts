@@ -5,6 +5,7 @@ import { getClientIdFromToken } from '@utils/token-utils';
 
 const protectedPaths = [
   /^\/choose-a-template-type$/,
+  /^\/choose-printing-and-postage\/[^/]+$/,
   /^\/copy-template\/[^/]+$/,
   /^\/create-email-template$/,
   /^\/create-nhs-app-template$/,
@@ -20,6 +21,7 @@ const protectedPaths = [
   /^\/email-template-submitted\/[^/]+$/,
   /^\/get-ready-to-approve-letter-template\/[^/]+$/,
   /^\/invalid-template$/,
+  /^\/letter-template-approved\/[^/]+$/,
   /^\/letter-template-submitted\/[^/]+$/,
   /^\/message-plans\/campaign-id-required$/,
   /^\/message-plans\/choose-email-template\/[^/]+$/,

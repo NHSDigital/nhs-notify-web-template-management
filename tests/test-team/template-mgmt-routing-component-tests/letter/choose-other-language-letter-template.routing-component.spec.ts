@@ -12,11 +12,7 @@ import {
   assertChooseTemplatePageWithNoTemplates,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
@@ -24,6 +20,7 @@ import { RoutingChooseOtherLanguageLetterTemplatePage } from 'pages/routing/lett
 import { RoutingConfigDbEntry, Template } from 'helpers/types';
 import type { Language } from 'nhs-notify-web-template-management-types';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { getTestContext } from 'helpers/context/context';
 import { RoutingEditMessagePlanPage } from 'pages/routing';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
@@ -198,8 +195,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
   let routingConfigForUserWithNoTemplates: RoutingConfigDbEntry;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    userWithNoTemplates = await createAuthHelper().getTestUser(
+    const context = getTestContext();
+    user = await context.auth.getTestUser(testUsers.User1.userId);
+    userWithNoTemplates = await context.auth.getTestUser(
       testUsers.User2.userId
     );
 

@@ -3,7 +3,7 @@ import {
   TEMPLATE_STATUS_LIST,
   LANGUAGE_LIST,
   TEMPLATE_TYPE_LIST,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/schemas';
 import type {
   Language,
   LetterType,

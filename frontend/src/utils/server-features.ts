@@ -2,7 +2,7 @@
 
 import { cache } from 'react';
 import type { ClientFeatures } from 'nhs-notify-web-template-management-types';
-import { clientConfigurationApiClient } from 'nhs-notify-backend-client/src/client-configuration-api-client';
+import { clientConfigurationApiClient } from 'nhs-notify-backend-client';
 import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 

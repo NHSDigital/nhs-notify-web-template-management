@@ -10,7 +10,10 @@ import { Readable } from 'node:stream';
 import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
 import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
 import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
-import { LANGUAGE_LIST, LETTER_TYPE_LIST } from 'nhs-notify-backend-client';
+import {
+  LANGUAGE_LIST,
+  LETTER_TYPE_LIST,
+} from 'nhs-notify-backend-client/schemas';
 import { ExpandedIdComponents } from '../types';
 
 export class App {

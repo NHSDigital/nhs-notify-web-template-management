@@ -2,7 +2,7 @@ import {
   ErrorCase,
   FailureResult,
   SuccessResult,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/types';
 
 export type ApplicationResult<T> = SuccessResult<T> | FailureResult;
 

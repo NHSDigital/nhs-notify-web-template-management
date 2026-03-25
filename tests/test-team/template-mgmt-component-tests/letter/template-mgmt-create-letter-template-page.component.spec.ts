@@ -9,10 +9,10 @@ import {
   assertBackLinkBottomNotPresent,
 } from '../../helpers/template-mgmt-common.steps';
 import {
-  createAuthHelper,
   type TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../../helpers/context/context';
 import { TemplateMgmtUploadLetterPage } from '../../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
 import { loginAsUser } from '../../helpers/auth/login-as-user';
@@ -25,12 +25,12 @@ test.describe('Upload letter Template Page', () => {
   let userWithMultipleCampaigns: TestUser;
 
   test.beforeAll(async () => {
-    const authHelper = createAuthHelper();
-    user = await authHelper.getTestUser(testUsers.User1.userId);
-    userWithoutCampaignId = await authHelper.getTestUser(
+    const context = getTestContext();
+    user = await context.auth.getTestUser(testUsers.User1.userId);
+    userWithoutCampaignId = await context.auth.getTestUser(
       testUsers.User6.userId
     );
-    userWithMultipleCampaigns = await authHelper.getTestUser(
+    userWithMultipleCampaigns = await context.auth.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
   });

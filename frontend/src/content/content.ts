@@ -685,9 +685,12 @@ const previewTemplateDetails = {
       'https://notify.nhs.uk/templates/what-template-statuses-mean',
   },
   links: {
-    editTemplateName: '/edit-template-name/{{templateId}}',
-    editTemplateCampaign: '/edit-template-campaign/{{templateId}}',
-    choosePrintingAndPostage: '/choose-printing-and-postage/{{templateId}}',
+    editTemplateName:
+      '/edit-template-name/{{templateId}}?lockNumber={{lockNumber}}',
+    editTemplateCampaign:
+      '/edit-template-campaign/{{templateId}}?lockNumber={{lockNumber}}',
+    choosePrintingAndPostage:
+      '/choose-printing-and-postage/{{templateId}}?lockNumber={{lockNumber}}',
   },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',
@@ -791,6 +794,24 @@ const letterTemplateInvalidConfiguration = {
   insetText: 'Account needs a client ID and campaign ID',
   backLinkText: goBackButtonText,
   backLinkUrl: '/choose-a-template-type',
+};
+
+const letterTemplateApproved = {
+  title: generatePageTitle('Letter template approved'),
+  bannerText: 'Letter template approved',
+  nameLabel: 'Template name',
+  doNext: [
+    {
+      type: 'text',
+      text: 'You can now use this letter in your [message plans]({{basePath}}/message-plans).',
+      overrides: { a: { props: { 'data-testid': 'message-plans-link' } } },
+    },
+    {
+      type: 'text',
+      text: 'Or go back to your [templates]({{basePath}}/message-templates).',
+      overrides: { a: { props: { 'data-testid': 'templates-link' } } },
+    },
+  ] satisfies ContentBlock[],
 };
 
 const messagePlanInvalidConfiguration = {
@@ -1909,6 +1930,51 @@ const editTemplateCampaignPage = {
   },
 };
 
+const choosePrintingAndPostagePage = {
+  pageTitle: generatePageTitle('Choose a printing and postage option'),
+  pageHeading: 'Choose a printing and postage option',
+  errorSummaryHint: 'You have not chosen a printing and postage option',
+  hint: [
+    {
+      type: 'text',
+      text: 'We only show options that are available for this letter template. Select one option.',
+      overrides: { p: { props: { className: 'nhsuk-hint' } } },
+    },
+    {
+      type: 'text',
+      text: '[Learn about printing and postage (opens in a new tab).](https://notify.nhs.uk/pricing-and-commercial/letters)',
+    },
+  ] satisfies ContentBlock[],
+  form: {
+    letterVariantId: {
+      errors: { empty: 'Choose a printing and postage option' },
+      table: {
+        headers: {
+          select: 'Select',
+          name: 'Name',
+          details: 'Details',
+        },
+        details: {
+          sheetSize: 'Sheet size',
+          maxSheets: 'Maximum number of sheets',
+          bothSides: 'Print on both sides',
+          printColour: 'Print colour',
+          envelopeSize: 'Envelope size',
+          dispatchTime: 'Dispatch time',
+          postage: 'Postage',
+        },
+      },
+    },
+    submitButton: {
+      text: 'Save and continue',
+    },
+  },
+  backLink: {
+    text: 'Go back',
+    href: (id: string) => `/preview-letter-template/${id}`,
+  },
+};
+
 const content = {
   global: { mainLayout },
   components: {
@@ -1956,6 +2022,7 @@ const content = {
     chooseLargePrintLetterTemplate,
     chooseNhsAppTemplate,
     chooseOtherLanguageLetterTemplate,
+    choosePrintingAndPostagePage,
     chooseStandardEnglishLetterTemplate,
     chooseTextMessageTemplate,
     createMessagePlan,
@@ -1967,6 +2034,7 @@ const content = {
     error404,
     getReadyToApproveLetterTemplate,
     homePage,
+    letterTemplateApproved,
     letterTemplateInvalidConfiguration,
     messagePlanGetReadyToMoveToProduction,
     messagePlanInvalidConfiguration,
