@@ -7,9 +7,10 @@ import {
   assertSkipToMainContent,
 } from '../helpers/template-mgmt-common.steps';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
-import { createAuthHelper, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { testUsers } from 'helpers/auth/cognito-auth-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
+import { getTestContext } from 'helpers/context/context';
 
 const templateIds = {
   SMS: randomUUID(),
@@ -22,7 +23,8 @@ test.describe('How to request a digital proof', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
     await templateStorageHelper.seedTemplateData([
       TemplateFactory.createSmsTemplate(templateIds.SMS, user),
       TemplateFactory.createEmailTemplate(templateIds.EMAIL, user),
