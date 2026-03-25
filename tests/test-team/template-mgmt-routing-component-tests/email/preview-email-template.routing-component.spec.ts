@@ -6,6 +6,8 @@ import {
   assertSkipToMainContent,
   assertAndClickBackLinkTop,
   assertBackLinkBottom,
+  assertRequestProofBannerVisible,
+  assertAndClickTestMessageBannerLink,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   createAuthHelper,
@@ -18,6 +20,7 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingPreviewEmailTemplatePage } from 'pages/routing/email/preview-email-page';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
+import { loginAsUser } from 'helpers/auth/login-as-user';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -110,6 +113,11 @@ test.describe('Routing - Preview email template page', () => {
     await expect(page.locator('[id="preview-content-message"]')).toHaveText(
       templates.EMAIL.message || ''
     );
+
+    await assertRequestProofBannerVisible(
+      previewEmailTemplatePage,
+      templates.EMAIL.id
+    );
   });
 
   test.describe('redirects to invalid template page', () => {
@@ -160,5 +168,54 @@ test.describe('Routing - Preview email template page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
     );
+  });
+
+  test.describe('email digital proofing enabled', () => {
+    let digitalProofingEnabledMessagePlanId: string;
+    let digitalProofingEnabledTemplateId: string;
+
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ page }) => {
+      const digitalProofingEnabledUser = await createAuthHelper().getTestUser(
+        testUsers.UserDigitalProofingEnabled.userId
+      );
+
+      const proofingPlans = createMessagePlans(digitalProofingEnabledUser);
+      const proofingTemplates = createTemplates(digitalProofingEnabledUser);
+
+      await templateStorageHelper.seedTemplateData([proofingTemplates.EMAIL]);
+      await routingConfigStorageHelper.seed([
+        proofingPlans.EMAIL_ROUTING_CONFIG,
+      ]);
+
+      digitalProofingEnabledMessagePlanId =
+        proofingPlans.EMAIL_ROUTING_CONFIG.id;
+
+      digitalProofingEnabledTemplateId = proofingTemplates.EMAIL.id;
+
+      await loginAsUser(digitalProofingEnabledUser, page);
+    });
+
+    test('loads the email template with "Send a test email" message banner', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewTemplatePage = new RoutingPreviewEmailTemplatePage(page)
+        .setPathParam('messagePlanId', digitalProofingEnabledMessagePlanId)
+        .setPathParam('templateId', digitalProofingEnabledTemplateId)
+        .setSearchParam('lockNumber', '0');
+
+      await previewTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-email-template/${digitalProofingEnabledMessagePlanId}/preview-template/${digitalProofingEnabledTemplateId}?lockNumber=0`
+      );
+
+      await assertAndClickTestMessageBannerLink(
+        previewTemplatePage,
+        `${baseURL}/templates/send-test-email/${digitalProofingEnabledTemplateId}`
+      );
+    });
   });
 });

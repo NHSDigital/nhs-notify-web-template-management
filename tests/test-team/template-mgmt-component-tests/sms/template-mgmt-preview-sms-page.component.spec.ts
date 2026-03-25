@@ -7,7 +7,7 @@ import {
   assertBackLinkBottom,
   assertAndClickBackLinkTop,
   assertRequestProofBannerVisible,
-  assertAndClickTestMessageBanner,
+  assertAndClickTestMessageBannerLink,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertFooterLinks,
@@ -341,10 +341,14 @@ test.describe('Preview SMS message template Page', () => {
       await expect(previewPage.continueButton).toBeHidden();
       await expect(previewPage.requestProofMessageBanner).toBeHidden();
 
-      await assertAndClickTestMessageBanner(
-        previewPage,
-        `${baseURL}/templates/send-test-text-message/${templates.digitalProofing.id}`
-      );
+      const expectedUrl = `${baseURL}/templates/send-test-text-message/${templates.digitalProofing.id}`;
+
+      await assertAndClickTestMessageBannerLink(previewPage, expectedUrl);
+
+      // Test button (same page navigation)
+      await previewPage.sendTestMessageButton.click();
+
+      await expect(previewPage.page).toHaveURL(expectedUrl);
     });
   });
 });

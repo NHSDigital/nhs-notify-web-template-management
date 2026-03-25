@@ -325,7 +325,7 @@ export const assertRequestProofBannerVisible = async (
     );
   });
 
-export const assertAndClickTestMessageBanner = async (
+export const assertAndClickTestMessageBannerLink = async (
   previewPage: TemplateMgmtPreviewBasePage,
   expectedURL: string
 ) =>
@@ -339,9 +339,4 @@ export const assertAndClickTestMessageBanner = async (
     await expect(newPage).toHaveURL(expectedURL);
 
     await newPage.close();
-
-    // Test button (same page navigation)
-    await previewPage.sendTestMessageButton.click();
-
-    await expect(previewPage.page).toHaveURL(expectedURL);
   });
