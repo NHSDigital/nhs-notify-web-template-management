@@ -13,11 +13,8 @@ import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import { Template, RoutingConfigDbEntry } from '../helpers/types';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { randomUUID } from 'node:crypto';
 
 const templateIds = {
@@ -101,7 +98,8 @@ test.describe('Delete Template Error Page', () => {
   >;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
 
     templates = createTemplates(user);
     routingConfigs = createRoutingConfigs(user);

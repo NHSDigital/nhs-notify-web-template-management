@@ -24,6 +24,7 @@ export default defineConfig({
         headless: true,
         screenshot: 'only-on-failure',
       },
+      teardown: 'routing-component:teardown',
     },
     {
       name: 'routing-component',
@@ -36,7 +37,6 @@ export default defineConfig({
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
       dependencies: ['routing-component:setup'],
-      teardown: 'routing-component:teardown',
     },
     {
       name: 'routing-component:teardown',

@@ -8,16 +8,13 @@ import { TemplateMgmtInvalidTemplatePage } from 'pages/template-mgmt-invalid-tem
 import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
 import { TemplateMgmtRequestADigitalProofPage } from 'pages/template-mgmt-request-a-digital-proof-page';
 import { TemplateMgmtStartPage } from 'pages/template-mgmt-start-page';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
+import { getTestContext } from 'helpers/context/context';
 
 const templateIds = {
   TEMPLATE: randomUUID(),
@@ -29,9 +26,11 @@ let userWithNoTemplateData: TestUser;
 let userWithTemplateData: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
-  userWithNoTemplateData = await authHelper.getTestUser(testUsers.User2.userId);
-  userWithTemplateData = await authHelper.getTestUser(testUsers.User1.userId);
+  const context = getTestContext();
+  userWithNoTemplateData = await context.auth.getTestUser(
+    testUsers.User2.userId
+  );
+  userWithTemplateData = await context.auth.getTestUser(testUsers.User1.userId);
 
   const template = TemplateFactory.createSmsTemplate(
     templateIds.TEMPLATE,

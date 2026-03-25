@@ -1,6 +1,6 @@
 import { test as setup } from '@playwright/test';
-import { createAuthHelper } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 
 setup('api test teardown', async () => {
-  await createAuthHelper().teardown();
+  await getTestContext().teardown();
 });

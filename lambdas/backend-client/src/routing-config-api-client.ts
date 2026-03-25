@@ -12,12 +12,10 @@ import type {
   PatchV1RoutingConfigurationByRoutingConfigIdData,
   UpdateRoutingConfig,
 } from 'nhs-notify-web-template-management-types';
-import { catchAxiosError, createAxiosClient } from './axios-client';
+import { catchAxiosError, httpClient } from './axios-client';
 import { Result } from './types/result';
 import { OpenApiToTemplate } from './types/open-api-helper';
 import { RoutingConfigFilter } from './types/filters';
-
-export const httpClient = createAxiosClient();
 
 export const routingConfigurationApiClient = {
   async create(

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
-import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client/schemas';
 
 describe('ChannelGuidance component', () => {
   it.each(TEMPLATE_TYPE_LIST)(

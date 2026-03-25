@@ -1,6 +1,6 @@
 import type { File } from 'node:buffer';
 import { z } from 'zod/v4';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client/types';
 import type { FileType, User } from 'nhs-notify-web-template-management-utils';
 import {
   GetObjectCommand,

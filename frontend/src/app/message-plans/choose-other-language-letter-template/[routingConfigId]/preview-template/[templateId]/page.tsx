@@ -10,7 +10,7 @@ import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.pages.previewOtherLanguageLetterTemplate;

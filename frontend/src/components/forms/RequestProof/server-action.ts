@@ -8,7 +8,7 @@ import {
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import type { TemplateType } from 'nhs-notify-web-template-management-types';
 
 const $RequestProofFormData = z.object({

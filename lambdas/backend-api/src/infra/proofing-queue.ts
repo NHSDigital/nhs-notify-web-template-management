@@ -1,6 +1,6 @@
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { failure, success } from '@backend-api/utils/result';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client/types';
 import type {
   Language,
   LetterType,

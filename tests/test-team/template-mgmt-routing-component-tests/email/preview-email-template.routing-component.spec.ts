@@ -9,17 +9,14 @@ import {
   assertRequestProofBannerVisible,
   assertAndClickTestMessageBannerLink,
 } from '../../helpers/template-mgmt-common.steps';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingPreviewEmailTemplatePage } from 'pages/routing/email/preview-email-page';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
+import { getTestContext } from 'helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
@@ -52,12 +49,14 @@ function createTemplates(user: TestUser) {
   };
 }
 
+const context = getTestContext();
+
 test.describe('Routing - Preview email template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
 
     messagePlans = createMessagePlans(user);
     templates = createTemplates(user);
@@ -177,7 +176,7 @@ test.describe('Routing - Preview email template page', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
     test.beforeEach(async ({ page }) => {
-      const digitalProofingEnabledUser = await createAuthHelper().getTestUser(
+      const digitalProofingEnabledUser = await context.auth.getTestUser(
         testUsers.UserDigitalProofingEnabled.userId
       );
 

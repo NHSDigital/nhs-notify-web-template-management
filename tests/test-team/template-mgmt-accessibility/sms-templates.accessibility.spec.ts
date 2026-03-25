@@ -1,10 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { test } from 'fixtures/accessibility-analyze';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
@@ -16,6 +12,7 @@ import {
   TemplateMgmtTemplateSubmittedSmsPage,
 } from 'pages/sms';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { getTestContext } from 'helpers/context/context';
 
 const templateIds = {
   DRAFT: randomUUID(),
@@ -27,9 +24,9 @@ let userWithTemplateData: TestUser;
 let userWithRoutingDisabled: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
-  userWithTemplateData = await authHelper.getTestUser(testUsers.User1.userId);
-  userWithRoutingDisabled = await authHelper.getTestUser(
+  const context = getTestContext();
+  userWithTemplateData = await context.auth.getTestUser(testUsers.User1.userId);
+  userWithRoutingDisabled = await context.auth.getTestUser(
     testUsers.User2.userId
   );
 

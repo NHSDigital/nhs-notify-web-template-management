@@ -1,5 +1,4 @@
 import crypto from 'node:crypto';
-import path from 'node:path';
 import {
   AdminCreateUserCommand,
   AdminDeleteUserCommand,
@@ -9,9 +8,8 @@ import {
   RespondToAuthChallengeCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { faker } from '@faker-js/faker';
-import { AuthContextFile } from './auth-context-file';
+import type { TestContextFile } from '../context/context-file';
 import {
-  ClientConfiguration,
   ClientConfigurationHelper,
   type ClientKey,
 } from '../client/client-helper';
@@ -198,37 +196,18 @@ export type TestUser = TestUserStaticDetails &
   };
 
 export class CognitoAuthHelper {
-  private static authContextFile = new AuthContextFile(
-    path.resolve(__dirname, '..', '..', '.auth', 'test-auth-context.json')
-  );
-
-  private notifyClientHelper: ClientConfigurationHelper;
-
   private client = new CognitoIdentityProviderClient({ region: 'eu-west-2' });
 
-  constructor(
-    public runId: string,
-    public readonly userPoolId: string,
-    public readonly userPoolClientId: string,
-    public readonly clientSsmKeyPrefix: string
-  ) {
-    this.notifyClientHelper = new ClientConfigurationHelper(
-      clientSsmKeyPrefix,
-      runId,
-      CognitoAuthHelper.authContextFile
-    );
-  }
+  constructor(private readonly contextFile: TestContextFile) {}
 
   public async setup() {
     const users = Object.values(testUsers);
-
-    await this.notifyClientHelper.setup();
 
     await Promise.all(
       users.map(async (userDetails) =>
         this.createUser({
           ...userDetails,
-          clientId: this.notifyClientHelper.clientIdFromKey(
+          clientId: ClientConfigurationHelper.clientIdFromKey(
             userDetails.clientKey
           ),
         })
@@ -237,23 +216,13 @@ export class CognitoAuthHelper {
   }
 
   public async teardown() {
-    const runCtx = await CognitoAuthHelper.authContextFile.userValues(
-      this.runId
-    );
+    const users = await this.contextFile.getAllUsers();
 
-    await Promise.all([
-      ...runCtx.map(({ email }) => this.deleteUser(email)),
-      this.notifyClientHelper.teardown(),
-    ]);
-
-    await CognitoAuthHelper.authContextFile.destroyNamespace(this.runId);
+    await Promise.all(users.map(({ email }) => this.deleteUser(email)));
   }
 
   public async getAccessToken(id: string) {
-    const userCtx = await CognitoAuthHelper.authContextFile.getUser(
-      this.runId,
-      id
-    );
+    const userCtx = await this.contextFile.getUser(id);
 
     if (userCtx) {
       if (!CognitoAuthHelper.isTokenExpired(userCtx.accessToken)) {
@@ -274,10 +243,7 @@ export class CognitoAuthHelper {
   }
 
   public async getIdToken(id: string): Promise<string> {
-    const userCtx = await CognitoAuthHelper.authContextFile.getUser(
-      this.runId,
-      id
-    );
+    const userCtx = await this.contextFile.getUser(id);
 
     if (userCtx && !CognitoAuthHelper.isTokenExpired(userCtx.idToken)) {
       return userCtx.idToken;
@@ -296,29 +262,24 @@ export class CognitoAuthHelper {
   }
 
   public async getTestUser(id: string): Promise<TestUser> {
-    const userCtx = await CognitoAuthHelper.authContextFile.getUser(
-      this.runId,
-      id
-    );
+    const userCtx = await this.contextFile.getUser(id);
 
     if (!userCtx) {
       throw new Error('User not found');
     }
 
-    const { runId } = this;
-
     const user: TestUser = {
       ...userCtx,
       getAccessToken: () => this.getAccessToken(id),
       getIdToken: () => this.getAccessToken(id),
-      async setUpdatedPassword(password) {
-        await CognitoAuthHelper.authContextFile.setUser(runId, id, {
+      setUpdatedPassword: async (password) => {
+        await this.contextFile.setUser(id, {
           password,
         });
       },
 
-      async getPassword() {
-        const u = await CognitoAuthHelper.authContextFile.getUser(runId, id);
+      getPassword: async () => {
+        const u = await this.contextFile.getUser(id);
 
         if (!u) {
           throw new Error('User not found');
@@ -337,7 +298,7 @@ export class CognitoAuthHelper {
 
     const { clientId } = userDetails;
 
-    const clientConfig = await this.notifyClientHelper.getClient(clientId);
+    const clientConfig = await this.contextFile.getClient(clientId);
 
     const { name: clientName, campaignIds } = clientConfig ?? {};
 
@@ -375,7 +336,7 @@ export class CognitoAuthHelper {
 
     const user = await this.client.send(
       new AdminCreateUserCommand({
-        UserPoolId: this.userPoolId,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
         Username: email,
         UserAttributes: [
           { Name: 'email', Value: email },
@@ -394,20 +355,16 @@ export class CognitoAuthHelper {
     const sub =
       user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ?? '';
 
-    await CognitoAuthHelper.authContextFile.setUser(
-      this.runId,
-      userDetails.userId,
-      {
-        email,
-        userId: sub,
-        campaignIds,
-        clientId,
-        clientName,
-        identityAttributes,
-        password: tempPassword,
-        internalUserId: userDetails.internalUserId,
-      }
-    );
+    await this.contextFile.setUser(userDetails.userId, {
+      email,
+      userId: sub,
+      campaignIds,
+      clientId,
+      clientName,
+      identityAttributes,
+      password: tempPassword,
+      internalUserId: userDetails.internalUserId,
+    });
 
     await this.passwordAuth(userDetails.userId, true);
   }
@@ -415,24 +372,21 @@ export class CognitoAuthHelper {
   private async deleteUser(email: string) {
     await this.client.send(
       new AdminDisableUserCommand({
-        UserPoolId: this.userPoolId,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
         Username: email,
       })
     );
 
     await this.client.send(
       new AdminDeleteUserCommand({
-        UserPoolId: this.userPoolId,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
         Username: email,
       })
     );
   }
 
   private async passwordAuth(id: string, allowPasswordChange = false) {
-    const userCtx = await CognitoAuthHelper.authContextFile.getUser(
-      this.runId,
-      id
-    );
+    const userCtx = await this.contextFile.getUser(id);
 
     if (!userCtx?.email || !userCtx.password) {
       throw new Error('Unable to retrieve credentials');
@@ -441,7 +395,7 @@ export class CognitoAuthHelper {
     const initiateAuthResult = await this.client.send(
       new InitiateAuthCommand({
         AuthFlow: 'USER_PASSWORD_AUTH',
-        ClientId: this.userPoolClientId,
+        ClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
         AuthParameters: {
           USERNAME: userCtx.email,
           PASSWORD: userCtx.password,
@@ -459,7 +413,7 @@ export class CognitoAuthHelper {
 
       const respondToAuthChallengeResult = await this.client.send(
         new RespondToAuthChallengeCommand({
-          ClientId: this.userPoolClientId,
+          ClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
           ChallengeName: 'NEW_PASSWORD_REQUIRED',
           Session: initiateAuthResult.Session,
           ChallengeResponses: {
@@ -469,7 +423,7 @@ export class CognitoAuthHelper {
         })
       );
 
-      await CognitoAuthHelper.authContextFile.setUser(this.runId, id, {
+      await this.contextFile.setUser(id, {
         password: newPassword,
       });
 
@@ -483,7 +437,7 @@ export class CognitoAuthHelper {
     const accessToken = authResult.AccessToken || '';
     const idToken = authResult.IdToken || '';
 
-    await CognitoAuthHelper.authContextFile.setUser(this.runId, id, {
+    await this.contextFile.setUser(id, {
       accessToken,
       refreshToken: authResult.RefreshToken || '',
       idToken,
@@ -500,11 +454,11 @@ export class CognitoAuthHelper {
       new InitiateAuthCommand({
         AuthFlow: 'REFRESH_TOKEN_AUTH',
         AuthParameters: { REFRESH_TOKEN: refreshToken },
-        ClientId: this.userPoolClientId,
+        ClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
       })
     );
 
-    await CognitoAuthHelper.authContextFile.setUser(this.runId, id, {
+    await this.contextFile.setUser(id, {
       accessToken: response.AuthenticationResult?.AccessToken || '',
       refreshToken: response.AuthenticationResult?.RefreshToken || refreshToken,
       idToken: response.AuthenticationResult?.IdToken || '',
@@ -536,31 +490,6 @@ export class CognitoAuthHelper {
     return !exp || exp * 1000 < Date.now();
   }
 
-  public async createClient(client: ClientConfiguration) {
-    const id = crypto.randomUUID();
-    await this.notifyClientHelper.createClient(id, client);
-    return id;
-  }
-
-  public async getClient(
-    clientId: string
-  ): Promise<ClientConfiguration & { id: string }> {
-    const client = await this.notifyClientHelper.getClient(clientId);
-
-    if (client === null) {
-      throw new Error(`Client "${clientId}" not found`);
-    }
-
-    return { ...client, id: clientId };
-  }
-
-  public async getStaticClient(
-    clientKey: ClientKey
-  ): Promise<ClientConfiguration & { id: string }> {
-    const id = this.notifyClientHelper.clientIdFromKey(clientKey);
-    return this.getClient(id);
-  }
-
   public async createAdHocUser(clientId: string) {
     const user: TestUserStaticDetails = {
       clientId,
@@ -572,13 +501,4 @@ export class CognitoAuthHelper {
 
     return this.getTestUser(user.userId);
   }
-}
-
-export function createAuthHelper() {
-  return new CognitoAuthHelper(
-    process.env.PLAYWRIGHT_RUN_ID,
-    process.env.COGNITO_USER_POOL_ID,
-    process.env.COGNITO_USER_POOL_CLIENT_ID,
-    process.env.CLIENT_SSM_PATH_PREFIX
-  );
 }

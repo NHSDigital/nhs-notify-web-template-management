@@ -1,16 +1,13 @@
 import { test, expect } from '@playwright/test';
 import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
-import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
-import {
   isoDateRegExp,
   UploadPartSpec,
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
+import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
+import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { docxFixtures } from '../fixtures/letters';
 
 const baseTemplateData = {
@@ -34,12 +31,12 @@ const baseDocxMultipartFormData: UploadPartSpec = {
 };
 
 test.describe('POST /v1/docx-letter-template', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

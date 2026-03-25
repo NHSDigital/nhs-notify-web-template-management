@@ -10,12 +10,12 @@ export default defineConfig({
     {
       name: 'api:setup',
       testMatch: 'api.setup.ts',
+      teardown: 'api:teardown',
     },
     {
       name: 'api',
       testMatch: '*.api.spec.ts',
       dependencies: ['api:setup'],
-      teardown: 'api:teardown',
     },
     {
       name: 'api:teardown',

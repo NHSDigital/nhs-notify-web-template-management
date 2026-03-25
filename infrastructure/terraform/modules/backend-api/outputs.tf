@@ -45,3 +45,7 @@ output "quarantine_bucket_name" {
 output "routing_config_table_name" {
   value = aws_dynamodb_table.routing_configuration.name
 }
+
+output "letter_variants_table_name" {
+  value = aws_dynamodb_table.letter_variants.name
+}

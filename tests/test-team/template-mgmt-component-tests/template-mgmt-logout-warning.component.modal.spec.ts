@@ -1,9 +1,6 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateMgmtSignInPage } from '../pages/templates-mgmt-login-page';
 
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -14,11 +11,11 @@ test.describe('Logout warning', () => {
   let automaticallySignedOutUser: TestUser;
 
   test.beforeAll(async () => {
-    const authHelper = createAuthHelper();
+    const context = getTestContext();
 
-    staySignedInUser = await authHelper.getTestUser(testUsers.User3.userId);
-    manualSignOutUser = await authHelper.getTestUser(testUsers.User4.userId);
-    automaticallySignedOutUser = await authHelper.getTestUser(
+    staySignedInUser = await context.auth.getTestUser(testUsers.User3.userId);
+    manualSignOutUser = await context.auth.getTestUser(testUsers.User4.userId);
+    automaticallySignedOutUser = await context.auth.getTestUser(
       testUsers.User5.userId
     );
   });
