@@ -877,10 +877,19 @@ const chooseTemplateType = {
       {
         type: 'text',
         text: 'You cannot upload a letter template using this service.',
+        overrides: {
+          p: {
+            props: {
+              className:
+                'nhsuk-card__description nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-6',
+            },
+          },
+        },
       },
       {
         type: 'text',
         text: 'Follow our guidance to [upload a letter template (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/upload-a-letter)',
+        overrides: { p: { props: { className: 'nhsuk-card__description' } } },
       },
     ] satisfies ContentBlock[],
   },
