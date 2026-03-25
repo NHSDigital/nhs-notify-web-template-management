@@ -18,10 +18,15 @@ const $BaseProofRequestEventData = z.object({
   }),
 });
 
-const $ProofContactDetails = z
+const $ProofRequestedContactDetailsSMS = z
   .object({
-    sms: z.string().optional(),
-    email: z.string().optional(),
+    sms: z.string(),
+  })
+  .meta({ description: 'Contact details to send the proof to' });
+
+const $ProofRequestedContactDetailsEmail = z
+  .object({
+    email: z.string(),
   })
   .meta({ description: 'Contact details to send the proof to' });
 
@@ -29,25 +34,20 @@ export const $ProofRequestSMSEventData = $BaseProofRequestEventData.extend({
   templateType: z.literal('SMS').meta({
     description: 'Template type for the template being proofed',
   }),
-  contactDetails: $ProofContactDetails.extend({
-    sms: z.string(),
-  }),
+  contactDetails: $ProofRequestedContactDetailsSMS,
 });
 
 export const $ProofRequestEmailEventData = $BaseProofRequestEventData.extend({
   templateType: z.literal('EMAIL').meta({
     description: 'Template type for the template being proofed',
   }),
-  contactDetails: $ProofContactDetails.extend({
-    email: z.string(),
-  }),
+  contactDetails: $ProofRequestedContactDetailsEmail,
 });
 
 export const $ProofRequestNHSAppEventData = $BaseProofRequestEventData.extend({
   templateType: z.literal('NHS_APP').meta({
     description: 'Template type for the template being proofed',
   }),
-  contactDetails: $ProofContactDetails.optional(),
 });
 
 export const $ProofRequestEventData = z

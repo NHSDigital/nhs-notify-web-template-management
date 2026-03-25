@@ -3,22 +3,19 @@ import {
   templateManagementEventSubscriber as test,
   expect,
 } from '../fixtures/template-management-event-subscriber';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { testUsers, type TestUser } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 import { eventWithId } from '../helpers/events/matchers';
 import { ProofRequestsStorageHelper } from 'helpers/db/proof-requests-storage-helper';
 
 test.describe('ProofRequestedEvent', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const proofRequestsStorageHelper = new ProofRequestsStorageHelper();
 
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await authHelper.getTestUser(testUsers.User1.userId);
+    user = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

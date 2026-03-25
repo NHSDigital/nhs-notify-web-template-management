@@ -4,6 +4,7 @@ import {
   DynamoDBDocumentClient,
 } from '@aws-sdk/lib-dynamodb';
 import type { DigitalProofRequest } from '../types';
+import { chunk } from 'helpers/chunk';
 
 type ProofRequestKey = { id: string; owner: string };
 
@@ -22,14 +23,14 @@ export class ProofRequestsStorageHelper {
   async seed(data: DigitalProofRequest[]) {
     this.seedData.push(...data);
 
-    const chunks = ProofRequestsStorageHelper.chunk(data);
+    const chunks = chunk(data);
 
     await Promise.all(
-      chunks.map(async (chunk) => {
+      chunks.map(async (batch) => {
         await this.dynamo.send(
           new BatchWriteCommand({
             RequestItems: {
-              [process.env.PROOF_REQUESTS_TABLE_NAME]: chunk.map(
+              [process.env.PROOF_REQUESTS_TABLE_NAME]: batch.map(
                 (proofRequest) => ({
                   PutRequest: {
                     Item: proofRequest,
@@ -57,14 +58,14 @@ export class ProofRequestsStorageHelper {
   }
 
   private async delete(keys: ProofRequestKey[]) {
-    const dbChunks = ProofRequestsStorageHelper.chunk(keys);
+    const dbChunks = chunk(keys);
 
     await Promise.all(
-      dbChunks.map((chunk) =>
+      dbChunks.map((batch) =>
         this.dynamo.send(
           new BatchWriteCommand({
             RequestItems: {
-              [process.env.PROOF_REQUESTS_TABLE_NAME]: chunk.map((key) => ({
+              [process.env.PROOF_REQUESTS_TABLE_NAME]: batch.map((key) => ({
                 DeleteRequest: {
                   Key: key,
                 },
@@ -89,18 +90,5 @@ export class ProofRequestsStorageHelper {
   async deleteAdHoc() {
     await this.delete(this.adHocKeys);
     this.adHocKeys = [];
-  }
-
-  /**
-   * Breaks a list into chunks of upto 25 items
-   */
-  private static chunk<T>(list: T[], size = 25): T[][] {
-    const chunks: T[][] = [];
-
-    for (let i = 0; i < list.length; i += size) {
-      chunks.push(list.slice(i, i + size));
-    }
-
-    return chunks;
   }
 }

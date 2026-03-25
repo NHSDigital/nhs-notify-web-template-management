@@ -99,18 +99,6 @@
               "type": "string",
               "const": "NHS_APP",
               "description": "Template type for the template being proofed"
-            },
-            "contactDetails": {
-              "type": "object",
-              "properties": {
-                "sms": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                }
-              },
-              "description": "Contact details to send the proof to"
             }
           },
           "required": [
@@ -157,14 +145,12 @@
               "properties": {
                 "sms": {
                   "type": "string"
-                },
-                "email": {
-                  "type": "string"
                 }
               },
               "required": [
                 "sms"
-              ]
+              ],
+              "description": "Contact details to send the proof to"
             }
           },
           "required": [
@@ -210,16 +196,14 @@
             "contactDetails": {
               "type": "object",
               "properties": {
-                "sms": {
-                  "type": "string"
-                },
                 "email": {
                   "type": "string"
                 }
               },
               "required": [
                 "email"
-              ]
+              ],
+              "description": "Contact details to send the proof to"
             }
           },
           "required": [
