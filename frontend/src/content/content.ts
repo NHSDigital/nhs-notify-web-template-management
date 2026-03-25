@@ -720,6 +720,24 @@ const letterTemplateInvalidConfiguration = {
   backLinkUrl: '/choose-a-template-type',
 };
 
+const letterTemplateApproved = {
+  title: generatePageTitle('Letter template approved'),
+  bannerText: 'Letter template approved',
+  nameLabel: 'Template name',
+  doNext: [
+    {
+      type: 'text',
+      text: 'You can now use this letter in your [message plans]({{basePath}}/message-plans).',
+      overrides: { a: { props: { 'data-testid': 'message-plans-link' } } },
+    },
+    {
+      type: 'text',
+      text: 'Or go back to your [templates]({{basePath}}/message-templates).',
+      overrides: { a: { props: { 'data-testid': 'templates-link' } } },
+    },
+  ] satisfies ContentBlock[],
+};
+
 const messagePlanInvalidConfiguration = {
   title: generatePageTitle('Configuration error'),
   heading: 'You cannot create message plans yet',
@@ -1951,6 +1969,7 @@ const content = {
     editTemplateNamePage,
     error404,
     homePage,
+    letterTemplateApproved,
     letterTemplateInvalidConfiguration,
     messagePlanGetReadyToMoveToProduction,
     messagePlanInvalidConfiguration,

@@ -328,7 +328,7 @@ test.describe('Preview Letter template Page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
     const variants = await createLetterVariants(user.clientId);
-    templates = createTemplates(user, variants);
+    templates = await createTemplates(user, variants);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

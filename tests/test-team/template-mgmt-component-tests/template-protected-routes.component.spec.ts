@@ -63,6 +63,7 @@ import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/le
 import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateMgmtUploadOtherLanguageLetterTemplatePage } from 'pages/letter/template-mgmt-upload-other-language-letter-template-page';
 import { TemplateMgmtUploadStandardEnglishLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-english-letter-template-page';
+import { TemplateMgmtLetterTemplateApprovedPage } from 'pages/letter';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -129,6 +130,7 @@ const protectedPages = [
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

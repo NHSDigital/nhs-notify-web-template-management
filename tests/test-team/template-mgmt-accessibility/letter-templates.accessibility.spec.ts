@@ -18,6 +18,7 @@ import {
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
 } from 'pages/letter';
 import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-page';
 import { loginAsUser } from 'helpers/auth/login-as-user';
@@ -34,6 +35,7 @@ const templateIds = {
   LETTER_SUBMITTED: randomUUID(),
   LETTER_PROOF: randomUUID(),
   LETTER_PROOF_DISABLED: randomUUID(),
+  LETTER_APPROVED: randomUUID(),
 };
 let defaultUser: TestUser;
 let userWithProofingDisabled: TestUser;
@@ -114,6 +116,18 @@ test.beforeAll(async () => {
     `Proofing disabled letter template - ${templateIds.LETTER_PROOF_DISABLED}`
   );
 
+  const letterApproved = TemplateFactory.createAuthoringLetterTemplate(
+    templateIds.LETTER_APPROVED,
+    authoringEnabledWithMultipleCampaignsUser,
+    `Approved letter template - ${templateIds.LETTER_APPROVED}`,
+    'PROOF_APPROVED',
+    {
+      letterVariantId: 'variant',
+      longFormRender: { status: 'RENDERED' },
+      shortFormRender: { status: 'RENDERED' },
+    }
+  );
+
   await templateStorageHelper.seedTemplateData([
     authoring,
     authoringMissingAddress,
@@ -123,6 +137,7 @@ test.beforeAll(async () => {
     letterSubmitted,
     letterProof,
     letterProofDisabled,
+    letterApproved,
   ]);
 });
 

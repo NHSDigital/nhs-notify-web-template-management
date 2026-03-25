@@ -8,8 +8,6 @@ export class TemplateMgmtChoosePrintingAndPostagePage extends TemplateMgmtBasePa
 
   submitButton: Locator;
 
-  backLink: Locator;
-
   constructor(page: Page) {
     super(page);
 
@@ -18,8 +16,6 @@ export class TemplateMgmtChoosePrintingAndPostagePage extends TemplateMgmtBasePa
     this.submitButton = page.getByRole('button', {
       name: 'Save and continue',
     });
-
-    this.backLink = page.getByRole('link', { name: 'Go back' });
   }
 
   getRadioInput(variantName: string): Locator {
@@ -32,9 +28,5 @@ export class TemplateMgmtChoosePrintingAndPostagePage extends TemplateMgmtBasePa
 
   async clickSubmit() {
     await this.submitButton.click();
-  }
-
-  async clickBackLink() {
-    await this.backLink.click();
   }
 }

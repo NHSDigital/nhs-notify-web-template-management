@@ -15,8 +15,8 @@ import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDet
 import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
+import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';

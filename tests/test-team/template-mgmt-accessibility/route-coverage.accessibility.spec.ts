@@ -59,6 +59,7 @@ import {
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
 } from 'pages/letter';
 import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-page';
 
@@ -97,13 +98,13 @@ import {
  */
 const allPages: (typeof TemplateMgmtBasePage)[] = [
   // General
-  TemplateMgmtStartPage,
-  TemplateMgmtMessageTemplatesPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
-  TemplateMgmtDeletePage,
   TemplateMgmtDeleteErrorPage,
+  TemplateMgmtDeletePage,
   TemplateMgmtInvalidTemplatePage,
+  TemplateMgmtMessageTemplatesPage,
+  TemplateMgmtStartPage,
 
   // Email
   TemplateMgmtCreateEmailPage,
@@ -133,6 +134,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtRequestProofPage,
@@ -147,20 +149,20 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
 
   // Routing / Message plans
-  RoutingMessagePlansPage,
-  RoutingCreateMessagePlanPage,
-  RoutingChooseMessageOrderPage,
   RoutingChooseEmailTemplatePage,
   RoutingChooseLargePrintLetterTemplatePage,
+  RoutingChooseMessageOrderPage,
   RoutingChooseNhsAppTemplatePage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
   RoutingChooseTextMessageTemplatePage,
+  RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanPage,
   RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
+  RoutingMessagePlansPage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
