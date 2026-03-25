@@ -1,10 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { docxFixtures } from 'fixtures/letters';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 import { loginAsUser } from 'helpers/auth/login-as-user';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import {
@@ -23,16 +20,18 @@ let userMultipleCampaigns: TestUser;
 let userAuthoringDisabled: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
 
-  userSingleCampaign = await authHelper.getTestUser(
+  userSingleCampaign = await context.auth.getTestUser(
     testUsers.UserLetterAuthoringEnabled.userId
   );
-  userNoCampaignId = await authHelper.getTestUser(testUsers.User6.userId);
-  userMultipleCampaigns = await authHelper.getTestUser(
+  userNoCampaignId = await context.auth.getTestUser(testUsers.User6.userId);
+  userMultipleCampaigns = await context.auth.getTestUser(
     testUsers.UserWithMultipleCampaigns.userId
   );
-  userAuthoringDisabled = await authHelper.getTestUser(testUsers.User3.userId);
+  userAuthoringDisabled = await context.auth.getTestUser(
+    testUsers.User3.userId
+  );
 });
 
 const templateStorageHelper = new TemplateStorageHelper();

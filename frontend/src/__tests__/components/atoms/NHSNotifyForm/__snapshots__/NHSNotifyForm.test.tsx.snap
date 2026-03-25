@@ -101,6 +101,78 @@ exports[`NHSNotifyForm components User Registration Form renders the complete fo
         </option>
       </select>
     </div>
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend"
+        >
+          <h1
+            class="nhsuk-fieldset__heading"
+          >
+            What is your favourite colour?
+          </h1>
+        </legend>
+        <div
+          class="nhsuk-radios"
+        >
+          <div
+            class="nhsuk-radios__item"
+          >
+            <input
+              class="nhsuk-radios__input"
+              id="red"
+              name="colour"
+              type="radio"
+              value="red"
+            />
+            <label
+              class="nhsuk-label nhsuk-radios__label"
+              for="red"
+            >
+              Red
+            </label>
+          </div>
+          <div
+            class="nhsuk-radios__item"
+          >
+            <input
+              class="nhsuk-radios__input"
+              id="green"
+              name="colour"
+              type="radio"
+              value="green"
+            />
+            <label
+              class="nhsuk-label nhsuk-radios__label"
+              for="green"
+            >
+              Green
+            </label>
+          </div>
+          <div
+            class="nhsuk-radios__item"
+          >
+            <input
+              class="nhsuk-radios__input"
+              id="blue"
+              name="colour"
+              type="radio"
+              value="blue"
+            />
+            <label
+              class="nhsuk-label nhsuk-radios__label"
+              for="blue"
+            >
+              Blue
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
     <button
       aria-disabled="false"
       class="nhsuk-button"

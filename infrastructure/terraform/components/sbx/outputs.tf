@@ -77,3 +77,7 @@ output "events_sns_topic_arn" {
 output "proof_requests_table_name" {
   value = module.backend_api.proof_requests_table_name
 }
+
+output "letter_variants_table_name" {
+  value = module.backend_api.letter_variants_table_name
+}

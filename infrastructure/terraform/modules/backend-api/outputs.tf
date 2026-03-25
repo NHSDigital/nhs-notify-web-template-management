@@ -49,3 +49,7 @@ output "routing_config_table_name" {
 output "proof_requests_table_name" {
   value = aws_dynamodb_table.proof_requests.name
 }
+
+output "letter_variants_table_name" {
+  value = aws_dynamodb_table.letter_variants.name
+}

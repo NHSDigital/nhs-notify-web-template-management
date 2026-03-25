@@ -45,6 +45,7 @@ import {
 
 // Letter template pages
 import {
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtPreviewLetterPage,
@@ -57,6 +58,7 @@ import {
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
 } from 'pages/letter';
 import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-page';
 
@@ -128,6 +130,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtTemplateSubmittedNhsAppPage,
 
   // Letter
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
   TemplateMgmtUploadLargePrintLetterTemplatePage,
@@ -141,6 +144,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtSubmitLetterPage,
   TemplateMgmtTemplateSubmittedLetterPage,
   TemplateMgmtRequestProofPage,
+  TemplateMgmtLetterTemplateApprovedPage,
 
   // Routing / Message plans
   RoutingMessagePlansPage,

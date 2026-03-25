@@ -1,5 +1,5 @@
 import { type DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { $TemplateDto } from 'nhs-notify-backend-client';
+import { $TemplateDto } from 'nhs-notify-backend-client/schemas';
 import type {
   Language,
   LetterType,

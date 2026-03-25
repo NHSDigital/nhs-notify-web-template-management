@@ -2,11 +2,8 @@ import {
   templateManagementEventSubscriber as test,
   expect,
 } from '../fixtures/template-management-event-subscriber';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from '../helpers/factories/template-factory';
@@ -18,7 +15,7 @@ import { Template } from 'helpers/types';
 import { eventWithId } from '../helpers/events/matchers';
 
 test.describe('Event publishing - Letters', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   const sftpHelper = new SftpHelper();
   const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
@@ -29,11 +26,13 @@ test.describe('Event publishing - Letters', () => {
 
   test.beforeAll(async () => {
     await sftpHelper.connect();
-    userRoutingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
-    userRoutingDisabledProofingEnabled = await authHelper.getTestUser(
+    userRoutingEnabled = await context.auth.getTestUser(testUsers.User1.userId);
+    userRoutingDisabledProofingEnabled = await context.auth.getTestUser(
       testUsers.User2.userId
     );
-    userProofingDisabled = await authHelper.getTestUser(testUsers.User3.userId);
+    userProofingDisabled = await context.auth.getTestUser(
+      testUsers.User3.userId
+    );
   });
 
   test.afterAll(async () => {

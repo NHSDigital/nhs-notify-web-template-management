@@ -9,11 +9,11 @@ import type {
   CreateUpdateTemplate,
   EmailProperties,
   Language,
+  LetterPatch,
   LetterProofRequest,
   LetterType,
   LetterValidationError,
   NhsAppProperties,
-  PatchTemplate,
   PdfLetterFiles,
   PdfLetterProperties,
   ProofFileDetails,
@@ -191,6 +191,7 @@ export const $AuthoringLetterProperties =
       ...$BaseLetterTemplateProperties.shape,
       customPersonalisation: z.array(z.string()).optional(),
       files: $AuthoringLetterFiles,
+      clientId: z.string(),
       letterVariantId: z.string().optional(),
       letterVersion: z.literal('AUTHORING'),
       systemPersonalisation: z.array(z.string()).optional(),
@@ -248,11 +249,12 @@ export const $CreateUpdateTemplate = schemaFor<CreateUpdateTemplate>()(
   ])
 );
 
-export const $PatchTemplate = schemaFor<PatchTemplate>()(
+export const $LetterPatch = schemaFor<LetterPatch>()(
   z
     .object({
       campaignId: z.string().trim().nonempty().optional(),
       name: $TemplateName.optional(),
+      letterVariantId: z.string().trim().nonempty().optional(),
     })
     .refine(
       (data) => Object.values(data).some((value) => value !== undefined),

@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { z } from 'zod/v4';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
 import { patchTemplate } from '@utils/form-actions';

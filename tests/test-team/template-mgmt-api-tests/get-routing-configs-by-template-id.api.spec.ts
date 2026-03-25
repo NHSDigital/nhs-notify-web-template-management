@@ -1,23 +1,20 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from '../helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from '../helpers/factories/routing-config-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('GET /v1/template/:templateId/routing-configurations', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const routingConfigStorageHelper = new RoutingConfigStorageHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    user1 = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

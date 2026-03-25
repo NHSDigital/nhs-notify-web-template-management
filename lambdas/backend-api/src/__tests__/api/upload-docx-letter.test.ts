@@ -78,6 +78,7 @@ describe('upload-docx-letter', () => {
     const created: TemplateDto = {
       ...initialTemplate,
       id: templateId,
+      clientId: 'client-id',
       createdAt: now,
       updatedAt: now,
       lockNumber: 1,

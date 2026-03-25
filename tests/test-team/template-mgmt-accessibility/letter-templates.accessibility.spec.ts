@@ -1,13 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { test } from 'fixtures/accessibility-analyze';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import {
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtPreviewLetterPage,
@@ -20,9 +17,11 @@ import {
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
 } from 'pages/letter';
 import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-page';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { getTestContext } from 'helpers/context/context';
 
 const templateStorageHelper = new TemplateStorageHelper();
 const templateIds = {
@@ -34,19 +33,20 @@ const templateIds = {
   LETTER_SUBMITTED: randomUUID(),
   LETTER_PROOF: randomUUID(),
   LETTER_PROOF_DISABLED: randomUUID(),
+  LETTER_APPROVED: randomUUID(),
 };
 let defaultUser: TestUser;
 let userWithProofingDisabled: TestUser;
 let authoringEnabledWithMultipleCampaignsUser: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
 
-  defaultUser = await authHelper.getTestUser(testUsers.User1.userId);
-  userWithProofingDisabled = await authHelper.getTestUser(
+  defaultUser = await context.auth.getTestUser(testUsers.User1.userId);
+  userWithProofingDisabled = await context.auth.getTestUser(
     testUsers.User3.userId
   );
-  authoringEnabledWithMultipleCampaignsUser = await authHelper.getTestUser(
+  authoringEnabledWithMultipleCampaignsUser = await context.auth.getTestUser(
     testUsers.UserWithMultipleCampaigns.userId
   );
 
@@ -99,6 +99,18 @@ test.beforeAll(async () => {
     `Proofing disabled letter template - ${templateIds.LETTER_PROOF_DISABLED}`
   );
 
+  const letterApproved = TemplateFactory.createAuthoringLetterTemplate(
+    templateIds.LETTER_APPROVED,
+    authoringEnabledWithMultipleCampaignsUser,
+    `Approved letter template - ${templateIds.LETTER_APPROVED}`,
+    'PROOF_APPROVED',
+    {
+      letterVariantId: 'variant',
+      longFormRender: { status: 'RENDERED' },
+      shortFormRender: { status: 'RENDERED' },
+    }
+  );
+
   await templateStorageHelper.seedTemplateData([
     authoring,
     authoringMissingAddress,
@@ -107,6 +119,7 @@ test.beforeAll(async () => {
     letterSubmitted,
     letterProof,
     letterProofDisabled,
+    letterApproved,
   ]);
 });
 
@@ -243,6 +256,13 @@ test.describe('Letter templates', () => {
         },
       }));
 
+    test('Choose printing and postage', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtChoosePrintingAndPostagePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
+      ));
+
     test('Preview letter page - initial spinner', async ({ page, analyze }) => {
       // seed template close to the time of running the test to avoid spinner timeout
       await templateStorageHelper.seedTemplateData([
@@ -301,18 +321,16 @@ test.describe('Letter templates', () => {
 
     test('Edit template campaign', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        )
+        new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Edit template campaign error', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateCampaignPage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        ),
+        new TemplateMgmtEditTemplateCampaignPage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0'),
         {
           beforeAnalyze: async (p) => {
             await p.campaignSelect.selectOption('');
@@ -324,18 +342,16 @@ test.describe('Letter templates', () => {
 
     test('Edit template name', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        )
+        new TemplateMgmtEditTemplateNamePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Edit template name error', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtEditTemplateNamePage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING
-        ),
+        new TemplateMgmtEditTemplateNamePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING)
+          .setSearchParam('lockNumber', '0'),
         {
           beforeAnalyze: async (p) => {
             await p.nameInput.fill('');
@@ -343,6 +359,14 @@ test.describe('Letter templates', () => {
             await p.errorSummary.isVisible();
           },
         }
+      ));
+
+    test('Letter template approved', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtLetterTemplateApprovedPage(page).setPathParam(
+          'templateId',
+          templateIds.LETTER_APPROVED
+        )
       ));
   });
 });

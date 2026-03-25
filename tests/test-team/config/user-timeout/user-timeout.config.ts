@@ -26,6 +26,7 @@ export default defineConfig({
         headless: true,
         screenshot: 'only-on-failure',
       },
+      teardown: 'component:teardown',
     },
     {
       name: 'modal',
@@ -39,7 +40,6 @@ export default defineConfig({
       },
       timeout: 60_000,
       dependencies: ['component:setup'],
-      teardown: 'component:teardown',
       fullyParallel: true, // make these sets of tests parallel due to their slow nature.
     },
     {
