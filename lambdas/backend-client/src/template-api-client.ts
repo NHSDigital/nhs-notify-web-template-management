@@ -210,7 +210,7 @@ export const templateApiClient = {
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.patch<TemplateSuccess>(
-        `/v1/template/${templateId}/approve`,
+        `/v1/template/${encodeURIComponent(templateId)}/approve`,
         undefined,
         {
           headers: {
@@ -240,7 +240,7 @@ export const templateApiClient = {
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.patch<TemplateSuccess>(
-        `/v1/template/${templateId}/submit`,
+        `/v1/template/${encodeURIComponent(templateId)}/submit`,
         undefined,
         {
           headers: {
