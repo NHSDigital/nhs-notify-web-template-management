@@ -385,5 +385,13 @@ test.describe('Letter templates', () => {
           .setPathParam('templateId', templateIds.AUTHORING_WITH_RENDERS)
           .setSearchParam('lockNumber', '0')
       ));
+
+    test('Letter template approved', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtLetterTemplateApprovedPage(page).setPathParam(
+          'templateId',
+          templateIds.LETTER_APPROVED
+        )
+      ));
   });
 });
