@@ -23,8 +23,10 @@ npx esbuild \
     src/delete-routing-config.ts \
     src/forward-initial-render-request.ts \
     src/get-client.ts \
+    src/get-letter-variant.ts \
     src/get-routing-config.ts \
     src/get-routing-configs-by-template-id.ts \
+    src/get-template-letter-variants.ts \
     src/get.ts \
     src/generate-letter-proof.ts \
     src/list-routing-configs.ts \

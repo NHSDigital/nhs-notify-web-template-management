@@ -1,11 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
 import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
@@ -47,7 +44,8 @@ test.describe('Unauthorised data access Tests', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User2.userId);
+    const context = getTestContext();
+    const user = await context.auth.getTestUser(testUsers.User2.userId);
     templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

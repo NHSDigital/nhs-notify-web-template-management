@@ -1,6 +1,7 @@
 'use server';
 
-import { $RoutingConfig } from 'nhs-notify-backend-client';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client';
+import { $RoutingConfig } from 'nhs-notify-backend-client/schemas';
 import type {
   CreateRoutingConfig,
   RoutingConfigReference,
@@ -16,7 +17,6 @@ import { getSessionServer } from './amplify-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from './form-actions';
 import { sortAscByUpdatedAt } from './sort';
-import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
 
 export async function getRoutingConfigs(): Promise<RoutingConfig[]> {
   const { accessToken } = await getSessionServer();

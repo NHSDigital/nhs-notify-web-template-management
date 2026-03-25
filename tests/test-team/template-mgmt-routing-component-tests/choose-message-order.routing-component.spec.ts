@@ -9,12 +9,9 @@ import {
   assertBackLinkTopNotPresent,
 } from '../helpers/template-mgmt-common.steps';
 import { ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS } from 'helpers/enum';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
+import { getTestContext } from 'helpers/context/context';
 
 let letterAuthoringEnabledUser: TestUser;
 
@@ -22,9 +19,9 @@ test.describe('Choose Message Order Page', () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
   test.beforeAll(async () => {
-    const authHelper = createAuthHelper();
+    const context = getTestContext();
 
-    letterAuthoringEnabledUser = await authHelper.getTestUser(
+    letterAuthoringEnabledUser = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
   });

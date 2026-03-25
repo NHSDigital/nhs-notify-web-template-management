@@ -4,10 +4,9 @@ import {
   $ListRoutingConfigFilters,
   $LockNumber,
   $UpdateRoutingConfig,
-  ErrorCase,
   type ListRoutingConfigFilters,
-  type Result,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/schemas';
+import { ErrorCase, type Result } from 'nhs-notify-backend-client/types';
 import type {
   RoutingConfigReference,
   RoutingConfig,

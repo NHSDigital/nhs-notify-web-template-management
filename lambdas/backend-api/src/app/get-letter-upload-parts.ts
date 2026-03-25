@@ -1,7 +1,7 @@
 import { File } from 'node:buffer';
 import { failure, success } from '@backend-api/utils/result';
-import { ErrorCase, Result } from 'nhs-notify-backend-client';
-import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
+import { LETTER_MULTIPART } from 'nhs-notify-backend-client/schemas';
+import { ErrorCase, Result } from 'nhs-notify-backend-client/types';
 import { parse as parseMultipart, getBoundary } from 'parse-multipart-data';
 
 export function getDocxUploadParts(

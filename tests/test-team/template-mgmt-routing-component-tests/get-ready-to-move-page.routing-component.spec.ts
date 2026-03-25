@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from 'helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import {
@@ -14,14 +10,15 @@ import {
 } from 'helpers/template-mgmt-common.steps';
 import { RoutingMessagePlansPage } from 'pages/routing/message-plans-page';
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
+import { getTestContext } from 'helpers/context/context';
 
 const routingConfigStorage = new RoutingConfigStorageHelper();
 
 let user: TestUser;
 
 test.beforeAll(async () => {
-  const authHelper = createAuthHelper();
-  user = await authHelper.getTestUser(testUsers.User1.userId);
+  const context = getTestContext();
+  user = await context.auth.getTestUser(testUsers.User1.userId);
 });
 
 test.afterAll(async () => {
