@@ -1,24 +1,25 @@
 import { test, expect } from '@playwright/test';
-import {
-  createAuthHelper,
-  type TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { randomUUID } from 'node:crypto';
+import { getTestContext } from 'helpers/context/context';
 
 test.describe('POST /v1/template/:templateId/proof', () => {
-  const authHelper = createAuthHelper();
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let userProofingEnabled: TestUser;
   let differentClientUser: TestUser;
   let sameClientUser: TestUser;
 
   test.beforeAll(async () => {
-    userProofingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
-    differentClientUser = await authHelper.getTestUser(testUsers.User2.userId);
-    sameClientUser = await authHelper.getTestUser(testUsers.User5.userId);
+    userProofingEnabled = await context.auth.getTestUser(
+      testUsers.User1.userId
+    );
+    differentClientUser = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
+    sameClientUser = await context.auth.getTestUser(testUsers.User5.userId);
   });
 
   test.afterAll(async () => {

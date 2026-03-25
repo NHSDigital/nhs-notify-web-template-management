@@ -10,10 +10,10 @@ import {
   submitRoutingConfig,
 } from '@utils/message-plans';
 import { getSessionServer } from '@utils/amplify-utils';
-import { routingConfigurationApiClient } from 'nhs-notify-backend-client/src/routing-config-api-client';
+import { routingConfigurationApiClient } from 'nhs-notify-backend-client';
+import type { Result } from 'nhs-notify-backend-client/types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { getTemplate } from '@utils/form-actions';
-import type { Result } from 'nhs-notify-backend-client';
 import type {
   CascadeGroupName,
   Channel,
@@ -29,7 +29,7 @@ import {
 import { randomUUID } from 'node:crypto';
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
+jest.mock('nhs-notify-backend-client');
 jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
   logger: {
     error: jest.fn(),

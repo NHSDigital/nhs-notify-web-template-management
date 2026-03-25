@@ -18,25 +18,31 @@ import {
   setTemplateToDeleted,
   setTemplateToSubmitted,
   requestTemplateProof,
+  getLetterVariantsForTemplate,
+  getLetterVariantById,
   uploadDocxTemplate,
   generateLetterProof,
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
-import {
+import type {
+  LetterVariant,
   TemplateDto,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-types';
-import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
+import {
+  templateApiClient,
+  letterVariantApiClient,
+} from 'nhs-notify-backend-client';
 import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
+const mockedLetterVariantClient = jest.mocked(letterVariantApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
 const loggerMock = jest.mocked(logger);
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client/src/template-api-client');
-jest.mock('nhs-notify-backend-client/src/routing-config-api-client');
+jest.mock('nhs-notify-backend-client');
 jest.mock('nhs-notify-web-template-management-utils/logger', () => ({
   logger: {
     error: jest.fn(),
@@ -311,6 +317,7 @@ describe('form-actions', () => {
   test('uploadDocxTemplate', async () => {
     const responseData = {
       templateType: 'LETTER',
+      clientId: 'client-id',
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
@@ -516,6 +523,7 @@ describe('form-actions', () => {
   test('patchTemplate', async () => {
     const responseData: AuthoringLetterTemplate = {
       id: 'template-123',
+      clientId: 'client1',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Updated Template Name',
@@ -1045,6 +1053,159 @@ describe('form-actions', () => {
     });
   });
 
+  describe('getLetterVariantsForTemplate', () => {
+    test('should return letter variants', async () => {
+      const letterVariants: LetterVariant[] = [
+        {
+          id: 'variant-1',
+          name: 'First Class',
+          bothSides: true,
+          dispatchTime: 'standard',
+          envelopeSize: 'C4',
+          maxSheets: 4,
+          postage: 'first class',
+          printColour: 'black',
+          sheetSize: 'A4',
+          status: 'PROD',
+          type: 'STANDARD',
+        },
+        {
+          id: 'variant-2',
+          name: 'Economy',
+          bothSides: true,
+          dispatchTime: 'standard',
+          envelopeSize: 'C4',
+          maxSheets: 4,
+          postage: 'economy',
+          printColour: 'black',
+          sheetSize: 'A4',
+          status: 'PROD',
+          type: 'STANDARD',
+        },
+      ];
+
+      mockedTemplateClient.getTemplateLetterVariants.mockResolvedValueOnce({
+        data: letterVariants,
+      });
+
+      const response = await getLetterVariantsForTemplate('template-123');
+
+      expect(
+        mockedTemplateClient.getTemplateLetterVariants
+      ).toHaveBeenCalledWith('template-123', 'token');
+
+      expect(response).toEqual(letterVariants);
+    });
+
+    test('should return undefined when error occurs', async () => {
+      mockedTemplateClient.getTemplateLetterVariants.mockResolvedValueOnce({
+        data: undefined,
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Not found',
+          },
+        },
+      });
+
+      const response = await getLetterVariantsForTemplate('template-123');
+
+      expect(
+        mockedTemplateClient.getTemplateLetterVariants
+      ).toHaveBeenCalledWith('template-123', 'token');
+
+      expect(response).toEqual(undefined);
+
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Failed to get available letter variants for template',
+        {
+          errorMeta: {
+            code: 404,
+            description: 'Not found',
+          },
+        }
+      );
+    });
+
+    test('should throw error when no token', async () => {
+      authIdTokenServerMock.mockResolvedValueOnce({});
+
+      await expect(
+        getLetterVariantsForTemplate('template-123')
+      ).rejects.toThrow('Failed to get access token');
+    });
+  });
+
+  describe('getLetterVariantById', () => {
+    test('should return letter variant', async () => {
+      const letterVariant: LetterVariant = {
+        id: 'variant-1',
+        name: 'First Class',
+        bothSides: true,
+        dispatchTime: 'standard',
+        envelopeSize: 'C4',
+        maxSheets: 4,
+        postage: 'first class',
+        printColour: 'black',
+        sheetSize: 'A4',
+        status: 'PROD',
+        type: 'STANDARD',
+      };
+
+      mockedLetterVariantClient.getLetterVariant.mockResolvedValueOnce({
+        data: letterVariant,
+      });
+
+      const response = await getLetterVariantById('variant-id');
+
+      expect(mockedLetterVariantClient.getLetterVariant).toHaveBeenCalledWith(
+        'variant-id',
+        'token'
+      );
+
+      expect(response).toEqual(letterVariant);
+    });
+
+    test('should return undefined when error occurs', async () => {
+      mockedLetterVariantClient.getLetterVariant.mockResolvedValueOnce({
+        data: undefined,
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Not found',
+          },
+        },
+      });
+
+      const response = await getLetterVariantById('variant-id');
+
+      expect(mockedLetterVariantClient.getLetterVariant).toHaveBeenCalledWith(
+        'variant-id',
+        'token'
+      );
+
+      expect(response).toEqual(undefined);
+
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'Failed to get letter variant',
+        {
+          errorMeta: {
+            code: 404,
+            description: 'Not found',
+          },
+        }
+      );
+    });
+
+    test('should throw error when no token', async () => {
+      authIdTokenServerMock.mockResolvedValueOnce({});
+
+      await expect(getLetterVariantById('variant-id')).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
+  });
+
   describe('generateLetterProof', () => {
     const request = {
       personalisation: { firstName: 'Jo' },
@@ -1056,6 +1217,7 @@ describe('form-actions', () => {
       const responseData = {
         templateType: 'LETTER',
         id: 'template-id',
+        clientId: 'client-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',
         letterType: 'x1',

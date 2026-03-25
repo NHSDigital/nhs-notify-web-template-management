@@ -2,7 +2,7 @@ import type {
   InitialRenderRequest,
   PersonalisedRenderRequest,
   RenderRequest,
-} from 'nhs-notify-backend-client/src/types/render-request';
+} from 'nhs-notify-backend-client/types';
 import type {
   SourceRepository,
   SourceHandle,

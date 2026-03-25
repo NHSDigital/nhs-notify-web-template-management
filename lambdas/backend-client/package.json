@@ -15,8 +15,13 @@
     "nhs-notify-web-template-management-utils": "^0.0.1",
     "typescript": "^5.9.3"
   },
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas/index.ts",
+    "./types": "./src/types/index.ts"
+  },
   "files": [
-    "src/index.ts"
+    "src"
   ],
   "main": "./src/index.ts",
   "name": "nhs-notify-backend-client",

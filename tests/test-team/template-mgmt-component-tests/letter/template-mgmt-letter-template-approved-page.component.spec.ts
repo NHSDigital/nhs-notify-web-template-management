@@ -9,11 +9,8 @@ import {
   assertSkipToMainContent,
   assertNoBackLinks,
 } from '../../helpers/template-mgmt-common.steps';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 import { TemplateMgmtLetterTemplateApprovedPage } from '../../pages/letter/template-mgmt-letter-template-approved-page';
 import { randomUUID } from 'node:crypto';
 
@@ -27,8 +24,8 @@ const templateIds = {
 };
 
 async function createTemplates() {
-  const authHelper = createAuthHelper();
-  user = await authHelper.getTestUser(testUsers.User1.userId);
+  const context = getTestContext();
+  user = await context.auth.getTestUser(testUsers.User1.userId);
 
   return {
     VALID: TemplateFactory.createAuthoringLetterTemplate(

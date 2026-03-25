@@ -1,20 +1,18 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import {
-  createAuthHelper,
-  testUsers,
-  type TestUser,
-} from '../helpers/auth/cognito-auth-helper';
+import { testUsers, type TestUser } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { pdfUploadFixtures } from '../fixtures/letters';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
 
 test.describe('letter file validation', () => {
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    user = await context.auth.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

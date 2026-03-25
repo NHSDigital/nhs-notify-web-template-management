@@ -13,6 +13,7 @@ export default function PreviewTemplateDetailsLetter({
   hideStatus?: boolean;
   hideEditActions?: boolean;
 }) {
+  // TODO: CCM-14768 - PreviewTemplateDetailsAuthoringLetter requires the Letter Variant.
   return template.letterVersion === 'PDF' ? (
     <PreviewTemplateDetailsPdfLetter
       template={template}

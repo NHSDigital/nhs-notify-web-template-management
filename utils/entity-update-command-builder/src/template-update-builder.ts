@@ -199,6 +199,16 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  setLetterVariantId(letterVariantId: string) {
+    this.updateBuilder.setValue('letterVariantId', letterVariantId);
+    return this;
+  }
+
+  removeLetterVariantId() {
+    this.updateBuilder.removeAttribute('letterVariantId');
+    return this;
+  }
+
   build() {
     return this.updateBuilder.finalise();
   }

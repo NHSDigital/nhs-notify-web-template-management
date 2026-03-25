@@ -16,8 +16,8 @@ import {
   $RoutingConfig,
   $SubmittableCascade,
   $TemplateDto,
-  ErrorCase,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/schemas';
+import { ErrorCase } from 'nhs-notify-backend-client/types';
 import type {
   CascadeItem,
   CreateRoutingConfig,

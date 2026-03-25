@@ -10,11 +10,8 @@ import {
   assertClickHeaderLogoRedirectsToStartPage,
 } from '../helpers/template-mgmt-common.steps';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { loginAsUser } from '../helpers/auth/login-as-user';
 
 test.describe('Header component', () => {
@@ -26,22 +23,24 @@ test.describe('Header component', () => {
   let userWithNoClientName: TestUser;
 
   test.beforeAll(async () => {
-    const authHelper = createAuthHelper();
+    const context = getTestContext();
 
-    userWithAllIdentityAttributes = await authHelper.getTestUser(
+    userWithAllIdentityAttributes = await context.auth.getTestUser(
       testUsers.User1.userId
     ); // Client1: routing enabled, full identity
-    userWithGivenAndFamilyNameOnly = await authHelper.getTestUser(
+    userWithGivenAndFamilyNameOnly = await context.auth.getTestUser(
       testUsers.User2.userId
     ); // Client1: no preferred_username
-    userWithNoIdentityAttributes = await authHelper.getTestUser(
+    userWithNoIdentityAttributes = await context.auth.getTestUser(
       testUsers.User5.userId
     ); // Client1: no name claims
     userWithRoutingEnabled = userWithAllIdentityAttributes; // Client1: routing enabled, full identity
-    userWithRoutingDisabled = await authHelper.getTestUser(
+    userWithRoutingDisabled = await context.auth.getTestUser(
       testUsers.User3.userId
     ); // Client2: routing disabled
-    userWithNoClientName = await authHelper.getTestUser(testUsers.User8.userId); // Client5: No client name
+    userWithNoClientName = await context.auth.getTestUser(
+      testUsers.User8.userId
+    ); // Client5: No client name
   });
 
   test.use({ storageState: { cookies: [], origins: [] } });

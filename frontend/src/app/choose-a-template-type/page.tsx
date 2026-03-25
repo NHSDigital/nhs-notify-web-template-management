@@ -2,7 +2,7 @@
 
 import { ChooseTemplateType } from '@forms/ChooseTemplateType/ChooseTemplateType';
 import { Metadata } from 'next';
-import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client/schemas';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 

@@ -553,7 +553,8 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
               </dd>
             </div>
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-summary-list__row missing-value"
+              id="printing-and-postage"
             >
               <dt
                 class="nhsuk-summary-list__key"
@@ -562,9 +563,7 @@ exports[`PreviewSubmittedTemplate component routing = false should render author
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              >
-                first-class
-              </dd>
+              />
               <dd
                 aria-hidden="true"
                 class="nhsuk-summary-list__actions"
@@ -1518,7 +1517,8 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
               </dd>
             </div>
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-summary-list__row missing-value"
+              id="printing-and-postage"
             >
               <dt
                 class="nhsuk-summary-list__key"
@@ -1527,9 +1527,7 @@ exports[`PreviewSubmittedTemplate component routing = true should render authori
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              >
-                first-class
-              </dd>
+              />
               <dd
                 aria-hidden="true"
                 class="nhsuk-summary-list__actions"

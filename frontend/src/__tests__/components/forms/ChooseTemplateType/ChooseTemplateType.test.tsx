@@ -2,7 +2,7 @@ import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplateType } from '@forms/ChooseTemplateType/ChooseTemplateType';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
-import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client/schemas';
 import { useFeatureFlags } from '@providers/client-config-provider';
 
 jest.mock('@utils/amplify-utils');

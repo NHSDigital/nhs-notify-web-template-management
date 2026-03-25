@@ -45,6 +45,7 @@ import {
 
 // Letter template pages
 import {
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtPreviewLetterPage,
@@ -129,6 +130,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtTemplateSubmittedNhsAppPage,
 
   // Letter
+  TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
   TemplateMgmtUploadLargePrintLetterTemplatePage,
