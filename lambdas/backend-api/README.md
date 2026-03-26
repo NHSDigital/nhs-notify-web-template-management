@@ -67,6 +67,16 @@ curl -X PATCH --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}" \
 }'
 ```
 
+### PATCH - /v1/template/:templateId/approve - Approve a letter template
+
+```bash
+curl -X PATCH --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/approve" \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN" \
+--header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
+```
+
 ### GET - /v1/templates - Get all templates
 
 currently limited to 50 items
