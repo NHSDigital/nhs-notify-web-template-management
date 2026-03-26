@@ -79,7 +79,7 @@ exports[`valid template matches snapshot on initial render 1`] = `
                   </span>
                 </h3>
                 <p>
-                  Not all campaigns support the printing and postage options. If you change the campaign, you may need to choose your printing and postage option again.
+                  Not all campaigns support the same printing and postage options. If you change the campaign, you may need to choose your printing and postage option again.
                 </p>
               </div>
               <select
@@ -231,7 +231,7 @@ exports[`valid template renders errors when blank form is submitted and error st
                   </span>
                 </h3>
                 <p>
-                  Not all campaigns support the printing and postage options. If you change the campaign, you may need to choose your printing and postage option again.
+                  Not all campaigns support the same printing and postage options. If you change the campaign, you may need to choose your printing and postage option again.
                 </p>
               </div>
               <span
