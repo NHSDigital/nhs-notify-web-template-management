@@ -8,8 +8,9 @@ import {
   assertSkipToMainContent,
 } from '../../helpers/template-mgmt-common.steps';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
-import { createAuthHelper, testUsers } from 'helpers/auth/cognito-auth-helper';
+import { testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateFactory } from 'helpers/factories/template-factory';
+import { getTestContext } from 'helpers/context/context';
 
 const templateIds = {
   LETTER_AUTHORING: randomUUID(),
@@ -20,7 +21,9 @@ test.describe('Get ready to approve letter template page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const user = await getTestContext().auth.getTestUser(
+      testUsers.User1.userId
+    );
 
     await templateStorageHelper.seedTemplateData([
       TemplateFactory.uploadLetterTemplate(
