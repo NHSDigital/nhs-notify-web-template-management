@@ -142,48 +142,6 @@ describe('lockNumber validation', () => {
     jest.mocked(getTemplate).mockResolvedValue(templateWithRenderedFiles);
   });
 
-  it('redirects to preview page when lockNumber is missing from searchParams', async () => {
-    await Page({
-      params: Promise.resolve({
-        templateId: templateWithRenderedFiles.id,
-      }),
-      searchParams: Promise.resolve({}),
-    });
-
-    expect(redirect).toHaveBeenCalledWith(
-      `/preview-letter-template/${templateWithRenderedFiles.id}`,
-      RedirectType.replace
-    );
-  });
-
-  it('redirects to preview page when lockNumber does not match template', async () => {
-    await Page({
-      params: Promise.resolve({
-        templateId: templateWithRenderedFiles.id,
-      }),
-      searchParams: Promise.resolve({ lockNumber: '999' }),
-    });
-
-    expect(redirect).toHaveBeenCalledWith(
-      `/preview-letter-template/${templateWithRenderedFiles.id}`,
-      RedirectType.replace
-    );
-  });
-
-  it('redirects to preview page when lockNumber is not a valid number', async () => {
-    await Page({
-      params: Promise.resolve({
-        templateId: templateWithRenderedFiles.id,
-      }),
-      searchParams: Promise.resolve({ lockNumber: 'abc' }),
-    });
-
-    expect(redirect).toHaveBeenCalledWith(
-      `/preview-letter-template/${templateWithRenderedFiles.id}`,
-      RedirectType.replace
-    );
-  });
-
   it('redirects to preview page when template has no letterVariantId', async () => {
     const templateWithoutVariant: AuthoringLetterTemplate = {
       ...templateWithRenderedFiles,

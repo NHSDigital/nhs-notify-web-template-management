@@ -19,7 +19,6 @@ import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
 import { interpolate } from '@utils/interpolate';
-import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import concatClassNames from '@utils/concat-class-names';
 import { buildLetterRenderUrl } from '@utils/letter-render-url';
 
@@ -51,13 +50,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const searchParams = await props.searchParams;
-
-  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
-
   if (
-    !lockNumberResult.success ||
-    lockNumberResult.data !== validatedTemplate.lockNumber ||
     // since lock number is unchanged, the following should never be true
     !validatedTemplate.letterVariantId ||
     validatedTemplate.files.longFormRender?.status !== 'RENDERED' ||
