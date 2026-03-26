@@ -21,9 +21,12 @@ test.describe('Get ready to approve letter template page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await getTestContext().auth.getTestUser(
-      testUsers.User1.userId
-    );
+    const context = getTestContext();
+
+    const user = await context.auth.getTestUser(testUsers.User1.userId);
+
+    const [globalVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
 
     await templateStorageHelper.seedTemplateData([
       TemplateFactory.uploadLetterTemplate(
@@ -35,7 +38,13 @@ test.describe('Get ready to approve letter template page', () => {
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_AUTHORING,
         user,
-        `Authoring letter - ${templateIds.LETTER_AUTHORING}`
+        `Authoring letter - ${templateIds.LETTER_AUTHORING}`,
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: globalVariant.id,
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
     ]);
   });
@@ -70,9 +79,7 @@ test.describe('Get ready to approve letter template page', () => {
     await assertFooterLinks(props);
   });
 
-  // TODO: CCM-14753 - unskip test then ticket is merged
-  // eslint-disable-next-line playwright/no-skipped-test
-  test.skip('when user clicks "Continue", then user is taken to review and approve letter template page', async ({
+  test('when user clicks "Continue", then user is taken to review and approve letter template page', async ({
     page,
     baseURL,
   }) => {

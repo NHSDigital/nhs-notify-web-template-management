@@ -51,7 +51,6 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
   }
 
   if (
-    // since lock number is unchanged, the following should never be true
     !validatedTemplate.letterVariantId ||
     validatedTemplate.files.longFormRender?.status !== 'RENDERED' ||
     validatedTemplate.files.shortFormRender?.status !== 'RENDERED'

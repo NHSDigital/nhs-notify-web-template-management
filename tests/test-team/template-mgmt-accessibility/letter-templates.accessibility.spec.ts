@@ -380,7 +380,10 @@ test.describe('Letter templates', () => {
         }
       ));
 
-    test('Get ready to approve letter template', async ({ page, analyze }) =>
+    test('Get ready to approve letter template page', async ({
+      page,
+      analyze,
+    }) =>
       analyze(
         new TemplateMgmtGetReadyToApproveLetterTemplatePage(page).setPathParam(
           'templateId',
