@@ -57,7 +57,7 @@ const GetReadyToApproveLetterTemplatePage = async (
             <div className='nhsuk-form-group'>
               <NHSNotifyButton
                 href={pageContent.continue.href(template.id)}
-                data-testid='continue-link'
+                data-testid='continue-button'
               >
                 {pageContent.continue.text}
               </NHSNotifyButton>
@@ -66,7 +66,7 @@ const GetReadyToApproveLetterTemplatePage = async (
                 secondary
                 href={pageContent.back.href(template.id)}
                 className='nhsuk-u-margin-left-3'
-                data-testid='back-link'
+                data-testid='back-button'
               >
                 {pageContent.back.text}
               </NHSNotifyButton>

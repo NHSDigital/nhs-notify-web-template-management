@@ -83,7 +83,7 @@ describe('GetReadyToApproveLetterTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('should redirect to invalid template page when letter template is not a authoring template', async () => {
+  it('should redirect to invalid template page when letter template is not an authoring template', async () => {
     getTemplateMock.mockResolvedValueOnce(PDF_LETTER_TEMPLATE);
 
     await GetReadyToApproveLetterTemplatePage({
