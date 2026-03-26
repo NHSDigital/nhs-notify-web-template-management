@@ -4292,6 +4292,513 @@ describe('templateClient', () => {
     });
   });
 
+  describe('approveTemplate', () => {
+    const letterVariantId = 'variant-1';
+
+    const allRenderedFiles: AuthoringLetterFiles = {
+      docxTemplate: {
+        fileName: 'template.docx',
+        currentVersion: 'v1',
+        virusScanStatus: 'PASSED',
+      },
+      initialRender: {
+        status: 'RENDERED',
+        fileName: 'render.pdf',
+        currentVersion: 'v1',
+        pageCount: 2,
+      },
+      shortFormRender: {
+        status: 'RENDERED',
+        fileName: 'short.pdf',
+        currentVersion: 'v1',
+        pageCount: 1,
+      },
+      longFormRender: {
+        status: 'RENDERED',
+        fileName: 'long.pdf',
+        currentVersion: 'v1',
+        pageCount: 3,
+      },
+    };
+
+    const notYetSubmittedLetterDto: TemplateDto = {
+      id: templateId,
+      clientId: 'client',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'name',
+      templateType: 'LETTER',
+      lockNumber: 1,
+      language: 'en',
+      letterType: 'x0',
+      letterVersion: 'AUTHORING',
+      campaignId: 'campaign-1',
+      letterVariantId,
+      files: allRenderedFiles,
+    };
+
+    const letterVariant: LetterVariant = {
+      id: letterVariantId,
+      name: 'Standard C5',
+      sheetSize: 'A4',
+      maxSheets: 5,
+      bothSides: true,
+      printColour: 'black',
+      envelopeSize: 'C5',
+      dispatchTime: 'standard',
+      postage: 'economy',
+      status: 'PROD',
+      type: 'STANDARD',
+    };
+
+    const dbTemplate = {
+      ...notYetSubmittedLetterDto,
+      owner: `CLIENT#${user.clientId}`,
+      version: 1,
+    };
+
+    test('returns failure result when lock number is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.approveTemplate(templateId, user, '');
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Invalid lock number provided',
+          },
+        },
+      });
+    });
+
+    test('returns failure result when GET template fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        user.clientId
+      );
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+    });
+
+    test.each([
+      {
+        scenario: 'template is not a LETTER',
+        override: { templateType: 'EMAIL' as const, letterVersion: undefined },
+      },
+      {
+        scenario: 'template is not AUTHORING',
+        override: { letterVersion: 'PDF' as const },
+      },
+      {
+        scenario: 'template is not NOT_YET_SUBMITTED',
+        override: { templateStatus: 'SUBMITTED' as const },
+      },
+      {
+        scenario: 'template has no campaignId',
+        override: { campaignId: undefined },
+      },
+      {
+        scenario: 'template has no letterVariantId',
+        override: { letterVariantId: undefined },
+      },
+    ])('returns 400 when $scenario', async ({ override }) => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...dbTemplate,
+          ...override,
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Template cannot be approved',
+          },
+        },
+      });
+    });
+
+    test('returns failure result when letter variant fetch fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: dbTemplate,
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Letter variant not found',
+          },
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(mocks.letterVariantRepository.getById).toHaveBeenCalledWith(
+        letterVariantId
+      );
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Letter variant not found',
+          },
+        },
+      });
+    });
+
+    test.each([
+      {
+        scenario: 'shortFormRender is missing',
+        files: {
+          ...allRenderedFiles,
+          shortFormRender: undefined,
+        },
+      },
+      {
+        scenario: 'longFormRender is missing',
+        files: {
+          ...allRenderedFiles,
+          longFormRender: undefined,
+        },
+      },
+      {
+        scenario: 'longFormRender is PENDING',
+        files: {
+          ...allRenderedFiles,
+          longFormRender: {
+            status: 'PENDING' as const,
+            requestedAt: NOW,
+          },
+        },
+      },
+      {
+        scenario: 'shortFormRender is PENDING',
+        files: {
+          ...allRenderedFiles,
+          shortFormRender: {
+            status: 'PENDING' as const,
+            requestedAt: NOW,
+          },
+        },
+      },
+    ])(
+      'returns 400 due to problems with renders: $scenario',
+      async ({ files }) => {
+        const { templateClient, mocks } = setup();
+
+        mocks.templateRepository.get.mockResolvedValueOnce({
+          data: {
+            ...dbTemplate,
+            files,
+          },
+        });
+
+        mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+          data: letterVariant,
+        });
+
+        const result = await templateClient.approveTemplate(
+          templateId,
+          user,
+          '0'
+        );
+
+        expect(
+          mocks.templateRepository.approveLetterTemplate
+        ).not.toHaveBeenCalled();
+
+        expect(result).toEqual({
+          error: {
+            errorMeta: {
+              code: 400,
+              description:
+                'One or more personalised rendered example has not been generated',
+            },
+          },
+        });
+      }
+    );
+
+    test('returns 400 when sheet count exceeds maxSheets (variant has double-sided printing)', async () => {
+      const { templateClient, mocks } = setup();
+
+      const variantWith2Sheets: LetterVariant = {
+        ...letterVariant,
+        bothSides: true,
+        maxSheets: 2,
+      };
+
+      const filesWithTooManyPages: AuthoringLetterFiles = {
+        ...allRenderedFiles,
+        longFormRender: {
+          status: 'RENDERED',
+          fileName: 'long.pdf',
+          currentVersion: 'v1',
+          pageCount: 5,
+        },
+      };
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...dbTemplate,
+          files: filesWithTooManyPages,
+        },
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: variantWith2Sheets,
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description:
+              'Letter template exceeded maximum number of sheets allowed by letter variant',
+          },
+        },
+      });
+    });
+
+    test('returns 400 when sheet count exceeds maxSheets (variant has single-sided printing)', async () => {
+      const { templateClient, mocks } = setup();
+
+      const variantSingleSided: LetterVariant = {
+        ...letterVariant,
+        bothSides: false,
+        maxSheets: 2,
+      };
+
+      const filesWithTooManyPages: AuthoringLetterFiles = {
+        ...allRenderedFiles,
+        longFormRender: {
+          status: 'RENDERED',
+          fileName: 'long.pdf',
+          currentVersion: 'v1',
+          pageCount: 3,
+        },
+      };
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: {
+          ...dbTemplate,
+          files: filesWithTooManyPages,
+        },
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: variantSingleSided,
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description:
+              'Letter template exceeded maximum number of sheets allowed by letter variant',
+          },
+        },
+      });
+    });
+
+    test('should return a failure result when saving to the database fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: dbTemplate,
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: letterVariant,
+      });
+
+      mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).toHaveBeenCalledWith(templateId, user, 0);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
+        },
+      });
+    });
+
+    test('should return a failure result when updated database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: DatabaseTemplate = {
+        ...notYetSubmittedLetterDto,
+        createdAt: undefined as unknown as string,
+        owner: `CLIENT#${user.clientId}`,
+        version: 1,
+      };
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: dbTemplate,
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: letterVariant,
+      });
+
+      mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).toHaveBeenCalledWith(templateId, user, 0);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
+        },
+      });
+    });
+
+    test('should return template updated to PROOF_APPROVED', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: dbTemplate,
+      });
+
+      mocks.letterVariantRepository.getById.mockResolvedValueOnce({
+        data: letterVariant,
+      });
+
+      mocks.templateRepository.approveLetterTemplate.mockResolvedValueOnce({
+        data: {
+          ...notYetSubmittedLetterDto,
+          templateStatus: 'PROOF_APPROVED',
+          owner: `CLIENT#${user.clientId}`,
+          version: 1,
+        },
+      });
+
+      const result = await templateClient.approveTemplate(
+        templateId,
+        user,
+        '0'
+      );
+
+      expect(
+        mocks.templateRepository.approveLetterTemplate
+      ).toHaveBeenCalledWith(templateId, user, 0);
+
+      expect(result).toEqual({
+        data: {
+          ...notYetSubmittedLetterDto,
+          templateStatus: 'PROOF_APPROVED',
+        },
+      });
+    });
+  });
+
   describe('requestProof', () => {
     test('returns failure result when lock number is invalid', async () => {
       const { templateClient, mocks } = setup();

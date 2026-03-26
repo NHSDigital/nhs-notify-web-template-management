@@ -138,7 +138,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(deleteResponse.status()).toBe(204);
     });
 
-    test('returns 204 - can delete a proof approved letter', async ({
+    test('returns 204 - can delete a proof approved PDF letter', async ({
       request,
     }) => {
       const { id: templateId, lockNumber } = await createLetterTemplate(user1);
@@ -166,6 +166,39 @@ test.describe('DELETE /v1/template/:templateId', () => {
           headers: {
             Authorization: await user1.getAccessToken(),
             'X-Lock-Number': String(submitResult.data.lockNumber),
+          },
+        }
+      );
+
+      expect(deleteResponse.status()).toBe(204);
+    });
+
+    test('returns 204 - can delete a proof approved AUTHORING letter', async ({
+      request,
+    }) => {
+      const [letterVariant] =
+        await context.letterVariants.getGlobalLetterVariants();
+
+      const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'delete-approved-authoring-letter',
+        'PROOF_APPROVED',
+        {
+          letterVariantId: letterVariant.id,
+          longFormRender: { status: 'RENDERED' },
+          shortFormRender: { status: 'RENDERED' },
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+      const deleteResponse = await request.delete(
+        `${process.env.API_BASE_URL}/v1/template/${letterTemplate.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+            'X-Lock-Number': String(letterTemplate.lockNumber),
           },
         }
       );

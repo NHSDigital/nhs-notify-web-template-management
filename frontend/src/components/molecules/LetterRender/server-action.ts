@@ -9,11 +9,11 @@ import {
   SHORT_EXAMPLE_RECIPIENTS,
 } from '@content/example-recipients';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
-import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { generateLetterProof } from '@utils/form-actions';
 import type { LetterProofRequest } from 'nhs-notify-web-template-management-types';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import { format as formatDate } from 'date-fns';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 
 const { pdsSection } = copy.components.letterRender;
 

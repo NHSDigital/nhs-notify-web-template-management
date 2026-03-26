@@ -39,7 +39,7 @@ test.describe('GET /v1/letter-variant/:id', () => {
     expect(response.status()).toBe(404);
     expect(await response.json()).toEqual({
       statusCode: 404,
-      technicalMessage: 'Letter Variant not found',
+      technicalMessage: 'Letter variant not found',
     });
   });
 
@@ -128,7 +128,7 @@ test.describe('GET /v1/letter-variant/:id', () => {
     expect(response.status()).toBe(404);
     expect(await response.json()).toEqual({
       statusCode: 404,
-      technicalMessage: 'Letter Variant not found',
+      technicalMessage: 'Letter variant not found',
     });
   });
 
@@ -154,7 +154,7 @@ test.describe('GET /v1/letter-variant/:id', () => {
     expect(response.status()).toBe(404);
     expect(await response.json()).toEqual({
       statusCode: 404,
-      technicalMessage: 'Letter Variant not found',
+      technicalMessage: 'Letter variant not found',
     });
   });
 });

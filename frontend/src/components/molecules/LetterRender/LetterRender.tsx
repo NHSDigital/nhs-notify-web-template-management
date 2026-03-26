@@ -17,7 +17,12 @@ export function LetterRender({
     <section className='nhsuk-u-margin-top-6'>
       <h2 className='nhsuk-heading-m'>{copy.heading}</h2>
       <p>{copy.guidance}</p>
-      <Link href={copy.guidanceLink.href} className='nhsuk-body'>
+      <Link
+        href={copy.guidanceLink.href}
+        className='nhsuk-body'
+        target='_blank'
+        rel='noopener noreferrer'
+      >
         {copy.guidanceLink.text}
       </Link>
 
