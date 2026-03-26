@@ -293,14 +293,12 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 >
                   PDS personalisation fields
                 </h3>
-                <label
-                  class="nhsuk-label nhsuk-label--s"
-                >
-                  Example recipient
-                </label>
-                <div
-                  class="nhsuk-u-margin-bottom-4"
-                />
+                <p>
+                  <strong>
+                    Example recipient
+                  </strong>
+                  <br />
+                </p>
               </div>
               <div
                 class="nhsuk-grid-column-two-thirds iframeColumn"
@@ -330,14 +328,12 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 >
                   PDS personalisation fields
                 </h3>
-                <label
-                  class="nhsuk-label nhsuk-label--s"
-                >
-                  Example recipient
-                </label>
-                <div
-                  class="nhsuk-u-margin-bottom-4"
-                />
+                <p>
+                  <strong>
+                    Example recipient
+                  </strong>
+                  <br />
+                </p>
               </div>
               <div
                 class="nhsuk-grid-column-two-thirds iframeColumn"

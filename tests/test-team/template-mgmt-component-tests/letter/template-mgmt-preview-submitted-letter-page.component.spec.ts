@@ -39,8 +39,16 @@ function createTemplates(user: TestUser) {
     },
   };
 
+  const authoringValid = TemplateFactory.createAuthoringLetterTemplate(
+    'e8b5f3a1-2c4d-4e6f-8a9b-1c2d3e4f5a6b',
+    user,
+    'authoring-letter-template-preview-submitted',
+    'SUBMITTED'
+  );
+
   return {
     valid,
+    authoringValid,
     invalid: {
       ...TemplateFactory.uploadLetterTemplate(
         '621456cf-ace3-49c3-941e-4df5eba11373',
@@ -125,34 +133,36 @@ test.describe('Preview submitted Letter message template Page', () => {
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with an unsubmitted template, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
-          'templateId',
-          templates.invalid.id
-        );
+    const cases = [
+      {
+        title: 'an invalid pdf template',
+        getTemplateId: () => templates.invalid.id,
+      },
+      {
+        title: 'a valid authoring template',
+        getTemplateId: () => templates.authoringValid.id,
+      },
+      {
+        title: 'a nonexistent template',
+        getTemplateId: () => 'nonexistent-template-id',
+      },
+    ];
 
-      await previewSubmittedLetterTemplatePage.loadPage();
+    for (const { getTemplateId, title } of cases) {
+      test(`when user visits page with id of ${title}, then it redirects to the invalid template page`, async ({
+        baseURL,
+        page,
+      }) => {
+        const previewSubmittedLetterTemplatePage =
+          new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+            'templateId',
+            getTemplateId()
+          );
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
+        await previewSubmittedLetterTemplatePage.loadPage();
 
-    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
-          'templateId',
-          'fake-template-id'
-        );
-
-      await previewSubmittedLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
+        await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+      });
+    }
   });
 });

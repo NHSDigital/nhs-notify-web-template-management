@@ -185,7 +185,7 @@ describe('template has been submitted - authoring', () => {
     });
   });
 
-  it('redirects to preview submitted letter template page', async () => {
+  it('redirects to preview approved letter template page', async () => {
     await Page({ params: Promise.resolve({ templateId: 'template-123' }) });
 
     expect(redirect).toHaveBeenCalledWith(

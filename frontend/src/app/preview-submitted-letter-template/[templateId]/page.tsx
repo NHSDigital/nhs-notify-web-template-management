@@ -1,9 +1,8 @@
 'use server';
 
 import {
-  $PdfLetterTemplate,
   TemplatePageProps,
-  zodValidate,
+  validateSubmittedPdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -12,7 +11,6 @@ import content from '@content/content';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import { NHSNotifyContainer } from '@layouts/container/container';
-import { z } from 'zod';
 
 const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
 
@@ -27,15 +25,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = zodValidate(
-    z.intersection(
-      $PdfLetterTemplate,
-      z.object({
-        templateStatus: z.literal('SUBMITTED'),
-      })
-    ),
-    template
-  );
+  const validatedTemplate = validateSubmittedPdfLetterTemplate(template);
 
   if (!validatedTemplate) {
     redirect('/invalid-template', RedirectType.replace);

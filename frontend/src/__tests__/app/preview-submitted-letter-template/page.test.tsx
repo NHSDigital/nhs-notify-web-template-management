@@ -13,6 +13,7 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
   PDF_LETTER_TEMPLATE,
+  AUTHORING_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
@@ -109,6 +110,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       ...PDF_LETTER_TEMPLATE,
       templateStatus: 'NOT_YET_SUBMITTED' as const,
     },
+    AUTHORING_LETTER_TEMPLATE,
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, and status is $templateStatus',
     async (value) => {

@@ -6,6 +6,7 @@ import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import Page, {
@@ -109,6 +110,19 @@ describe('template is not a letter', () => {
       RedirectType.replace
     );
   });
+});
+
+it('redirects to invalid template page when template is PDF letter', async () => {
+  jest.mocked(getTemplate).mockResolvedValue(PDF_LETTER_TEMPLATE);
+
+  await Page({
+    params: Promise.resolve({ templateId: PDF_LETTER_TEMPLATE.id }),
+  });
+
+  expect(redirect).toHaveBeenCalledWith(
+    '/invalid-template',
+    RedirectType.replace
+  );
 });
 
 describe('authoring letter template is invalid', () => {

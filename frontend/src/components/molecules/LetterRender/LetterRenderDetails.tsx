@@ -1,4 +1,3 @@
-import { Label } from 'nhsuk-react-components';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import {
@@ -11,6 +10,16 @@ type LetterRenderDetailsProps = {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
 };
+
+function Field({ label, value }: { label: string; value?: string }) {
+  return (
+    <p>
+      <strong>{label}</strong>
+      <br />
+      {value}
+    </p>
+  );
+}
 
 export function LetterRenderDetails({
   template,
@@ -27,14 +36,14 @@ export function LetterRenderDetails({
     <>
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
 
-      <Label size='s'>{copy.pdsSection.recipientLabel}</Label>
-      <div className='nhsuk-u-margin-bottom-4'>
-        {
+      <Field
+        label={copy.pdsSection.recipientLabel}
+        value={
           [...SHORT_EXAMPLE_RECIPIENTS, ...LONG_EXAMPLE_RECIPIENTS].find(
             ({ id }) => id === render?.systemPersonalisationPackId
           )?.name
         }
-      </div>
+      />
 
       {hasCustomFields && (
         <>
@@ -43,12 +52,11 @@ export function LetterRenderDetails({
           </h3>
           {template.customPersonalisation!.map((field) => {
             return (
-              <div key={field}>
-                <Label size='s'>{field}</Label>
-                <div className='nhsuk-u-margin-bottom-4'>
-                  {render?.personalisationParameters?.[field]}
-                </div>
-              </div>
+              <Field
+                key={field}
+                label={field}
+                value={render?.personalisationParameters?.[field]}
+              />
             );
           })}
         </>
