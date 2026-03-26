@@ -666,6 +666,24 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.campaignAction).toBeHidden();
     });
 
+    test('when user approves a template, then they are taken to "get ready to approve template" page', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringValid.id
+      );
+
+      await previewPage.loadPage();
+
+      await previewPage.clickContinueButton();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/get-ready-to-approve-letter-template/${templates.authoringValid.id}`
+      );
+    });
+
     test.describe('Letter render section', () => {
       test('displays letter render section with tabs when initialRender exists', async ({
         page,

@@ -22,8 +22,7 @@ export async function submitAuthoringLetterAction(
     };
   }
 
-  const { templateId, lockNumber } = result.data;
+  const { templateId } = result.data;
 
-  // destination TBD
-  redirect(`/submit-letter-template/${templateId}?lockNumber=${lockNumber}`);
+  redirect(`/get-ready-to-approve-letter-template/${templateId}`);
 }
