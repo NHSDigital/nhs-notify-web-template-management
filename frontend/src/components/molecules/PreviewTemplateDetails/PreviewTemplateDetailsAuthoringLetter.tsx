@@ -21,35 +21,47 @@ import { toKebabCase } from '@utils/kebab-case';
 import styles from './PreviewTemplateDetails.module.scss';
 import { interpolate } from '@utils/interpolate';
 
+type PreviewTemplateDetailsAuthoringLetterProps = {
+  template: AuthoringLetterTemplate;
+  letterVariant?: LetterVariant;
+  hideStatus?: boolean;
+  hideEditActions?: boolean;
+  hideLearnMore?: boolean;
+};
+
 const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
   content.components.previewTemplateDetails;
 
-function pagesAndSheetsCount(template: AuthoringLetterTemplate) {
+function pagesAndSheetsCount(
+  template: AuthoringLetterTemplate,
+  bothSides = true
+) {
   const pages =
     template.files.initialRender.status === 'RENDERED'
       ? template.files.initialRender.pageCount
       : 0;
 
-  const sheets = Math.ceil(pages / 2);
+  const pagesPerSheet = bothSides ? 2 : 1;
+
+  const sheets = Math.ceil(pages / pagesPerSheet);
 
   return { pages, sheets };
 }
 
-export default function PreviewTemplateDetailsAuthoringLetter({
+export function PreviewTemplateDetailsAuthoringLetterTable({
   template,
   letterVariant,
   hideStatus,
   hideEditActions,
-}: {
-  template: AuthoringLetterTemplate;
-  letterVariant?: LetterVariant;
-  hideStatus?: boolean;
-  hideEditActions?: boolean;
-}) {
+  hideLearnMore,
+}: PreviewTemplateDetailsAuthoringLetterProps) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
 
-  const { pages, sheets } = pagesAndSheetsCount(template);
+  const { pages, sheets } = pagesAndSheetsCount(
+    template,
+    letterVariant?.bothSides
+  );
 
   const hasSingleCampaign = campaignIds.length === 1;
 
@@ -74,8 +86,6 @@ export default function PreviewTemplateDetailsAuthoringLetter({
 
   return (
     <>
-      <DetailsHeader templateName={template.name} />
-
       {!hideEditName && (
         <p className='nhsuk-u-margin-bottom-4'>
           <Link
@@ -166,6 +176,7 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 label={actions.learnMore}
                 visuallyHiddenText={visuallyHidden.sheets}
                 testId='sheets-action'
+                hidden={hideLearnMore}
                 external
               />
             </SummaryList.Row>
@@ -212,12 +223,24 @@ export default function PreviewTemplateDetailsAuthoringLetter({
                 label={actions.learnMore}
                 visuallyHiddenText={visuallyHidden.status}
                 testId='status-action'
+                hidden={hideLearnMore}
                 external
               />
             </SummaryList.Row>
           )}
         </DetailSection>
       </Container>
+    </>
+  );
+}
+
+export default function PreviewTemplateDetailsAuthoringLetter(
+  props: PreviewTemplateDetailsAuthoringLetterProps
+) {
+  return (
+    <>
+      <DetailsHeader templateName={props.template.name} />
+      <PreviewTemplateDetailsAuthoringLetterTable {...props} />
     </>
   );
 }

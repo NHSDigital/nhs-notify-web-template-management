@@ -10,9 +10,9 @@ import type { TemplateFilter } from 'nhs-notify-backend-client/types';
 import type {
   CreateUpdateTemplate,
   LetterPatch,
-  LetterProofRequest,
   TemplateDto,
   LetterVariant,
+  LetterProofRequest,
 } from 'nhs-notify-web-template-management-types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
@@ -110,6 +110,30 @@ export async function saveTemplate(
   if (error) {
     logger.error('Failed to save template', error);
     throw new Error('Failed to save template data');
+  }
+
+  return data;
+}
+
+export async function approveTemplate(
+  templateId: string,
+  lockNumber: number
+): Promise<TemplateDto> {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.approveTemplate(
+    templateId,
+    accessToken,
+    lockNumber
+  );
+
+  if (error) {
+    logger.error('Failed to approve template', error);
+    throw new Error('Failed to approve template');
   }
 
   return data;

@@ -21,7 +21,7 @@ describe('submitAuthoringLetterAction', () => {
     await submitAuthoringLetterAction({}, formData);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/submit-letter-template/template-123?lockNumber=1'
+      '/review-and-approve-letter-template/template-123?lockNumber=1'
     );
   });
 
