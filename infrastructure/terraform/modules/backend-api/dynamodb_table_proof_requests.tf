@@ -31,7 +31,7 @@ resource "aws_dynamodb_table" "proof_requests" {
 
   lifecycle {
     ignore_changes = [
-      name, # To support backup and restore which will result in a new name otherwise
+      name,
     ]
   }
 
