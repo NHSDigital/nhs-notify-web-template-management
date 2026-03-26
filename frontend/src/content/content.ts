@@ -1890,6 +1890,18 @@ const reviewAndMoveToProduction = {
   },
 };
 
+const reviewAndApproveLetterTemplate = {
+  pageTitle: generatePageTitle('Review and approve letter template'),
+  goBackButtonText: 'Go back',
+  goBackPath:
+    '{{basePath}}/get-ready-to-approve-letter-template/{{templateId}}',
+  shortExampleHeading: 'Short example preview',
+  longExampleHeading: 'Long example preview',
+  submitText: 'Approve letter template',
+  pageHeading: `Review and approve '{{templateName}}'`,
+  headerCaption: 'Step 2 of 2',
+};
+
 const editTemplateNamePage = {
   pageTitle: generatePageTitle('Edit template name'),
   form: {
@@ -2046,6 +2058,7 @@ const content = {
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
+    reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,

@@ -82,6 +82,7 @@ describe('LetterRender', () => {
       'href',
       'https://notify.nhs.uk/using-nhs-notify/personalisation'
     );
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('matches snapshot', () => {

@@ -17,7 +17,7 @@ export class LetterVariantClient {
     const { data: variant } = result;
 
     if (variant.clientId && variant.clientId !== user.clientId) {
-      return failure(ErrorCase.NOT_FOUND, 'Letter Variant not found');
+      return failure(ErrorCase.NOT_FOUND, 'Letter variant not found');
     }
 
     return success(variant);

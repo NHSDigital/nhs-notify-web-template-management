@@ -153,12 +153,7 @@ export function DetailsHeader({
   return (
     <div className='nhsuk-u-reading-width'>
       <span className='nhsuk-caption-l'>{headerCaption}</span>
-      <h1
-        data-testid='preview-message__heading'
-        className={styles.preview__heading}
-      >
-        {templateName}
-      </h1>
+      <h1 data-testid='preview-message__heading'>{templateName}</h1>
     </div>
   );
 }
