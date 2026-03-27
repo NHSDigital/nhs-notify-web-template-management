@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import {
@@ -5,21 +6,12 @@ import {
   SHORT_EXAMPLE_RECIPIENTS,
 } from '@content/example-recipients';
 import type { PersonalisedRenderKey } from '@utils/types';
+import styles from './LetterRenderDetails.module.scss';
 
 type LetterRenderDetailsProps = {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
 };
-
-function Field({ label, value }: { label: string; value?: string }) {
-  return (
-    <p>
-      <strong>{label}</strong>
-      <br />
-      {value}
-    </p>
-  );
-}
 
 export function LetterRenderDetails({
   template,
@@ -34,32 +26,40 @@ export function LetterRenderDetails({
 
   return (
     <>
-      <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
+      <section aria-labelledby={`tab-${tab}-pds-heading`}>
+        <h3 id={`tab-${tab}-pds-heading`} className='nhsuk-heading-s'>
+          {copy.pdsSection.heading}
+        </h3>
 
-      <Field
-        label={copy.pdsSection.recipientLabel}
-        value={
-          [...SHORT_EXAMPLE_RECIPIENTS, ...LONG_EXAMPLE_RECIPIENTS].find(
-            ({ id }) => id === render?.systemPersonalisationPackId
-          )?.name
-        }
-      />
+        <dl className={styles.dl}>
+          <dt>{copy.pdsSection.recipientLabel}</dt>
+          <dd>
+            {
+              [...SHORT_EXAMPLE_RECIPIENTS, ...LONG_EXAMPLE_RECIPIENTS].find(
+                ({ id }) => id === render?.systemPersonalisationPackId
+              )?.name
+            }
+          </dd>
+        </dl>
+      </section>
 
       {hasCustomFields && (
-        <>
-          <h3 className='nhsuk-heading-s nhsuk-u-padding-top-4'>
+        <section aria-labelledby={`tab-${tab}-custom-personalisation`}>
+          <h3
+            id={`tab-${tab}-custom-personalisation`}
+            className='nhsuk-heading-s nhsuk-u-padding-top-4'
+          >
             {copy.customSection.heading}
           </h3>
-          {template.customPersonalisation!.map((field) => {
-            return (
-              <Field
-                key={field}
-                label={field}
-                value={render?.personalisationParameters?.[field]}
-              />
-            );
-          })}
-        </>
+          <dl className={styles.dl}>
+            {template.customPersonalisation!.map((field) => (
+              <Fragment key={field}>
+                <dt>{field}</dt>
+                <dd>{render?.personalisationParameters?.[field]}</dd>
+              </Fragment>
+            ))}
+          </dl>
+        </section>
       )}
     </>
   );

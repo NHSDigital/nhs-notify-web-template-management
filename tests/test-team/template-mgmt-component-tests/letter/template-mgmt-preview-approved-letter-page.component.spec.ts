@@ -21,13 +21,47 @@ function createTemplates(user: TestUser) {
       'e8b5f3a1-2c4d-4e6f-8a9b-1c2d3e4f5a6b',
       user,
       'authoring-letter-template-preview-approved-submitted',
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        customPersonalisation: ['gpSurgeryName', 'gpSurgeryAddress'],
+        longFormRender: {
+          personalisationParameters: {
+            gpSurgeryName: 'Falafel Medical Practice',
+            gpSurgeryAddress: 'Hummus Lane',
+          },
+          systemPersonalisationPackId: 'long-2', // Dr Elizabeth Anne Thompson
+        },
+        shortFormRender: {
+          personalisationParameters: {
+            gpSurgeryName: 'Moon Surgery',
+            gpSurgeryAddress: 'The Moon',
+          },
+          systemPersonalisationPackId: 'short-3', // Ms Sarah Jones
+        },
+      }
     ),
     proofApproved: TemplateFactory.createAuthoringLetterTemplate(
       '375f5dc4-7c77-48f5-be47-d3df1f52bc0e',
       user,
       'authoring-letter-template-preview-approved-proof-approved',
-      'PROOF_APPROVED'
+      'PROOF_APPROVED',
+      {
+        customPersonalisation: ['gpSurgeryName', 'gpSurgeryAddress'],
+        longFormRender: {
+          personalisationParameters: {
+            gpSurgeryName: 'Falafel Medical Practice',
+            gpSurgeryAddress: 'Hummus Lane',
+          },
+          systemPersonalisationPackId: 'long-2',
+        },
+        shortFormRender: {
+          personalisationParameters: {
+            gpSurgeryName: 'Moon Surgery',
+            gpSurgeryAddress: 'The Moon',
+          },
+          systemPersonalisationPackId: 'short-3',
+        },
+      }
     ),
     invalid: TemplateFactory.createAuthoringLetterTemplate(
       'e2a5b238-ecbf-42c8-90f1-0cf544a9c0ae',
@@ -131,6 +165,50 @@ test.describe('Preview approved letter template page', () => {
         await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(
           0
         );
+
+        const shortTab =
+          previewSubmittedLetterTemplatePage.getTab('Short examples');
+        const longTab =
+          previewSubmittedLetterTemplatePage.getTab('Long examples');
+
+        await expect(shortTab.tab).toHaveAttribute('aria-selected', 'true');
+        await expect(shortTab.panel).toBeVisible();
+        await expect(longTab.tab).toHaveAttribute('aria-selected', 'false');
+        await expect(longTab.panel).toBeHidden();
+
+        await longTab.tab.click();
+
+        await expect(longTab.tab).toHaveAttribute('aria-selected', 'true');
+        await expect(longTab.panel).toBeVisible();
+        await expect(shortTab.tab).toHaveAttribute('aria-selected', 'false');
+        await expect(shortTab.panel).toBeHidden();
+
+        await expect(longTab.recipientValue).toHaveText(
+          'Dr Elizabeth Anne Thompson'
+        );
+
+        await expect(longTab.getCustomFieldValue('gpSurgeryName')).toHaveText(
+          'Falafel Medical Practice'
+        );
+        await expect(
+          longTab.getCustomFieldValue('gpSurgeryAddress')
+        ).toHaveText('Hummus Lane');
+
+        await shortTab.tab.click();
+
+        await expect(shortTab.tab).toHaveAttribute('aria-selected', 'true');
+        await expect(shortTab.panel).toBeVisible();
+        await expect(longTab.tab).toHaveAttribute('aria-selected', 'false');
+        await expect(longTab.panel).toBeHidden();
+
+        await expect(shortTab.recipientValue).toHaveText('Ms Sarah Jones');
+
+        await expect(shortTab.getCustomFieldValue('gpSurgeryName')).toHaveText(
+          'Moon Surgery'
+        );
+        await expect(
+          shortTab.getCustomFieldValue('gpSurgeryAddress')
+        ).toHaveText('The Moon');
       });
     }
   });

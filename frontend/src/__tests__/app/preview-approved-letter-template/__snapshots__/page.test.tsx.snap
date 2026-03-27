@@ -288,17 +288,24 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               <div
                 class="nhsuk-grid-column-one-third"
               >
-                <h3
-                  class="nhsuk-heading-s"
+                <section
+                  aria-labelledby="tab-shortFormRender-pds-heading"
                 >
-                  PDS personalisation fields
-                </h3>
-                <p>
-                  <strong>
-                    Example recipient
-                  </strong>
-                  <br />
-                </p>
+                  <h3
+                    class="nhsuk-heading-s"
+                    id="tab-shortFormRender-pds-heading"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <dl
+                    class="dl"
+                  >
+                    <dt>
+                      Example recipient
+                    </dt>
+                    <dd />
+                  </dl>
+                </section>
               </div>
               <div
                 class="nhsuk-grid-column-two-thirds iframeColumn"
@@ -323,17 +330,24 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               <div
                 class="nhsuk-grid-column-one-third"
               >
-                <h3
-                  class="nhsuk-heading-s"
+                <section
+                  aria-labelledby="tab-longFormRender-pds-heading"
                 >
-                  PDS personalisation fields
-                </h3>
-                <p>
-                  <strong>
-                    Example recipient
-                  </strong>
-                  <br />
-                </p>
+                  <h3
+                    class="nhsuk-heading-s"
+                    id="tab-longFormRender-pds-heading"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <dl
+                    class="dl"
+                  >
+                    <dt>
+                      Example recipient
+                    </dt>
+                    <dd />
+                  </dl>
+                </section>
               </div>
               <div
                 class="nhsuk-grid-column-two-thirds iframeColumn"

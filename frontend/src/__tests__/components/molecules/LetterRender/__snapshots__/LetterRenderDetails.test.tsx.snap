@@ -2,29 +2,45 @@
 
 exports[`LetterRenderDetails snapshots matches snapshot 1`] = `
 <DocumentFragment>
-  <h3
-    class="nhsuk-heading-s"
+  <section
+    aria-labelledby="tab-shortFormRender-pds-heading"
   >
-    PDS personalisation fields
-  </h3>
-  <p>
-    <strong>
-      Example recipient
-    </strong>
-    <br />
-    Jo Bloggs
-  </p>
-  <h3
-    class="nhsuk-heading-s nhsuk-u-padding-top-4"
+    <h3
+      class="nhsuk-heading-s"
+      id="tab-shortFormRender-pds-heading"
+    >
+      PDS personalisation fields
+    </h3>
+    <dl
+      class="dl"
+    >
+      <dt>
+        Example recipient
+      </dt>
+      <dd>
+        Jo Bloggs
+      </dd>
+    </dl>
+  </section>
+  <section
+    aria-labelledby="tab-shortFormRender-custom-personalisation"
   >
-    Custom personalisation fields
-  </h3>
-  <p>
-    <strong>
-      appointmentDate
-    </strong>
-    <br />
-    2025-01-15
-  </p>
+    <h3
+      class="nhsuk-heading-s nhsuk-u-padding-top-4"
+      id="tab-shortFormRender-custom-personalisation"
+    >
+      Custom personalisation fields
+    </h3>
+    <dl
+      class="dl"
+    >
+      <dt>
+        appointmentDate
+      </dt>
+      <dd>
+        2025-01-15
+      </dd>
+    </dl>
+  </section>
 </DocumentFragment>
 `;
