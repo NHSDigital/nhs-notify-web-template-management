@@ -1,5 +1,5 @@
 import { type DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { $RoutingConfig } from 'nhs-notify-backend-client';
+import { $RoutingConfig } from 'nhs-notify-backend-client/schemas';
 import type {
   RoutingConfig,
   RoutingConfigStatus,

@@ -5,12 +5,13 @@ import {
   type TemplatePageProps,
   getPreviewURL,
 } from 'nhs-notify-web-template-management-utils';
-import { NHSNotifyContainer } from '@layouts/container/container';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { HintText, Label } from '@atoms/nhsuk-components';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
+import { NHSNotifyContainer } from '@layouts/container/container';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getTemplate } from '@utils/form-actions';
@@ -23,14 +24,10 @@ export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function EditTemplateNamePage({
-  params,
-}: TemplatePageProps) {
-  const { templateId } = await params;
+export default async function EditTemplateNamePage(props: TemplatePageProps) {
+  const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
-
-  const client = await fetchClient();
 
   if (!template) {
     return redirect('/invalid-template', RedirectType.replace);
@@ -40,12 +37,19 @@ export default async function EditTemplateNamePage({
     return redirect('/message-templates', RedirectType.replace);
   }
 
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
   if (
     template.templateStatus === 'SUBMITTED' ||
-    template.letterVersion !== 'AUTHORING'
+    template.letterVersion !== 'AUTHORING' ||
+    !lockNumberResult.success
   ) {
     return redirect(getPreviewURL(template), RedirectType.replace);
   }
+
+  const client = await fetchClient();
 
   if (!client?.features.letterAuthoring) {
     return redirect('/message-templates', RedirectType.replace);
@@ -71,7 +75,7 @@ export default async function EditTemplateNamePage({
                 <input
                   type='hidden'
                   name='lockNumber'
-                  value={template.lockNumber}
+                  value={lockNumberResult.data}
                   readOnly
                 />
                 <NHSNotifyForm.FormGroup htmlFor='name'>

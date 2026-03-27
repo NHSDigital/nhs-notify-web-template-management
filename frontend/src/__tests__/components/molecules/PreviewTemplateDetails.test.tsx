@@ -14,6 +14,7 @@ import {
   LetterTemplate,
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { makeLetterVariant } from '@testhelpers/helpers';
 
 jest.mock('@providers/client-config-provider');
 
@@ -49,6 +50,7 @@ const basePdfLetter: PdfLetterTemplate = {
 
 const baseAuthoringLetter: AuthoringLetterTemplate = {
   ...baseTemplate,
+  clientId: 'client-id',
   name: 'Authoring Letter',
   templateStatus: 'NOT_YET_SUBMITTED',
   templateType: 'LETTER',
@@ -204,15 +206,7 @@ describe('PreviewTemplateDetailsPdfLetter', () => {
 
 describe('PreviewTemplateDetailsAuthoringLetter', () => {
   describe('snapshots', () => {
-    it('matches snapshot', () => {
-      const container = render(
-        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-      );
-
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-
-    it('matches snapshot without letterVariantId (shows missing value styling)', () => {
+    it('matches snapshot without letterVariant (shows missing value styling)', () => {
       const { letterVariantId: _, ...templateWithoutVariant } =
         baseAuthoringLetter;
       const container = render(
@@ -225,6 +219,17 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(
         container.container.querySelector('.missing-value')
       ).toBeInTheDocument();
+    });
+
+    it('matches snapshot with letter variant name displayed', () => {
+      const container = render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+          letterVariant={makeLetterVariant({ name: 'Example Variant Name' })}
+        />
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
     });
 
     it('matches snapshot with initialRender in non-RENDERED status - page counts are not displayed', () => {
@@ -446,15 +451,17 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
 
   describe('sheets calculation', () => {
     it.each([
-      { pageCount: 1, expectedSheets: 1 },
-      { pageCount: 2, expectedSheets: 1 },
-      { pageCount: 3, expectedSheets: 2 },
-      { pageCount: 4, expectedSheets: 2 },
-      { pageCount: 5, expectedSheets: 3 },
-      { pageCount: 6, expectedSheets: 3 },
+      { pageCount: 1, bothSides: true, expectedSheets: 1 },
+      { pageCount: 2, bothSides: true, expectedSheets: 1 },
+      { pageCount: 3, bothSides: true, expectedSheets: 2 },
+      { pageCount: 4, bothSides: true, expectedSheets: 2 },
+      { pageCount: 5, bothSides: true, expectedSheets: 3 },
+      { pageCount: 6, bothSides: true, expectedSheets: 3 },
+      { pageCount: 1, bothSides: false, expectedSheets: 1 },
+      { pageCount: 6, bothSides: false, expectedSheets: 6 },
     ])(
-      'calculates sheets as $expectedSheets when pageCount is $pageCount',
-      ({ pageCount, expectedSheets }) => {
+      'calculates sheets as $expectedSheets when pageCount is $pageCount and bothSides is $bothSides',
+      ({ pageCount, bothSides, expectedSheets }) => {
         render(
           <PreviewTemplateDetailsAuthoringLetter
             template={{
@@ -472,6 +479,19 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
                   pageCount,
                 },
               },
+            }}
+            letterVariant={{
+              bothSides,
+              dispatchTime: '2026-03-16T14:51:43.884Z',
+              envelopeSize: 'C5',
+              id: 'variant-id',
+              maxSheets: 4,
+              name: 'test',
+              postage: 'first',
+              printColour: 'black',
+              sheetSize: 'A4',
+              status: 'PROD',
+              type: 'STANDARD',
             }}
           />
         );

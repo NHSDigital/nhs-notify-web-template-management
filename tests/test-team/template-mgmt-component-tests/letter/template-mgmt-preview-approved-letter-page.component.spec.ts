@@ -9,11 +9,8 @@ import {
   assertSkipToMainContent,
   assertAndClickBackLinkTop,
 } from '../../helpers/template-mgmt-common.steps';
-import {
-  createAuthHelper,
-  TestUser,
-  testUsers,
-} from '../../helpers/auth/cognito-auth-helper';
+import { TestUser, testUsers } from '../../helpers/auth/cognito-auth-helper';
+import { getTestContext } from 'helpers/context/context';
 
 function createTemplates(user: TestUser) {
   return {
@@ -89,7 +86,9 @@ test.describe('Preview approved letter template page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    const user = await getTestContext().auth.getTestUser(
+      testUsers.User1.userId
+    );
     templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

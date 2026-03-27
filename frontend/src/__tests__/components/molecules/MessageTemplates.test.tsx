@@ -115,6 +115,7 @@ describe('MessageTemplates component', () => {
           templateList: [
             {
               id: '1',
+              clientId: 'client-id',
               templateType: 'LETTER',
               templateStatus: 'PROOF_APPROVED',
               name: 'Template 1',
@@ -141,6 +142,7 @@ describe('MessageTemplates component', () => {
             },
             {
               id: '2',
+              clientId: 'client-id',
               templateType: 'LETTER',
               templateStatus: 'PROOF_APPROVED',
               name: 'Template 2',

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import type { Metadata } from 'next';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import type {
   AuthoringLetterTemplate,
   TemplatePageProps,
@@ -17,8 +18,8 @@ import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDet
 import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
-import { getTemplate } from '@utils/form-actions';
 import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
@@ -83,6 +84,14 @@ export default async function PreviewLetterTemplatePage({
   const showSubmitForm =
     validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED';
 
+  let letterVariant: LetterVariant | undefined;
+
+  if (validatedTemplate.letterVariantId) {
+    letterVariant = await getLetterVariantById(
+      validatedTemplate.letterVariantId
+    );
+  }
+
   return (
     <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
@@ -112,6 +121,7 @@ export default async function PreviewLetterTemplatePage({
                   <div className='nhsuk-grid-column-full'>
                     <PreviewTemplateDetailsAuthoringLetter
                       template={validatedTemplate}
+                      letterVariant={letterVariant}
                     />
                   </div>
                 </div>

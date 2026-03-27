@@ -29,7 +29,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render PDF le
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example letter
@@ -295,7 +294,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example template
@@ -440,7 +438,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example Email template
@@ -610,7 +607,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             SMS template
@@ -755,7 +751,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render PDF let
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example letter
@@ -1018,7 +1013,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example template
@@ -1178,7 +1172,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example Email template
@@ -1363,7 +1356,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             SMS template

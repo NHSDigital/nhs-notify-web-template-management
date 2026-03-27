@@ -583,6 +583,7 @@ describe('templateRepository', () => {
         createdBy: `INTERNAL_USER#${internalUserId}`,
         updatedBy: `INTERNAL_USER#${internalUserId}`,
         lockNumber: 6,
+        letterVariantId: 'new-variant',
       };
 
       mocks.ddbDocClient
@@ -596,7 +597,11 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.patch(
         'abc-def-ghi-jkl-123',
-        { name: 'Updated Template Name', campaignId: 'Campaign 2' },
+        {
+          name: 'Updated Template Name',
+          campaignId: 'Campaign 2',
+          letterVariantId: 'new-variant',
+        },
         user,
         5
       );
@@ -612,24 +617,107 @@ describe('templateRepository', () => {
           '#lockNumber': 'lockNumber',
           '#name': 'name',
           '#templateStatus': 'templateStatus',
+          '#templateType': 'templateType',
           '#updatedAt': 'updatedAt',
           '#updatedBy': 'updatedBy',
+          '#letterVariantId': 'letterVariantId',
+          '#letterVersion': 'letterVersion',
         },
         ExpressionAttributeValues: {
           ':campaignId': 'Campaign 2',
-          ':condition_2_1_templateStatus': 'DELETED',
-          ':condition_2_2_templateStatus': 'SUBMITTED',
-          ':condition_3_1_templateStatus': 'PROOF_APPROVED',
-          ':condition_4_1_lockNumber': 5,
+          ':condition_2_templateType': 'LETTER',
+          ':condition_3_letterVersion': 'AUTHORING',
+          ':condition_4_1_templateStatus': 'DELETED',
+          ':condition_4_2_templateStatus': 'SUBMITTED',
+          ':condition_5_1_templateStatus': 'PROOF_APPROVED',
+          ':condition_6_1_lockNumber': 5,
           ':lockNumber': 1,
           ':name': 'Updated Template Name',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':updatedBy': `INTERNAL_USER#${internalUserId}`,
+          ':letterVariantId': 'new-variant',
         },
         UpdateExpression:
-          'SET #name = :name, #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+          'SET #name = :name, #campaignId = :campaignId, #letterVariantId = :letterVariantId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
         ConditionExpression:
-          'attribute_exists (#id) AND NOT #templateStatus IN (:condition_2_1_templateStatus, :condition_2_2_templateStatus) AND NOT #templateStatus IN (:condition_3_1_templateStatus) AND (#lockNumber = :condition_4_1_lockNumber OR attribute_not_exists (#lockNumber))',
+          'attribute_exists (#id) AND #templateType = :condition_2_templateType AND #letterVersion = :condition_3_letterVersion AND NOT #templateStatus IN (:condition_4_1_templateStatus, :condition_4_2_templateStatus) AND NOT #templateStatus IN (:condition_5_1_templateStatus) AND (#lockNumber = :condition_6_1_lockNumber OR attribute_not_exists (#lockNumber))',
+      });
+
+      expect(response).toEqual({
+        data: updated,
+      });
+    });
+
+    test('should remove letterVariantId attribute if empty string is given', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const updated: DatabaseTemplate = {
+        id: 'abc-def-ghi-jkl-123',
+        owner: ownerWithClientPrefix,
+        clientId: clientId,
+        campaignId: 'Campaign 2',
+        version: 1,
+        name: 'Updated Template Name',
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        letterType: 'x1',
+        language: 'en',
+        letterVersion: 'AUTHORING',
+        createdAt: '2024-12-27T00:00:00.000Z',
+        updatedAt: '2024-12-27T00:00:00.000Z',
+        createdBy: `INTERNAL_USER#${internalUserId}`,
+        updatedBy: `INTERNAL_USER#${internalUserId}`,
+        lockNumber: 6,
+      };
+
+      mocks.ddbDocClient
+        .on(UpdateCommand, {
+          TableName: templatesTableName,
+          Key: { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
+        })
+        .resolves({
+          Attributes: updated,
+        });
+
+      const response = await templateRepository.patch(
+        'abc-def-ghi-jkl-123',
+        {
+          letterVariantId: '',
+        },
+        user,
+        5
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'abc-def-ghi-jkl-123', owner: 'CLIENT#client-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ExpressionAttributeNames: {
+          '#id': 'id',
+          '#lockNumber': 'lockNumber',
+          '#templateStatus': 'templateStatus',
+          '#templateType': 'templateType',
+          '#updatedAt': 'updatedAt',
+          '#updatedBy': 'updatedBy',
+          '#letterVariantId': 'letterVariantId',
+          '#letterVersion': 'letterVersion',
+        },
+        ExpressionAttributeValues: {
+          ':condition_2_templateType': 'LETTER',
+          ':condition_3_letterVersion': 'AUTHORING',
+          ':condition_4_1_templateStatus': 'DELETED',
+          ':condition_4_2_templateStatus': 'SUBMITTED',
+          ':condition_5_1_templateStatus': 'PROOF_APPROVED',
+          ':condition_6_1_lockNumber': 5,
+          ':lockNumber': 1,
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':updatedBy': `INTERNAL_USER#${internalUserId}`,
+        },
+        UpdateExpression:
+          'SET #updatedAt = :updatedAt, #updatedBy = :updatedBy REMOVE #letterVariantId ADD #lockNumber :lockNumber',
+        ConditionExpression:
+          'attribute_exists (#id) AND #templateType = :condition_2_templateType AND #letterVersion = :condition_3_letterVersion AND NOT #templateStatus IN (:condition_4_1_templateStatus, :condition_4_2_templateStatus) AND NOT #templateStatus IN (:condition_5_1_templateStatus) AND (#lockNumber = :condition_6_1_lockNumber OR attribute_not_exists (#lockNumber))',
       });
 
       expect(response).toEqual({
@@ -650,6 +738,7 @@ describe('templateRepository', () => {
           testName: 'when templateStatus is already SUBMITTED',
           Item: {
             templateType: { S: 'LETTER' },
+            letterVersion: { S: 'AUTHORING' },
             templateStatus: { S: 'SUBMITTED' },
             lockNumber: { N: '5' },
           },
@@ -662,6 +751,7 @@ describe('templateRepository', () => {
           testName: 'when templateStatus is already PROOF_APPROVED',
           Item: {
             templateType: { S: 'LETTER' },
+            letterVersion: { S: 'AUTHORING' },
             templateStatus: { S: 'PROOF_APPROVED' },
             lockNumber: { N: '5' },
           },
@@ -675,6 +765,7 @@ describe('templateRepository', () => {
           testName: 'when templateStatus is already DELETED',
           Item: {
             templateType: { S: 'LETTER' },
+            letterVersion: { S: 'AUTHORING' },
             templateStatus: { S: 'DELETED' },
             lockNumber: { N: '5' },
           },
@@ -688,6 +779,7 @@ describe('templateRepository', () => {
             'when lockNumber in database does not match the user-provided value',
           Item: {
             templateType: { S: 'LETTER' },
+            letterVersion: { S: 'AUTHORING' },
             templateStatus: { S: 'NOT_YET_SUBMITTED' },
             lockNumber: { N: '7' },
           },
@@ -695,6 +787,32 @@ describe('templateRepository', () => {
           errorMeta: {
             description:
               'Lock number mismatch - Template has been modified since last read',
+          },
+        },
+        {
+          testName: 'when templateType in database is not LETTER',
+          Item: {
+            templateType: { S: 'SMS' },
+            letterVersion: { S: 'AUTHORING' },
+            templateStatus: { S: 'NOT_YET_SUBMITTED' },
+            lockNumber: { N: '5' },
+          },
+          errorCode: 403,
+          errorMeta: {
+            description: 'Unsupported for this template type',
+          },
+        },
+        {
+          testName: 'when letterVersion in database is not AUTHORING',
+          Item: {
+            templateType: { S: 'LETTER' },
+            letterVersion: { S: 'PDF' },
+            templateStatus: { S: 'NOT_YET_SUBMITTED' },
+            lockNumber: { N: '5' },
+          },
+          errorCode: 403,
+          errorMeta: {
+            description: 'Unsupported for this template type',
           },
         },
       ];
@@ -964,6 +1082,149 @@ describe('templateRepository', () => {
           'SET #templateStatus = :newStatus, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumberIncrement',
         ConditionExpression:
           'attribute_exists(id) AND NOT #templateStatus IN (:deleted, :submitted) AND (attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed) AND (attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed) AND (#templateStatus = :expectedStatus OR #templateStatus = :expectedProofingLetterStatus) AND (attribute_not_exists(#lockNumber) OR #lockNumber = :expectedLockNumber)',
+      });
+    });
+  });
+
+  describe('approveLetterTemplate', () => {
+    test.each([
+      {
+        testName: 'When template does not exist',
+        Item: undefined,
+        code: 404,
+        message: 'Template not found',
+        returnActualError: false,
+      },
+      {
+        testName: 'Fails when template status is DELETED',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'DELETED',
+          lockNumber: 0,
+        }),
+        code: 404,
+        message: 'Template not found',
+        returnActualError: false,
+      },
+      {
+        testName: 'Fails when stored lock number differs from input',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          lockNumber: 1,
+        }),
+        code: 409,
+        message:
+          'Lock number mismatch - Template has been modified since last read',
+        returnActualError: true,
+      },
+      {
+        // lock number is currently the only condition, so this case is not expected
+        testName:
+          'Fails when template cannot be approved (condition check fails for other reasons)',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'SUBMITTED',
+          lockNumber: 0,
+        }),
+        code: 400,
+        message: 'Template cannot be approved',
+        returnActualError: true,
+      },
+    ])(
+      'approveLetterTemplate: $testName',
+      async ({ Item, code, message, returnActualError }) => {
+        const { templateRepository, mocks } = setup();
+
+        const error = new ConditionalCheckFailedException({
+          message: 'mocked',
+          $metadata: { httpStatusCode: 400 },
+          Item,
+        });
+
+        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+        const response = await templateRepository.approveLetterTemplate(
+          'abc-def-ghi-jkl-123',
+          user,
+          0
+        );
+
+        expect(response).toEqual({
+          error: {
+            ...(returnActualError ? { actualError: error } : {}),
+            errorMeta: {
+              code,
+              description: message,
+            },
+          },
+        });
+      }
+    );
+
+    test('should return error when an unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new Error('mocked');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.approveLetterTemplate(
+        'abc-def-ghi-jkl-123',
+        user,
+        0
+      );
+
+      expect(response).toEqual({
+        error: {
+          actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
+        },
+      });
+    });
+
+    test('should update template status to PROOF_APPROVED', async () => {
+      const { templateRepository, mocks } = setup();
+      const id = 'abc-def-ghi-jkl-123';
+
+      const databaseTemplate: DatabaseTemplate = {
+        id,
+        owner: ownerWithClientPrefix,
+        version: 1,
+        name: 'updated-name',
+        message: 'updated-message',
+        templateStatus: 'PROOF_APPROVED',
+        templateType: 'LETTER',
+        updatedAt: 'now',
+        createdAt: 'yesterday',
+        lockNumber: 1,
+      };
+
+      mocks.ddbDocClient
+        .on(UpdateCommand, {
+          TableName: templatesTableName,
+          Key: { id, owner: ownerWithClientPrefix },
+        })
+        .resolves({ Attributes: databaseTemplate });
+
+      const response = await templateRepository.approveLetterTemplate(
+        id,
+        user,
+        0
+      );
+
+      expect(response).toEqual({
+        data: databaseTemplate,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'abc-def-ghi-jkl-123', owner: 'CLIENT#client-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
       });
     });
   });

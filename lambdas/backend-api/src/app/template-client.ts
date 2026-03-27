@@ -1,43 +1,54 @@
 import type { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
-import { failure, success, validate } from '@backend-api/utils/index';
+import { z } from 'zod/v4';
+
 import {
-  type Result,
-  ErrorCase,
+  LETTER_MULTIPART,
+  $LetterPatch,
   $CreateUpdateNonLetter,
   $LockNumber,
   $TemplateDto,
   $TemplateFilter,
-  $PatchTemplate,
   $LetterProofRequest,
-} from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client/schemas';
+import {
+  ErrorCase,
+  Result,
+  TemplateFilter,
+} from 'nhs-notify-backend-client/types';
 import type {
   AuthoringLetterFiles,
+  LetterPatch,
   ClientConfiguration,
   CreateUpdateTemplate,
+  LetterType,
+  LetterVariant,
   LetterProofRequest,
-  PatchTemplate,
   PdfLetterFiles,
   TemplateDto,
 } from 'nhs-notify-web-template-management-types';
-import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
   $UploadPdfLetterTemplate,
   $UploadDocxLetterTemplate,
   type DatabaseTemplate,
   type User,
   $PdfLetterTemplate,
+  AuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { z } from 'zod/v4';
-import type { LetterUploadRepository } from '../infra/letter-upload-repository';
-import type { ProofingQueue } from '../infra/proofing-queue';
-import type { ClientConfigRepository } from '../infra/client-config-repository';
-import type { TemplateRepository } from '../infra';
-import type { TemplateFilter } from 'nhs-notify-backend-client/src/types/filters';
-import type { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+
+import type { ClientConfigRepository } from '@backend-api/infra/client-config-repository';
+import type { LetterUploadRepository } from '@backend-api/infra/letter-upload-repository';
+import type {
+  LetterVariantQueryFilters,
+  LetterVariantRepository,
+} from '@backend-api/infra/letter-variant-repository';
+import type { ProofingQueue } from '@backend-api/infra/proofing-queue';
+import type { TemplateRepository } from '@backend-api/infra/template-repository';
 import type { RenderQueue } from '@backend-api/infra/render-queue';
+import type { RoutingConfigRepository } from '@backend-api/infra/routing-config-repository';
+import { failure, success, validate } from '@backend-api/utils';
 
 export class TemplateClient {
   private $LetterForPdfProofing = z.intersection(
@@ -57,6 +68,7 @@ export class TemplateClient {
     private readonly defaultLetterSupplier: string,
     private readonly clientConfigRepository: ClientConfigRepository,
     private readonly routingConfigRepository: RoutingConfigRepository,
+    private readonly letterVariantRepository: LetterVariantRepository,
     private readonly logger: Logger
   ) {}
 
@@ -144,37 +156,17 @@ export class TemplateClient {
       );
     }
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      user.clientId
+    const clientConfigurationResult = await this.validateCampaignIdForUser(
+      user,
+      validatedTemplate.campaignId,
+      log
     );
 
-    const { data: clientConfiguration, error: clientConfigurationError } =
-      clientConfigurationResult;
-
-    if (clientConfigurationError) {
-      log
-        .child(clientConfigurationError.errorMeta)
-        .error(
-          'Failed to fetch client configuration',
-          clientConfigurationError.actualError
-        );
-
+    if (clientConfigurationResult.error) {
       return clientConfigurationResult;
     }
 
-    const isCampaignIdValid = this.isCampaignIdValid(
-      clientConfiguration,
-      validatedTemplate.campaignId
-    );
-
-    if (!isCampaignIdValid) {
-      log.error('Invalid campaign ID in request');
-
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid campaign ID in request'
-      );
-    }
+    const { data: clientConfiguration } = clientConfigurationResult;
 
     const versionId = randomUUID();
 
@@ -196,7 +188,7 @@ export class TemplateClient {
 
     const proofingEnabled =
       (!isRightToLeft(validatedTemplate.language) &&
-        clientConfiguration?.features.proofing) ||
+        clientConfiguration.features.proofing) ||
       false;
 
     const letterTemplateFields = {
@@ -425,18 +417,10 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
 
-    if (!lockNumberValidation.success) {
-      log.error(
-        'Lock number failed validation',
-        z.treeifyError(lockNumberValidation.error)
-      );
-
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid lock number provided'
-      );
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
     }
 
     const updateResult = await this.templateRepository.update(
@@ -464,9 +448,9 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async patchTemplate(
+  async patchLetterTemplate(
     templateId: string,
-    updates: PatchTemplate,
+    updates: LetterPatch,
     user: User,
     lockNumber: string
   ): Promise<Result<TemplateDto>> {
@@ -476,7 +460,7 @@ export class TemplateClient {
       user,
     });
 
-    const validationResult = await validate($PatchTemplate, updates);
+    const validationResult = await validate($LetterPatch, updates);
 
     if (validationResult.error) {
       log
@@ -486,57 +470,28 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
 
-    if (!lockNumberValidation.success) {
-      log.error(
-        'Lock number failed validation',
-        z.treeifyError(lockNumberValidation.error)
-      );
-
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid lock number provided'
-      );
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
     }
 
-    if (validationResult.data.campaignId) {
-      const clientConfigurationResult = await this.clientConfigRepository.get(
-        user.clientId
-      );
+    const normalisedPatchResult = await this.normaliseLetterPatch(
+      templateId,
+      validationResult.data,
+      user,
+      log
+    );
 
-      const { data: clientConfiguration, error: clientConfigurationError } =
-        clientConfigurationResult;
-
-      if (clientConfigurationError) {
-        log
-          .child(clientConfigurationError.errorMeta)
-          .error(
-            'Failed to fetch client configuration',
-            clientConfigurationError.actualError
-          );
-
-        return clientConfigurationResult;
-      }
-
-      const isCampaignIdValid = this.isCampaignIdValid(
-        clientConfiguration,
-        validationResult.data.campaignId
-      );
-
-      if (!isCampaignIdValid) {
-        log.error('Invalid campaign ID in request');
-
-        return failure(
-          ErrorCase.VALIDATION_FAILED,
-          'Invalid campaign ID in request'
-        );
-      }
+    if (normalisedPatchResult.error) {
+      return normalisedPatchResult;
     }
+
+    const patch = normalisedPatchResult.data;
 
     const patchResult = await this.templateRepository.patch(
       templateId,
-      validationResult.data,
+      patch,
       user,
       lockNumberValidation.data
     );
@@ -558,6 +513,108 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
+  async approveTemplate(
+    templateId: string,
+    user: User,
+    lockNumber: string
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({ templateId, user });
+
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
+
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
+    }
+
+    const { data: template, error: getTemplateError } =
+      await this.templateRepository.get(templateId, user.clientId);
+
+    if (getTemplateError) {
+      log
+        .child(getTemplateError.errorMeta)
+        .error('Failed to get template', getTemplateError.actualError);
+
+      return { error: getTemplateError };
+    }
+
+    if (
+      template.templateType !== 'LETTER' ||
+      template.letterVersion !== 'AUTHORING' ||
+      template.templateStatus !== 'NOT_YET_SUBMITTED' ||
+      !template.campaignId ||
+      !template.letterVariantId
+    ) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Template cannot be approved'
+      );
+    }
+
+    const { data: variant, error: getVariantError } =
+      await this.letterVariantRepository.getById(template.letterVariantId);
+
+    if (getVariantError) {
+      log
+        .child({
+          ...getVariantError.errorMeta,
+          letterVariantId: template.letterVariantId,
+        })
+        .error('Failed to get letter variant', getVariantError.actualError);
+
+      return { error: getVariantError };
+    }
+
+    const { initialRender, shortFormRender, longFormRender } =
+      template.files as AuthoringLetterFiles;
+
+    const pageCounts = [initialRender, shortFormRender, longFormRender].flatMap(
+      (r) => (r?.status === 'RENDERED' ? [r.pageCount] : [])
+    );
+
+    if (pageCounts.length !== 3) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'One or more personalised rendered example has not been generated'
+      );
+    }
+
+    const pagesPerSheet = variant.bothSides ? 2 : 1;
+
+    if (
+      pageCounts.some((c) => Math.ceil(c / pagesPerSheet) > variant.maxSheets)
+    ) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Letter template exceeded maximum number of sheets allowed by letter variant'
+      );
+    }
+
+    const updateResult = await this.templateRepository.approveLetterTemplate(
+      templateId,
+      user,
+      lockNumberValidation.data
+    );
+
+    if (updateResult.error) {
+      log
+        .child(updateResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          updateResult.error.actualError
+        );
+
+      return updateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
+
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
+  }
+
   async submitTemplate(
     templateId: string,
     user: User,
@@ -565,18 +622,10 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
 
-    if (!lockNumberValidation.success) {
-      log.error(
-        'Lock number failed validation',
-        z.treeifyError(lockNumberValidation.error)
-      );
-
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid lock number provided'
-      );
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
     }
 
     const [
@@ -654,18 +703,10 @@ export class TemplateClient {
   ): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
-    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
 
-    if (!lockNumberValidation.success) {
-      log.error(
-        'Lock number failed validation',
-        z.treeifyError(lockNumberValidation.error)
-      );
-
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid lock number provided'
-      );
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
     }
 
     // Check if template is linked to any routing configs
@@ -796,18 +837,10 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
 
-    if (!lockNumberValidation.success) {
-      log.error(
-        'Lock number failed validation',
-        z.treeifyError(lockNumberValidation.error)
-      );
-
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid lock number provided'
-      );
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
     }
 
     const clientConfigurationResult = await this.clientConfigRepository.get(
@@ -901,6 +934,22 @@ export class TemplateClient {
     }
 
     return success(proofLetterValidationResult.data);
+  }
+
+  async getLetterVariantsForTemplate(
+    templateId: string,
+    user: User
+  ): Promise<Result<LetterVariant[]>> {
+    const templateResult = await this.getTemplateAssertLetterAuthoring(
+      templateId,
+      user
+    );
+
+    if (templateResult.error) {
+      return templateResult;
+    }
+
+    return this.queryLetterVariantsForTemplate(templateResult.data);
   }
 
   async generateLetterProof(
@@ -1056,5 +1105,214 @@ export class TemplateClient {
       });
     }
     return parseResult.data;
+  }
+
+  private async queryLetterVariantsForTemplate(
+    template: AuthoringLetterTemplate
+  ) {
+    // x0 = standard, x1 = large print, q4 = BSL - ie all types are currently a standard letter from a variant/printing perspective
+    const typeMap: Record<LetterType, LetterVariant['type']> = {
+      x0: 'STANDARD',
+      x1: 'STANDARD',
+      q4: 'STANDARD',
+    };
+
+    const filters: LetterVariantQueryFilters = {
+      type: typeMap[template.letterType],
+      status: 'PROD',
+    };
+
+    const queries = [
+      this.letterVariantRepository.getGlobalLetterVariants(filters),
+      this.letterVariantRepository.getClientScopedLetterVariants(
+        template.clientId,
+        filters
+      ),
+    ];
+
+    if (template.campaignId) {
+      queries.push(
+        this.letterVariantRepository.getCampaignScopedLetterVariants(
+          template.clientId,
+          template.campaignId,
+          filters
+        )
+      );
+    }
+
+    const variants: LetterVariant[] = [];
+
+    for (const queryResult of await Promise.all(queries)) {
+      if (queryResult.error) {
+        return queryResult;
+      }
+
+      variants.push(...queryResult.data);
+    }
+
+    return success(variants);
+  }
+
+  private async getTemplateAssertLetterAuthoring(
+    templateId: string,
+    user: User
+  ): Promise<Result<AuthoringLetterTemplate>> {
+    const templateResult = await this.getTemplate(templateId, user);
+
+    if (templateResult.error) {
+      return templateResult;
+    }
+
+    const { data: template } = templateResult;
+
+    if (
+      template.templateType !== 'LETTER' ||
+      template.letterVersion !== 'AUTHORING'
+    ) {
+      return failure(
+        ErrorCase.FEATURE_DISABLED,
+        'Unsupported for this template type'
+      );
+    }
+
+    return success(template);
+  }
+
+  private async normaliseLetterPatch(
+    templateId: string,
+    patchInput: LetterPatch,
+    user: User,
+    log: Logger
+  ): Promise<Result<LetterPatch>> {
+    const patch = { ...patchInput };
+
+    if (patch.campaignId) {
+      const campaignValidation = await this.validateCampaignIdForUser(
+        user,
+        patch.campaignId,
+        log
+      );
+
+      if (campaignValidation.error) {
+        return campaignValidation;
+      }
+    }
+
+    const needsTemplate = Boolean(patch.campaignId || patch.letterVariantId);
+
+    if (!needsTemplate) {
+      return success(patch);
+    }
+
+    const templateResult = await this.getTemplateAssertLetterAuthoring(
+      templateId,
+      user
+    );
+
+    if (templateResult.error) {
+      return templateResult;
+    }
+
+    const { data: template } = templateResult;
+
+    const needsVariantValidation =
+      Boolean(patch.letterVariantId) ||
+      Boolean(patch.campaignId && template.letterVariantId);
+
+    if (!needsVariantValidation) {
+      return success(patch);
+    }
+
+    const effectiveTemplate: AuthoringLetterTemplate = {
+      ...template,
+      campaignId: patch.campaignId ?? template.campaignId,
+    };
+
+    const variantsResult =
+      await this.queryLetterVariantsForTemplate(effectiveTemplate);
+
+    if (variantsResult.error) {
+      return variantsResult;
+    }
+
+    const variantIds = new Set(
+      variantsResult.data.map((variant) => variant.id)
+    );
+
+    if (patch.letterVariantId && !variantIds.has(patch.letterVariantId)) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid letterVariantId in request'
+      );
+    }
+
+    if (
+      !patch.letterVariantId &&
+      patch.campaignId &&
+      template.letterVariantId &&
+      !variantIds.has(template.letterVariantId)
+    ) {
+      patch.letterVariantId = '';
+    }
+
+    return success(patch);
+  }
+
+  private validateLockNumber(
+    lockNumber: number | string,
+    log: Logger
+  ): Result<number> {
+    const lockNumberValidation = $LockNumber.safeParse(lockNumber);
+
+    if (!lockNumberValidation.success) {
+      log.error(
+        'Lock number failed validation',
+        z.treeifyError(lockNumberValidation.error)
+      );
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid lock number provided'
+      );
+    }
+
+    return success(lockNumberValidation.data);
+  }
+
+  private async validateCampaignIdForUser(
+    user: User,
+    campaignId: string,
+    log: Logger
+  ): Promise<Result<ClientConfiguration>> {
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
+
+    if (clientConfigurationResult.error) {
+      log
+        .child(clientConfigurationResult.error.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationResult.error.actualError
+        );
+
+      return { error: clientConfigurationResult.error };
+    }
+
+    const clientConfiguration = clientConfigurationResult.data;
+
+    if (
+      !clientConfiguration ||
+      !this.isCampaignIdValid(clientConfiguration, campaignId)
+    ) {
+      log.child({ campaignId }).error('Invalid campaign ID in request');
+
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Invalid campaign ID in request'
+      );
+    }
+
+    return success(clientConfiguration);
   }
 }

@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod/v4';
-import { $LockNumber } from 'nhs-notify-backend-client';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 
@@ -24,6 +24,9 @@ export async function submitAuthoringLetterAction(
 
   const { templateId, lockNumber } = result.data;
 
-  // destination TBD
-  redirect(`/submit-letter-template/${templateId}?lockNumber=${lockNumber}`);
+  redirect(
+    // temporary destination
+    // TODO: CCM-14583 change to get ready to approve URL
+    `/review-and-approve-letter-template/${templateId}?lockNumber=${lockNumber}`
+  );
 }

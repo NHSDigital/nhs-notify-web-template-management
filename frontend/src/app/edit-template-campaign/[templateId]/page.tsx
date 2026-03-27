@@ -5,6 +5,7 @@ import {
   type TemplatePageProps,
   getPreviewURL,
 } from 'nhs-notify-web-template-management-utils';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { HintText, Label } from '@atoms/nhsuk-components';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
@@ -23,16 +24,12 @@ export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function EditTemplateCampaignPage({
-  params,
-}: TemplatePageProps) {
-  const { templateId } = await params;
+export default async function EditTemplateCampaignPage(
+  props: TemplatePageProps
+) {
+  const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
-
-  const client = await fetchClient();
-
-  const campaignIds = getCampaignIds(client);
 
   if (!template) {
     return redirect('/invalid-template', RedirectType.replace);
@@ -42,10 +39,19 @@ export default async function EditTemplateCampaignPage({
     return redirect('/message-templates', RedirectType.replace);
   }
 
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  const client = await fetchClient();
+
+  const campaignIds = getCampaignIds(client);
+
   if (
     template.templateStatus === 'SUBMITTED' ||
     template.letterVersion !== 'AUTHORING' ||
-    campaignIds.length < 2
+    campaignIds.length < 2 ||
+    !lockNumberResult.success
   ) {
     return redirect(getPreviewURL(template), RedirectType.replace);
   }
@@ -74,7 +80,7 @@ export default async function EditTemplateCampaignPage({
                 <input
                   type='hidden'
                   name='lockNumber'
-                  value={template.lockNumber}
+                  value={lockNumberResult.data}
                   readOnly
                 />
                 <NHSNotifyForm.FormGroup htmlFor='campaignId'>

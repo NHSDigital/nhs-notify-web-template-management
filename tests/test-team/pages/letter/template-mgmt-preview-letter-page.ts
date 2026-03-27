@@ -22,6 +22,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly sheetsAction: Locator;
   public readonly statusAction: Locator;
   public readonly campaignAction: Locator;
+  public readonly printingAndPostage: Locator;
 
   public readonly letterRender: Locator;
 
@@ -45,6 +46,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.sheetsAction = page.getByTestId('sheets-action');
     this.statusAction = page.getByTestId('status-action');
     this.campaignAction = page.getByTestId('campaign-action');
+    this.printingAndPostage = page.locator('[id="printing-and-postage"]');
 
     this.letterRender = page.locator('section').filter({
       has: page.getByRole('heading', { name: 'Letter preview' }),
@@ -100,6 +102,13 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   async clickContinueButton() {
     await this.continueButton.click();
+  }
+
+  summaryRowValue(label: string): Locator {
+    return this.page
+      .locator('.nhsuk-summary-list__row')
+      .filter({ hasText: label })
+      .locator('.nhsuk-summary-list__value');
   }
 
   static getTemplateId(url: string) {

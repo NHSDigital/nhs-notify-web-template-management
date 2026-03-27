@@ -8,11 +8,8 @@ import {
   assertBackLinkBottomNotPresent,
   assertAndClickBackLinkTop,
 } from '../helpers/template-mgmt-common.steps';
-import {
-  createAuthHelper,
-  testUsers,
-  type TestUser,
-} from '../helpers/auth/cognito-auth-helper';
+import { testUsers, type TestUser } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { loginAsUser } from '../helpers/auth/login-as-user';
 
 test.describe('Choose Template Type Page', () => {
@@ -133,7 +130,8 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
   let userLetterAuthoringEnabled: TestUser;
 
   test.beforeAll(async () => {
-    userLetterAuthoringEnabled = await createAuthHelper().getTestUser(
+    const context = getTestContext();
+    userLetterAuthoringEnabled = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
   });

@@ -4,7 +4,6 @@ import type {
   AuthoringLetterTemplate,
   FormState,
 } from 'nhs-notify-web-template-management-utils';
-import { getBasePath } from '@utils/get-base-path';
 import {
   NHSNotifyFormProvider,
   useNHSNotifyForm,
@@ -19,6 +18,7 @@ import styles from './LetterRenderTab.module.scss';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import content from '@content/content';
+import { buildLetterRenderUrl } from '@utils/letter-render-url';
 
 const { loadingText } = content.components.letterRender;
 
@@ -27,11 +27,6 @@ type LetterRenderTabProps = {
   tab: PersonalisedRenderKey;
   hideEditActions?: boolean;
 };
-
-function buildPdfUrl(template: AuthoringLetterTemplate, fileName: string) {
-  const basePath = getBasePath();
-  return `${basePath}/files/${template.clientId}/renders/${template.id}/${fileName}`;
-}
 
 function derivePdfUrl(
   template: AuthoringLetterTemplate,
@@ -45,7 +40,7 @@ function derivePdfUrl(
       : initialRender;
 
   return render?.status === 'RENDERED'
-    ? buildPdfUrl(template, render.fileName)
+    ? buildLetterRenderUrl(template, render.fileName)
     : null;
 }
 

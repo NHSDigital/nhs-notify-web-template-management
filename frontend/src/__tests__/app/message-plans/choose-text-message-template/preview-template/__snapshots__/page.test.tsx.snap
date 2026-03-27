@@ -32,7 +32,6 @@ exports[`PreviewTextMessageTemplateFromMessagePlan page renders SMS template pre
               Template
             </span>
             <h1
-              class="preview__heading"
               data-testid="preview-message__heading"
             >
               sms template name

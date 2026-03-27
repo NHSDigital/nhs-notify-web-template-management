@@ -3,15 +3,15 @@ import type {
   TemplateSuccess,
   TemplateSuccessList,
   TemplateDto,
-  PatchTemplate,
+  LetterPatch,
   LetterProofRequest,
+  LetterVariant,
+  LetterVariantListSuccess,
 } from 'nhs-notify-web-template-management-types';
 import { Result } from './types/result';
-import { catchAxiosError, createAxiosClient } from './axios-client';
+import { catchAxiosError, httpClient } from './axios-client';
 import { LETTER_MULTIPART } from './schemas/constants';
 import { TemplateFilter } from './types/filters';
-
-export const httpClient = createAxiosClient();
 
 export const templateApiClient = {
   async createTemplate(
@@ -129,7 +129,7 @@ export const templateApiClient = {
 
   async patchTemplate(
     templateId: string,
-    template: PatchTemplate,
+    template: LetterPatch,
     token: string,
     lockNumber: number
   ): Promise<Result<TemplateDto>> {
@@ -203,6 +203,36 @@ export const templateApiClient = {
     };
   },
 
+  async approveTemplate(
+    templateId: string,
+    owner: string,
+    lockNumber: number
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      httpClient.patch<TemplateSuccess>(
+        `/v1/template/${encodeURIComponent(templateId)}/approve`,
+        undefined,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+            'X-Lock-Number': String(lockNumber),
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
   async submitTemplate(
     templateId: string,
     owner: string,
@@ -210,7 +240,7 @@ export const templateApiClient = {
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       httpClient.patch<TemplateSuccess>(
-        `/v1/template/${templateId}/submit`,
+        `/v1/template/${encodeURIComponent(templateId)}/submit`,
         undefined,
         {
           headers: {
@@ -276,6 +306,32 @@ export const templateApiClient = {
             'Content-Type': 'application/json',
             Authorization: owner,
             'X-Lock-Number': String(lockNumber),
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
+  async getTemplateLetterVariants(
+    templateId: string,
+    owner: string
+  ): Promise<Result<LetterVariant[]>> {
+    const response = await catchAxiosError(
+      httpClient.get<LetterVariantListSuccess>(
+        `/v1/template/${encodeURIComponent(templateId)}/letter-variants`,
+        {
+          headers: {
+            Authorization: owner,
           },
         }
       )

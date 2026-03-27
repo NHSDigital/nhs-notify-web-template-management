@@ -1,11 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import {
-  createAuthHelper,
-  testUsers,
-  type TestUser,
-} from '../helpers/auth/cognito-auth-helper';
+import { testUsers, type TestUser } from '../helpers/auth/cognito-auth-helper';
+import { getTestContext } from '../helpers/context/context';
 import { pdfUploadFixtures } from '../fixtures/letters';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
@@ -311,16 +308,17 @@ function checkEmail(
 }
 
 test.describe('letter complete e2e journey', () => {
+  const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
 
   let userWithRouting: TestUser;
   let proofingDisabledAndRoutingEnabled: TestUser;
 
   test.beforeAll(async () => {
-    userWithRouting = await createAuthHelper().getTestUser(
+    userWithRouting = await context.auth.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
-    proofingDisabledAndRoutingEnabled = await createAuthHelper().getTestUser(
+    proofingDisabledAndRoutingEnabled = await context.auth.getTestUser(
       testUsers.UserRoutingEnabled.userId
     );
   });

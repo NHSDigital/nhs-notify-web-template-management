@@ -686,9 +686,12 @@ const previewTemplateDetails = {
       'https://notify.nhs.uk/templates/what-template-statuses-mean',
   },
   links: {
-    editTemplateName: '/edit-template-name/{{templateId}}',
-    editTemplateCampaign: '/edit-template-campaign/{{templateId}}',
-    choosePrintingAndPostage: '/choose-printing-and-postage/{{templateId}}',
+    editTemplateName:
+      '/edit-template-name/{{templateId}}?lockNumber={{lockNumber}}',
+    editTemplateCampaign:
+      '/edit-template-campaign/{{templateId}}?lockNumber={{lockNumber}}',
+    choosePrintingAndPostage:
+      '/choose-printing-and-postage/{{templateId}}?lockNumber={{lockNumber}}',
   },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',
@@ -1812,6 +1815,18 @@ const reviewAndMoveToProduction = {
   },
 };
 
+const reviewAndApproveLetterTemplate = {
+  pageTitle: generatePageTitle('Review and approve letter template'),
+  goBackButtonText: 'Go back',
+  goBackPath:
+    '{{basePath}}/get-ready-to-approve-letter-template/{{templateId}}',
+  shortExampleHeading: 'Short example preview',
+  longExampleHeading: 'Long example preview',
+  submitText: 'Approve letter template',
+  pageHeading: `Review and approve '{{templateName}}'`,
+  headerCaption: 'Step 2 of 2',
+};
+
 const editTemplateNamePage = {
   pageTitle: generatePageTitle('Edit template name'),
   form: {
@@ -1849,6 +1864,51 @@ const editTemplateCampaignPage = {
   backLink: {
     text: 'Go back',
     href: (templateId: string) => `/preview-letter-template/${templateId}`,
+  },
+};
+
+const choosePrintingAndPostagePage = {
+  pageTitle: generatePageTitle('Choose a printing and postage option'),
+  pageHeading: 'Choose a printing and postage option',
+  errorSummaryHint: 'You have not chosen a printing and postage option',
+  hint: [
+    {
+      type: 'text',
+      text: 'We only show options that are available for this letter template. Select one option.',
+      overrides: { p: { props: { className: 'nhsuk-hint' } } },
+    },
+    {
+      type: 'text',
+      text: '[Learn about printing and postage (opens in a new tab).](https://notify.nhs.uk/pricing-and-commercial/letters)',
+    },
+  ] satisfies ContentBlock[],
+  form: {
+    letterVariantId: {
+      errors: { empty: 'Choose a printing and postage option' },
+      table: {
+        headers: {
+          select: 'Select',
+          name: 'Name',
+          details: 'Details',
+        },
+        details: {
+          sheetSize: 'Sheet size',
+          maxSheets: 'Maximum number of sheets',
+          bothSides: 'Print on both sides',
+          printColour: 'Print colour',
+          envelopeSize: 'Envelope size',
+          dispatchTime: 'Dispatch time',
+          postage: 'Postage',
+        },
+      },
+    },
+    submitButton: {
+      text: 'Save and continue',
+    },
+  },
+  backLink: {
+    text: 'Go back',
+    href: (id: string) => `/preview-letter-template/${id}`,
   },
 };
 
@@ -1899,6 +1959,7 @@ const content = {
     chooseLargePrintLetterTemplate,
     chooseNhsAppTemplate,
     chooseOtherLanguageLetterTemplate,
+    choosePrintingAndPostagePage,
     chooseStandardEnglishLetterTemplate,
     chooseTextMessageTemplate,
     createMessagePlan,
@@ -1921,6 +1982,7 @@ const content = {
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
+    reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,

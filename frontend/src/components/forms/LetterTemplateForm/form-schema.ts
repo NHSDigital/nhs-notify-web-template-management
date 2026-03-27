@@ -1,4 +1,7 @@
-import { LANGUAGE_LIST, LETTER_TYPE_LIST } from 'nhs-notify-backend-client';
+import {
+  LANGUAGE_LIST,
+  LETTER_TYPE_LIST,
+} from 'nhs-notify-backend-client/schemas';
 import { z } from 'zod';
 import content from '@content/content';
 

@@ -39,7 +39,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 Template
               </span>
               <h1
-                class="preview__heading"
                 data-testid="preview-message__heading"
               >
                 authoring letter template name
@@ -154,7 +153,8 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   </dd>
                 </div>
                 <div
-                  class="nhsuk-summary-list__row"
+                  class="nhsuk-summary-list__row missing-value"
+                  id="printing-and-postage"
                 >
                   <dt
                     class="nhsuk-summary-list__key"
@@ -163,9 +163,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   </dt>
                   <dd
                     class="nhsuk-summary-list__value"
-                  >
-                    variant-123
-                  </dd>
+                  />
                   <dd
                     aria-hidden="true"
                     class="nhsuk-summary-list__actions"
@@ -227,6 +225,8 @@ exports[`valid authoring letter template matches snapshot 1`] = `
         <a
           class="nhsuk-body"
           href="https://notify.nhs.uk/using-nhs-notify/personalisation"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           Learn more about personalising your letters (opens in a new tab).
         </a>
@@ -312,7 +312,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with short example personalisation data"
-                  src="/templates/files/client-id/renders/authoring-letter-template-id/short-render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/short-render.pdf"
                   title="Letter preview - short examples"
                 />
               </div>
@@ -354,7 +354,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
               >
                 <iframe
                   aria-label="PDF preview of letter template with long example personalisation data"
-                  src="/templates/files/client-id/renders/authoring-letter-template-id/long-render.pdf"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/long-render.pdf"
                   title="Letter preview - long examples"
                 />
               </div>

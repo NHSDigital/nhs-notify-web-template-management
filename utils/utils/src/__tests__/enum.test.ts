@@ -1,15 +1,16 @@
 /* eslint-disable unicorn/no-array-callback-reference */
+
 import {
   TEMPLATE_STATUS_LIST,
   LANGUAGE_LIST,
   TEMPLATE_TYPE_LIST,
-} from 'nhs-notify-backend-client';
-import {
-  type Language,
-  type LetterType,
-  type TemplateStatus,
-  type TemplateType,
-  type LetterVersion,
+} from 'nhs-notify-backend-client/schemas';
+import type {
+  Language,
+  LetterType,
+  TemplateStatus,
+  TemplateType,
+  LetterVersion,
   TemplateDto,
 } from 'nhs-notify-web-template-management-types';
 import {
