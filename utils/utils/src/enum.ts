@@ -83,34 +83,35 @@ const letterTypeMap: Record<LetterType, string> = {
   x1: 'Large print',
 };
 
-// Letter types that can be selected in the UI (includes frontend concept 'language')
-export type SupportedLetterType = LetterType | 'language';
-export const SUPPORTED_LETTER_TYPES = [
+// Letter types (including frontend concept 'language')
+type UILetterType = LetterType | 'language';
+
+// Letter types supported in templating UI
+export const TEMPLATING_SUPPORTED_LETTER_TYPES = [
   'x0',
   'x1',
   'q4',
   'language',
-] as const satisfies readonly SupportedLetterType[];
+] as const satisfies readonly UILetterType[];
+export type TemplatingSupportedLetterType =
+  (typeof TEMPLATING_SUPPORTED_LETTER_TYPES)[number];
 
-// Accessible format letter types (excludes standard x0)
-export type AccessibleFormatLetterType = Exclude<LetterType, 'x0'>;
+// Letter types supported in routing UI
+export const ROUTING_SUPPORTED_LETTER_TYPES = [
+  'x0',
+  'x1',
+  'q4',
+  'language',
+] as const satisfies readonly UILetterType[];
+export type RoutingSupportedLetterType =
+  (typeof ROUTING_SUPPORTED_LETTER_TYPES)[number];
 
-// Letter types supported in routing
-// eslint-disable-next-line sonarjs/redundant-type-aliases
-export type RoutingSupportedLetterType = SupportedLetterType;
-
-// Accessible format letter types supported in routing
-// eslint-disable-next-line sonarjs/redundant-type-aliases
-export type RoutingAccessibleFormatLetterType = AccessibleFormatLetterType;
 export const ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES = [
   'x1',
   'q4',
-] as const satisfies readonly RoutingAccessibleFormatLetterType[];
-
-// Conditional template types in routing (accessible formats + foreign language)
-export type RoutingConditionalLetterType =
-  | RoutingAccessibleFormatLetterType
-  | 'language';
+] as const satisfies readonly RoutingSupportedLetterType[];
+export type RoutingAccessibleFormatLetterType =
+  (typeof ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES)[number];
 
 export const letterTypeMapping = (letterType: LetterType) =>
   `${letterTypeMap[letterType]} letter`;
@@ -244,7 +245,7 @@ export const sendDigitalTemplateTestMessageUrl = (
 
 export const templateTypeToUrlTextMappings = (
   type: TemplateType,
-  letterType?: SupportedLetterType
+  letterType?: TemplatingSupportedLetterType
 ) =>
   ({
     NHS_APP: 'nhs-app',
@@ -271,7 +272,7 @@ export const legacyTemplateCreationPages = (type: TemplateType) =>
 
 export const createTemplateUrl = (
   templateType: TemplateType,
-  letterType?: SupportedLetterType
+  letterType?: TemplatingSupportedLetterType
 ) =>
   `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
 

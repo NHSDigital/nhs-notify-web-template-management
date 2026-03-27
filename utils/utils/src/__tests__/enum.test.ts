@@ -37,7 +37,7 @@ import {
   sendDigitalTemplateTestMessageUrl,
   templateTypeToUrlTextMappings,
   accessibleFormatDisplayMappings,
-  type SupportedLetterType,
+  type TemplatingSupportedLetterType,
   createTemplateUrl,
   isLanguage,
   getMessageOrderOptions,
@@ -297,7 +297,7 @@ describe('createTemplateUrl', () => {
     '$letterType $templateType returns $slug',
     (
       templateType: TemplateType,
-      letterType: SupportedLetterType | undefined,
+      letterType: TemplatingSupportedLetterType | undefined,
       slug: string
     ) => {
       expect(createTemplateUrl(templateType, letterType)).toEqual(slug);
