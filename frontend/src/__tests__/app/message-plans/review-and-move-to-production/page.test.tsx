@@ -5,9 +5,11 @@ import '@testing-library/jest-dom';
 
 import { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import {
+  BSL_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
+  LARGE_PRINT_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { RoutingConfigFactory } from '@testhelpers/routing-config-factory';
@@ -69,14 +71,12 @@ const templates: MessagePlanTemplates = {
   [kuTemplateId]: { ...PDF_LETTER_TEMPLATE, id: kuTemplateId },
   [sqTemplateId]: { ...PDF_LETTER_TEMPLATE, id: sqTemplateId },
   [largePrintTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...LARGE_PRINT_LETTER_TEMPLATE,
     id: largePrintTemplateId,
-    templateStatus: 'SUBMITTED',
   },
   [bslTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...BSL_LETTER_TEMPLATE,
     id: bslTemplateId,
-    templateStatus: 'SUBMITTED',
   },
 };
 

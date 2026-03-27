@@ -32,6 +32,7 @@ import {
   LARGE_PRINT_LETTER_TEMPLATE,
   PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
+  BSL_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { randomUUID } from 'node:crypto';
 
@@ -1880,8 +1881,8 @@ describe('getAccessibleTemplatesForCascadeItem', () => {
       ],
     };
 
-    const template = { ...PDF_LETTER_TEMPLATE, id };
-    const bslTemplate = { ...PDF_LETTER_TEMPLATE, id: id2 };
+    const template = { ...LARGE_PRINT_LETTER_TEMPLATE, id };
+    const bslTemplate = { ...BSL_LETTER_TEMPLATE, id: id2 };
     const templates: MessagePlanTemplates = {
       [id]: template,
       [id2]: bslTemplate,

@@ -671,9 +671,9 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                         data-testid="template-name"
                       >
                         <a
-                          href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
+                          href="/preview-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
                         >
-                          letter template name
+                          large print letter template name
                         </a>
                       </p>
                     </div>
@@ -699,9 +699,9 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                         data-testid="template-name"
                       >
                         <a
-                          href="/preview-submitted-letter-template/c7d93e1a-4b05-48f6-97a3-6d2e3b8c5f17"
+                          href="/preview-letter-template/c7d93e1a-4b05-48f6-97a3-6d2e3b8c5f17"
                         >
-                          letter template name
+                          British Sign Language letter template name
                         </a>
                       </p>
                     </div>

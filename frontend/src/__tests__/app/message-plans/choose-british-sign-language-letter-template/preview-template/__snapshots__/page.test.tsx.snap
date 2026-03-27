@@ -41,7 +41,7 @@ exports[`PreviewBritishSignLanguageLetterTemplateFromMessagePlan page renders Br
             class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
           >
             <dl
-              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
             >
               <div
                 class="nhsuk-summary-list__row"
@@ -57,6 +57,9 @@ exports[`PreviewBritishSignLanguageLetterTemplateFromMessagePlan page renders Br
                 >
                   bsl-letter-template-id
                 </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
               </div>
               <div
                 class="nhsuk-summary-list__row"
@@ -71,6 +74,26 @@ exports[`PreviewBritishSignLanguageLetterTemplateFromMessagePlan page renders Br
                 >
                   British Sign Language letter
                 </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row missing-value"
+                id="campaign-id"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Campaign
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                />
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
               </div>
               <div
                 class="nhsuk-summary-list__row"
@@ -78,35 +101,64 @@ exports[`PreviewBritishSignLanguageLetterTemplateFromMessagePlan page renders Br
                 <dt
                   class="nhsuk-summary-list__key"
                 >
-                  Template file
+                  Total pages
                 </dt>
                 <dd
                   class="nhsuk-summary-list__value"
                 >
-                  <div
-                    class="container"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="icon"
-                      fill="none"
-                      height="26"
-                      viewBox="0 0 20 26"
-                      width="20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                        fill="#4C6272"
-                      />
-                    </svg>
-                    <p
-                      class="text"
-                    >
-                      bsl-template.pdf
-                    </p>
-                  </div>
+                  2
                 </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Sheets
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  1
+                </dd>
+                <dd
+                  class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                >
+                  <a
+                    data-testid="sheets-action"
+                    href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more
+                    <span
+                      class="nhsuk-u-visually-hidden"
+                    >
+                       about sheets
+                    </span>
+                  </a>
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row missing-value"
+                id="printing-and-postage"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Printing and postage
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                />
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
               </div>
             </dl>
           </div>

@@ -38,23 +38,15 @@ function createTemplates(user: TestUser) {
       user,
       'Email template name'
     ),
-    STANDARD_LETTER: TemplateFactory.uploadLetterTemplate(
+    STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Standard letter template name'
     ),
-    BSL_LETTER: TemplateFactory.uploadLetterTemplate(
+    BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'BSL letter template name',
-      'SUBMITTED',
-      'PASSED',
-      { letterType: 'q4' }
-    ),
-    AUTHORING_BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
-      user,
-      'Authoring BSL letter template name',
       'SUBMITTED',
       { letterType: 'q4' }
     ),
@@ -161,49 +153,6 @@ test.describe('Routing - Preview British Sign Language letter template page', ()
 
     await expect(previewBSLLetterTemplatePage.campaignId).toContainText(
       templates.BSL_LETTER.campaignId!
-    );
-
-    await expect(
-      page.getByText(templates.BSL_LETTER.files!.pdfTemplate!.fileName)
-    ).toBeVisible();
-
-    await expect(
-      page.getByText(templates.BSL_LETTER.files!.testDataCsv!.fileName)
-    ).toBeVisible();
-  });
-
-  test('loads the AUTHORING BSL letter template', async ({ page, baseURL }) => {
-    const previewBSLLetterTemplatePage =
-      new RoutingPreviewBritishSignLanguageLetterTemplatePage(page);
-    await previewBSLLetterTemplatePage
-      .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-      .setPathParam('templateId', templates.AUTHORING_BSL_LETTER.id)
-      .setSearchParam('lockNumber', '0')
-      .loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-british-sign-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_BSL_LETTER.id}?lockNumber=0`
-    );
-
-    await expect(previewBSLLetterTemplatePage.templateCaption).toContainText(
-      'Template'
-    );
-
-    await expect(previewBSLLetterTemplatePage.pageHeading).toContainText(
-      templates.AUTHORING_BSL_LETTER.name
-    );
-
-    await expect(previewBSLLetterTemplatePage.templateId).toBeVisible();
-    await expect(previewBSLLetterTemplatePage.templateId).toContainText(
-      templates.AUTHORING_BSL_LETTER.id
-    );
-
-    await expect(previewBSLLetterTemplatePage.summaryList).toBeVisible();
-
-    expect(templates.AUTHORING_BSL_LETTER.campaignId).toBeTruthy();
-
-    await expect(previewBSLLetterTemplatePage.campaignId).toContainText(
-      templates.AUTHORING_BSL_LETTER.campaignId!
     );
   });
 
