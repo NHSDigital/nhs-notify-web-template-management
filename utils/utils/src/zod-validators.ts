@@ -119,6 +119,13 @@ export const $LargePrintLetterTemplate = z.intersection(
   })
 );
 
+export const $BritishSignLanguageLetterTemplate = z.intersection(
+  $LetterTemplate,
+  z.object({
+    letterType: $LetterType.extract(['q4']),
+  })
+);
+
 export const $ForeignLanguageLetterTemplate = z.intersection(
   $LetterTemplate,
   z.object({
@@ -140,6 +147,10 @@ export const validateLetterTemplate = (template?: TemplateDto) =>
 
 export const validateLargePrintLetterTemplate = (template?: TemplateDto) =>
   zodValidate($LargePrintLetterTemplate, template);
+
+export const validateBritishSignLanguageLetterTemplate = (
+  template?: TemplateDto
+) => zodValidate($BritishSignLanguageLetterTemplate, template);
 
 export const validateForeignLanguageLetterTemplate = (template?: TemplateDto) =>
   zodValidate($ForeignLanguageLetterTemplate, template);

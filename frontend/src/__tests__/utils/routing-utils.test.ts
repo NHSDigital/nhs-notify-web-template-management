@@ -1881,13 +1881,15 @@ describe('getAccessibleTemplatesForCascadeItem', () => {
     };
 
     const template = { ...PDF_LETTER_TEMPLATE, id };
+    const bslTemplate = { ...PDF_LETTER_TEMPLATE, id: id2 };
     const templates: MessagePlanTemplates = {
       [id]: template,
-      [id2]: { ...PDF_LETTER_TEMPLATE, id: id2 },
+      [id2]: bslTemplate,
     };
 
     expect(getAccessibleTemplatesForCascadeItem(item, templates)).toEqual([
       ['x1', template],
+      ['q4', bslTemplate],
     ]);
   });
 });

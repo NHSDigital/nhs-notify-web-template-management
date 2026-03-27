@@ -319,6 +319,7 @@ describe('messagePlanChooseTemplateUrl', () => {
     test.each([
       ['x0', 'choose-standard-english-letter-template'],
       ['x1', 'choose-large-print-letter-template'],
+      ['q4', 'choose-british-sign-language-letter-template'],
       ['language', 'choose-other-language-letter-template'],
     ] as const)(
       'should map LETTER with conditionalType %s to "%s"',

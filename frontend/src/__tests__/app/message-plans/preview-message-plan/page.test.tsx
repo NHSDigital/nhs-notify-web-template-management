@@ -56,6 +56,7 @@ const letterTemplateId = '278e1a92-353f-42a3-b08d-565ea1c9d763';
 const kuTemplateId = '31399023-08a2-4dc7-81c7-e25b284b2aab';
 const sqTemplateId = '35746144-cac4-4e1f-b92b-4f58e9f1154f';
 const largePrintTemplateId = '72ebc15c-d950-4e2e-99d4-3de7f174fba6';
+const bslTemplateId = 'a4e82c0f-3b91-47d5-86e2-5c9f1a7d3b04';
 
 const templates: MessagePlanTemplates = {
   [appTemplateId]: {
@@ -91,6 +92,11 @@ const templates: MessagePlanTemplates = {
   [largePrintTemplateId]: {
     ...PDF_LETTER_TEMPLATE,
     id: largePrintTemplateId,
+    templateStatus: 'SUBMITTED',
+  },
+  [bslTemplateId]: {
+    ...PDF_LETTER_TEMPLATE,
+    id: bslTemplateId,
     templateStatus: 'SUBMITTED',
   },
 };
@@ -182,6 +188,7 @@ describe('full cascade plan', () => {
           { templateId: kuTemplateId, language: 'ku' },
           { templateId: sqTemplateId, language: 'sq' },
           { templateId: largePrintTemplateId, accessibleFormat: 'x1' },
+          { templateId: bslTemplateId, accessibleFormat: 'q4' },
         ],
       },
     ],
@@ -415,6 +422,51 @@ describe('letter only', () => {
     ).getByTestId('channel-card');
 
     const link = within(largePrintCard).getByRole('link');
+
+    expect(link).toHaveTextContent(template.name);
+
+    expect(link).toHaveAttribute(
+      'href',
+      `/preview-submitted-letter-template/${template.id}`
+    );
+  });
+
+  it('shows the fallback conditions and card for BSL accessible format', async () => {
+    const routingConfig = createRoutingConfig({
+      cascade: [
+        {
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: letterTemplateId,
+          cascadeGroups: ['standard', 'accessible'],
+          conditionalTemplates: [
+            { accessibleFormat: 'q4', templateId: bslTemplateId },
+          ],
+        },
+      ],
+    });
+
+    const template = templates[bslTemplateId];
+
+    await renderPage(routingConfig);
+
+    const block = screen.getByTestId('message-plan-block-LETTER');
+
+    const conditionalTemplatesList = within(block).getByTestId(
+      'conditional-templates'
+    );
+
+    expect(
+      within(conditionalTemplatesList).getByTestId(
+        'conditional-templates-fallback-conditions'
+      )
+    ).toBeInTheDocument();
+
+    const bslCard = within(
+      within(conditionalTemplatesList).getByTestId('conditional-template-q4')
+    ).getByTestId('channel-card');
+
+    const link = within(bslCard).getByRole('link');
 
     expect(link).toHaveTextContent(template.name);
 

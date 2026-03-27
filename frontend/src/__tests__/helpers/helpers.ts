@@ -101,6 +101,26 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
   lockNumber: 1,
 } as const;
 
+export const BSL_LETTER_TEMPLATE: PdfLetterTemplate = {
+  id: 'bsl-letter-template-id',
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  letterType: 'q4',
+  language: 'en',
+  letterVersion: 'PDF',
+  files: {
+    pdfTemplate: {
+      fileName: 'bsl-template.pdf',
+      currentVersion: '9BDED347C6BF',
+      virusScanStatus: 'PASSED',
+    },
+  },
+  name: 'British Sign Language letter template name',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
+  lockNumber: 1,
+} as const;
+
 export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   id: 'authoring-letter-template-id',
   clientId: 'client-1',

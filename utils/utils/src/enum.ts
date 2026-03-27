@@ -95,16 +95,16 @@ export const SUPPORTED_LETTER_TYPES = [
 // Accessible format letter types (excludes standard x0)
 export type AccessibleFormatLetterType = Exclude<LetterType, 'x0'>;
 
-// Letter types supported in routing (excludes BSL)
-export type RoutingSupportedLetterType = Exclude<SupportedLetterType, 'q4'>;
+// Letter types supported in routing
+// eslint-disable-next-line sonarjs/redundant-type-aliases
+export type RoutingSupportedLetterType = SupportedLetterType;
 
-// Accessible format letter types supported in routing (excludes BSL)
-export type RoutingAccessibleFormatLetterType = Exclude<
-  AccessibleFormatLetterType,
-  'q4'
->;
+// Accessible format letter types supported in routing
+// eslint-disable-next-line sonarjs/redundant-type-aliases
+export type RoutingAccessibleFormatLetterType = AccessibleFormatLetterType;
 export const ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES = [
   'x1',
+  'q4',
 ] as const satisfies readonly RoutingAccessibleFormatLetterType[];
 
 // Conditional template types in routing (accessible formats + foreign language)

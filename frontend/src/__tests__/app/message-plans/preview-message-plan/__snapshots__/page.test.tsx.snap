@@ -730,6 +730,34 @@ exports[`full cascade plan matches snapshot 1`] = `
                 </li>
                 <li
                   class="message-plan-conditional-templates__list-item"
+                  data-testid="conditional-template-q4"
+                >
+                  <div
+                    class="channel-template-outer"
+                    data-testid="channel-card"
+                  >
+                    <div
+                      class="channel-template-inner"
+                    >
+                      <h3
+                        class="nhsuk-heading-s"
+                      >
+                        British Sign Language letter (optional)
+                      </h3>
+                      <p
+                        data-testid="template-name"
+                      >
+                        <a
+                          href="/preview-submitted-letter-template/a4e82c0f-3b91-47d5-86e2-5c9f1a7d3b04"
+                        >
+                          letter template name
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li
+                  class="message-plan-conditional-templates__list-item"
                   data-testid="conditional-template-languages"
                 >
                   <div

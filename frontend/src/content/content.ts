@@ -1390,12 +1390,25 @@ const chooseLargePrintLetterTemplate = {
   noTemplatesText: 'You do not have any large print letter templates yet.',
 };
 
+const chooseBritishSignLanguageLetterTemplate = {
+  pageTitle: generatePageTitle(
+    'Choose a British Sign Language letter template'
+  ),
+  pageHeading: 'Choose a British Sign Language letter template',
+  noTemplatesText:
+    'You do not have any British Sign Language letter templates yet.',
+};
+
 const previewStandardEnglishLetterTemplate = {
   pageTitle: previewLetterTitle,
 };
 
 const previewLargePrintLetterTemplate = {
   pageTitle: generatePageTitle('Preview large print letter template'),
+};
+
+const previewBritishSignLanguageLetterTemplate = {
+  pageTitle: generatePageTitle('Preview British Sign Language letter template'),
 };
 
 const previewOtherLanguageLetterTemplate = {
@@ -1954,6 +1967,7 @@ const content = {
     viewSubmittedTemplate,
   },
   pages: {
+    chooseBritishSignLanguageLetterTemplate,
     chooseEmailTemplate,
     chooseLargePrintLetterTemplate,
     chooseNhsAppTemplate,
@@ -1975,6 +1989,7 @@ const content = {
     messagePlanInvalidConfiguration,
     messagePlansPage,
     messageTemplates,
+    previewBritishSignLanguageLetterTemplate,
     previewLargePrintLetterTemplate,
     previewLetterTemplate,
     previewMessagePlan,
