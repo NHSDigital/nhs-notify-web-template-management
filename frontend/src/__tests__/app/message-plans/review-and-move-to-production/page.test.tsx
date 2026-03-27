@@ -73,10 +73,12 @@ const templates: MessagePlanTemplates = {
   [largePrintTemplateId]: {
     ...LARGE_PRINT_LETTER_TEMPLATE,
     id: largePrintTemplateId,
+    templateStatus: 'SUBMITTED',
   },
   [bslTemplateId]: {
     ...BSL_LETTER_TEMPLATE,
     id: bslTemplateId,
+    templateStatus: 'PROOF_APPROVED',
   },
 };
 
