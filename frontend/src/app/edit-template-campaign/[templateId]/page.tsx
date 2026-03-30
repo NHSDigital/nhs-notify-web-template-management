@@ -3,7 +3,12 @@ import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
-import { HintText, Label } from '@atoms/nhsuk-components';
+import {
+  HintText,
+  Label,
+  WarningCallout,
+  WarningCalloutLabel,
+} from '@atoms/nhsuk-components';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -90,6 +95,12 @@ export default async function EditTemplateCampaignPage(
                     {content.form.campaignId.label}
                   </Label>
                   <HintText>{content.form.campaignId.hint}</HintText>
+                  <WarningCallout>
+                    <WarningCalloutLabel>
+                      {content.form.campaignId.warningCallout.label}
+                    </WarningCalloutLabel>
+                    <p>{content.form.campaignId.warningCallout.text}</p>
+                  </WarningCallout>
                   <NHSNotifyForm.ErrorMessage htmlFor='campaignId' />
                   <NHSNotifyForm.Select id='campaignId' name='campaignId'>
                     <option />
