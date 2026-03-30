@@ -1865,6 +1865,10 @@ const editTemplateCampaignPage = {
     campaignId: {
       label: 'Edit template campaign',
       hint: 'Choose which campaign this letter is for',
+      warningCallout: {
+        label: 'Important',
+        text: 'Not all campaigns support the same printing and postage options. If you change the campaign, you may need to choose your printing and postage option again.',
+      },
       errors: {
         empty: 'Choose a campaign',
       },
