@@ -10,6 +10,7 @@ jest.mock('@utils/amplify-utils');
 jest.mock('@providers/client-config-provider', () => ({
   useFeatureFlags: jest.fn().mockReturnValue({
     letterAuthoring: false,
+    legacyLetters: false,
   }),
 }));
 
@@ -83,6 +84,43 @@ describe('Choose template page', () => {
       }
 
       expect(submitButton).toBeInTheDocument();
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+  });
+
+  describe('When letter authoring is disabled and legacyLetters is enabled', () => {
+    beforeEach(() => {
+      jest.mocked(useFeatureFlags).mockReturnValue({
+        letterAuthoring: false,
+        legacyLetters: true,
+      });
+    });
+
+    it('lists all template types including letter without subtypes or warning card', () => {
+      const container = render(
+        <ChooseTemplateType templateTypes={TEMPLATE_TYPE_LIST} />
+      );
+
+      const radioButtons = radioTestIds.map((testId) =>
+        screen.getByTestId(testId)
+      );
+
+      for (const radioButton of radioButtons) {
+        expect(radioButton).toBeInTheDocument();
+        expect(radioButton).not.toBeChecked();
+      }
+
+      const letterTypeRadioButtons = letterTypeRadioTestIds.map((testId) =>
+        screen.queryByTestId(testId)
+      );
+      for (const radioButton of letterTypeRadioButtons) {
+        expect(radioButton).not.toBeInTheDocument();
+      }
+
+      expect(
+        screen.queryByText('To create a letter template')
+      ).not.toBeInTheDocument();
 
       expect(container.asFragment()).toMatchSnapshot();
     });

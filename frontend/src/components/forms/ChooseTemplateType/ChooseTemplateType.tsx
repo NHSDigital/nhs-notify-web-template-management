@@ -36,9 +36,11 @@ export const ChooseTemplateType = ({
 
   const features = useFeatureFlags();
 
-  const filteredTemplateTypes = features.letterAuthoring
-    ? templateTypes
-    : templateTypes.filter((type) => type !== 'LETTER');
+  const filterLetters = !features.letterAuthoring && !features.legacyLetters;
+
+  const filteredTemplateTypes = filterLetters
+    ? templateTypes.filter((type) => type !== 'LETTER')
+    : templateTypes;
 
   const $ChooseTemplateType = features.letterAuthoring
     ? $ChooseTemplateTypeWithLetterAuthoring
@@ -99,7 +101,7 @@ export const ChooseTemplateType = ({
           learnMoreText={content.learnMoreText}
           formAttributes={{ onSubmit: formValidate }}
         >
-          {features.letterAuthoring ? null : (
+          {filterLetters && (
             <div className='nhsuk-card nhsuk-card--warning nhsuk-u-reading-width'>
               <div className='nhsuk-card__content'>
                 <h2 className='nhsuk-card__heading'>
