@@ -12,7 +12,9 @@ import {
 import { TestUser, testUsers } from '../../helpers/auth/cognito-auth-helper';
 import { getTestContext } from 'helpers/context/context';
 
-function createTemplates(user: TestUser) {
+async function createTemplates(user: TestUser) {
+  const [globalVariant] =
+    await getTestContext().letterVariants.getGlobalLetterVariants();
   return {
     submitted: TemplateFactory.createAuthoringLetterTemplate(
       'e8b5f3a1-2c4d-4e6f-8a9b-1c2d3e4f5a6b',
@@ -35,6 +37,7 @@ function createTemplates(user: TestUser) {
           },
           systemPersonalisationPackId: 'short-3', // Ms Sarah Jones
         },
+        letterVariantId: globalVariant.id,
       }
     ),
     proofApproved: TemplateFactory.createAuthoringLetterTemplate(
@@ -58,6 +61,7 @@ function createTemplates(user: TestUser) {
           },
           systemPersonalisationPackId: 'short-3',
         },
+        letterVariantId: globalVariant.id,
       }
     ),
     invalid: TemplateFactory.createAuthoringLetterTemplate(
@@ -82,14 +86,14 @@ function createTemplates(user: TestUser) {
 }
 
 test.describe('Preview approved letter template page', () => {
-  let templates: ReturnType<typeof createTemplates>;
+  let templates: Awaited<ReturnType<typeof createTemplates>>;
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
     const user = await getTestContext().auth.getTestUser(
       testUsers.User1.userId
     );
-    templates = createTemplates(user);
+    templates = await createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
@@ -134,6 +138,8 @@ test.describe('Preview approved letter template page', () => {
         baseURL,
       }) => {
         const template = getTemplate();
+        const [globalVariant] =
+          await getTestContext().letterVariants.getGlobalLetterVariants();
 
         const previewSubmittedLetterTemplatePage =
           new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
@@ -156,6 +162,10 @@ test.describe('Preview approved letter template page', () => {
         await expect(
           previewSubmittedLetterTemplatePage.campaignId
         ).toContainText(template.campaignId!);
+
+        await expect(
+          previewSubmittedLetterTemplatePage.printingAndPostage
+        ).toContainText(globalVariant.name);
 
         await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
           expectedTag
