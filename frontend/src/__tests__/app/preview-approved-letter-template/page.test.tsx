@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { redirect, RedirectType } from 'next/navigation';
-import { getTemplate } from '@utils/form-actions';
+import { getTemplate, getLetterVariantById } from '@utils/form-actions';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
+  makeLetterVariant,
   NHS_APP_TEMPLATE,
   PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
@@ -178,6 +179,12 @@ describe('authoring letter template is invalid', () => {
 describe('valid authoring letter template', () => {
   beforeEach(() => {
     jest.mocked(getTemplate).mockResolvedValue(mockTemplate);
+    jest.mocked(getLetterVariantById).mockResolvedValue(
+      makeLetterVariant({
+        id: mockTemplate.letterVariantId,
+        name: 'Example Letter Variant',
+      })
+    );
   });
 
   it('renders the page without redirecting', async () => {
@@ -187,6 +194,9 @@ describe('valid authoring letter template', () => {
 
     expect(page).toBeTruthy();
     expect(redirect).not.toHaveBeenCalled();
+    expect(getLetterVariantById).toHaveBeenCalledWith(
+      mockTemplate.letterVariantId
+    );
   });
 
   it('matches snapshot', async () => {

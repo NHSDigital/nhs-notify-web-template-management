@@ -1,5 +1,6 @@
 import { redirect, RedirectType } from 'next/navigation';
 import type { Metadata } from 'next';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import {
   $AuthoringLetterTemplate,
@@ -10,7 +11,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
-import { getTemplate } from '@utils/form-actions';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -44,6 +45,14 @@ export default async function PreviewApprovedLetterTemplatePage({
     return redirect('/invalid-template', RedirectType.replace);
   }
 
+  let letterVariant: LetterVariant | undefined;
+
+  if (validatedTemplate.letterVariantId) {
+    letterVariant = await getLetterVariantById(
+      validatedTemplate.letterVariantId
+    );
+  }
+
   return (
     <NHSNotifyContainer fullWidth>
       <NHSNotifyContainer>
@@ -57,7 +66,8 @@ export default async function PreviewApprovedLetterTemplatePage({
             <div className='nhsuk-grid-column-full'>
               <PreviewTemplateDetailsAuthoringLetter
                 template={validatedTemplate}
-                hideEditActions={true}
+                letterVariant={letterVariant}
+                hideEditActions
               />
             </div>
           </div>
