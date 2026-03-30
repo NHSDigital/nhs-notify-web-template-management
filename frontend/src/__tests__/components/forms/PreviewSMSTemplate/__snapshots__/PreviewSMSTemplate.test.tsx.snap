@@ -54,7 +54,6 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-sms
@@ -308,7 +307,6 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-sms
@@ -542,7 +540,6 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-sms
@@ -764,7 +761,6 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-sms
@@ -905,7 +901,6 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-sms
@@ -1122,7 +1117,6 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-sms

@@ -542,6 +542,58 @@ describe('TemplateAPIClient', () => {
     });
   });
 
+  describe('approveTemplate', () => {
+    test('should return error', async () => {
+      axiosMock.onPatch('/v1/template/real-id/approve').reply(400, {
+        statusCode: 400,
+        technicalMessage: 'Bad request',
+        details: {
+          message: 'Template cannot be approved',
+        },
+      });
+
+      const result = await client.approveTemplate('real-id', testToken, 2);
+
+      expect(result.error).toEqual({
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+          details: {
+            message: 'Template cannot be approved',
+          },
+        },
+      });
+
+      expect(result.data).toBeUndefined();
+
+      expect(axiosMock.history.patch.length).toBe(1);
+
+      const headers = axiosMock.history.at(0)?.headers;
+
+      expect(headers ? headers['X-Lock-Number'] : null).toEqual('2');
+    });
+
+    test('should return template', async () => {
+      const data = {
+        id: 'real-id',
+        name: 'name',
+        templateStatus: 'PROOF_APPROVED',
+        templateType: 'LETTER',
+      };
+
+      axiosMock.onPatch('/v1/template/real-id/approve').reply(200, {
+        statusCode: 200,
+        data,
+      });
+
+      const result = await client.approveTemplate('real-id', testToken, 2);
+
+      expect(result.data).toEqual(data);
+
+      expect(result.error).toBeUndefined();
+    });
+  });
+
   describe('deleteTemplate', () => {
     test('should return error', async () => {
       axiosMock.onDelete('/v1/template/real-id').reply(400, {

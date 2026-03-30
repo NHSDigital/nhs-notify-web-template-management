@@ -43,13 +43,13 @@ export default async function ChoosePrintingAndPostagePage(
     return redirect('/message-templates', RedirectType.replace);
   }
 
+  const searchParams = await props.searchParams;
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
   const previewUrl =
     template.templateStatus === 'SUBMITTED'
       ? `/preview-submitted-letter-template/${templateId}`
       : `/preview-letter-template/${templateId}`;
-
-  const searchParams = await props.searchParams;
-  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
   if (
     template.templateStatus === 'SUBMITTED' ||

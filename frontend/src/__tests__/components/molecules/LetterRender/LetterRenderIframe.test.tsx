@@ -19,6 +19,20 @@ describe('LetterRenderIframe', () => {
       );
     });
 
+    it('adds additional props', () => {
+      render(
+        <LetterRenderIframe
+          tab='longFormRender'
+          pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
+          className='additional'
+        />
+      );
+
+      const iframe = screen.getByTitle('Letter preview - long examples');
+
+      expect(iframe).toHaveAttribute('class', 'additional');
+    });
+
     it('renders correct title for short tab', () => {
       render(<LetterRenderIframe tab='shortFormRender' pdfUrl='/test.pdf' />);
 

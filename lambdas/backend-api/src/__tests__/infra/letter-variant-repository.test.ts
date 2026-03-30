@@ -168,7 +168,7 @@ describe('LetterVariantRepository', () => {
         error: {
           errorMeta: {
             code: ErrorCase.NOT_FOUND,
-            description: 'Letter Variant not found',
+            description: 'Letter variant not found',
             details: undefined,
           },
           actualError: undefined,

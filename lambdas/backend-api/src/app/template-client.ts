@@ -513,6 +513,108 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
+  async approveTemplate(
+    templateId: string,
+    user: User,
+    lockNumber: string
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({ templateId, user });
+
+    const lockNumberValidation = this.validateLockNumber(lockNumber, log);
+
+    if (lockNumberValidation.error) {
+      return lockNumberValidation;
+    }
+
+    const { data: template, error: getTemplateError } =
+      await this.templateRepository.get(templateId, user.clientId);
+
+    if (getTemplateError) {
+      log
+        .child(getTemplateError.errorMeta)
+        .error('Failed to get template', getTemplateError.actualError);
+
+      return { error: getTemplateError };
+    }
+
+    if (
+      template.templateType !== 'LETTER' ||
+      template.letterVersion !== 'AUTHORING' ||
+      template.templateStatus !== 'NOT_YET_SUBMITTED' ||
+      !template.campaignId ||
+      !template.letterVariantId
+    ) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Template cannot be approved'
+      );
+    }
+
+    const { data: variant, error: getVariantError } =
+      await this.letterVariantRepository.getById(template.letterVariantId);
+
+    if (getVariantError) {
+      log
+        .child({
+          ...getVariantError.errorMeta,
+          letterVariantId: template.letterVariantId,
+        })
+        .error('Failed to get letter variant', getVariantError.actualError);
+
+      return { error: getVariantError };
+    }
+
+    const { initialRender, shortFormRender, longFormRender } =
+      template.files as AuthoringLetterFiles;
+
+    const pageCounts = [initialRender, shortFormRender, longFormRender].flatMap(
+      (r) => (r?.status === 'RENDERED' ? [r.pageCount] : [])
+    );
+
+    if (pageCounts.length !== 3) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'One or more personalised rendered example has not been generated'
+      );
+    }
+
+    const pagesPerSheet = variant.bothSides ? 2 : 1;
+
+    if (
+      pageCounts.some((c) => Math.ceil(c / pagesPerSheet) > variant.maxSheets)
+    ) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Letter template exceeded maximum number of sheets allowed by letter variant'
+      );
+    }
+
+    const updateResult = await this.templateRepository.approveLetterTemplate(
+      templateId,
+      user,
+      lockNumberValidation.data
+    );
+
+    if (updateResult.error) {
+      log
+        .child(updateResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          updateResult.error.actualError
+        );
+
+      return updateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
+
+    if (!templateDTO) {
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
+  }
+
   async submitTemplate(
     templateId: string,
     user: User,
