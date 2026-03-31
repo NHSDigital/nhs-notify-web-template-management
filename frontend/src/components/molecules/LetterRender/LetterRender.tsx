@@ -1,10 +1,10 @@
 'use client';
 
-import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import Link from 'next/link';
 import { Tabs } from 'nhsuk-react-components';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { LetterRenderTab } from './LetterRenderTab';
-import Link from 'next/link';
 
 export function LetterRender({
   template,
@@ -18,15 +18,20 @@ export function LetterRender({
   return (
     <section className='nhsuk-u-margin-top-6'>
       <h2 className='nhsuk-heading-m'>{copy.heading}</h2>
-      <p>{copy.guidance}</p>
-      <Link
-        href={copy.guidanceLink.href}
-        className='nhsuk-body'
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        {copy.guidanceLink.text}
-      </Link>
+
+      {!hideEditActions && (
+        <>
+          <p>{copy.guidance}</p>
+          <Link
+            href={copy.guidanceLink.href}
+            className='nhsuk-body'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            {copy.guidanceLink.text}
+          </Link>
+        </>
+      )}
 
       <Tabs className='nhsuk-u-margin-top-6'>
         <Tabs.Title>{copy.tabTitle}</Tabs.Title>

@@ -221,17 +221,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
         >
           Letter preview
         </h2>
-        <p>
-          Check how your personalisation fields will appear in your letter.
-        </p>
-        <a
-          class="nhsuk-body"
-          href="https://notify.nhs.uk/using-nhs-notify/personalisation"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Learn more about personalising your letters (opens in a new tab).
-        </a>
         <div
           class="nhsuk-tabs nhsuk-u-margin-top-6"
           data-module="nhsuk-tabs"
