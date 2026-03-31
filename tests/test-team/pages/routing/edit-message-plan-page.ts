@@ -93,6 +93,7 @@ export class RoutingEditMessagePlanPage extends TemplateMgmtBasePage {
   public readonly letter = {
     standard: this.messagePlanChannel('LETTER'),
     largePrint: this.messagePlanChannel('x1'),
+    britishSignLanguage: this.messagePlanChannel('q4'),
     language: this.messagePlanChannel('foreign-language'),
   };
 

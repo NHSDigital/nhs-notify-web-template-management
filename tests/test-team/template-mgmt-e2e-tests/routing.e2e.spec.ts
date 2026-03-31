@@ -18,6 +18,7 @@ import {
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingGetReadyToMovePage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
@@ -34,6 +35,7 @@ function createTemplates(user: TestUser) {
     SMS: randomUUID(),
     LETTER: randomUUID(),
     LARGE_PRINT_LETTER: randomUUID(),
+    BSL_LETTER: randomUUID(),
     ARABIC_LETTER: randomUUID(),
     POLISH_LETTER: randomUUID(),
   };
@@ -69,6 +71,13 @@ function createTemplates(user: TestUser) {
       `E2E Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'PROOF_APPROVED',
       { letterType: 'x1' }
+    ),
+    BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.BSL_LETTER,
+      user,
+      `E2E BSL Letter template - ${templateIds.BSL_LETTER}`,
+      'PROOF_APPROVED',
+      { letterType: 'q4' }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.ARABIC_LETTER,
@@ -181,6 +190,10 @@ test.describe('Routing', () => {
         { template: templates.LETTER, expectedStatus: 'Proof approved' },
         {
           template: templates.LARGE_PRINT_LETTER,
+          expectedStatus: 'Proof approved',
+        },
+        {
+          template: templates.BSL_LETTER,
           expectedStatus: 'Proof approved',
         },
         { template: templates.ARABIC_LETTER, expectedStatus: 'Proof approved' },
@@ -357,6 +370,15 @@ test.describe('Routing', () => {
       ).toBeVisible();
     });
 
+    await test.step('add BSL letter template', async () => {
+      await selectTemplateRadio(
+        editMessagePlanPage.letter.britishSignLanguage.chooseTemplateLink,
+        new RoutingChooseBritishSignLanguageLetterTemplatePage(page),
+        templates.BSL_LETTER,
+        editMessagePlanPage.letter.britishSignLanguage.templateName
+      );
+    });
+
     await test.step('review and move to production', async () => {
       await editMessagePlanPage.clickMoveToProduction();
 
@@ -389,6 +411,10 @@ test.describe('Routing', () => {
       await expect(
         letterBlock.getAccessibilityFormatCard('x1').locator
       ).toBeHidden();
+
+      await expect(
+        letterBlock.getAccessibilityFormatCard('q4').templateName
+      ).toHaveText(templates.BSL_LETTER.name);
 
       const languageTemplateNames = await letterBlock
         .getLanguagesCard()
@@ -425,6 +451,7 @@ test.describe('Routing', () => {
         { template: templates.EMAIL, expectedStatus: 'Locked' },
         { template: templates.SMS, expectedStatus: 'Locked' },
         { template: templates.LETTER, expectedStatus: 'Locked' },
+        { template: templates.BSL_LETTER, expectedStatus: 'Locked' },
         { template: templates.ARABIC_LETTER, expectedStatus: 'Locked' },
         { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
         {
