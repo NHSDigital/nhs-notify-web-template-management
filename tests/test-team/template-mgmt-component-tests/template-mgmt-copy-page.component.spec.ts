@@ -45,7 +45,7 @@ function createTemplates(user: TestUser) {
       name: 'app-template-copy-page-name',
       message: 'app-template-copy-page-message',
     },
-    letter: TemplateFactory.uploadLetterTemplate(
+    letter: TemplateFactory.uploadPdfLetterTemplate(
       '4697bf0f-4d9c-4fa1-b5ef-a45fd0266856',
       user,
       'letter-template-copy-page-name'

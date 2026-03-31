@@ -15,7 +15,7 @@ import { TestUser, testUsers } from '../../helpers/auth/cognito-auth-helper';
 import { getTestContext } from '../../helpers/context/context';
 
 function createTemplates(user: TestUser) {
-  const validBase = TemplateFactory.uploadLetterTemplate(
+  const validBase = TemplateFactory.uploadPdfLetterTemplate(
     '0b5f3591-8a36-4b33-9873-3c4842db4351',
     user,
     'valid-letter-template-preview-submitted',
@@ -47,7 +47,7 @@ function createTemplates(user: TestUser) {
     valid,
     authoringValid,
     invalid: {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         '621456cf-ace3-49c3-941e-4df5eba11373',
         user,
         'invalid-letter-template-preview-submitted',

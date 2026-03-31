@@ -137,41 +137,37 @@ function createTemplates(user: TestUser) {
       user,
       `Test SMS template - ${templateIds.SMS}`
     ),
-    LETTER: TemplateFactory.uploadLetterTemplate(
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`
     ),
-    LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'NOT_YET_SUBMITTED',
-      'PASSED',
       { letterType: 'x1' }
     ),
-    BSL_LETTER: TemplateFactory.uploadLetterTemplate(
+    BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.BSL_LETTER,
       user,
       `Test BSL Letter template - ${templateIds.BSL_LETTER}`,
       'NOT_YET_SUBMITTED',
-      'PASSED',
       { letterType: 'q4' }
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       `Test Letter template French - ${templateIds.FRENCH_LETTER}`,
       'NOT_YET_SUBMITTED',
-      'PASSED',
       { language: 'fr' }
     ),
-    SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
+    SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'NOT_YET_SUBMITTED',
-      'PASSED',
       { language: 'es' }
     ),
   };

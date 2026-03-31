@@ -421,21 +421,19 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
       const arabicTemplateId = randomUUID();
 
       // Create templates for conditional templates
-      const frenchTemplate = TemplateFactory.uploadLetterTemplate(
+      const frenchTemplate = TemplateFactory.createAuthoringLetterTemplate(
         frenchTemplateId,
         user1,
         'French Letter Template',
         'PROOF_APPROVED',
-        'PASSED',
         { language: 'fr' }
       );
 
-      const arabicTemplate = TemplateFactory.uploadLetterTemplate(
+      const arabicTemplate = TemplateFactory.createAuthoringLetterTemplate(
         arabicTemplateId,
         user1,
         'Arabic Letter Template',
         'PROOF_APPROVED',
-        'PASSED',
         { language: 'ar' }
       );
 
@@ -575,7 +573,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     const letterTemplateId = randomUUID();
 
     // Create a LETTER template with NOT_YET_SUBMITTED status
-    const letterTemplate = TemplateFactory.uploadLetterTemplate(
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       letterTemplateId,
       user1,
       'Test Letter Template',

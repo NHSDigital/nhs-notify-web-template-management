@@ -38,12 +38,12 @@ function createTemplates(user: TestUser) {
       user,
       'Email template name'
     ),
-    STANDARD_LETTER: TemplateFactory.uploadLetterTemplate(
+    STANDARD_LETTER: TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       user,
       'Standard letter template name'
     ),
-    LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER: TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       user,
       'Large print letter template name',

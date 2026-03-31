@@ -32,12 +32,12 @@ const routingConfigIds = {
 
 function createTemplates(user: TestUser) {
   return {
-    TEMPLATE_IN_MESSAGE_PLAN: TemplateFactory.uploadLetterTemplate(
+    TEMPLATE_IN_MESSAGE_PLAN: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.TEMPLATE_IN_MESSAGE_PLAN,
       user,
       'Template in multiple plans'
     ),
-    TEMPLATE_NOT_REFERENCED: TemplateFactory.uploadLetterTemplate(
+    TEMPLATE_NOT_REFERENCED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.TEMPLATE_NOT_REFERENCED,
       user,
       'Template not in any plan'

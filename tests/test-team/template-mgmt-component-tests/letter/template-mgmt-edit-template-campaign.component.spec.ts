@@ -230,7 +230,7 @@ test.describe('Edit Template Campaign page', () => {
     test('redirects to template preview page if template is a PDF letter', async ({
       page,
     }) => {
-      const template = TemplateFactory.uploadLetterTemplate(
+      const template = TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         userMultiCampaignAuthoringEnabled,
         'PDF Letter Template'

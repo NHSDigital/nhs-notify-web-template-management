@@ -27,6 +27,7 @@ function createTemplates(user: TestUser) {
     SMS: randomUUID(),
     LETTER: randomUUID(),
     LARGE_PRINT_LETTER: randomUUID(),
+    BSL_LETTER: randomUUID(),
     FRENCH_LETTER: randomUUID(),
     SPANISH_LETTER: randomUUID(),
   };
@@ -50,34 +51,38 @@ function createTemplates(user: TestUser) {
       `Test SMS template - ${templateIds.SMS}`,
       'SUBMITTED'
     ),
-    LETTER: TemplateFactory.uploadLetterTemplate(
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`,
       'SUBMITTED'
     ),
-    LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
-      'PASSED',
       { letterType: 'x1' }
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.BSL_LETTER,
+      user,
+      `Test BSL Letter template - ${templateIds.BSL_LETTER}`,
+      'SUBMITTED',
+      { letterType: 'q4' }
+    ),
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       `Test Letter template French - ${templateIds.FRENCH_LETTER}`,
       'PROOF_APPROVED',
-      'PASSED',
       { language: 'fr' }
     ),
-    SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
+    SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'PROOF_APPROVED',
-      'PASSED',
       { language: 'es' }
     ),
   };
@@ -189,6 +194,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       .addTemplate('SMS', templates.SMS.id)
       .addTemplate('LETTER', templates.LETTER.id)
       .addAccessibleFormatTemplate('x1', templates.LARGE_PRINT_LETTER.id)
+      .addAccessibleFormatTemplate('q4', templates.BSL_LETTER.id)
       .addLanguageTemplate('fr', templates.FRENCH_LETTER.id)
       .addLanguageTemplate('es', templates.SPANISH_LETTER.id);
 
@@ -287,6 +293,17 @@ test.describe('Routing - Review and Move to Production page', () => {
       ).toHaveAttribute(
         'href',
         `/templates/preview-submitted-letter-template/${templates.LARGE_PRINT_LETTER.id}`
+      );
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('q4').templateLink
+      ).toHaveText(templates.BSL_LETTER.name);
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('q4').templateLink
+      ).toHaveAttribute(
+        'href',
+        `/templates/preview-submitted-letter-template/${templates.BSL_LETTER.id}`
       );
 
       for (const [index, language] of (

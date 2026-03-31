@@ -43,21 +43,21 @@ async function createTemplates() {
       letterVersion: 'PDF',
     } as Template,
 
-    routingEnabled: TemplateFactory.uploadLetterTemplate(
+    routingEnabled: TemplateFactory.uploadPdfLetterTemplate(
       '71f93ddb-d949-438c-af28-127abfc15f24',
       routingEnabledUser,
       'routing-enabled-submit-letter',
       'PROOF_AVAILABLE'
     ),
 
-    routingDisabled: TemplateFactory.uploadLetterTemplate(
+    routingDisabled: TemplateFactory.uploadPdfLetterTemplate(
       'b9321307-abfe-48d1-a10a-1d7fe21bd18c',
       proofingDisabledAndRoutingEnabledUser,
       'routing-disabled-submit-letter',
       'PROOF_AVAILABLE'
     ),
 
-    proofingDisabled: TemplateFactory.uploadLetterTemplate(
+    proofingDisabled: TemplateFactory.uploadPdfLetterTemplate(
       '900a8ee3-50e4-49a8-b157-a179f1905f4b',
       proofingDisabledUser,
       'proofing-disabled-submit-letter',

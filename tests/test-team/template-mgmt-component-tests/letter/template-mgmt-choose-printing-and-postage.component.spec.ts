@@ -332,7 +332,7 @@ test.describe('Choose Printing and Postage page', () => {
     test('redirects to template preview page if template is a PDF letter', async ({
       page,
     }) => {
-      const template = TemplateFactory.uploadLetterTemplate(
+      const template = TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         userLetterAuthoringEnabled,
         'PDF Letter Template'
