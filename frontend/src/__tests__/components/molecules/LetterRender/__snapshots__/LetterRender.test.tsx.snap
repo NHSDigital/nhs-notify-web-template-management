@@ -456,7 +456,7 @@ exports[`LetterRender matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LetterRender matches snapshot in when hideEditActions is true 1`] = `
+exports[`LetterRender matches snapshot when hideEditActions is true 1`] = `
 <DocumentFragment>
   <section
     class="nhsuk-u-margin-top-6"

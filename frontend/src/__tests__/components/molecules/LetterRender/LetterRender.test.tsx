@@ -93,7 +93,7 @@ describe('LetterRender', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('matches snapshot in when hideEditActions is true', () => {
+  it('matches snapshot when hideEditActions is true', () => {
     const { asFragment } = render(
       <LetterRender template={baseTemplate} hideEditActions />,
       {
