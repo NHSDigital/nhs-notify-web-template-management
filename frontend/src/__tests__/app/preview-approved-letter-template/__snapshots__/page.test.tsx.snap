@@ -1,0 +1,359 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`valid authoring letter template matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container-fluid"
+  >
+    <div
+      class="nhsuk-width-container"
+    >
+      <a
+        class="nhsuk-back-link"
+        data-testid="back-link-top"
+        href="/message-templates"
+      >
+        Back to all templates
+      </a>
+    </div>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-width-container"
+      >
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-full"
+          >
+            <div
+              class="nhsuk-u-reading-width"
+            >
+              <span
+                class="nhsuk-caption-l"
+              >
+                Template
+              </span>
+              <h1
+                data-testid="preview-message__heading"
+              >
+                authoring letter template name
+              </h1>
+            </div>
+            <div
+              class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+            >
+              <dl
+                class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+              >
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template ID
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value monospace-font"
+                    data-testid="preview-template-id"
+                  >
+                    authoring-letter-template-id
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template type
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    Standard letter
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                  id="campaign-id"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Campaign
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    campaign-id
+                  </dd>
+                  <dd
+                    aria-hidden="true"
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Total pages
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    2
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Sheets
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    1
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="sheets-action"
+                      href="https://notify.nhs.uk/pricing-and-commercial/letters"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         about sheets
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                  id="printing-and-postage"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Printing and postage
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    Example Letter Variant
+                  </dd>
+                  <dd
+                    aria-hidden="true"
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Status
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    <strong
+                      class="nhsuk-tag nhsuk-tag--green"
+                      data-status="proof-approved"
+                      data-testid="status-tag"
+                    >
+                      Approved
+                    </strong>
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="status-action"
+                      href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         about status
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section
+        class="nhsuk-u-margin-top-6"
+      >
+        <h2
+          class="nhsuk-heading-m"
+        >
+          Letter preview
+        </h2>
+        <div
+          class="nhsuk-tabs nhsuk-u-margin-top-6"
+          data-module="nhsuk-tabs"
+        >
+          <h2
+            class="nhsuk-tabs__title"
+          >
+            Example personalisation data
+          </h2>
+          <ul
+            class="nhsuk-tabs__list"
+            role="tablist"
+          >
+            <li
+              class="nhsuk-tabs__list-item nhsuk-tabs__list-item--selected"
+              role="presentation"
+            >
+              <a
+                aria-controls="tab-short"
+                aria-selected="true"
+                class="nhsuk-tabs__tab"
+                href="#tab-short"
+                id="tab_tab-short"
+                role="tab"
+                tabindex="0"
+              >
+                Short examples
+              </a>
+            </li>
+            <li
+              class="nhsuk-tabs__list-item"
+              role="presentation"
+            >
+              <a
+                aria-controls="tab-long"
+                aria-selected="false"
+                class="nhsuk-tabs__tab"
+                href="#tab-long"
+                id="tab_tab-long"
+                role="tab"
+                tabindex="-1"
+              >
+                Long examples
+              </a>
+            </li>
+          </ul>
+          <div
+            aria-labelledby="tab_tab-short"
+            class="nhsuk-tabs__panel"
+            id="tab-short"
+            role="tabpanel"
+          >
+            <div
+              class="nhsuk-grid-row tabRow"
+            >
+              <div
+                class="nhsuk-grid-column-one-third"
+              >
+                <section
+                  aria-labelledby="tab-shortFormRender-pds-heading"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                    id="tab-shortFormRender-pds-heading"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <dl
+                    class="dl"
+                  >
+                    <dt>
+                      Example recipient
+                    </dt>
+                    <dd />
+                  </dl>
+                </section>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds iframeColumn"
+              >
+                <iframe
+                  aria-label="PDF preview of letter template with short example personalisation data"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/short-render.pdf"
+                  title="Letter preview - short examples"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            aria-labelledby="tab_tab-long"
+            class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
+            id="tab-long"
+            role="tabpanel"
+          >
+            <div
+              class="nhsuk-grid-row tabRow"
+            >
+              <div
+                class="nhsuk-grid-column-one-third"
+              >
+                <section
+                  aria-labelledby="tab-longFormRender-pds-heading"
+                >
+                  <h3
+                    class="nhsuk-heading-s"
+                    id="tab-longFormRender-pds-heading"
+                  >
+                    PDS personalisation fields
+                  </h3>
+                  <dl
+                    class="dl"
+                  >
+                    <dt>
+                      Example recipient
+                    </dt>
+                    <dd />
+                  </dl>
+                </section>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds iframeColumn"
+              >
+                <iframe
+                  aria-label="PDF preview of letter template with long example personalisation data"
+                  src="/templates/files/client-1/renders/authoring-letter-template-id/long-render.pdf"
+                  title="Letter preview - long examples"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</DocumentFragment>
+`;

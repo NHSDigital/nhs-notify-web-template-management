@@ -7,6 +7,7 @@ import {
   TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtReviewAndApproveLetterTemplatePage,
@@ -389,6 +390,14 @@ test.describe('Letter templates', () => {
     test('Letter template approved', async ({ page, analyze }) =>
       analyze(
         new TemplateMgmtLetterTemplateApprovedPage(page).setPathParam(
+          'templateId',
+          templateIds.LETTER_APPROVED
+        )
+      ));
+
+    test('Preview approved letter template', async ({ page, analyze }) =>
+      analyze(
+        new TemplateMgmtPreviewApprovedLetterPage(page).setPathParam(
           'templateId',
           templateIds.LETTER_APPROVED
         )

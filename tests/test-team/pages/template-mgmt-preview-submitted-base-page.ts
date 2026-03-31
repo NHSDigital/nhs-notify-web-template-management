@@ -5,6 +5,7 @@ export abstract class TemplateMgmtPreviewSubmittedBasePage extends TemplateMgmtB
   readonly campaignId: Locator;
   readonly copyLink: Locator;
   readonly statusTag: Locator;
+  readonly printingAndPostage: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -12,5 +13,6 @@ export abstract class TemplateMgmtPreviewSubmittedBasePage extends TemplateMgmtB
     this.campaignId = page.locator('[id="campaign-id"]');
     this.copyLink = page.getByTestId('copy-link');
     this.statusTag = page.getByTestId('status-tag');
+    this.printingAndPostage = page.locator('[id="printing-and-postage"]');
   }
 }

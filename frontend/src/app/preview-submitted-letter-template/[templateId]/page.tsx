@@ -2,14 +2,14 @@
 
 import {
   TemplatePageProps,
-  validateSubmittedLetterTemplate,
+  validateSubmittedPdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
@@ -25,7 +25,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateSubmittedLetterTemplate(template);
+  const validatedTemplate = validateSubmittedPdfLetterTemplate(template);
 
   if (!validatedTemplate) {
     redirect('/invalid-template', RedirectType.replace);
@@ -35,7 +35,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
     <NHSNotifyContainer>
       <PreviewSubmittedTemplate
         initialState={validatedTemplate}
-        previewComponent={PreviewTemplateDetailsLetter}
+        previewComponent={PreviewTemplateDetailsPdfLetter}
       />
     </NHSNotifyContainer>
   );
