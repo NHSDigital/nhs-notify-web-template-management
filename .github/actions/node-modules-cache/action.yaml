@@ -18,8 +18,7 @@ runs:
   using: 'composite'
   steps:
     - name: 'Use Node.js'
-      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
-      with:
+      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5      with:
         cache: 'npm'
         cache-dependency-path: '${{ inputs.cache_lock_path }}'
         node-version: '${{ inputs.node_version }}'
@@ -27,8 +26,7 @@ runs:
 
     - name: 'Restore node_modules from cache'
       id: node-modules-cache
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-      with:
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4      with:
         path: |
           node_modules
           **/node_modules
