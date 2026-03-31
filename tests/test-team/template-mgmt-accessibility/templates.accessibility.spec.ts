@@ -47,12 +47,6 @@ test.beforeAll(async () => {
     `Test NHS App template - ${templateIds.TEMPLATE_ATTACHED_TO_MESSAGE_PLAN}`
   );
 
-  const templateForLetterAuthoring = TemplateFactory.createNhsAppTemplate(
-    templateIds.TEMPLATE,
-    userWithLetterAuthoringEnabledData,
-    `Test Letter template - ${templateIds.TEMPLATE}`
-  );
-
   const routingPlan = RoutingConfigFactory.createForMessageOrder(
     userWithTemplateData,
     'NHSAPP',
@@ -65,7 +59,6 @@ test.beforeAll(async () => {
   await templateStorageHelper.seedTemplateData([
     template,
     templateForRoutingPlan,
-    templateForLetterAuthoring,
   ]);
 
   await routingConfigStorageHelper.seed([routingPlan.dbEntry]);
