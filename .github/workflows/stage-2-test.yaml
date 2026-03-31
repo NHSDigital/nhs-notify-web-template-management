@@ -47,7 +47,8 @@ jobs:
       matrix: ${{ steps.get-workspaces.outputs.matrix }}
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Get workspaces"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: "Get workspaces"
         id: "get-workspaces"
         run: |
           echo "matrix=$(jq -c '.workspaces' package.json)" >> "$GITHUB_OUTPUT"
@@ -58,7 +59,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Restore node_modules from cache"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
@@ -80,7 +82,8 @@ jobs:
         workspace: ${{ fromJSON(needs.discover-workspaces.outputs.matrix) }}
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Restore node_modules from cache"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
@@ -117,7 +120,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Restore node_modules from cache"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
@@ -134,7 +138,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Restore node_modules from cache"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
@@ -153,7 +158,8 @@ jobs:
       packages: read
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Restore node_modules from cache"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
