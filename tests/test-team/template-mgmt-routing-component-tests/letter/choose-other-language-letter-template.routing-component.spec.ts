@@ -576,6 +576,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .check();
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 
@@ -610,6 +611,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .uncheck();
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 

@@ -315,6 +315,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       .getRadioButton(templates.LARGE_PRINT_LETTER1.id)
       .check();
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 

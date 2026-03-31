@@ -317,6 +317,7 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
       .getRadioButton(templates.BSL_LETTER1.id)
       .check();
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 
