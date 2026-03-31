@@ -96,14 +96,16 @@ jobs:
         run: |
           echo "safe=$(echo '${{ matrix.workspace }}' | tr '/' '-_')" >> "$GITHUB_OUTPUT"
       - name: "Save the result of test suite"
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6        with:
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
           name: unit-tests-${{ steps.names.outputs.safe }}
           path: "${{ matrix.workspace }}/.reports/unit"
           include-hidden-files: true
           if-no-files-found: ignore
         if: always()
       - name: "Save the result of code coverage"
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6        with:
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
           name: code-coverage-${{ steps.names.outputs.safe }}
           path: "${{ matrix.workspace }}/.reports/unit/coverage/lcov.info"
           if-no-files-found: ignore
@@ -169,7 +171,8 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Download coverage artifacts
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4        with:
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
           pattern: code-coverage-*
           merge-multiple: false
           path: ./_cov_parts
@@ -186,7 +189,8 @@ jobs:
             --prepend-path-fix "../../"
 
       - name: Upload merged LCOV
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6        with:
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
           name: code-coverage-report
           path: .reports/lcov.info
 
