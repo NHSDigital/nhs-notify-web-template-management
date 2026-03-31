@@ -36,8 +36,7 @@ jobs:
       # skip_trivy_package: ${{ steps.skip_trivy.outputs.skip_trivy_package }}
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
-      - name: "Set CI/CD variables"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Set CI/CD variables"
         id: variables
         run: |
           datetime=$(date -u +'%Y-%m-%dT%H:%M:%S%z')
@@ -111,8 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
-      - name: "Install / cache node_modules"
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0      - name: "Install / cache node_modules"
         uses: ./.github/actions/node-modules-cache
         with:
           node_version: "${{ inputs.nodejs_version }}"
