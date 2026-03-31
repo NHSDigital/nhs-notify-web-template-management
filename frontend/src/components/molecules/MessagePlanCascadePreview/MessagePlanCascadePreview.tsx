@@ -107,13 +107,16 @@ export function MessagePlanCascadePreview({
                   data-testid='channel-card'
                 >
                   {cascadeItem.channel === 'LETTER' ? (
-                    <p data-testid='template-name'>
+                    <>
+                      <p data-testid='template-name'>{defaultTemplate.name}</p>
                       <Link
                         href={getLetterTemplatePreviewHref(defaultTemplate)}
+                        target='_blank'
+                        rel='noopener noreferrer'
                       >
-                        {defaultTemplate.name}
+                        {pageContent.letterTemplateLinkText}
                       </Link>
-                    </p>
+                    </>
                   ) : (
                     <>
                       <p data-testid='template-name'>{defaultTemplate.name}</p>
