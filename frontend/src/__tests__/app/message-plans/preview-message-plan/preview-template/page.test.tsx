@@ -1,16 +1,15 @@
 import { render } from '@testing-library/react';
-import PreviewLargePrintLetterTemplateFromMessagePlan, {
+import PreviewLetterTemplateFromPreviewMessagePlan, {
   generateMetadata,
-} from '@app/message-plans/choose-large-print-letter-template/[routingConfigId]/preview-template/[templateId]/page';
+} from '@app/message-plans/preview-message-plan/[routingConfigId]/preview-template/[templateId]/page';
 import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
-import { validateLargePrintLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
 
 const summaryPreviewLetterMock = jest.mocked(SummaryPreviewLetter);
 
-describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryPreviewLetter with validateLargePrintLetterTemplate', async () => {
+describe('PreviewLetterTemplateFromPreviewMessagePlan page', () => {
+  it('should render SummaryPreviewLetter with hideBackLinks and authoring validator', async () => {
     summaryPreviewLetterMock.mockResolvedValueOnce(<div>mock</div>);
 
     const props = {
@@ -21,7 +20,7 @@ describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
       searchParams: Promise.resolve({ lockNumber: '5' }),
     };
 
-    const page = await PreviewLargePrintLetterTemplateFromMessagePlan(props);
+    const page = await PreviewLetterTemplateFromPreviewMessagePlan(props);
 
     render(page);
 
@@ -29,7 +28,8 @@ describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
       expect.objectContaining({
         params: props.params,
         searchParams: props.searchParams,
-        validateTemplate: validateLargePrintLetterTemplate,
+        validateTemplate: expect.any(Function),
+        hideBackLinks: true,
       }),
       undefined
     );
@@ -37,7 +37,7 @@ describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
 
   it('should have the correct page title', async () => {
     expect(await generateMetadata()).toEqual({
-      title: 'Preview large print letter template - NHS Notify',
+      title: 'Preview letter template - NHS Notify',
     });
   });
 });

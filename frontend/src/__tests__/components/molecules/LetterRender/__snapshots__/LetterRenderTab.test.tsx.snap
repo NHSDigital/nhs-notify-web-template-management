@@ -162,7 +162,7 @@ exports[`LetterRenderTab snapshots matches snapshot for long tab 1`] = `
       class="nhsuk-grid-column-two-thirds iframeColumn"
     >
       <iframe
-        aria-label="PDF preview of letter template with long example personalisation data"
+        aria-label="PDF preview of letter template - long examples"
         src="/templates/files/client-456/renders/template-123/initial.pdf"
         title="Letter preview - long examples"
       />
@@ -333,7 +333,7 @@ exports[`LetterRenderTab snapshots matches snapshot for short tab 1`] = `
       class="nhsuk-grid-column-two-thirds iframeColumn"
     >
       <iframe
-        aria-label="PDF preview of letter template with short example personalisation data"
+        aria-label="PDF preview of letter template - short examples"
         src="/templates/files/client-456/renders/template-123/initial.pdf"
         title="Letter preview - short examples"
       />

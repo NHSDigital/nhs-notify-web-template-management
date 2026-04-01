@@ -240,7 +240,7 @@ describe('full cascade plan', () => {
     await renderPage(routingConfig);
 
     const button = screen.getByRole('button', {
-      name: 'Open all template previews',
+      name: 'Open all digital template previews',
     });
 
     const detailsSections = screen
@@ -253,7 +253,7 @@ describe('full cascade plan', () => {
 
     await user.click(button);
 
-    expect(button).toHaveTextContent('Close all template previews');
+    expect(button).toHaveTextContent('Close all digital template previews');
 
     for (const section of detailsSections) {
       expect(section.open).toBe(true);
@@ -261,7 +261,7 @@ describe('full cascade plan', () => {
 
     await user.click(button);
 
-    expect(button).toHaveTextContent('Open all template previews');
+    expect(button).toHaveTextContent('Open all digital template previews');
 
     for (const section of detailsSections) {
       expect(section.open).toBe(false);
@@ -357,7 +357,7 @@ describe('letter only', () => {
 
     expect(
       screen.queryByRole('button', {
-        name: 'Open all template previews',
+        name: 'Open all digital template previews',
       })
     ).not.toBeInTheDocument();
 
@@ -365,9 +365,13 @@ describe('letter only', () => {
 
     const card = within(block).getByTestId('channel-card');
 
+    expect(within(card).getByTestId('template-name')).toHaveTextContent(
+      template.name
+    );
+
     const link = within(card).getByRole('link');
 
-    expect(link).toHaveTextContent(template.name);
+    expect(link).toHaveTextContent('Preview template (opens in a new tab)');
 
     expect(link).toHaveAttribute(
       'href',

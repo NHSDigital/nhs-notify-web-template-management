@@ -29,6 +29,8 @@ function createTemplates(user: TestUser) {
     LARGE_PRINT_LETTER: randomUUID(),
     FRENCH_LETTER: randomUUID(),
     SPANISH_LETTER: randomUUID(),
+    AUTHORING_LETTER: randomUUID(),
+    AUTHORING_LARGE_PRINT_LETTER: randomUUID(),
   };
 
   return {
@@ -80,6 +82,20 @@ function createTemplates(user: TestUser) {
       'PASSED',
       { language: 'es' }
     ),
+    AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.AUTHORING_LETTER,
+      user,
+      `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`,
+      'SUBMITTED'
+    ),
+    AUTHORING_LARGE_PRINT_LETTER:
+      TemplateFactory.createAuthoringLetterTemplate(
+        templateIds.AUTHORING_LARGE_PRINT_LETTER,
+        user,
+        `Test Authoring Large Print Letter template - ${templateIds.AUTHORING_LARGE_PRINT_LETTER}`,
+        'SUBMITTED',
+        { letterType: 'x1' }
+      ),
   };
 }
 
@@ -206,7 +222,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       }
 
       await expect(reviewPage.previewToggleButton).toHaveText(
-        'Open all template previews'
+        'Open all digital template previews'
       );
 
       await reviewPage.previewToggleButton.click();
@@ -216,7 +232,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       }
 
       await expect(reviewPage.previewToggleButton).toHaveText(
-        'Close all template previews'
+        'Close all digital template previews'
       );
 
       await reviewPage.previewToggleButton.click();
@@ -226,7 +242,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       }
 
       await expect(reviewPage.previewToggleButton).toHaveText(
-        'Open all template previews'
+        'Open all digital template previews'
       );
     });
 
@@ -303,6 +319,53 @@ test.describe('Routing - Review and Move to Production page', () => {
         );
       }
     });
+  });
+
+  test('displays AUTHORING letter template links pointing to in-flow preview', async ({
+    page,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.createWithChannels(
+      user,
+      ['LETTER'],
+      { status: 'DRAFT' }
+    )
+      .addTemplate('LETTER', templates.AUTHORING_LETTER.id)
+      .addAccessibleFormatTemplate(
+        'x1',
+        templates.AUTHORING_LARGE_PRINT_LETTER.id
+      );
+
+    await routingConfigStorageHelper.seed([dbEntry]);
+
+    const reviewPage = new RoutingReviewAndMoveToProductionPage(
+      page
+    ).setPathParam('messagePlanId', dbEntry.id);
+
+    await reviewPage.loadPage();
+
+    const templateBlock = await reviewPage.getTemplateBlock('LETTER');
+
+    await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      templates.AUTHORING_LETTER.name
+    );
+
+    await expect(
+      templateBlock.defaultTemplateCard.templateLink
+    ).toHaveAttribute(
+      'href',
+      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
+    );
+
+    await expect(
+      templateBlock.getAccessibilityFormatCard('x1').templateLink
+    ).toHaveText(templates.AUTHORING_LARGE_PRINT_LETTER.name);
+
+    await expect(
+      templateBlock.getAccessibilityFormatCard('x1').templateLink
+    ).toHaveAttribute(
+      'href',
+      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}?lockNumber=0`
+    );
   });
 
   test('keep in draft button navigates to the edit message plan page', async ({

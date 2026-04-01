@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MessagePlanCascadePreview } from '@molecules/MessagePlanCascadePreview/MessagePlanCascadePreview';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
   PDF_LETTER_TEMPLATE,
@@ -56,7 +57,9 @@ describe('MessagePlanCascadePreview', () => {
     );
 
     expect(
-      screen.getByRole('button', { name: 'Open all template previews' })
+      screen.getByRole('button', {
+        name: 'Open all digital template previews',
+      })
     ).toBeInTheDocument();
   });
 
@@ -143,7 +146,7 @@ describe('MessagePlanCascadePreview', () => {
       'href',
       `/preview-letter-template/${PDF_LETTER_TEMPLATE.id}`
     );
-    expect(link).toHaveTextContent(PDF_LETTER_TEMPLATE.name);
+    expect(link).toHaveTextContent('Preview template (opens in a new tab)');
   });
 
   it('renders submitted letter template with submitted link', () => {
@@ -213,6 +216,53 @@ describe('MessagePlanCascadePreview', () => {
     ).not.toBeInTheDocument();
     expect(screen.getByTestId('message-plan-block-SMS')).toBeInTheDocument();
     expect(screen.getByTestId('message-plan-block-LETTER')).toBeInTheDocument();
+  });
+
+  it('renders authoring letter template with letterPreviewHrefBase link', () => {
+    const authoringTemplates = {
+      ...templates,
+      [AUTHORING_LETTER_TEMPLATE.id]: AUTHORING_LETTER_TEMPLATE,
+    };
+    const routingConfigWithAuthoring = {
+      ...ROUTING_CONFIG,
+      cascade: ROUTING_CONFIG.cascade.map((item) =>
+        item.channel === 'LETTER'
+          ? { ...item, defaultTemplateId: AUTHORING_LETTER_TEMPLATE.id }
+          : item
+      ),
+    };
+
+    render(
+      <MessagePlanCascadePreview
+        messagePlan={routingConfigWithAuthoring}
+        templates={authoringTemplates}
+        letterPreviewHrefBase='/message-plans/review-and-move-to-production/routing-config-id'
+      />
+    );
+
+    const letterBlock = screen.getByTestId('message-plan-block-LETTER');
+    const link = letterBlock.querySelector('a');
+    expect(link).toHaveAttribute(
+      'href',
+      `/message-plans/review-and-move-to-production/routing-config-id/preview-template/${AUTHORING_LETTER_TEMPLATE.id}?lockNumber=${AUTHORING_LETTER_TEMPLATE.lockNumber}`
+    );
+  });
+
+  it('renders PDF letter template with standard link even when letterPreviewHrefBase is provided', () => {
+    render(
+      <MessagePlanCascadePreview
+        messagePlan={ROUTING_CONFIG}
+        templates={templates}
+        letterPreviewHrefBase='/message-plans/review-and-move-to-production/routing-config-id'
+      />
+    );
+
+    const letterBlock = screen.getByTestId('message-plan-block-LETTER');
+    const link = letterBlock.querySelector('a');
+    expect(link).toHaveAttribute(
+      'href',
+      `/preview-letter-template/${PDF_LETTER_TEMPLATE.id}`
+    );
   });
 
   it('matches snapshot', () => {

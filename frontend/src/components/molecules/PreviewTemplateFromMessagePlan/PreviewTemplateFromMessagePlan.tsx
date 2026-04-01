@@ -22,6 +22,7 @@ export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
     routingConfigId: string;
     lockNumber: number;
     letterVariant?: LetterVariant;
+    hideBackLinks?: boolean;
   };
 
 export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
@@ -30,6 +31,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   routingConfigId,
   lockNumber,
   letterVariant,
+  hideBackLinks,
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
@@ -54,9 +56,11 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
 
   return (
     <>
-      <Link href={backLinkHref} passHref legacyBehavior>
-        <NotifyBackLink>{content.backLink.text}</NotifyBackLink>
-      </Link>
+      {!hideBackLinks && (
+        <Link href={backLinkHref} passHref legacyBehavior>
+          <NotifyBackLink>{content.backLink.text}</NotifyBackLink>
+        </Link>
+      )}
 
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
@@ -67,13 +71,15 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
               hideStatus: true,
               hideEditActions: true,
             })}
-            <Link
-              className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
-              href={backLinkHref}
-              data-testid='back-link-bottom'
-            >
-              {content.backLink.text}
-            </Link>
+            {!hideBackLinks && (
+              <Link
+                className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
+                href={backLinkHref}
+                data-testid='back-link-bottom'
+              >
+                {content.backLink.text}
+              </Link>
+            )}
           </div>
         </div>
       </NHSNotifyMain>

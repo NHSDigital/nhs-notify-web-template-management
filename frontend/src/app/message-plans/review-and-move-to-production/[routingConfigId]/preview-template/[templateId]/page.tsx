@@ -1,7 +1,9 @@
 import {
   MessagePlanAndTemplatePageProps,
-  validateLetterTemplate,
+  zodValidate,
+  $AuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { Metadata } from 'next';
 import content from '@content/content';
 import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
@@ -14,10 +16,17 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
+const validateAuthoringLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($AuthoringLetterTemplate, template);
+
+const PreviewLetterTemplateFromReviewAndMoveToProduction = async (
   props: MessagePlanAndTemplatePageProps
 ) => (
-  <SummaryPreviewLetter {...props} validateTemplate={validateLetterTemplate} />
+  <SummaryPreviewLetter
+    {...props}
+    validateTemplate={validateAuthoringLetterTemplate}
+    hideBackLinks
+  />
 );
 
-export default PreviewStandardEnglishLetterTemplateFromMessagePlan;
+export default PreviewLetterTemplateFromReviewAndMoveToProduction;

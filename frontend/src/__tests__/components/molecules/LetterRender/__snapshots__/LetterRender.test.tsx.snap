@@ -252,7 +252,7 @@ exports[`LetterRender matches snapshot 1`] = `
             class="nhsuk-grid-column-two-thirds iframeColumn"
           >
             <iframe
-              aria-label="PDF preview of letter template with short example personalisation data"
+              aria-label="PDF preview of letter template - short examples"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - short examples"
             />
@@ -444,7 +444,7 @@ exports[`LetterRender matches snapshot 1`] = `
             class="nhsuk-grid-column-two-thirds iframeColumn"
           >
             <iframe
-              aria-label="PDF preview of letter template with long example personalisation data"
+              aria-label="PDF preview of letter template - long examples"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - long examples"
             />
@@ -569,7 +569,7 @@ exports[`LetterRender matches snapshot when hideEditActions is true 1`] = `
             class="nhsuk-grid-column-two-thirds iframeColumn"
           >
             <iframe
-              aria-label="PDF preview of letter template with short example personalisation data"
+              aria-label="PDF preview of letter template - short examples"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - short examples"
             />
@@ -633,7 +633,7 @@ exports[`LetterRender matches snapshot when hideEditActions is true 1`] = `
             class="nhsuk-grid-column-two-thirds iframeColumn"
           >
             <iframe
-              aria-label="PDF preview of letter template with long example personalisation data"
+              aria-label="PDF preview of letter template - long examples"
               src="/templates/files/client-123/renders/template-123/initial.pdf"
               title="Letter preview - long examples"
             />

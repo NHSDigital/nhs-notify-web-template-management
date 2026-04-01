@@ -52,6 +52,19 @@ describe('LetterRenderIframe', () => {
         screen.getByTitle('Letter preview - long examples')
       ).toBeInTheDocument();
     });
+
+    it('renders correct title and aria-label for initialRender', () => {
+      render(
+        <LetterRenderIframe renderType='initialRender' pdfUrl='/test.pdf' />
+      );
+
+      const iframe = screen.getByTitle('Letter preview');
+      expect(iframe).toBeInTheDocument();
+      expect(iframe).toHaveAttribute(
+        'aria-label',
+        'PDF preview of letter template'
+      );
+    });
   });
 
   describe('missing file handling', () => {

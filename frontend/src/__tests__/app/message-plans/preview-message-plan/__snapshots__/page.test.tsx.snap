@@ -101,7 +101,7 @@ exports[`full cascade plan matches snapshot 1`] = `
               class="nhsuk-button nhsuk-button--secondary"
               type="button"
             >
-              Open all template previews
+              Open all digital template previews
             </button>
           </p>
           <ul
@@ -606,12 +606,15 @@ exports[`full cascade plan matches snapshot 1`] = `
                   <p
                     data-testid="template-name"
                   >
-                    <a
-                      href="/preview-submitted-letter-template/278e1a92-353f-42a3-b08d-565ea1c9d763"
-                    >
-                      letter template name
-                    </a>
+                    letter template name
                   </p>
+                  <a
+                    href="/preview-submitted-letter-template/278e1a92-353f-42a3-b08d-565ea1c9d763"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Preview template (opens in a new tab)
+                  </a>
                 </div>
               </div>
               <ul

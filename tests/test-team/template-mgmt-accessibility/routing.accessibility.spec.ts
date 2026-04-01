@@ -24,12 +24,14 @@ import {
   RoutingMessagePlansPage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionLetterTemplatePage,
 } from 'pages/routing';
 import { getTestContext } from 'helpers/context/context';
 
@@ -230,6 +232,25 @@ test.describe('Routing', () => {
         new RoutingPreviewSmsTemplatePage(page)
           .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.SMS)
+          .setSearchParam('lockNumber', '0')
+      ));
+
+    test('Preview message plan letter template', async ({ page, analyze }) =>
+      analyze(
+        new RoutingPreviewMessagePlanLetterTemplatePage(page)
+          .setPathParam('messagePlanId', productionRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER)
+          .setSearchParam('lockNumber', '0')
+      ));
+
+    test('Review and move to production letter template', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER)
           .setSearchParam('lockNumber', '0')
       ));
   });

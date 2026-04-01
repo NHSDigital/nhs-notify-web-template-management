@@ -5,8 +5,6 @@ import PreviewTemplateDetailsPdfLetter from './PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsAuthoringLetter from './PreviewTemplateDetailsAuthoringLetter';
 import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
 import { buildLetterRenderUrl } from '@utils/letter-render-url';
-import concatClassNames from '@utils/concat-class-names';
-import styles from './PreviewTemplateDetailsLetter.module.scss';
 import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 export default function PreviewTemplateDetailsLetter({
@@ -44,11 +42,11 @@ export default function PreviewTemplateDetailsLetter({
         hideStatus={hideStatus}
         hideEditActions={hideEditActions}
       />
-      <h2 className='nhsuk-heading-m'>{'h2'}</h2>
+      <h2 className='nhsuk-heading-m'>Example preview</h2>
       <LetterRenderIframe
         renderType={'initialRender'}
         pdfUrl={pdfUrl}
-        className={concatClassNames(styles.iframe, 'nhsuk-u-margin-bottom-6')}
+        className='letter-render-iframe nhsuk-u-margin-bottom-6'
       />
     </>
   );
