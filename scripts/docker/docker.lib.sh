@@ -441,7 +441,7 @@ function docker-push-container() {
 function docker-calculate-image-name() {
   local dir=${dir:-$PWD}
   local container_name="${CONTAINER_NAME:-$(basename "$dir")}"
-  local ecr_repo="${ECR_REPO:-nhs-notify-main-acct}"
+  local ecr_repo="${ECR_REPO:-nhs-main-acct-admail}"
   local image_suffix="${CONTAINER_IMAGE_SUFFIX:-$(docker-get-git-version-suffix)}"
   local image_tag="${CONTAINER_IMAGE_PREFIX}-${container_name}"
   local ecr_repo_uri="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ecr_repo}"
