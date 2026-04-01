@@ -4,7 +4,10 @@ import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import type { TemplateDto } from 'nhs-notify-web-template-management-types';
+import type {
+  LetterVariant,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import {
   templateTypeToUrlTextMappings,
   PageComponentProps,
@@ -18,6 +21,7 @@ export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
     previewComponent: PreviewTemplateComponent<T>;
     routingConfigId: string;
     lockNumber: number;
+    letterVariant?: LetterVariant;
   };
 
 export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
@@ -25,6 +29,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   previewComponent,
   routingConfigId,
   lockNumber,
+  letterVariant,
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
@@ -32,6 +37,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   if (template.templateType === 'LETTER' && 'letterType' in template) {
     const isForeignLanguage =
       'language' in template && template.language && template.language !== 'en';
+
     letterType = isForeignLanguage
       ? 'language'
       : (template.letterType as RoutingSupportedLetterType);
@@ -57,6 +63,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
           <div className='nhsuk-grid-column-full'>
             {previewComponent({
               template,
+              letterVariant,
               hideStatus: true,
               hideEditActions: true,
             })}

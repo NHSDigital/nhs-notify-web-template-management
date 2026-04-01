@@ -6,7 +6,7 @@ describe('LetterRenderIframe', () => {
     it('renders iframe with provided pdfUrl', () => {
       render(
         <LetterRenderIframe
-          tab='shortFormRender'
+          renderType='shortFormRender'
           pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
         />
       );
@@ -22,7 +22,7 @@ describe('LetterRenderIframe', () => {
     it('adds additional props', () => {
       render(
         <LetterRenderIframe
-          tab='longFormRender'
+          renderType='longFormRender'
           pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
           className='additional'
         />
@@ -34,7 +34,9 @@ describe('LetterRenderIframe', () => {
     });
 
     it('renders correct title for short tab', () => {
-      render(<LetterRenderIframe tab='shortFormRender' pdfUrl='/test.pdf' />);
+      render(
+        <LetterRenderIframe renderType='shortFormRender' pdfUrl='/test.pdf' />
+      );
 
       expect(
         screen.getByTitle('Letter preview - short examples')
@@ -42,7 +44,9 @@ describe('LetterRenderIframe', () => {
     });
 
     it('renders correct title for long tab', () => {
-      render(<LetterRenderIframe tab='longFormRender' pdfUrl='/test.pdf' />);
+      render(
+        <LetterRenderIframe renderType='longFormRender' pdfUrl='/test.pdf' />
+      );
 
       expect(
         screen.getByTitle('Letter preview - long examples')
@@ -52,7 +56,7 @@ describe('LetterRenderIframe', () => {
 
   describe('missing file handling', () => {
     it('shows message when pdfUrl is null', () => {
-      render(<LetterRenderIframe tab='shortFormRender' pdfUrl={null} />);
+      render(<LetterRenderIframe renderType='shortFormRender' pdfUrl={null} />);
 
       expect(screen.getByText('No preview available')).toBeInTheDocument();
 
@@ -66,7 +70,7 @@ describe('LetterRenderIframe', () => {
     it('matches snapshot with PDF URL', () => {
       const container = render(
         <LetterRenderIframe
-          tab='shortFormRender'
+          renderType='shortFormRender'
           pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
         />
       );
@@ -76,7 +80,7 @@ describe('LetterRenderIframe', () => {
 
     it('matches snapshot without PDF file', () => {
       const container = render(
-        <LetterRenderIframe tab='shortFormRender' pdfUrl={null} />
+        <LetterRenderIframe renderType='shortFormRender' pdfUrl={null} />
       );
 
       expect(container.asFragment()).toMatchSnapshot();

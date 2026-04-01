@@ -92,7 +92,7 @@ function LetterRenderTabContent({
 
       <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
         {hideEditActions ? (
-          <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
+          <LetterRenderIframe renderType={tab} pdfUrl={pdfUrl} />
         ) : (
           <PollLetterRender
             template={template}
@@ -100,7 +100,7 @@ function LetterRenderTabContent({
             loadingElement={<p>{loadingText}</p>}
             forcePolling={isPending}
           >
-            <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
+            <LetterRenderIframe renderType={tab} pdfUrl={pdfUrl} />
           </PollLetterRender>
         )}
       </div>

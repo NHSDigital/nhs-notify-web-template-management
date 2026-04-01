@@ -1,10 +1,11 @@
 'use server';
 
 import {
+  AuthoringLetterTemplate,
   MessagePlanAndTemplatePageProps,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { getTemplate } from '@utils/form-actions';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
@@ -38,11 +39,19 @@ const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
 
   const template = await getTemplate(templateId);
 
+  // status?
   const validatedTemplate = validateLetterTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);
   }
+
+  const letterVariantId = (validatedTemplate as AuthoringLetterTemplate)
+    .letterVariantId;
+
+  const letterVariant = letterVariantId
+    ? await getLetterVariantById(letterVariantId)
+    : undefined;
 
   return (
     <NHSNotifyContainer>
@@ -51,6 +60,7 @@ const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
         previewComponent={PreviewTemplateDetailsLetter}
         routingConfigId={routingConfigId}
         lockNumber={lockNumberResult.data}
+        letterVariant={letterVariant}
       />
     </NHSNotifyContainer>
   );

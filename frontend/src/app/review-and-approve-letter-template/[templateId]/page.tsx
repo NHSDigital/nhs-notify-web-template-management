@@ -101,7 +101,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               styles.iframe,
               'nhsuk-u-margin-bottom-6'
             )}
-            tab='shortFormRender'
+            renderType='shortFormRender'
             pdfUrl={buildLetterRenderUrl(
               validatedTemplate,
               shortFormRender.fileName
@@ -113,7 +113,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               styles.iframe,
               'nhsuk-u-margin-bottom-6'
             )}
-            tab='longFormRender'
+            renderType='longFormRender'
             pdfUrl={buildLetterRenderUrl(
               validatedTemplate,
               longFormRender.fileName
