@@ -48,7 +48,7 @@ jobs:
         with:
           fetch-depth: 0 # Full history is needed to scan all commits
       - name: "Scan secrets"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-secrets@3.0.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-secrets@3.0.8
   check-file-format:
     name: "Check file format"
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check file format"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-file-format@3.0.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-file-format@3.0.8
   check-markdown-format:
     name: "Check Markdown format"
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check Markdown format"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-markdown-format@3.0.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-markdown-format@3.0.8
   terraform-docs:
     name: "Run terraform-docs"
     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check English usage"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-english-usage@3.0.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-english-usage@3.0.8
   check-todo-usage:
     name: "Check TODO usage"
     runs-on: ubuntu-latest
@@ -116,7 +116,7 @@ jobs:
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check TODO usage"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-todo-usage@3.0.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-todo-usage@3.0.8
   detect-terraform-changes:
     name: "Detect Terraform Changes"
     runs-on: ubuntu-latest
@@ -194,7 +194,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
       - name: "Count lines of code"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/create-lines-of-code-report@3.0.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/create-lines-of-code-report@3.0.8
         with:
           build_datetime: "${{ inputs.build_datetime }}"
           build_timestamp: "${{ inputs.build_timestamp }}"
@@ -213,7 +213,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v5.0.0
       - name: "Scan dependencies"
-        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-dependencies@3.0.0
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-dependencies@3.0.8
         with:
           build_datetime: "${{ inputs.build_datetime }}"
           build_timestamp: "${{ inputs.build_timestamp }}"
