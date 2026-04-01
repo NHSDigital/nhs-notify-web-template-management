@@ -77,6 +77,7 @@ export const alphabeticalLanguageList: Array<[Language, LanguageMetadata]> = (
   languageMetadataA.name.localeCompare(languageMetadataB.name)
 );
 
+// Letter types that can be selected in the UI (includes frontend concept 'language')
 export const FRONTEND_SUPPORTED_LETTER_TYPES = [
   'x0',
   'x1',

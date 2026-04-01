@@ -405,11 +405,8 @@ export function getAccessibleTemplatesForCascadeItem(
   return FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS.map((format) => [
     format,
     getTemplateForAccessibleFormat(format, cascadeItem, templates),
-  ]).filter(
-    (
-      pair
-    ): pair is [FrontendSupportedAccessibleFormats, TemplateDto] =>
-      Boolean(pair[1])
+  ]).filter((pair): pair is [FrontendSupportedAccessibleFormats, TemplateDto] =>
+    Boolean(pair[1])
   );
 }
 /**
