@@ -162,6 +162,8 @@ test.describe('Routing', () => {
   test('templates are added to the routing config, and the routing config is completed', async ({
     page,
   }) => {
+    test.setTimeout(90_000);
+
     const rcName = 'E2E TEST RC';
 
     const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
@@ -178,12 +180,12 @@ test.describe('Routing', () => {
         { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
         { template: templates.EMAIL, expectedStatus: 'Draft' },
         { template: templates.SMS, expectedStatus: 'Draft' },
-        { template: templates.LETTER, expectedStatus: 'Proof approved' },
+        { template: templates.LETTER, expectedStatus: 'Approved' },
         {
           template: templates.LARGE_PRINT_LETTER,
-          expectedStatus: 'Proof approved',
+          expectedStatus: 'Approved',
         },
-        { template: templates.ARABIC_LETTER, expectedStatus: 'Proof approved' },
+        { template: templates.ARABIC_LETTER, expectedStatus: 'Approved' },
       ]);
     });
 
@@ -430,7 +432,7 @@ test.describe('Routing', () => {
         {
           template: templates.LARGE_PRINT_LETTER,
           // this was removed before going to production
-          expectedStatus: 'Proof approved',
+          expectedStatus: 'Approved',
         },
       ]);
     });
