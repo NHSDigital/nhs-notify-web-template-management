@@ -15,7 +15,7 @@ import { Container } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import { renderSMSMarkdown } from '@utils/markdownit';
 import { useFeatureFlags } from '@providers/client-config-provider';
-import { DigitalTemplateBanner } from './DigitalTemplateBanner';
+import { PreviewTemplateDetailsBanner } from './PreviewTemplateDetailsBanner';
 
 export default function PreviewTemplateDetailsSms({
   template,
@@ -53,7 +53,7 @@ export default function PreviewTemplateDetailsSms({
           />
         </DetailSection>
       </Container>
-      <DigitalTemplateBanner
+      <PreviewTemplateDetailsBanner
         digitalProofingEnabled={!!features.digitalProofingSms}
         template={template}
       />

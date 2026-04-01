@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { DigitalTemplateBanner } from '@molecules/PreviewTemplateDetails/DigitalTemplateBanner';
+import { PreviewTemplateDetailsBanner } from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsBanner';
 import {
   NHS_APP_TEMPLATE,
   EMAIL_TEMPLATE,
@@ -7,7 +7,7 @@ import {
 } from '@testhelpers/helpers';
 import { DigitalTemplate } from 'nhs-notify-web-template-management-utils';
 
-describe('DigitalTemplateBanner', () => {
+describe('PreviewTemplateDetailsBanner', () => {
   test.each<[string, string, DigitalTemplate]>([
     ['nhs-app-message', 'Send a test NHS App message', NHS_APP_TEMPLATE],
     ['email', 'Send a test email', EMAIL_TEMPLATE],
@@ -16,7 +16,7 @@ describe('DigitalTemplateBanner', () => {
     'should show test message banner when digital proofing is enabled for %s template',
     (slug, linkName, template) => {
       const container = render(
-        <DigitalTemplateBanner
+        <PreviewTemplateDetailsBanner
           digitalProofingEnabled={true}
           template={{
             ...template,
@@ -26,7 +26,7 @@ describe('DigitalTemplateBanner', () => {
       );
 
       expect(
-        screen.queryByTestId('request-proof-message-banner')
+        screen.queryByTestId('request-proof-message-banner-link')
       ).not.toBeInTheDocument();
 
       expect(screen.getByTestId('test-message-banner')).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('DigitalTemplateBanner', () => {
     'should show request proof banner when digital proofing is disabled for %s template',
     (_, template) => {
       const container = render(
-        <DigitalTemplateBanner
+        <PreviewTemplateDetailsBanner
           digitalProofingEnabled={false}
           template={{
             ...template,

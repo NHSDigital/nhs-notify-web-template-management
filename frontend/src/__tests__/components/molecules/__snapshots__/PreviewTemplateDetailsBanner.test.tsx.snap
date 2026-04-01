@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DigitalTemplateBanner should show request proof banner when digital proofing is disabled for EMAIL template 1`] = `
+exports[`PreviewTemplateDetailsBanner should show request proof banner when digital proofing is disabled for EMAIL template 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-summary-list message-banner"
@@ -23,7 +23,7 @@ exports[`DigitalTemplateBanner should show request proof banner when digital pro
 </DocumentFragment>
 `;
 
-exports[`DigitalTemplateBanner should show request proof banner when digital proofing is disabled for NHS_APP template 1`] = `
+exports[`PreviewTemplateDetailsBanner should show request proof banner when digital proofing is disabled for NHS_APP template 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-summary-list message-banner"
@@ -46,7 +46,7 @@ exports[`DigitalTemplateBanner should show request proof banner when digital pro
 </DocumentFragment>
 `;
 
-exports[`DigitalTemplateBanner should show request proof banner when digital proofing is disabled for SMS template 1`] = `
+exports[`PreviewTemplateDetailsBanner should show request proof banner when digital proofing is disabled for SMS template 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-summary-list message-banner"
@@ -69,7 +69,7 @@ exports[`DigitalTemplateBanner should show request proof banner when digital pro
 </DocumentFragment>
 `;
 
-exports[`DigitalTemplateBanner should show test message banner when digital proofing is enabled for email template 1`] = `
+exports[`PreviewTemplateDetailsBanner should show test message banner when digital proofing is enabled for email template 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-summary-list message-banner"
@@ -92,7 +92,7 @@ exports[`DigitalTemplateBanner should show test message banner when digital proo
 </DocumentFragment>
 `;
 
-exports[`DigitalTemplateBanner should show test message banner when digital proofing is enabled for nhs-app-message template 1`] = `
+exports[`PreviewTemplateDetailsBanner should show test message banner when digital proofing is enabled for nhs-app-message template 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-summary-list message-banner"
@@ -115,7 +115,7 @@ exports[`DigitalTemplateBanner should show test message banner when digital proo
 </DocumentFragment>
 `;
 
-exports[`DigitalTemplateBanner should show test message banner when digital proofing is enabled for text-message template 1`] = `
+exports[`PreviewTemplateDetailsBanner should show test message banner when digital proofing is enabled for text-message template 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-summary-list message-banner"

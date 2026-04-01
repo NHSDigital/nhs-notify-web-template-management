@@ -15,7 +15,7 @@ import { Container } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { useFeatureFlags } from '@providers/client-config-provider';
-import { DigitalTemplateBanner } from './DigitalTemplateBanner';
+import { PreviewTemplateDetailsBanner } from './PreviewTemplateDetailsBanner';
 
 export default function PreviewTemplateDetailsNhsApp({
   template,
@@ -51,7 +51,7 @@ export default function PreviewTemplateDetailsNhsApp({
           />
         </DetailSection>
       </Container>
-      <DigitalTemplateBanner
+      <PreviewTemplateDetailsBanner
         digitalProofingEnabled={!!features.digitalProofingNhsApp}
         template={template}
       />
