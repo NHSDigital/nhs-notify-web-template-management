@@ -9,8 +9,8 @@ import type {
 } from 'nhs-notify-web-template-management-types';
 import {
   LetterTemplate,
-  ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES,
-  RoutingAccessibleFormatLetterType,
+  FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS,
+  FrontendSupportedAccessibleFormats,
 } from 'nhs-notify-web-template-management-utils';
 
 export type ConditionalTemplate =
@@ -360,7 +360,7 @@ export function replaceLanguageTemplatesInCascadeItem(
  * Gets the template for a cascade item with the given accessible format from the provided templates object
  */
 export function getTemplateForAccessibleFormat(
-  format: RoutingAccessibleFormatLetterType,
+  format: FrontendSupportedAccessibleFormats,
   cascadeItem: CascadeItem,
   templates: MessagePlanTemplates
 ): TemplateDto | undefined {
@@ -401,12 +401,15 @@ export function getLanguageTemplatesForCascadeItem(
 export function getAccessibleTemplatesForCascadeItem(
   cascadeItem: CascadeItem,
   templates: MessagePlanTemplates
-): [RoutingAccessibleFormatLetterType, TemplateDto][] {
-  return ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES.map((format) => [
+): [FrontendSupportedAccessibleFormats, TemplateDto][] {
+  return FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS.map((format) => [
     format,
     getTemplateForAccessibleFormat(format, cascadeItem, templates),
-  ]).filter((pair): pair is [RoutingAccessibleFormatLetterType, TemplateDto] =>
-    Boolean(pair[1])
+  ]).filter(
+    (
+      pair
+    ): pair is [FrontendSupportedAccessibleFormats, TemplateDto] =>
+      Boolean(pair[1])
   );
 }
 /**

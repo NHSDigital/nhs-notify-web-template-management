@@ -37,12 +37,27 @@ import {
   sendDigitalTemplateTestMessageUrl,
   templateTypeToUrlTextMappings,
   accessibleFormatDisplayMappings,
-  type TemplatingSupportedLetterType,
+  type FrontendSupportedLetterType,
   createTemplateUrl,
   isLanguage,
   getMessageOrderOptions,
   MESSAGE_ORDER_OPTIONS_LIST,
+  isFrontendSupportedLetterType,
+  FRONTEND_SUPPORTED_LETTER_TYPES,
 } from '../enum';
+
+describe('isFrontendSupportedLetterType', () => {
+  it.each(FRONTEND_SUPPORTED_LETTER_TYPES)(
+    'returns true when letter type is %s',
+    (letterType) => {
+      expect(isFrontendSupportedLetterType(letterType)).toBe(true);
+    }
+  );
+
+  it('returns false when letter type is not valid', () => {
+    expect(isFrontendSupportedLetterType('q14')).toBe(false);
+  });
+});
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -297,7 +312,7 @@ describe('createTemplateUrl', () => {
     '$letterType $templateType returns $slug',
     (
       templateType: TemplateType,
-      letterType: TemplatingSupportedLetterType | undefined,
+      letterType: FrontendSupportedLetterType | undefined,
       slug: string
     ) => {
       expect(createTemplateUrl(templateType, letterType)).toEqual(slug);

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client/schemas';
-import { TEMPLATING_SUPPORTED_LETTER_TYPES } from 'nhs-notify-web-template-management-utils';
+import { FRONTEND_SUPPORTED_LETTER_TYPES } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 
 const {
@@ -20,7 +20,7 @@ export const $ChooseTemplateTypeWithLetterAuthoring = z
       message: templateTypeError,
     }),
     letterType: z
-      .enum(TEMPLATING_SUPPORTED_LETTER_TYPES, {
+      .enum(FRONTEND_SUPPORTED_LETTER_TYPES, {
         message: letterTypeError,
       })
       .optional(),

@@ -77,51 +77,51 @@ export const alphabeticalLanguageList: Array<[Language, LanguageMetadata]> = (
   languageMetadataA.name.localeCompare(languageMetadataB.name)
 );
 
-const letterTypeMap: Record<LetterType, string> = {
+export const FRONTEND_SUPPORTED_LETTER_TYPES = [
+  'x0',
+  'x1',
+  'q4',
+  'language',
+] as const satisfies readonly (LetterType | 'language')[];
+export type FrontendSupportedLetterType =
+  (typeof FRONTEND_SUPPORTED_LETTER_TYPES)[number];
+
+export function isFrontendSupportedLetterType(
+  value: string
+): value is FrontendSupportedLetterType {
+  const types: readonly string[] = FRONTEND_SUPPORTED_LETTER_TYPES;
+  return types.includes(value);
+}
+
+export const FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS = [
+  'x1',
+  'q4',
+] as const satisfies readonly Exclude<
+  FrontendSupportedLetterType,
+  'language' | 'x0'
+>[];
+export type FrontendSupportedAccessibleFormats =
+  (typeof FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS)[number];
+
+const letterTypeMap: Record<
+  Exclude<FrontendSupportedLetterType, 'language'>,
+  string
+> = {
   q4: 'British Sign Language',
   x0: 'Standard',
   x1: 'Large print',
 };
 
-// Letter types (including frontend concept 'language')
-type UILetterType = LetterType | 'language';
-
-// Letter types supported in templating UI
-export const TEMPLATING_SUPPORTED_LETTER_TYPES = [
-  'x0',
-  'x1',
-  'q4',
-  'language',
-] as const satisfies readonly UILetterType[];
-export type TemplatingSupportedLetterType =
-  (typeof TEMPLATING_SUPPORTED_LETTER_TYPES)[number];
-
-// Letter types supported in routing UI
-export const ROUTING_SUPPORTED_LETTER_TYPES = [
-  'x0',
-  'x1',
-  'q4',
-  'language',
-] as const satisfies readonly UILetterType[];
-export type RoutingSupportedLetterType =
-  (typeof ROUTING_SUPPORTED_LETTER_TYPES)[number];
-
-export const ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES = [
-  'x1',
-  'q4',
-] as const satisfies readonly RoutingSupportedLetterType[];
-export type RoutingAccessibleFormatLetterType =
-  (typeof ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES)[number];
-
-export const letterTypeMapping = (letterType: LetterType) =>
-  `${letterTypeMap[letterType]} letter`;
+export const letterTypeMapping = (
+  letterType: Exclude<FrontendSupportedLetterType, 'language'>
+) => `${letterTypeMap[letterType]} letter`;
 
 export const alphabeticalLetterTypeList = Object.entries(letterTypeMap).sort(
   ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
 );
 
 export const letterTypeDisplayMappings = (
-  letterType: LetterType,
+  letterType: Exclude<FrontendSupportedLetterType, 'language'>,
   language: Language
 ) =>
   language === 'en'
@@ -245,7 +245,7 @@ export const sendDigitalTemplateTestMessageUrl = (
 
 export const templateTypeToUrlTextMappings = (
   type: TemplateType,
-  letterType?: TemplatingSupportedLetterType
+  letterType?: FrontendSupportedLetterType
 ) =>
   ({
     NHS_APP: 'nhs-app',
@@ -272,7 +272,7 @@ export const legacyTemplateCreationPages = (type: TemplateType) =>
 
 export const createTemplateUrl = (
   templateType: TemplateType,
-  letterType?: TemplatingSupportedLetterType
+  letterType?: FrontendSupportedLetterType
 ) =>
   `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
 
@@ -283,7 +283,7 @@ export const previewSubmittedTemplatePages = (type: TemplateType) =>
 
 export const messagePlanChooseTemplateUrl = (
   type: TemplateType,
-  letterType?: RoutingSupportedLetterType
+  letterType?: FrontendSupportedLetterType
 ) => `choose-${templateTypeToUrlTextMappings(type, letterType)}-template`;
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
@@ -424,8 +424,13 @@ export const channelDisplayMappings = (channel: Channel) => {
   return map[channel];
 };
 
-export const accessibleFormatDisplayMappings = (letterType: LetterType) => {
-  const map: Record<LetterType, string> = {
+export const accessibleFormatDisplayMappings = (
+  letterType: Exclude<FrontendSupportedLetterType, 'language'>
+) => {
+  const map: Record<
+    Exclude<FrontendSupportedLetterType, 'language'>,
+    string
+  > = {
     q4: 'British Sign Language letter',
     x0: 'Standard letter',
     x1: 'Large print letter',

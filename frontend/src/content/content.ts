@@ -1,10 +1,12 @@
 import type {
-  LetterType,
   RoutingConfigStatusActive,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
-import type { DigitalTemplateType } from 'nhs-notify-web-template-management-utils';
+import type {
+  DigitalTemplateType,
+  FrontendSupportedLetterType,
+} from 'nhs-notify-web-template-management-utils';
 
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
@@ -1757,9 +1759,7 @@ const uploadDocxLetterTemplateForm = {
   },
 };
 
-type DocxTemplateType = LetterType | 'language';
-
-const docxLetterDisplayMappings: Record<DocxTemplateType, string> = {
+const docxLetterDisplayMappings: Record<FrontendSupportedLetterType, string> = {
   x0: 'standard English',
   x1: 'large print',
   q4: 'British Sign Language',
@@ -1768,7 +1768,7 @@ const docxLetterDisplayMappings: Record<DocxTemplateType, string> = {
 
 const article = (noun: string) => (/^[aeiou]/i.test(noun) ? 'an' : 'a');
 
-const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
+const uploadDocxLetterTemplatePage = (type: FrontendSupportedLetterType) => {
   const display = docxLetterDisplayMappings[type];
 
   return {

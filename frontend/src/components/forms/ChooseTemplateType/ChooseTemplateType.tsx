@@ -7,7 +7,7 @@ import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotif
 import copy from '@content/content';
 import {
   ErrorState,
-  TEMPLATING_SUPPORTED_LETTER_TYPES,
+  FRONTEND_SUPPORTED_LETTER_TYPES,
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateTypeAction } from './server-action';
@@ -46,7 +46,7 @@ export const ChooseTemplateType = ({
       error={errorState?.fieldErrors?.['letterType']?.join(', ')}
       errorProps={{ id: 'letterType--error-message' }}
     >
-      {TEMPLATING_SUPPORTED_LETTER_TYPES.map((letterType) => {
+      {FRONTEND_SUPPORTED_LETTER_TYPES.map((letterType) => {
         return (
           <Radios.Radio
             value={letterType}
