@@ -426,7 +426,11 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
         user1,
         'French Letter Template',
         'PROOF_APPROVED',
-        { language: 'fr' }
+        {
+          language: 'fr',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       );
 
       const arabicTemplate = TemplateFactory.createAuthoringLetterTemplate(
@@ -434,7 +438,11 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
         user1,
         'Arabic Letter Template',
         'PROOF_APPROVED',
-        { language: 'ar' }
+        {
+          language: 'ar',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       );
 
       await templateStorageHelper.seedTemplateData([

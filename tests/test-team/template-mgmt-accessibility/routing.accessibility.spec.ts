@@ -120,28 +120,44 @@ test.describe('Routing', () => {
         templateIds.LETTER,
         user,
         `Test Letter template - ${templateIds.LETTER}`,
-        'PROOF_APPROVED'
+        'PROOF_APPROVED',
+        {
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_LARGE_PRINT,
         user,
         `Test Large Print Letter template - ${templateIds.LETTER_LARGE_PRINT}`,
         'PROOF_APPROVED',
-        { letterType: 'x1' }
+        {
+          letterType: 'x1',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_BSL,
         user,
         `Test BSL Letter template - ${templateIds.LETTER_BSL}`,
         'PROOF_APPROVED',
-        { letterType: 'q4' }
+        {
+          letterType: 'q4',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_OTHER_LANGUAGE,
         user,
         `Test Letter template French - ${templateIds.LETTER_OTHER_LANGUAGE}`,
         'PROOF_APPROVED',
-        { language: 'fr' }
+        {
+          language: 'fr',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
     ]);
   });

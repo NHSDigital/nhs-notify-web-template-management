@@ -36,14 +36,12 @@ function createTemplates(user: TestUser) {
     NHSAPP: TemplateFactory.createNhsAppTemplate(
       templateIds.NHSAPP,
       user,
-      `Test NHS App template - ${templateIds.NHSAPP}`,
-      'SUBMITTED'
+      `Test NHS App template - ${templateIds.NHSAPP}`
     ),
     EMAIL: TemplateFactory.createEmailTemplate(
       templateIds.EMAIL,
       user,
-      `Test Email template - ${templateIds.EMAIL}`,
-      'SUBMITTED'
+      `Test Email template - ${templateIds.EMAIL}`
     ),
     SMS: TemplateFactory.createSmsTemplate(
       templateIds.SMS,
@@ -55,35 +53,55 @@ function createTemplates(user: TestUser) {
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`,
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
-      'SUBMITTED',
-      { letterType: 'x1' }
+      'PROOF_APPROVED',
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.BSL_LETTER,
       user,
       `Test BSL Letter template - ${templateIds.BSL_LETTER}`,
-      'SUBMITTED',
-      { letterType: 'q4' }
+      'PROOF_APPROVED',
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       `Test Letter template French - ${templateIds.FRENCH_LETTER}`,
       'PROOF_APPROVED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'PROOF_APPROVED',
-      { language: 'es' }
+      {
+        language: 'es',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }

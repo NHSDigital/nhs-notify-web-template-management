@@ -56,7 +56,11 @@ function createTemplates(user: TestUser) {
       user,
       'Authoring large print letter template name',
       'SUBMITTED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }

@@ -63,35 +63,55 @@ function createTemplates(user: TestUser) {
       templateIds.LETTER,
       user,
       `E2E Letter template - ${templateIds.LETTER}`,
-      'PROOF_APPROVED'
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `E2E Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'PROOF_APPROVED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.BSL_LETTER,
       user,
       `E2E BSL Letter template - ${templateIds.BSL_LETTER}`,
       'PROOF_APPROVED',
-      { letterType: 'q4' }
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.ARABIC_LETTER,
       user,
       `E2E Letter template Arabic - ${templateIds.ARABIC_LETTER}`,
       'PROOF_APPROVED',
-      { language: 'ar' }
+      {
+        language: 'ar',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     POLISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.POLISH_LETTER,
       user,
       `E2E Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'SUBMITTED',
-      { language: 'pl' }
+      {
+        language: 'pl',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }

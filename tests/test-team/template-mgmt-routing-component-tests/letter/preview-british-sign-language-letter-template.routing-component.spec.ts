@@ -48,7 +48,11 @@ function createTemplates(user: TestUser) {
       user,
       'BSL letter template name',
       'SUBMITTED',
-      { letterType: 'q4' }
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }

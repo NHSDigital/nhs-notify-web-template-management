@@ -40,7 +40,11 @@ function createTemplates(user: TestUser) {
     'e8b5f3a1-2c4d-4e6f-8a9b-1c2d3e4f5a6b',
     user,
     'authoring-letter-template-preview-submitted',
-    'SUBMITTED'
+    'SUBMITTED',
+    {
+      shortFormRender: { status: 'RENDERED' },
+      longFormRender: { status: 'RENDERED' },
+    }
   );
 
   return {

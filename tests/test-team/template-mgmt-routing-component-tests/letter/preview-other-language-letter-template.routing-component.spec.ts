@@ -63,7 +63,11 @@ function createTemplates(user: TestUser) {
       user,
       'Authoring French letter template name',
       'SUBMITTED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }

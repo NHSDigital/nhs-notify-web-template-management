@@ -220,7 +220,11 @@ test.describe('Edit Template Name page', () => {
         randomUUID(),
         user,
         'Letter Template',
-        'SUBMITTED'
+        'SUBMITTED',
+        {
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       );
 
       await templateStorageHelper.seedTemplateData([template]);

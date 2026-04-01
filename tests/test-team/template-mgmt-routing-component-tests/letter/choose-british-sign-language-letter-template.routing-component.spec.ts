@@ -53,21 +53,33 @@ function getTemplates(
       user,
       'BSL letter template 1',
       'SUBMITTED',
-      { letterType: 'q4' }
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     BSL_LETTER2: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.BSL_LETTER2,
       user,
       'BSL letter template 2',
       'SUBMITTED',
-      { letterType: 'q4' }
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     BSL_LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.BSL_LETTER_APPROVED,
       user,
       'BSL letter template 3 - proof approved',
       'PROOF_APPROVED',
-      { letterType: 'q4' }
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     BSL_LETTER_NOT_SUBMITTED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.BSL_LETTER_NOT_SUBMITTED,
@@ -80,14 +92,22 @@ function getTemplates(
       templateIds.STANDARD_LETTER,
       user,
       'Standard letter template',
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       'Large print letter template',
       'SUBMITTED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     APP: TemplateFactory.createNhsAppTemplate(
       templateIds.APP,

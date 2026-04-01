@@ -362,7 +362,11 @@ test.describe('Choose Printing and Postage page', () => {
         userLetterAuthoringEnabled,
         'Letter Template',
         'SUBMITTED',
-        { letterVariantId: globalVariant.id }
+        {
+          letterVariantId: globalVariant.id,
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       );
 
       await templateStorageHelper.seedTemplateData([template]);
