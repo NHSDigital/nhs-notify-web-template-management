@@ -24,12 +24,10 @@ docker-build-and-push: # Build and push container in one workflow - required: ba
 		AWS_ACCOUNT_ID="$${AWS_ACCOUNT_ID}" \
 		AWS_REGION="$${AWS_REGION}" \
 		ECR_REPO="$${ECR_REPO:-${ecr_repo}}" \
-		GITHUB_TOKEN="$${GITHUB_TOKEN:-}" \
 		CONTAINER_NAME="$${CONTAINER_NAME:-${container_name}}" \
 		dir="$${dir}" \
 		docker-calculate-image-name); \
 	echo "Building and pushing: $${DOCKER_IMAGE}"; \
-	${MAKE} docker-ghcr-login; \
 	${MAKE} docker-ecr-login; \
 	${MAKE} docker-build base_image=${base_image} dir="$${dir}" DOCKER_IMAGE="$${DOCKER_IMAGE}"; \
 	${MAKE} docker-push DOCKER_IMAGE="$${DOCKER_IMAGE}"
@@ -42,7 +40,7 @@ docker-ecr-login: # Authenticate Docker with AWS ECR - required: AWS_ACCOUNT_ID,
 
 docker-ghcr-login: # Authenticate Docker with GitHub Container Registry - required: GITHUB_TOKEN @Development
 	source scripts/docker/docker.lib.sh; \
-	GITHUB_TOKEN="$${GITHUB_TOKEN:-}" \
+	GITHUB_TOKEN="$${GITHUB_TOKEN}" \
 		docker-ghcr-login
 
 clean:: # Remove container image and resources - required: DOCKER_IMAGE @Development

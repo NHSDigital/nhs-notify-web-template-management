@@ -428,7 +428,7 @@ fi;
 # Run pre.sh
 if [ -f "pre.sh" ]; then
   PROJECT="${project}" REGION="${region}" COMPONENT="${component}" AWS_ACCOUNT_ID="${aws_account_id}" ENVIRONMENT="${environment}" ACTION="${action}" \
-    source pre.sh || error_and_die "Component pre script execution failed with exit code ${?}";
+  source pre.sh || error_and_die "Component pre script execution failed with exit code ${?}";
 fi;
 
 # Pull down secret TFVAR file from S3
