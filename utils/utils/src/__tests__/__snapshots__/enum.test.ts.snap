@@ -324,11 +324,11 @@ exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=false l
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=EMAIL routing=true letterVersion=undefined 1`] = `"Proof approved"`;
 
-exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false letterVersion=AUTHORING 1`] = `"Proof approved"`;
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false letterVersion=AUTHORING 1`] = `"Approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=false letterVersion=PDF 1`] = `"Proof approved"`;
 
-exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Proof approved"`;
+exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=AUTHORING 1`] = `"Approved"`;
 
 exports[`statusToDisplayMapping status=PROOF_APPROVED type=LETTER routing=true letterVersion=PDF 1`] = `"Proof approved"`;
 

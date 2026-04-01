@@ -455,3 +455,192 @@ exports[`LetterRender matches snapshot 1`] = `
   </section>
 </DocumentFragment>
 `;
+
+exports[`LetterRender matches snapshot when hideEditActions is true 1`] = `
+<DocumentFragment>
+  <section
+    class="nhsuk-u-margin-top-6"
+  >
+    <h2
+      class="nhsuk-heading-m"
+    >
+      Letter preview
+    </h2>
+    <div
+      class="nhsuk-tabs nhsuk-u-margin-top-6"
+      data-module="nhsuk-tabs"
+    >
+      <h2
+        class="nhsuk-tabs__title"
+      >
+        Example personalisation data
+      </h2>
+      <ul
+        class="nhsuk-tabs__list"
+        role="tablist"
+      >
+        <li
+          class="nhsuk-tabs__list-item nhsuk-tabs__list-item--selected"
+          role="presentation"
+        >
+          <a
+            aria-controls="tab-short"
+            aria-selected="true"
+            class="nhsuk-tabs__tab"
+            href="#tab-short"
+            id="tab_tab-short"
+            role="tab"
+            tabindex="0"
+          >
+            Short examples
+          </a>
+        </li>
+        <li
+          class="nhsuk-tabs__list-item"
+          role="presentation"
+        >
+          <a
+            aria-controls="tab-long"
+            aria-selected="false"
+            class="nhsuk-tabs__tab"
+            href="#tab-long"
+            id="tab_tab-long"
+            role="tab"
+            tabindex="-1"
+          >
+            Long examples
+          </a>
+        </li>
+      </ul>
+      <div
+        aria-labelledby="tab_tab-short"
+        class="nhsuk-tabs__panel"
+        id="tab-short"
+        role="tabpanel"
+      >
+        <div
+          class="nhsuk-grid-row tabRow"
+        >
+          <div
+            class="nhsuk-grid-column-one-third"
+          >
+            <section
+              aria-labelledby="tab-shortFormRender-pds-heading"
+            >
+              <h3
+                class="nhsuk-heading-s"
+                id="tab-shortFormRender-pds-heading"
+              >
+                PDS personalisation fields
+              </h3>
+              <dl
+                class="dl"
+              >
+                <dt>
+                  Example recipient
+                </dt>
+                <dd />
+              </dl>
+            </section>
+            <section
+              aria-labelledby="tab-shortFormRender-custom-personalisation"
+            >
+              <h3
+                class="nhsuk-heading-s nhsuk-u-padding-top-4"
+                id="tab-shortFormRender-custom-personalisation"
+              >
+                Custom personalisation fields
+              </h3>
+              <dl
+                class="dl"
+              >
+                <dt>
+                  appointmentDate
+                </dt>
+                <dd />
+                <dt>
+                  clinicName
+                </dt>
+                <dd />
+              </dl>
+            </section>
+          </div>
+          <div
+            class="nhsuk-grid-column-two-thirds iframeColumn"
+          >
+            <iframe
+              aria-label="PDF preview of letter template with short example personalisation data"
+              src="/templates/files/client-123/renders/template-123/initial.pdf"
+              title="Letter preview - short examples"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        aria-labelledby="tab_tab-long"
+        class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
+        id="tab-long"
+        role="tabpanel"
+      >
+        <div
+          class="nhsuk-grid-row tabRow"
+        >
+          <div
+            class="nhsuk-grid-column-one-third"
+          >
+            <section
+              aria-labelledby="tab-longFormRender-pds-heading"
+            >
+              <h3
+                class="nhsuk-heading-s"
+                id="tab-longFormRender-pds-heading"
+              >
+                PDS personalisation fields
+              </h3>
+              <dl
+                class="dl"
+              >
+                <dt>
+                  Example recipient
+                </dt>
+                <dd />
+              </dl>
+            </section>
+            <section
+              aria-labelledby="tab-longFormRender-custom-personalisation"
+            >
+              <h3
+                class="nhsuk-heading-s nhsuk-u-padding-top-4"
+                id="tab-longFormRender-custom-personalisation"
+              >
+                Custom personalisation fields
+              </h3>
+              <dl
+                class="dl"
+              >
+                <dt>
+                  appointmentDate
+                </dt>
+                <dd />
+                <dt>
+                  clinicName
+                </dt>
+                <dd />
+              </dl>
+            </section>
+          </div>
+          <div
+            class="nhsuk-grid-column-two-thirds iframeColumn"
+          >
+            <iframe
+              aria-label="PDF preview of letter template with long example personalisation data"
+              src="/templates/files/client-123/renders/template-123/initial.pdf"
+              title="Letter preview - long examples"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;

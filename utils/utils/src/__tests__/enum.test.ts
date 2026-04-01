@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/no-array-callback-reference */
+
 import {
   TEMPLATE_STATUS_LIST,
   LANGUAGE_LIST,
@@ -10,6 +11,7 @@ import type {
   TemplateStatus,
   TemplateType,
   LetterVersion,
+  TemplateDto,
 } from 'nhs-notify-web-template-management-types';
 import {
   alphabeticalLanguageList,
@@ -17,8 +19,6 @@ import {
   isRightToLeft,
   languageMapping,
   letterTypeDisplayMappings,
-  previewSubmittedTemplatePages,
-  previewTemplatePages,
   statusToColourMapping,
   channelToTemplateType,
   templateTypeToChannel,
@@ -42,7 +42,9 @@ import {
   isLanguage,
   getMessageOrderOptions,
   MESSAGE_ORDER_OPTIONS_LIST,
+  getPreviewURL,
 } from '../enum';
+import { mockDeep } from 'jest-mock-extended';
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -331,38 +333,96 @@ describe('messagePlanChooseTemplateUrl', () => {
   });
 });
 
-describe('previewTemplatePages', () => {
-  test('NHS_APP', () => {
-    expect(previewTemplatePages('NHS_APP')).toEqual('preview-nhs-app-template');
-  });
-
-  test('SMS', () => {
-    expect(previewTemplatePages('SMS')).toEqual(
-      'preview-text-message-template'
-    );
-  });
-
-  test('EMAIL', () => {
-    expect(previewTemplatePages('EMAIL')).toEqual('preview-email-template');
-  });
-});
-
-describe('previewSubmittedTemplatePages', () => {
-  test('NHS_APP', () => {
-    expect(previewSubmittedTemplatePages('NHS_APP')).toEqual(
-      'preview-submitted-nhs-app-template'
-    );
-  });
-
-  test('SMS', () => {
-    expect(previewSubmittedTemplatePages('SMS')).toEqual(
-      'preview-submitted-text-message-template'
-    );
-  });
-
-  test('EMAIL', () => {
-    expect(previewSubmittedTemplatePages('EMAIL')).toEqual(
-      'preview-submitted-email-template'
+describe('getPreviewUrl', () => {
+  test.each<{
+    mockTemplate: Partial<TemplateDto>;
+    expectedReturn: string;
+  }>([
+    {
+      mockTemplate: {
+        templateType: 'EMAIL',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-email-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-text-message-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'NHS_APP',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-nhs-app-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-letter-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'EMAIL',
+        templateStatus: 'SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-submitted-email-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'SMS',
+        templateStatus: 'SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-submitted-text-message-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'NHS_APP',
+        templateStatus: 'SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-submitted-nhs-app-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'LETTER',
+        templateStatus: 'SUBMITTED',
+        id: 'template-id',
+      },
+      expectedReturn: '/preview-submitted-letter-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'LETTER',
+        templateStatus: 'PROOF_APPROVED',
+        id: 'template-id',
+        letterVersion: 'AUTHORING',
+      },
+      expectedReturn: '/preview-approved-letter-template/template-id',
+    },
+    {
+      mockTemplate: {
+        templateType: 'LETTER',
+        templateStatus: 'SUBMITTED',
+        id: 'template-id',
+        letterVersion: 'AUTHORING',
+      },
+      expectedReturn: '/preview-approved-letter-template/template-id',
+    },
+  ])('returns $expectedReturn', ({ mockTemplate, expectedReturn }) => {
+    expect(getPreviewURL(mockDeep<TemplateDto>(mockTemplate))).toEqual(
+      expectedReturn
     );
   });
 });

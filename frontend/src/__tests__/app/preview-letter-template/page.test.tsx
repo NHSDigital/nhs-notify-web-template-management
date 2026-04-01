@@ -466,8 +466,8 @@ describe('authoring letter initial render states', () => {
   });
 });
 
-describe('authoring letter template does not show submit form when already submitted', () => {
-  it('does not render the submit button when templateStatus is SUBMITTED', async () => {
+describe('when authoring letter template status is submitted', () => {
+  it('redirects to preview approved letter template page', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'SUBMITTED',
@@ -479,9 +479,10 @@ describe('authoring letter template does not show submit form when already submi
       })
     );
 
-    expect(
-      screen.queryByRole('button', { name: 'Approve template' })
-    ).not.toBeInTheDocument();
+    expect(redirect).toHaveBeenCalledWith(
+      `/preview-approved-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      RedirectType.replace
+    );
   });
 });
 
