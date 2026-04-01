@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  getPreviewURL,
+  TemplatePageProps,
+} from 'nhs-notify-web-template-management-utils';
 import {
   Label,
   Table,
@@ -46,10 +49,7 @@ export default async function ChoosePrintingAndPostagePage(
   const searchParams = await props.searchParams;
   const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
-  const previewUrl =
-    template.templateStatus === 'SUBMITTED'
-      ? `/preview-submitted-letter-template/${templateId}`
-      : `/preview-letter-template/${templateId}`;
+  const previewUrl = getPreviewURL(template);
 
   if (
     template.templateStatus === 'SUBMITTED' ||
