@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
+import {
+  type TemplatePageProps,
+  getPreviewURL,
+} from 'nhs-notify-web-template-management-utils';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import { HintText, Label } from '@atoms/nhsuk-components';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -38,17 +41,12 @@ export default async function EditTemplateNamePage(props: TemplatePageProps) {
 
   const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
-  const previewUrl =
-    template.templateStatus === 'SUBMITTED'
-      ? `/preview-submitted-letter-template/${templateId}`
-      : `/preview-letter-template/${templateId}`;
-
   if (
     template.templateStatus === 'SUBMITTED' ||
     template.letterVersion !== 'AUTHORING' ||
     !lockNumberResult.success
   ) {
-    return redirect(previewUrl, RedirectType.replace);
+    return redirect(getPreviewURL(template), RedirectType.replace);
   }
 
   const client = await fetchClient();

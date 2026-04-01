@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
+import {
+  type TemplatePageProps,
+  getPreviewURL,
+} from 'nhs-notify-web-template-management-utils';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-import type { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
 import {
   HintText,
   Label,
@@ -45,11 +48,6 @@ export default async function EditTemplateCampaignPage(
 
   const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
-  const previewUrl =
-    template.templateStatus === 'SUBMITTED'
-      ? `/preview-submitted-letter-template/${templateId}`
-      : `/preview-letter-template/${templateId}`;
-
   const client = await fetchClient();
 
   const campaignIds = getCampaignIds(client);
@@ -60,7 +58,7 @@ export default async function EditTemplateCampaignPage(
     campaignIds.length < 2 ||
     !lockNumberResult.success
   ) {
-    return redirect(previewUrl, RedirectType.replace);
+    return redirect(getPreviewURL(template), RedirectType.replace);
   }
 
   if (!client?.features.letterAuthoring) {
