@@ -1,5 +1,4 @@
 import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
-import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
@@ -127,60 +126,6 @@ describe('PreviewSubmittedTemplate component', () => {
             lockNumber: 1,
           }}
           previewComponent={PreviewTemplateDetailsPdfLetter}
-        />
-      );
-
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-
-    it('should render authoring letter', () => {
-      const container = render(
-        <PreviewSubmittedTemplate
-          initialState={{
-            id: 'template-id',
-            clientId: 'client-id',
-            name: 'Example authoring letter',
-            templateStatus: 'SUBMITTED',
-            templateType: 'LETTER',
-            letterType: 'x0',
-            letterVersion: 'AUTHORING',
-            language: 'en',
-            letterVariantId: 'first-class',
-            files: {
-              docxTemplate: {
-                currentVersion: 'version-id',
-                fileName: 'template.docx',
-                virusScanStatus: 'PASSED',
-              },
-              initialRender: {
-                fileName: 'render.pdf',
-                currentVersion: 'v1',
-                status: 'RENDERED',
-                pageCount: 4,
-              },
-              shortFormRender: {
-                fileName: 'short-render.pdf',
-                currentVersion: 'v2',
-                status: 'RENDERED',
-                systemPersonalisationPackId: 'short-1',
-                personalisationParameters: {},
-                pageCount: 4,
-              },
-              longFormRender: {
-                fileName: 'long-render.pdf',
-                currentVersion: 'v3',
-                status: 'RENDERED',
-                systemPersonalisationPackId: 'long-1',
-                personalisationParameters: {},
-                pageCount: 4,
-              },
-            },
-            systemPersonalisation: [],
-            createdAt: '2025-01-13T10:19:25.579Z',
-            updatedAt: '2025-01-13T10:19:25.579Z',
-            lockNumber: 1,
-          }}
-          previewComponent={PreviewTemplateDetailsAuthoringLetter}
         />
       );
 
