@@ -220,11 +220,13 @@
           ]
         },
         "accessibleFormat": {
-          "description": "Communication preference override for the template - q4:British Sign Language, x1:Large Print",
+          "description": "Communication preference override for the template - q1:Braille, q4:British Sign Language, x1:Large Print, x3:Audio",
           "type": "string",
           "enum": [
+            "q1",
             "q4",
-            "x1"
+            "x1",
+            "x3"
           ]
         },
         "supplierReferences": {
