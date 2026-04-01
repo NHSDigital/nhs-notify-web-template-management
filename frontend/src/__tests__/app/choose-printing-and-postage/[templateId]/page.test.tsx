@@ -215,14 +215,14 @@ describe('template has been submitted', () => {
     });
   });
 
-  it('redirects to preview submitted letter template page', async () => {
+  it('redirects to preview approved letter template page', async () => {
     await Page({
       params: Promise.resolve({ templateId: 'template-123' }),
       searchParams: validSearchParams,
     });
 
     expect(redirect).toHaveBeenCalledWith(
-      '/preview-submitted-letter-template/template-123',
+      '/preview-approved-letter-template/template-123',
       RedirectType.replace
     );
   });

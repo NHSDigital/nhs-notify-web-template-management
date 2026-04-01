@@ -92,4 +92,15 @@ describe('LetterRender', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot when hideEditActions is true', () => {
+    const { asFragment } = render(
+      <LetterRender template={baseTemplate} hideEditActions />,
+      {
+        wrapper: Provider,
+      }
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
