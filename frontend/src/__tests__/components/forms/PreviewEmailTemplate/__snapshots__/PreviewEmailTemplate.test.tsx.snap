@@ -54,7 +54,6 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-email
@@ -351,7 +350,6 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-email
@@ -892,7 +890,6 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-email
@@ -1157,7 +1154,6 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-email
@@ -1341,7 +1337,6 @@ exports[`Preview email form renders matches snapshot when navigating from manage
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-email
@@ -1601,7 +1596,6 @@ exports[`Preview email form renders matches snapshot when navigating from manage
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-email

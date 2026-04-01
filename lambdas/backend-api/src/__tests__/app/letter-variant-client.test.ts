@@ -105,7 +105,7 @@ test('it returns the 404 if the found variant belongs to a different client', as
 
   expect(result).toEqual({
     error: {
-      errorMeta: { code: 404, description: 'Letter Variant not found' },
+      errorMeta: { code: 404, description: 'Letter variant not found' },
     },
   });
 });

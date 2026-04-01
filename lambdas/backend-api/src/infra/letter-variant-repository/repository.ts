@@ -89,7 +89,7 @@ export class LetterVariantRepository {
       );
 
       if (!Item) {
-        return failure(ErrorCase.NOT_FOUND, 'Letter Variant not found');
+        return failure(ErrorCase.NOT_FOUND, 'Letter variant not found');
       }
 
       const variant = $LetterVariant.parse(Item);

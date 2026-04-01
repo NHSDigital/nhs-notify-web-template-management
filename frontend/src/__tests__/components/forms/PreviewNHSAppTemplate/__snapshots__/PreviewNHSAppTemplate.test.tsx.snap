@@ -54,7 +54,6 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-nhs app
@@ -327,7 +326,6 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-nhs app
@@ -820,7 +818,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-nhs app
@@ -1061,7 +1058,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-nhs app
@@ -1221,7 +1217,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-nhs app
@@ -1457,7 +1452,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-nhs app

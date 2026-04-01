@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
+import { makeLetterVariant } from '../../helpers/factories/letter-variant-factory';
 import { Template } from '../../helpers/types';
 import {
   testUsers,
@@ -12,7 +13,33 @@ import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-s
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
 import { loginAsUser } from '../../helpers/auth/login-as-user';
 
-async function createTemplates(user: TestUser) {
+async function createLetterVariants(clientId: string) {
+  const context = getTestContext();
+
+  const doubleSided = makeLetterVariant({
+    clientId,
+    bothSides: true,
+    name: 'Double-sided test variant',
+  });
+
+  const singleSided = makeLetterVariant({
+    clientId,
+    bothSides: false,
+    name: 'Single-sided test variant',
+  });
+
+  await Promise.all([
+    context.letterVariants.createLetterVariant(doubleSided),
+    context.letterVariants.createLetterVariant(singleSided),
+  ]);
+
+  return { doubleSided, singleSided };
+}
+
+function createTemplates(
+  user: TestUser,
+  variants: Awaited<ReturnType<typeof createLetterVariants>>
+) {
   const withProofsBase = TemplateFactory.uploadLetterTemplate(
     'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',
     user,
@@ -124,7 +151,7 @@ async function createTemplates(user: TestUser) {
       'authoring-letter-valid',
       'NOT_YET_SUBMITTED',
       {
-        letterVariantId: 'variant-123',
+        letterVariantId: variants.doubleSided.id,
         initialRender: { pageCount: 4 },
       }
     ),
@@ -279,18 +306,29 @@ async function createTemplates(user: TestUser) {
           },
         }
       ),
+    authoringSingleSided: TemplateFactory.createAuthoringLetterTemplate(
+      'AABB1122-3344-5566-7788-99AABBCCDDEE',
+      user,
+      'authoring-single-sided',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: variants.singleSided.id,
+        initialRender: { pageCount: 4 },
+      }
+    ),
   };
 }
 
 test.describe('Preview Letter template Page', () => {
-  let templates: Awaited<ReturnType<typeof createTemplates>>;
+  let templates: ReturnType<typeof createTemplates>;
 
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
-    templates = await createTemplates(user);
+    const variants = await createLetterVariants(user.clientId);
+    templates = await createTemplates(user, variants);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
@@ -581,6 +619,12 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.editNameLink).toBeVisible();
 
       await expect(previewPage.statusTag).toBeVisible();
+
+      await expect(previewPage.summaryRowValue('Total pages')).toHaveText('4');
+      await expect(previewPage.summaryRowValue('Sheets')).toHaveText('2');
+
+      await expect(previewPage.sheetsAction).toBeVisible();
+      await expect(previewPage.statusAction).toBeVisible();
     });
 
     test('when initial render is recently requested (in PENDING status), the spinner is shown', async ({
@@ -1314,6 +1358,20 @@ test.describe('Preview Letter template Page', () => {
         await expect(previewPage.campaignAction).toBeVisible();
         await expect(previewPage.campaignAction).toHaveText(/Edit/);
       });
+    });
+
+    test('calculates sheets as single-sided when bothSides is false', async ({
+      page,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        templates.authoringSingleSided.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(previewPage.summaryRowValue('Total pages')).toHaveText('4');
+      await expect(previewPage.summaryRowValue('Sheets')).toHaveText('4');
     });
   });
 });

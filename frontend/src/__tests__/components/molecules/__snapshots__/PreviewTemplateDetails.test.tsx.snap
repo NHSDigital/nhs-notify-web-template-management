@@ -11,7 +11,6 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with h
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       Authoring Letter
@@ -195,7 +194,6 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with i
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       Authoring Letter
@@ -366,7 +364,6 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with l
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       Authoring Letter
@@ -587,7 +584,6 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       Authoring Letter
@@ -806,7 +802,6 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       Example Email template
@@ -959,7 +954,6 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       Example template
@@ -1087,7 +1081,6 @@ exports[`PreviewTemplateDetailsPdfLetter matches snapshot when test data CSV is 
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       PDF Letter
@@ -1200,7 +1193,6 @@ exports[`PreviewTemplateDetailsPdfLetter matches snapshot with proofs (failed vi
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       PDF Letter
@@ -1434,7 +1426,6 @@ exports[`PreviewTemplateDetailsPdfLetter matches snapshot without proofs 1`] = `
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       PDF Letter
@@ -1588,7 +1579,6 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
       Template
     </span>
     <h1
-      class="preview__heading"
       data-testid="preview-message__heading"
     >
       SMS template

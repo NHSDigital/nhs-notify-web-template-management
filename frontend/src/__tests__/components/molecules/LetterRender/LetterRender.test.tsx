@@ -82,12 +82,24 @@ describe('LetterRender', () => {
       'href',
       'https://notify.nhs.uk/using-nhs-notify/personalisation'
     );
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('matches snapshot', () => {
     const { asFragment } = render(<LetterRender template={baseTemplate} />, {
       wrapper: Provider,
     });
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when hideEditActions is true', () => {
+    const { asFragment } = render(
+      <LetterRender template={baseTemplate} hideEditActions />,
+      {
+        wrapper: Provider,
+      }
+    );
 
     expect(asFragment()).toMatchSnapshot();
   });

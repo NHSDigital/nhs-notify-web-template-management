@@ -4,7 +4,12 @@
 
 'use client';
 
-import { Details, SummaryList, Table } from 'nhsuk-react-components';
+import {
+  Details,
+  SummaryList,
+  Table,
+  WarningCallout,
+} from 'nhsuk-react-components';
 export {
   Details,
   HintText,
@@ -12,6 +17,7 @@ export {
   SummaryList,
   Table,
   Tag,
+  WarningCallout,
 } from 'nhsuk-react-components';
 
 export const DetailsSummary = Details.Summary;
@@ -25,3 +31,5 @@ export const TableHead = Table.Head;
 export const TableRow = Table.Row;
 export const TableBody = Table.Body;
 export const TableCell = Table.Cell;
+
+export const WarningCalloutLabel = WarningCallout.Label;

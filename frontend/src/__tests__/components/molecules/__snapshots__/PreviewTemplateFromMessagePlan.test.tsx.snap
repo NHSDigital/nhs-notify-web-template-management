@@ -29,7 +29,6 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             authoring letter template name
@@ -202,7 +201,6 @@ exports[`PreviewTemplateFromMessagePlan renders Email template preview with the 
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             email template name
@@ -363,7 +361,6 @@ exports[`PreviewTemplateFromMessagePlan renders French Letter template preview w
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             letter template name
@@ -484,7 +481,6 @@ exports[`PreviewTemplateFromMessagePlan renders Large Print Letter template prev
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             large print letter template name
@@ -605,7 +601,6 @@ exports[`PreviewTemplateFromMessagePlan renders NHS App template preview with th
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             app template name
@@ -741,7 +736,6 @@ exports[`PreviewTemplateFromMessagePlan renders PDF Letter template preview with
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             letter template name
@@ -862,7 +856,6 @@ exports[`PreviewTemplateFromMessagePlan renders SMS template preview with the co
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             sms template name

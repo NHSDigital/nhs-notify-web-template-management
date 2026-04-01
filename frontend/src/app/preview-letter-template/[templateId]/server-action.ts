@@ -24,6 +24,9 @@ export async function submitAuthoringLetterAction(
 
   const { templateId, lockNumber } = result.data;
 
-  // destination TBD
-  redirect(`/submit-letter-template/${templateId}?lockNumber=${lockNumber}`);
+  redirect(
+    // temporary destination
+    // TODO: CCM-14583 change to get ready to approve URL
+    `/review-and-approve-letter-template/${templateId}?lockNumber=${lockNumber}`
+  );
 }

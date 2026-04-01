@@ -29,7 +29,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render PDF le
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example letter
@@ -295,7 +294,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example template
@@ -429,220 +427,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
 </DocumentFragment>
 `;
 
-exports[`PreviewSubmittedTemplate component routing = false should render authoring letter 1`] = `
-<DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
-  >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example authoring letter
-          </h1>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                template-id
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                Standard letter
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row missing-value"
-              id="campaign-id"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Campaign
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              />
-              <dd
-                aria-hidden="true"
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Total pages
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                4
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Sheets
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                2
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="sheets-action"
-                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Learn more
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     about sheets
-                  </span>
-                </a>
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row missing-value"
-              id="printing-and-postage"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Printing and postage
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              />
-              <dd
-                aria-hidden="true"
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <strong
-                  class="nhsuk-tag nhsuk-tag--grey"
-                  data-status="submitted"
-                  data-testid="status-tag"
-                >
-                  Submitted
-                </strong>
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="status-action"
-                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Learn more
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     about status
-                  </span>
-                </a>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <p>
-          If you want to change a submitted or live template, you must create a new template to replace it.
-        </p>
-        <p>
-          <a
-            data-testid="back-link-bottom"
-            href="/message-templates"
-          >
-            Back to all templates
-          </a>
-        </p>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
 exports[`PreviewSubmittedTemplate component routing = false should render email 1`] = `
 <DocumentFragment>
   <a
@@ -672,7 +456,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example Email template
@@ -860,7 +643,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             SMS template
@@ -1023,7 +805,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render PDF let
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example letter
@@ -1286,7 +1067,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example template
@@ -1435,229 +1215,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
 </DocumentFragment>
 `;
 
-exports[`PreviewSubmittedTemplate component routing = true should render authoring letter 1`] = `
-<DocumentFragment>
-  <a
-    class="nhsuk-back-link"
-    data-testid="back-link-top"
-    href="/message-templates"
-  >
-    Back to all templates
-  </a>
-  <main
-    class="nhsuk-main-wrapper"
-    id="maincontent"
-    role="main"
-  >
-    <div
-      class="nhsuk-grid-row"
-    >
-      <div
-        class="nhsuk-grid-column-full"
-      >
-        <div
-          class="nhsuk-u-reading-width"
-        >
-          <span
-            class="nhsuk-caption-l"
-          >
-            Template
-          </span>
-          <h1
-            class="preview__heading"
-            data-testid="preview-message__heading"
-          >
-            Example authoring letter
-          </h1>
-        </div>
-        <div
-          class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
-        >
-          <strong
-            class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
-          >
-            Locked
-          </strong>
-          <p>
-            You cannot delete this template because it's used in a message plan that's in production.
-          </p>
-        </div>
-        <div
-          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-        >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
-          >
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value monospace-font"
-                data-testid="preview-template-id"
-              >
-                template-id
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Template type
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                Standard letter
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row missing-value"
-              id="campaign-id"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Campaign
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              />
-              <dd
-                aria-hidden="true"
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Total pages
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                4
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Sheets
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                2
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="sheets-action"
-                  href="https://notify.nhs.uk/pricing-and-commercial/letters"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Learn more
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     about sheets
-                  </span>
-                </a>
-              </dd>
-            </div>
-            <div
-              class="nhsuk-summary-list__row missing-value"
-              id="printing-and-postage"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Printing and postage
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              />
-              <dd
-                aria-hidden="true"
-                class="nhsuk-summary-list__actions"
-              />
-            </div>
-            <div
-              class="nhsuk-summary-list__row"
-            >
-              <dt
-                class="nhsuk-summary-list__key"
-              >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
-              >
-                <strong
-                  class="nhsuk-tag nhsuk-tag--pink"
-                  data-status="submitted"
-                  data-testid="status-tag"
-                >
-                  Locked
-                </strong>
-              </dd>
-              <dd
-                class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
-              >
-                <a
-                  data-testid="status-action"
-                  href="https://notify.nhs.uk/templates/what-template-statuses-mean"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Learn more
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                     about status
-                  </span>
-                </a>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <p>
-          <a
-            data-testid="back-link-bottom"
-            href="/message-templates"
-          >
-            Back to all templates
-          </a>
-        </p>
-      </div>
-    </div>
-  </main>
-</DocumentFragment>
-`;
-
 exports[`PreviewSubmittedTemplate component routing = true should render email 1`] = `
 <DocumentFragment>
   <a
@@ -1687,7 +1244,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             Example Email template
@@ -1890,7 +1446,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             SMS template

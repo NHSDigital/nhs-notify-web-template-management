@@ -115,6 +115,7 @@ describe('MessageTemplates component', () => {
           templateList: [
             {
               id: '1',
+              clientId: 'client-id',
               templateType: 'LETTER',
               templateStatus: 'PROOF_APPROVED',
               name: 'Template 1',
@@ -138,6 +139,46 @@ describe('MessageTemplates component', () => {
                   },
                 },
               },
+            },
+            {
+              id: '2',
+              clientId: 'client-id',
+              templateType: 'LETTER',
+              templateStatus: 'PROOF_APPROVED',
+              name: 'Template 2',
+              createdAt: '2021-02-01T00:00:00.000Z',
+              letterType: 'x0',
+              letterVersion: 'AUTHORING',
+              language: 'en',
+              updatedAt: '2021-02-01T00:00:00.000Z',
+              lockNumber: 1,
+              files: {
+                docxTemplate: {
+                  currentVersion: 'version-id',
+                  fileName: 'template.docx',
+                  virusScanStatus: 'PASSED',
+                },
+                initialRender: {
+                  fileName: 'render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+                shortFormRender: {
+                  fileName: 'short-render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+                longFormRender: {
+                  fileName: 'long-render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+              },
+              letterVariantId: '2',
+              campaignId: 'campaign-id',
             },
           ],
         }}
