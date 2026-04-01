@@ -67,6 +67,7 @@ import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/le
 import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateMgmtUploadOtherLanguageLetterTemplatePage } from 'pages/letter/template-mgmt-upload-other-language-letter-template-page';
 import { TemplateMgmtUploadStandardEnglishLetterTemplatePage } from 'pages/letter/template-mgmt-upload-standard-english-letter-template-page';
+import { TemplateMgmtPreviewApprovedLetterPage } from 'pages/letter/template-mgmt-preview-approved-letter-page';
 import { TemplateMgmtLetterTemplateApprovedPage } from 'pages/letter';
 
 // Reset storage state for this file to avoid being authenticated
@@ -113,6 +114,7 @@ const protectedPages = [
   TemplateMgmtInvalidTemplatePage,
   TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtMessageTemplatesPage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewEmailPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewNhsAppPage,

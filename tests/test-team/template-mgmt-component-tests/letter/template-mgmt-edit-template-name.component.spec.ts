@@ -213,7 +213,7 @@ test.describe('Edit Template Name page', () => {
       );
     });
 
-    test('redirects to preview submitted template page if template is submitted', async ({
+    test('redirects to preview approved template page if template is submitted', async ({
       page,
     }) => {
       const template = TemplateFactory.createAuthoringLetterTemplate(
@@ -236,7 +236,7 @@ test.describe('Edit Template Name page', () => {
       await editPage.loadPage();
 
       await expect(page).toHaveURL(
-        `/templates/preview-submitted-letter-template/${template.id}`
+        `/templates/preview-approved-letter-template/${template.id}`
       );
     });
 

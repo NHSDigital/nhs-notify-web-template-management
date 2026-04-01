@@ -112,6 +112,11 @@ export const $SubmittedLetterTemplate = z.intersection(
   $LetterTemplate
 );
 
+const $SubmittedPdfLetterTemplate = z.intersection(
+  $SubmittedTemplate,
+  $PdfLetterTemplate
+);
+
 export const $LargePrintLetterTemplate = z.intersection(
   $LetterTemplate,
   z.object({
@@ -172,6 +177,9 @@ export const validateSubmittedLetterTemplate = (template?: TemplateDto) =>
 
 export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
   zodValidate($NonSubmittedTemplate, template);
+
+export const validateSubmittedPdfLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($SubmittedPdfLetterTemplate, template);
 
 export const $GuardDutyMalwareScanStatus = z.enum([
   'NO_THREATS_FOUND',

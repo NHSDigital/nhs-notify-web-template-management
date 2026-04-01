@@ -524,6 +524,7 @@ const previewLetterTitle = generatePageTitle('Preview letter template');
 
 const previewLetterTemplate = {
   pageTitle: previewLetterTitle,
+  approvedPageTitle: generatePageTitle('Preview approved letter template'),
   backLinkText: backToAllTemplates,
   approveButtonText: 'Approve template',
   submitText: 'Submit template',

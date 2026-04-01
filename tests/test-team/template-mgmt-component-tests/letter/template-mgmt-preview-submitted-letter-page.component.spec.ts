@@ -76,74 +76,37 @@ test.describe('Preview submitted Letter message template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test.describe('PDF letter', () => {
-    test('when user visits page, then page is loaded', async ({
-      page,
-      baseURL,
-    }) => {
-      const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
-          'templateId',
-          templates.valid.id
-        );
-
-      await previewSubmittedLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
+  test('when user visits page, then page is loaded', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewSubmittedLetterTemplatePage =
+      new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+        'templateId',
+        templates.valid.id
       );
 
-      await expect(
-        previewSubmittedLetterTemplatePage.pageHeading
-      ).toContainText(templates.valid.name);
+    await previewSubmittedLetterTemplatePage.loadPage();
 
-      expect(templates.valid.campaignId).toBeTruthy();
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
+    );
 
-      await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
-        templates.valid.campaignId!
-      );
+    await expect(previewSubmittedLetterTemplatePage.pageHeading).toContainText(
+      templates.valid.name
+    );
 
-      await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
-        'Submitted'
-      );
+    expect(templates.valid.campaignId).toBeTruthy();
 
-      await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
-    });
-  });
+    await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
+      templates.valid.campaignId!
+    );
 
-  test.describe('AUTHORING letter', () => {
-    test('when user visits page, then page is loaded with template details', async ({
-      page,
-      baseURL,
-    }) => {
-      const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
-          'templateId',
-          templates.authoringValid.id
-        );
+    await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
+      'Submitted'
+    );
 
-      await previewSubmittedLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-submitted-letter-template/${templates.authoringValid.id}`
-      );
-
-      await expect(
-        previewSubmittedLetterTemplatePage.pageHeading
-      ).toContainText(templates.authoringValid.name);
-
-      expect(templates.authoringValid.campaignId).toBeTruthy();
-
-      await expect(previewSubmittedLetterTemplatePage.campaignId).toContainText(
-        templates.authoringValid.campaignId!
-      );
-
-      await expect(previewSubmittedLetterTemplatePage.statusTag).toHaveText(
-        'Locked'
-      );
-
-      await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
-    });
+    await expect(previewSubmittedLetterTemplatePage.copyLink).toHaveCount(0);
   });
 
   test.describe('Page functionality', () => {
@@ -172,34 +135,36 @@ test.describe('Preview submitted Letter message template Page', () => {
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with an unsubmitted template, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
-          'templateId',
-          templates.invalid.id
-        );
+    const cases = [
+      {
+        title: 'an invalid pdf template',
+        getTemplateId: () => templates.invalid.id,
+      },
+      {
+        title: 'a valid authoring template',
+        getTemplateId: () => templates.authoringValid.id,
+      },
+      {
+        title: 'a nonexistent template',
+        getTemplateId: () => 'nonexistent-template-id',
+      },
+    ];
 
-      await previewSubmittedLetterTemplatePage.loadPage();
+    for (const { getTemplateId, title } of cases) {
+      test(`when user visits page with id of ${title}, then it redirects to the invalid template page`, async ({
+        baseURL,
+        page,
+      }) => {
+        const previewSubmittedLetterTemplatePage =
+          new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
+            'templateId',
+            getTemplateId()
+          );
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
+        await previewSubmittedLetterTemplatePage.loadPage();
 
-    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewSubmittedLetterTemplatePage =
-        new TemplateMgmtPreviewSubmittedLetterPage(page).setPathParam(
-          'templateId',
-          'fake-template-id'
-        );
-
-      await previewSubmittedLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
+        await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+      });
+    }
   });
 });

@@ -169,7 +169,8 @@ export const statusToDisplayMapping = (
     VIRUS_SCAN_FAILED: 'Checks failed',
     WAITING_FOR_PROOF: 'Waiting for proof',
     PROOF_AVAILABLE: 'Proof available',
-    PROOF_APPROVED: 'Proof approved',
+    PROOF_APPROVED:
+      template.letterVersion === 'AUTHORING' ? 'Approved' : 'Proof approved',
   };
 
   return statusToDisplayMappings[template.templateStatus];
@@ -277,10 +278,21 @@ export const createTemplateUrl = (
 ) =>
   `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
 
-export const previewTemplatePages = (type: TemplateType) =>
-  `preview-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
-export const previewSubmittedTemplatePages = (type: TemplateType) =>
-  `preview-submitted-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
+export const getPreviewURL = (template: TemplateDto) => {
+  if (
+    template.templateType === 'LETTER' &&
+    template.letterVersion === 'AUTHORING' &&
+    ['PROOF_APPROVED', 'SUBMITTED'].includes(template.templateStatus)
+  ) {
+    return `/preview-approved-letter-template/${template.id}`;
+  }
+
+  if (template.templateStatus === 'SUBMITTED') {
+    return `/preview-submitted-${legacyTemplateTypeToUrlTextMappings(template.templateType)}-template/${template.id}`;
+  }
+
+  return `/preview-${legacyTemplateTypeToUrlTextMappings(template.templateType)}-template/${template.id}`;
+};
 
 export const messagePlanChooseTemplateUrl = (
   type: TemplateType,
