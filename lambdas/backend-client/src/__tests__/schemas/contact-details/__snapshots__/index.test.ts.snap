@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`$ContactDetailInputNormalized email throws error if email is invalid 1`] = `
+[ZodError: [
+  {
+    "code": "custom",
+    "path": [
+      "value"
+    ],
+    "message": "Invalid email address"
+  }
+]]
+`;
+
+exports[`$ContactDetailInputNormalized sms throws error if phone number is invalid 1`] = `
+[ZodError: [
+  {
+    "code": "custom",
+    "path": [
+      "value"
+    ],
+    "message": "Invalid phone number"
+  }
+]]
+`;
+
+exports[`$ContactDetailInputNormalized throws error if type is invalid 1`] = `
+[ZodError: [
+  {
+    "code": "invalid_union",
+    "errors": [],
+    "note": "No matching discriminator",
+    "discriminator": "type",
+    "path": [
+      "type"
+    ],
+    "message": "Invalid input"
+  }
+]]
+`;

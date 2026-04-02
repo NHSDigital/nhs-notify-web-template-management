@@ -132,6 +132,25 @@ export type ConditionalTemplateLanguage = {
   templateId: string;
 };
 
+export type ContactDetail = ContactDetailInput & {
+  id: string;
+  status: 'PENDING_VERIFICATION';
+};
+
+export type ContactDetailInput = {
+  type: 'EMAIL' | 'SMS';
+  value: string;
+};
+
+export type ContactDetailInputNormalized = ContactDetailInput & {
+  rawValue: string;
+};
+
+export type ContactDetailSuccess = {
+  data: ContactDetail;
+  statusCode: number;
+};
+
 export type CountSuccess = {
   data: {
     count: number;
@@ -440,6 +459,33 @@ export type GetV1ClientConfigurationResponses = {
 
 export type GetV1ClientConfigurationResponse =
   GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
+
+export type PostV1ContactDetailsData = {
+  body?: ContactDetailInput;
+  path?: never;
+  query?: never;
+  url: '/v1/contact-details';
+};
+
+export type PostV1ContactDetailsErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1ContactDetailsError =
+  PostV1ContactDetailsErrors[keyof PostV1ContactDetailsErrors];
+
+export type PostV1ContactDetailsResponses = {
+  /**
+   * 201 response
+   */
+  201: ContactDetailSuccess;
+};
+
+export type PostV1ContactDetailsResponse =
+  PostV1ContactDetailsResponses[keyof PostV1ContactDetailsResponses];
 
 export type PostV1DocxLetterTemplateData = {
   /**

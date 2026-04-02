@@ -4,12 +4,14 @@ import type {
   RoutingConfig,
   RoutingConfigReference,
   LetterVariant,
+  ContactDetail,
 } from 'nhs-notify-web-template-management-types';
 
 type Count = { count: number };
 
 export const apiSuccess = <
   T extends
+    | ContactDetail
     | Count
     | LetterVariant
     | LetterVariant[]
