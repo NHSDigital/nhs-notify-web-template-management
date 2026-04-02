@@ -53,21 +53,33 @@ function getTemplates(
       user,
       'Large print letter template 1',
       'SUBMITTED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER2: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER2,
       user,
       'Large print letter template 2',
       'SUBMITTED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER_APPROVED,
       user,
       'Large print letter template 3 - proof approved',
       'PROOF_APPROVED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER_NOT_SUBMITTED:
       TemplateFactory.createAuthoringLetterTemplate(
@@ -81,14 +93,22 @@ function getTemplates(
       templateIds.STANDARD_LETTER,
       user,
       'Standard letter template',
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       'French letter template',
       'SUBMITTED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     APP: TemplateFactory.createNhsAppTemplate(
       templateIds.APP,
@@ -315,6 +335,7 @@ test.describe('Routing - Choose large print letter template page', () => {
       .getRadioButton(templates.LARGE_PRINT_LETTER1.id)
       .check();
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 

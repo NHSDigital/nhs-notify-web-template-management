@@ -822,7 +822,11 @@ test.describe('PATCH /v1/template/:templateId', () => {
       randomUUID(),
       user1,
       'Old template name',
-      'PROOF_APPROVED'
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     );
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -857,7 +861,11 @@ test.describe('PATCH /v1/template/:templateId', () => {
       randomUUID(),
       user1,
       'Old template name',
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     );
 
     await templateStorageHelper.seedTemplateData([template]);

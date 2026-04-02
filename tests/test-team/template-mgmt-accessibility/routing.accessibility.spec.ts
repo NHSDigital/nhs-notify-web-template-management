@@ -8,6 +8,7 @@ import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { test } from 'fixtures/accessibility-analyze';
 import {
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
   RoutingChooseEmailTemplatePage,
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseMessageOrderPage,
@@ -22,6 +23,7 @@ import {
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
+  RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
@@ -46,6 +48,7 @@ const templateIds = {
   EMAIL: randomUUID(),
   LETTER: randomUUID(),
   LETTER_LARGE_PRINT: randomUUID(),
+  LETTER_BSL: randomUUID(),
   LETTER_OTHER_LANGUAGE: randomUUID(),
 };
 
@@ -69,6 +72,7 @@ test.describe('Routing', () => {
         .addTemplate('EMAIL', templateIds.EMAIL)
         .addTemplate('LETTER', templateIds.LETTER)
         .addTemplate('LETTER', templateIds.LETTER_LARGE_PRINT)
+        .addTemplate('LETTER', templateIds.LETTER_BSL)
         .addTemplate('LETTER', templateIds.LETTER_OTHER_LANGUAGE);
 
     const draftRoutingConfig = createRoutingConfig(
@@ -116,21 +120,44 @@ test.describe('Routing', () => {
         templateIds.LETTER,
         user,
         `Test Letter template - ${templateIds.LETTER}`,
-        'NOT_YET_SUBMITTED'
+        'PROOF_APPROVED',
+        {
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_LARGE_PRINT,
         user,
         `Test Large Print Letter template - ${templateIds.LETTER_LARGE_PRINT}`,
-        'NOT_YET_SUBMITTED',
-        { letterType: 'x1' }
+        'PROOF_APPROVED',
+        {
+          letterType: 'x1',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
+      ),
+      TemplateFactory.createAuthoringLetterTemplate(
+        templateIds.LETTER_BSL,
+        user,
+        `Test BSL Letter template - ${templateIds.LETTER_BSL}`,
+        'PROOF_APPROVED',
+        {
+          letterType: 'q4',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_OTHER_LANGUAGE,
         user,
         `Test Letter template French - ${templateIds.LETTER_OTHER_LANGUAGE}`,
-        'NOT_YET_SUBMITTED',
-        { language: 'fr' }
+        'PROOF_APPROVED',
+        {
+          language: 'fr',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
     ]);
   });
@@ -141,6 +168,16 @@ test.describe('Routing', () => {
   });
 
   test.describe('Choose template pages', () => {
+    test('Choose British Sign Language letter template', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new RoutingChooseBritishSignLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
+          .setSearchParam('lockNumber', '0')
+      ));
+
     test('Choose large print letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingChooseLargePrintLetterTemplatePage(page)
@@ -185,6 +222,17 @@ test.describe('Routing', () => {
   });
 
   test.describe('Preview templates', () => {
+    test('Preview British Sign Language letter template', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new RoutingPreviewBritishSignLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER_BSL)
+          .setSearchParam('lockNumber', '0')
+      ));
+
     test('Preview large print letter template', async ({ page, analyze }) =>
       analyze(
         new RoutingPreviewLargePrintLetterTemplatePage(page)

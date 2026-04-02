@@ -58,7 +58,7 @@ async function createTemplates() {
       message: 'review-approve-non-letter',
     },
 
-    pdfLetter: TemplateFactory.uploadLetterTemplate(
+    pdfLetter: TemplateFactory.uploadPdfLetterTemplate(
       '7e8a6ac4-8562-4e27-a0a8-5f2b06f60d0f',
       user,
       'review-approve-pdf-letter'

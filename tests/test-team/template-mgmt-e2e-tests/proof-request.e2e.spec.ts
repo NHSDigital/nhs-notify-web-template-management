@@ -49,7 +49,7 @@ test.describe('SFTP proof request send', () => {
     ];
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         user,
         'send-proof-letter',

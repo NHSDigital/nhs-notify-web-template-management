@@ -45,19 +45,31 @@ function createTemplates(user: TestUser) {
       randomUUID(),
       user,
       'Submitted letter template 1',
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LETTER2: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Submitted letter template 2',
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Submitted letter template - proof approved',
-      'PROOF_APPROVED'
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LETTER_NOT_SUBMITTED: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
@@ -70,14 +82,22 @@ function createTemplates(user: TestUser) {
       user,
       'French letter template',
       'SUBMITTED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     ACCESSIBLE_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
       'Accessible letter template',
       'SUBMITTED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     APP: TemplateFactory.createNhsAppTemplate(
       randomUUID(),

@@ -47,7 +47,7 @@ function createTemplates(user: TestUser) {
       templateStatus: 'SUBMITTED',
       message: 'test example content',
     },
-    letter: TemplateFactory.uploadLetterTemplate(
+    letter: TemplateFactory.uploadPdfLetterTemplate(
       'dec6b9b4-b257-4fdc-b6b4-5eda672b2eac',
       user,
       'submitted-page-letter-template',
