@@ -320,9 +320,10 @@ describe('Review and move to production page', () => {
       await renderPage(routingConfig);
 
       const block = screen.getByTestId('message-plan-block-LETTER');
-      expect(within(block).getByTestId('template-name')).toHaveTextContent(
-        templates[letterTemplateId].name
-      );
+      const templateName = within(block).getByTestId('template-name');
+
+      expect(templateName).toHaveTextContent(templates[letterTemplateId].name);
+
       const link = within(block).getByRole('link');
       expect(link).toHaveTextContent('Preview template (opens in a new tab)');
       expect(link).toHaveAttribute(

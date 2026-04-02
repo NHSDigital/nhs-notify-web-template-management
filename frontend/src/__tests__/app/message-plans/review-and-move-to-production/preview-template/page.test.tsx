@@ -16,7 +16,6 @@ describe('PreviewLetterTemplateFromReviewAndMoveToProduction page', () => {
         routingConfigId: 'routing-config-id',
         templateId: 'template-id',
       }),
-      searchParams: Promise.resolve({ lockNumber: '5' }),
     };
 
     const page =

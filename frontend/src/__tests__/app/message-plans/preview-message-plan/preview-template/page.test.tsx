@@ -10,13 +10,12 @@ import { validateAuthoringLetterTemplate } from 'nhs-notify-web-template-managem
 jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
 
 describe('PreviewLetterTemplateFromPreviewMessagePlan page', () => {
-  it('should render SummaryPreviewLetter with hideBackLinks and authoring validator', async () => {
+  it('should render SummaryPreviewLetter with hideBackLinks and authoring letter validator', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
         templateId: 'template-id',
       }),
-      searchParams: Promise.resolve({ lockNumber: '5' }),
     };
 
     const page = await PreviewLetterTemplateFromPreviewMessagePlan(props);

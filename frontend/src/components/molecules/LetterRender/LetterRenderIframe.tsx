@@ -13,10 +13,16 @@ export function LetterRenderIframe({
   if (!pdfUrl) return <p className='nhsuk-body'>No preview available</p>;
 
   const tabName = renderType === 'shortFormRender' ? 'short' : 'long';
+
   const tabbedViewSuffix =
     renderType === 'initialRender' ? '' : ` - ${tabName} examples`;
 
-  const ariaLabel = `PDF preview of letter template${tabbedViewSuffix}`;
+  const ariaLabelSuffix =
+    renderType === 'initialRender'
+      ? ''
+      : ` with ${tabName} example personalisation data`;
+
+  const ariaLabel = `PDF preview of letter template${ariaLabelSuffix}`;
 
   const title = `Letter preview${tabbedViewSuffix}`;
 

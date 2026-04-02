@@ -8,10 +8,7 @@ import {
 import { render } from '@testing-library/react';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import {
-  validateLetterTemplate,
-  LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { validateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
@@ -21,34 +18,17 @@ const getTemplateMock = jest.mocked(getTemplate);
 const getLetterVariantByIdMock = jest.mocked(getLetterVariantById);
 const redirectMock = jest.mocked(redirect);
 
-const defaultRedirectUrl =
-  '/message-plans/edit-message-plan/routing-config-id';
+const defaultRedirectUrl = '/message-plans/edit-message-plan/routing-config-id';
 
-const defaultProps = (
-  overrides: {
-    routingConfigId?: string;
-    templateId?: string;
-    lockNumber?: string;
-    searchParams?: Record<string, string>;
-    validateTemplate?: (template?: TemplateDto) => LetterTemplate | undefined;
-    hideBackLinks?: boolean;
-    redirectUrl?: string | undefined;
-  } = {}
-) => ({
+const defaultProps = {
   params: Promise.resolve({
-    routingConfigId: overrides.routingConfigId ?? 'routing-config-id',
-    templateId: overrides.templateId ?? 'template-id',
+    routingConfigId: 'routing-config-id',
+    templateId: 'template-id',
   }),
-  searchParams: Promise.resolve(
-    overrides.searchParams ?? { lockNumber: overrides.lockNumber ?? '5' }
-  ),
-  validateTemplate: overrides.validateTemplate ?? validateLetterTemplate,
-  hideBackLinks: overrides.hideBackLinks,
-  redirectUrl:
-    'redirectUrl' in overrides
-      ? overrides.redirectUrl
-      : defaultRedirectUrl,
-});
+  searchParams: Promise.resolve({ lockNumber: '5' }),
+  validateTemplate: validateLetterTemplate,
+  redirectUrl: defaultRedirectUrl,
+};
 
 describe('SummaryPreviewLetter', () => {
   beforeEach(() => {
@@ -56,15 +36,20 @@ describe('SummaryPreviewLetter', () => {
   });
 
   it('should redirect to redirectUrl when lockNumber is invalid', async () => {
-    await SummaryPreviewLetter(
-      defaultProps({ lockNumber: 'invalid', redirectUrl: '/custom-redirect' })
-    );
+    await SummaryPreviewLetter({
+      ...defaultProps,
+      searchParams: Promise.resolve({ lockNumber: 'invalid' }),
+      redirectUrl: '/custom-redirect',
+    });
 
     expect(redirectMock).toHaveBeenCalledWith('/custom-redirect', 'replace');
   });
 
   it('should redirect to redirectUrl when lockNumber is missing', async () => {
-    await SummaryPreviewLetter(defaultProps({ searchParams: {} }));
+    await SummaryPreviewLetter({
+      ...defaultProps,
+      searchParams: Promise.resolve({}),
+    });
 
     expect(redirectMock).toHaveBeenCalledWith(defaultRedirectUrl, 'replace');
   });
@@ -72,9 +57,11 @@ describe('SummaryPreviewLetter', () => {
   it('should not redirect when redirectUrl is not provided and lockNumber is missing', async () => {
     getTemplateMock.mockResolvedValueOnce(PDF_LETTER_TEMPLATE);
 
-    const page = await SummaryPreviewLetter(
-      defaultProps({ searchParams: {}, redirectUrl: undefined })
-    );
+    const page = await SummaryPreviewLetter({
+      ...defaultProps,
+      searchParams: Promise.resolve({}),
+      redirectUrl: undefined,
+    });
 
     expect(redirectMock).not.toHaveBeenCalled();
     expect(page).toBeDefined();
@@ -83,9 +70,13 @@ describe('SummaryPreviewLetter', () => {
   it('should redirect to invalid-template when template is not found', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
-    await SummaryPreviewLetter(
-      defaultProps({ templateId: 'invalid-template-id' })
-    );
+    await SummaryPreviewLetter({
+      ...defaultProps,
+      params: Promise.resolve({
+        routingConfigId: 'routing-config-id',
+        templateId: 'invalid-template-id',
+      }),
+    });
 
     expect(getTemplateMock).toHaveBeenCalledWith('invalid-template-id');
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -97,7 +88,7 @@ describe('SummaryPreviewLetter', () => {
       templateType: 'EMAIL',
     } as unknown as TemplateDto);
 
-    await SummaryPreviewLetter(defaultProps());
+    await SummaryPreviewLetter(defaultProps);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -108,12 +99,13 @@ describe('SummaryPreviewLetter', () => {
       templateStatus: 'SUBMITTED',
     });
 
-    const page = await SummaryPreviewLetter(
-      defaultProps({
+    const page = await SummaryPreviewLetter({
+      ...defaultProps,
+      params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
         templateId: PDF_LETTER_TEMPLATE.id,
-      })
-    );
+      }),
+    });
 
     const container = render(page);
 
@@ -131,12 +123,13 @@ describe('SummaryPreviewLetter', () => {
     });
     getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 
-    const page = await SummaryPreviewLetter(
-      defaultProps({
+    const page = await SummaryPreviewLetter({
+      ...defaultProps,
+      params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
         templateId: AUTHORING_LETTER_TEMPLATE.id,
-      })
-    );
+      }),
+    });
 
     const container = render(page);
 
@@ -151,14 +144,15 @@ describe('SummaryPreviewLetter', () => {
       templateStatus: 'SUBMITTED',
     });
 
-    const page = await SummaryPreviewLetter(
-      defaultProps({
+    const page = await SummaryPreviewLetter({
+      ...defaultProps,
+      params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
         templateId: PDF_LETTER_TEMPLATE.id,
-        hideBackLinks: true,
-        redirectUrl: undefined,
-      })
-    );
+      }),
+      hideBackLinks: true,
+      redirectUrl: undefined,
+    });
 
     const container = render(page);
 

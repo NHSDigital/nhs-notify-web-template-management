@@ -414,7 +414,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                 class="nhsuk-grid-column-two-thirds iframeColumn"
               >
                 <iframe
-                  aria-label="PDF preview of letter template - short examples"
+                  aria-label="PDF preview of letter template with short example personalisation data"
                   src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
@@ -563,7 +563,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                 class="nhsuk-grid-column-two-thirds iframeColumn"
               >
                 <iframe
-                  aria-label="PDF preview of letter template - long examples"
+                  aria-label="PDF preview of letter template with long example personalisation data"
                   src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
@@ -971,7 +971,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                 class="nhsuk-grid-column-two-thirds iframeColumn"
               >
                 <iframe
-                  aria-label="PDF preview of letter template - short examples"
+                  aria-label="PDF preview of letter template with short example personalisation data"
                   src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
@@ -1120,7 +1120,7 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                 class="nhsuk-grid-column-two-thirds iframeColumn"
               >
                 <iframe
-                  aria-label="PDF preview of letter template - long examples"
+                  aria-label="PDF preview of letter template with long example personalisation data"
                   src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
@@ -1756,7 +1756,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 class="nhsuk-grid-column-two-thirds iframeColumn"
               >
                 <iframe
-                  aria-label="PDF preview of letter template - short examples"
+                  aria-label="PDF preview of letter template with short example personalisation data"
                   src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - short examples"
                 />
@@ -1905,7 +1905,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                 class="nhsuk-grid-column-two-thirds iframeColumn"
               >
                 <iframe
-                  aria-label="PDF preview of letter template - long examples"
+                  aria-label="PDF preview of letter template with long example personalisation data"
                   src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
                   title="Letter preview - long examples"
                 />
