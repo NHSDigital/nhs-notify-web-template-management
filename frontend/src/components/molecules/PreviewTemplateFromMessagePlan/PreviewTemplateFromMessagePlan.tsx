@@ -4,7 +4,10 @@ import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import type { TemplateDto } from 'nhs-notify-web-template-management-types';
+import type {
+  LetterVariant,
+  TemplateDto,
+} from 'nhs-notify-web-template-management-types';
 import {
   templateTypeToUrlTextMappings,
   PageComponentProps,
@@ -17,7 +20,9 @@ export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
   PageComponentProps<T> & {
     previewComponent: PreviewTemplateComponent<T>;
     routingConfigId: string;
-    lockNumber: number;
+    lockNumber?: number;
+    letterVariant?: LetterVariant;
+    hideBackLinks?: boolean;
   };
 
 export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
@@ -25,6 +30,8 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   previewComponent,
   routingConfigId,
   lockNumber,
+  letterVariant,
+  hideBackLinks,
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
@@ -32,41 +39,50 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   if (template.templateType === 'LETTER' && 'letterType' in template) {
     const isForeignLanguage =
       'language' in template && template.language && template.language !== 'en';
+
     letterType = isForeignLanguage
       ? 'language'
       : (template.letterType as RoutingSupportedLetterType);
   }
 
-  const backLinkHref = interpolate(content.backLink.href, {
-    templateType: templateTypeToUrlTextMappings(
-      template.templateType,
-      letterType
-    ),
-    routingConfigId,
-    lockNumber,
-  });
+  const backLinkHref =
+    hideBackLinks || lockNumber === undefined
+      ? undefined
+      : interpolate(content.backLink.href, {
+          templateType: templateTypeToUrlTextMappings(
+            template.templateType,
+            letterType
+          ),
+          routingConfigId,
+          lockNumber,
+        });
 
   return (
     <>
-      <Link href={backLinkHref} passHref legacyBehavior>
-        <NotifyBackLink>{content.backLink.text}</NotifyBackLink>
-      </Link>
+      {backLinkHref && (
+        <Link href={backLinkHref} passHref legacyBehavior>
+          <NotifyBackLink>{content.backLink.text}</NotifyBackLink>
+        </Link>
+      )}
 
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
             {previewComponent({
               template,
+              letterVariant,
               hideStatus: true,
               hideEditActions: true,
             })}
-            <Link
-              className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
-              href={backLinkHref}
-              data-testid='back-link-bottom'
-            >
-              {content.backLink.text}
-            </Link>
+            {backLinkHref && (
+              <Link
+                className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
+                href={backLinkHref}
+                data-testid='back-link-bottom'
+              >
+                {content.backLink.text}
+              </Link>
+            )}
           </div>
         </div>
       </NHSNotifyMain>

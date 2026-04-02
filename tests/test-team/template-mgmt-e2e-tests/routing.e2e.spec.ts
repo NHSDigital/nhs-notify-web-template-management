@@ -18,6 +18,7 @@ import {
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingGetReadyToMovePage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionLetterTemplatePage,
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
@@ -399,6 +400,36 @@ test.describe('Routing', () => {
       expect(languageTemplateNames).toHaveLength(2);
       expect(languageTemplateNames).toContain(templates.ARABIC_LETTER.name);
       expect(languageTemplateNames).toContain(templates.POLISH_LETTER.name);
+    });
+
+    await test.step('preview letter template from review page', async () => {
+      const reviewPage = new RoutingReviewAndMoveToProductionPage(page);
+
+      const letterBlock = reviewPage.getTemplateBlock('LETTER');
+
+      const newPagePromise = page.context().waitForEvent('page');
+      await letterBlock.defaultTemplateCard.templateLink.click();
+      const newPage = await newPagePromise;
+      await newPage.waitForLoadState();
+
+      const previewLetterPage =
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(newPage);
+
+      await expect(previewLetterPage.pageHeading).toContainText(
+        templates.LETTER.name
+      );
+
+      await expect(previewLetterPage.templateId).toContainText(
+        templates.LETTER.id
+      );
+
+      await newPage.close();
+
+      await expect(reviewPage.pageHeading).toBeVisible();
+    });
+
+    await test.step('move to production', async () => {
+      const reviewPage = new RoutingReviewAndMoveToProductionPage(page);
 
       await reviewPage.moveToProductionButton.click();
     });

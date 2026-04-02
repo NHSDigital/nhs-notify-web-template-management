@@ -26,7 +26,7 @@ export class RoutingPreviewMessagePlanPage extends TemplateMgmtBasePage {
     this.campaignId = page.getByTestId('campaign-id');
     this.status = page.getByTestId('status');
     this.previewToggleButton = page.getByRole('button', {
-      name: /^(Open|Close) all template previews$/,
+      name: /^(Open|Close) all digital template previews$/,
     });
     this.detailsSections = page.locator('details');
   }

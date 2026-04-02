@@ -1318,8 +1318,8 @@ const messagePlanConditionalLetterTemplates = {
 
 const messagePlanCascadePreview = {
   detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
+    openText: 'Close all digital template previews',
+    closedText: 'Open all digital template previews',
   },
   languageFormatsCardHeading: 'Other language letters (optional)',
   accessibleFormatCardHeading: '{{format}} (optional)',
@@ -1331,6 +1331,7 @@ const messagePlanCascadePreview = {
     previewSubmitted: '/preview-submitted-letter-template/{{id}}',
     preview: '/preview-letter-template/{{id}}',
   },
+  letterTemplateLinkText: 'Preview template (opens in a new tab)',
 };
 
 const editMessagePlan = {

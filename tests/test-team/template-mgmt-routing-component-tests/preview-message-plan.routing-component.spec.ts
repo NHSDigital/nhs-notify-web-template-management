@@ -30,6 +30,8 @@ function createTemplates(user: TestUser) {
     LARGE_PRINT_LETTER: randomUUID(),
     FRENCH_LETTER: randomUUID(),
     SPANISH_LETTER: randomUUID(),
+    AUTHORING_LETTER: randomUUID(),
+    AUTHORING_LARGE_PRINT_LETTER: randomUUID(),
   };
 
   return {
@@ -80,6 +82,27 @@ function createTemplates(user: TestUser) {
       'SUBMITTED',
       'PASSED',
       { language: 'es' }
+    ),
+    AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.AUTHORING_LETTER,
+      user,
+      `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`,
+      'SUBMITTED',
+      {
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
+    ),
+    AUTHORING_LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.AUTHORING_LARGE_PRINT_LETTER,
+      user,
+      `Test Authoring Large Print Letter template - ${templateIds.AUTHORING_LARGE_PRINT_LETTER}`,
+      'SUBMITTED',
+      {
+        letterType: 'x1',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }
@@ -204,7 +227,7 @@ test.describe('Routing - Preview Message Plan page', () => {
       }
 
       await expect(previewMessagePlanPage.previewToggleButton).toHaveText(
-        'Open all template previews'
+        'Open all digital template previews'
       );
 
       await previewMessagePlanPage.previewToggleButton.click();
@@ -214,7 +237,7 @@ test.describe('Routing - Preview Message Plan page', () => {
       }
 
       await expect(previewMessagePlanPage.previewToggleButton).toHaveText(
-        'Close all template previews'
+        'Close all digital template previews'
       );
 
       await previewMessagePlanPage.previewToggleButton.click();
@@ -224,7 +247,7 @@ test.describe('Routing - Preview Message Plan page', () => {
       }
 
       await expect(previewMessagePlanPage.previewToggleButton).toHaveText(
-        'Open all template previews'
+        'Open all digital template previews'
       );
     });
 
@@ -270,8 +293,11 @@ test.describe('Routing - Preview Message Plan page', () => {
         templateBlock.defaultTemplateCard.previewTemplateSummary
       ).toBeHidden();
 
-      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
         templates.LETTER.name
+      );
+      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+        'Preview template (opens in a new tab)'
       );
       await expect(
         templateBlock.defaultTemplateCard.templateLink
@@ -305,12 +331,68 @@ test.describe('Routing - Preview Message Plan page', () => {
         );
       }
 
-      await templateBlock.defaultTemplateCard.templateLink.click();
+      const [popup] = await Promise.all([
+        page.waitForEvent('popup'),
+        templateBlock.defaultTemplateCard.templateLink.click(),
+      ]);
 
-      await expect(page).toHaveURL(
+      await expect(popup).toHaveURL(
         `/templates/preview-submitted-letter-template/${templates.LETTER.id}`
       );
+
+      await popup.close();
     });
+  });
+
+  test('displays AUTHORING letter template links pointing to in-flow preview', async ({
+    page,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.createWithChannels(
+      user,
+      ['LETTER'],
+      { status: 'COMPLETED' }
+    )
+      .addTemplate('LETTER', templates.AUTHORING_LETTER.id)
+      .addAccessibleFormatTemplate(
+        'x1',
+        templates.AUTHORING_LARGE_PRINT_LETTER.id
+      );
+
+    await routingConfigStorageHelper.seed([dbEntry]);
+
+    const previewMessagePlanPage = new RoutingPreviewMessagePlanPage(
+      page
+    ).setPathParam('messagePlanId', dbEntry.id);
+
+    await previewMessagePlanPage.loadPage();
+
+    const templateBlock =
+      await previewMessagePlanPage.getTemplateBlock('LETTER');
+
+    await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
+      templates.AUTHORING_LETTER.name
+    );
+    await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      'Preview template (opens in a new tab)'
+    );
+
+    await expect(
+      templateBlock.defaultTemplateCard.templateLink
+    ).toHaveAttribute(
+      'href',
+      `/templates/message-plans/preview-message-plan/${dbEntry.id}/preview-template/${templates.AUTHORING_LETTER.id}`
+    );
+
+    await expect(
+      templateBlock.getAccessibilityFormatCard('x1').templateLink
+    ).toHaveText(templates.AUTHORING_LARGE_PRINT_LETTER.name);
+
+    await expect(
+      templateBlock.getAccessibilityFormatCard('x1').templateLink
+    ).toHaveAttribute(
+      'href',
+      `/templates/message-plans/preview-message-plan/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}`
+    );
   });
 
   test('letter only with no conditional templates', async ({ page }) => {

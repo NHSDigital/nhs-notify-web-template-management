@@ -169,7 +169,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
       </h2>
       <iframe
         aria-label="PDF preview of letter template with short example personalisation data"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-123/renders/authoring-letter-template-id/short-form.pdf"
         title="Letter preview - short examples"
       />
@@ -180,7 +180,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
       </h2>
       <iframe
         aria-label="PDF preview of letter template with long example personalisation data"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-123/renders/authoring-letter-template-id/long-form.pdf"
         title="Letter preview - long examples"
       />

@@ -3,27 +3,51 @@
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import PreviewTemplateDetailsPdfLetter from './PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsAuthoringLetter from './PreviewTemplateDetailsAuthoringLetter';
+import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
+import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 export default function PreviewTemplateDetailsLetter({
   template,
+  letterVariant,
   hideStatus,
   hideEditActions,
 }: {
   template: LetterTemplate;
+  letterVariant?: LetterVariant;
   hideStatus?: boolean;
   hideEditActions?: boolean;
 }) {
-  // TODO: CCM-14768 - PreviewTemplateDetailsAuthoringLetter requires the Letter Variant.
-  return template.letterVersion === 'PDF' ? (
-    <PreviewTemplateDetailsPdfLetter
-      template={template}
-      hideStatus={hideStatus}
-    />
-  ) : (
-    <PreviewTemplateDetailsAuthoringLetter
-      template={template}
-      hideStatus={hideStatus}
-      hideEditActions={hideEditActions}
-    />
+  if (template.letterVersion === 'PDF') {
+    return (
+      <PreviewTemplateDetailsPdfLetter
+        template={template}
+        hideStatus={hideStatus}
+      />
+    );
+  }
+
+  const { initialRender } = template.files;
+
+  const pdfUrl =
+    initialRender.status === 'RENDERED'
+      ? buildLetterRenderUrl(template, initialRender.fileName)
+      : null;
+
+  return (
+    <>
+      <PreviewTemplateDetailsAuthoringLetter
+        template={template}
+        letterVariant={letterVariant}
+        hideStatus={hideStatus}
+        hideEditActions={hideEditActions}
+      />
+      <h2 className='nhsuk-heading-m'>Example preview</h2>
+      <LetterRenderIframe
+        renderType={'initialRender'}
+        pdfUrl={pdfUrl}
+        className='letter-render-iframe nhsuk-u-margin-bottom-6'
+      />
+    </>
   );
 }

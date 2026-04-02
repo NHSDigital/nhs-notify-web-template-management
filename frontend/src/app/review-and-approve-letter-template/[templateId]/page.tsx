@@ -17,10 +17,8 @@ import { PreviewTemplateDetailsAuthoringLetterTable } from '@molecules/PreviewTe
 import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
 import { interpolate } from '@utils/interpolate';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-import concatClassNames from '@utils/concat-class-names';
 import { buildLetterRenderUrl } from '@utils/letter-render-url';
 
 const {
@@ -97,11 +95,8 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
           />
           <h2 className='nhsuk-heading-m'>{shortExampleHeading}</h2>
           <LetterRenderIframe
-            className={concatClassNames(
-              styles.iframe,
-              'nhsuk-u-margin-bottom-6'
-            )}
-            tab='shortFormRender'
+            className='letter-render-iframe nhsuk-u-margin-bottom-6'
+            renderType='shortFormRender'
             pdfUrl={buildLetterRenderUrl(
               validatedTemplate,
               shortFormRender.fileName
@@ -109,11 +104,8 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
           />
           <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
           <LetterRenderIframe
-            className={concatClassNames(
-              styles.iframe,
-              'nhsuk-u-margin-bottom-6'
-            )}
-            tab='longFormRender'
+            className='letter-render-iframe nhsuk-u-margin-bottom-6'
+            renderType='longFormRender'
             pdfUrl={buildLetterRenderUrl(
               validatedTemplate,
               longFormRender.fileName

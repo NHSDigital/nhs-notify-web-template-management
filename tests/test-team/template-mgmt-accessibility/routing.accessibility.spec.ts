@@ -24,12 +24,14 @@ import {
   RoutingMessagePlansPage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionLetterTemplatePage,
 } from 'pages/routing';
 import { getTestContext } from 'helpers/context/context';
 
@@ -116,21 +118,33 @@ test.describe('Routing', () => {
         templateIds.LETTER,
         user,
         `Test Letter template - ${templateIds.LETTER}`,
-        'NOT_YET_SUBMITTED'
+        'PROOF_APPROVED',
+        {
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_LARGE_PRINT,
         user,
         `Test Large Print Letter template - ${templateIds.LETTER_LARGE_PRINT}`,
-        'NOT_YET_SUBMITTED',
-        { letterType: 'x1' }
+        'PROOF_APPROVED',
+        {
+          letterType: 'x1',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
         templateIds.LETTER_OTHER_LANGUAGE,
         user,
         `Test Letter template French - ${templateIds.LETTER_OTHER_LANGUAGE}`,
-        'NOT_YET_SUBMITTED',
-        { language: 'fr' }
+        'PROOF_APPROVED',
+        {
+          language: 'fr',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       ),
     ]);
   });
@@ -231,6 +245,23 @@ test.describe('Routing', () => {
           .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.SMS)
           .setSearchParam('lockNumber', '0')
+      ));
+
+    test('Preview message plan letter template', async ({ page, analyze }) =>
+      analyze(
+        new RoutingPreviewMessagePlanLetterTemplatePage(page)
+          .setPathParam('messagePlanId', productionRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER)
+      ));
+
+    test('Review and move to production letter template', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER)
       ));
   });
 

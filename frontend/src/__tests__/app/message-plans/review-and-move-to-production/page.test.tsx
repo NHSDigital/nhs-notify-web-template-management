@@ -255,7 +255,9 @@ describe('Review and move to production page', () => {
       await renderPage(routingConfig);
 
       expect(
-        screen.getByRole('button', { name: /open all template previews/i })
+        screen.getByRole('button', {
+          name: /open all digital template previews/i,
+        })
       ).toBeInTheDocument();
     });
 
@@ -274,7 +276,9 @@ describe('Review and move to production page', () => {
       await renderPage(routingConfig);
 
       expect(
-        screen.queryByRole('button', { name: /open all template previews/i })
+        screen.queryByRole('button', {
+          name: /open all digital template previews/i,
+        })
       ).not.toBeInTheDocument();
     });
 
@@ -317,9 +321,11 @@ describe('Review and move to production page', () => {
 
       const block = screen.getByTestId('message-plan-block-LETTER');
       const templateName = within(block).getByTestId('template-name');
-      const link = within(templateName).getByRole('link');
 
-      expect(link).toHaveTextContent(templates[letterTemplateId].name);
+      expect(templateName).toHaveTextContent(templates[letterTemplateId].name);
+
+      const link = within(block).getByRole('link');
+      expect(link).toHaveTextContent('Preview template (opens in a new tab)');
       expect(link).toHaveAttribute(
         'href',
         `/preview-letter-template/${letterTemplateId}`

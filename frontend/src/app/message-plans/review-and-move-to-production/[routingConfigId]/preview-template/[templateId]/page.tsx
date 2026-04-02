@@ -1,6 +1,6 @@
 import {
   MessagePlanAndTemplatePageProps,
-  validateLetterTemplate,
+  validateAuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { Metadata } from 'next';
 import content from '@content/content';
@@ -14,17 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
+const PreviewLetterTemplateFromReviewAndMoveToProduction = async (
   props: MessagePlanAndTemplatePageProps
-) => {
-  const { routingConfigId } = await props.params;
-  return (
-    <SummaryPreviewLetter
-      {...props}
-      validateTemplate={validateLetterTemplate}
-      redirectUrl={`/message-plans/edit-message-plan/${routingConfigId}`}
-    />
-  );
-};
+) => (
+  <SummaryPreviewLetter
+    {...props}
+    validateTemplate={validateAuthoringLetterTemplate}
+    hideBackLinks
+  />
+);
 
-export default PreviewStandardEnglishLetterTemplateFromMessagePlan;
+export default PreviewLetterTemplateFromReviewAndMoveToProduction;

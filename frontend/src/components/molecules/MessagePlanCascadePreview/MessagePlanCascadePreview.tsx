@@ -39,7 +39,18 @@ import {
 
 const pageContent = content.components.messagePlanCascadePreview;
 
-function getLetterTemplatePreviewHref(template: TemplateDto): string {
+function getLetterTemplatePreviewHref(
+  template: TemplateDto,
+  letterPreviewHrefBase?: string
+): string {
+  if (
+    letterPreviewHrefBase &&
+    'letterVersion' in template &&
+    template.letterVersion === 'AUTHORING'
+  ) {
+    return `${letterPreviewHrefBase}/preview-template/${template.id}`;
+  }
+
   const linkTemplate =
     template.templateStatus === 'SUBMITTED'
       ? pageContent.letterTemplateLinks.previewSubmitted
@@ -50,11 +61,13 @@ function getLetterTemplatePreviewHref(template: TemplateDto): string {
 export type MessagePlanCascadePreviewProps = {
   messagePlan: RoutingConfig;
   templates: MessagePlanTemplates;
+  letterPreviewHrefBase?: string;
 };
 
 export function MessagePlanCascadePreview({
   messagePlan,
   templates,
+  letterPreviewHrefBase,
 }: MessagePlanCascadePreviewProps) {
   return (
     <DetailsOpenProvider>
@@ -107,13 +120,19 @@ export function MessagePlanCascadePreview({
                   data-testid='channel-card'
                 >
                   {cascadeItem.channel === 'LETTER' ? (
-                    <p data-testid='template-name'>
+                    <>
+                      <p data-testid='template-name'>{defaultTemplate.name}</p>
                       <Link
-                        href={getLetterTemplatePreviewHref(defaultTemplate)}
+                        href={getLetterTemplatePreviewHref(
+                          defaultTemplate,
+                          letterPreviewHrefBase
+                        )}
+                        target='_blank'
+                        rel='noopener noreferrer'
                       >
-                        {defaultTemplate.name}
+                        {pageContent.letterTemplateLinkText}
                       </Link>
-                    </p>
+                    </>
                   ) : (
                     <>
                       <p data-testid='template-name'>{defaultTemplate.name}</p>
@@ -164,7 +183,12 @@ export function MessagePlanCascadePreview({
                           data-testid='channel-card'
                         >
                           <p data-testid='template-name'>
-                            <Link href={getLetterTemplatePreviewHref(template)}>
+                            <Link
+                              href={getLetterTemplatePreviewHref(
+                                template,
+                                letterPreviewHrefBase
+                              )}
+                            >
                               {template.name}
                             </Link>
                           </p>
@@ -185,7 +209,10 @@ export function MessagePlanCascadePreview({
                               className='nhsuk-u-margin-bottom-0'
                             >
                               <Link
-                                href={getLetterTemplatePreviewHref(template)}
+                                href={getLetterTemplatePreviewHref(
+                                  template,
+                                  letterPreviewHrefBase
+                                )}
                               >
                                 {template.name}
                               </Link>

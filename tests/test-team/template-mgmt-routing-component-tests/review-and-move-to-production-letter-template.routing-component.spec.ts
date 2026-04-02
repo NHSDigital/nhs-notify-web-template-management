@@ -4,14 +4,12 @@ import {
   assertSignOutLink,
   assertHeaderLogoLink,
   assertSkipToMainContent,
-  assertAndClickBackLinkTop,
-  assertBackLinkBottom,
-} from '../../helpers/template-mgmt-common.steps';
+} from 'helpers/template-mgmt-common.steps';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
-import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
+import { RoutingReviewAndMoveToProductionLetterTemplatePage } from 'pages/routing/review-and-move-to-production-letter-template-page';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
@@ -32,26 +30,32 @@ function createMessagePlans(user: TestUser) {
 }
 
 function createTemplates(user: TestUser) {
+  const templateIds = {
+    EMAIL: randomUUID(),
+    AUTHORING_LETTER: randomUUID(),
+    PDF_LETTER: randomUUID(),
+  };
+
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
-      randomUUID(),
+      templateIds.EMAIL,
       user,
-      'Email template name'
-    ),
-    LETTER: TemplateFactory.uploadLetterTemplate(
-      randomUUID(),
-      user,
-      'Letter template name'
+      `Test Email template - ${templateIds.EMAIL}`
     ),
     AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+      templateIds.AUTHORING_LETTER,
       user,
-      'Authoring letter template name'
+      `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`
+    ),
+    PDF_LETTER: TemplateFactory.uploadLetterTemplate(
+      templateIds.PDF_LETTER,
+      user,
+      `Test PDF Letter template - ${templateIds.PDF_LETTER}`
     ),
   };
 }
 
-test.describe('Routing - Preview Letter template page', () => {
+test.describe('Routing - Review and Move to Production Letter template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
 
@@ -73,64 +77,27 @@ test.describe('Routing - Preview Letter template page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingPreviewStandardLetterTemplatePage(page)
+      page: new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.LETTER.id)
-        .setSearchParam('lockNumber', '0'),
+        .setPathParam('templateId', templates.AUTHORING_LETTER.id),
       baseURL,
-      expectedUrl: `templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}?lockNumber=0`,
     };
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
     await assertFooterLinks(props);
     await assertSignOutLink(props);
-    await assertBackLinkBottom(props);
-    await assertAndClickBackLinkTop(props);
-  });
-
-  test('loads the Letter template', async ({ page, baseURL }) => {
-    const previewLetterTemplatePage =
-      new RoutingPreviewStandardLetterTemplatePage(page)
-        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.LETTER.id)
-        .setSearchParam('lockNumber', '0');
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LETTER.id}?lockNumber=0`
-    );
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.LETTER.name
-    );
-
-    expect(templates.LETTER.campaignId).toBeTruthy();
-
-    await expect(previewLetterTemplatePage.campaignId).toContainText(
-      templates.LETTER.campaignId!
-    );
-
-    await expect(
-      page.getByText(templates.LETTER.files!.pdfTemplate!.fileName)
-    ).toBeVisible();
-
-    await expect(
-      page.getByText(templates.LETTER.files!.testDataCsv!.fileName)
-    ).toBeVisible();
   });
 
   test('loads the AUTHORING letter template', async ({ page, baseURL }) => {
     const previewLetterTemplatePage =
-      new RoutingPreviewStandardLetterTemplatePage(page)
+      new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id)
-        .setSearchParam('lockNumber', '0');
+        .setPathParam('templateId', templates.AUTHORING_LETTER.id);
 
     await previewLetterTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
+      `${baseURL}/templates/message-plans/review-and-move-to-production/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -162,10 +129,9 @@ test.describe('Routing - Preview Letter template page', () => {
   test.describe('redirects to invalid template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingPreviewStandardLetterTemplatePage(page)
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', notFoundTemplateId)
-          .setSearchParam('lockNumber', '0');
+          .setPathParam('templateId', notFoundTemplateId);
 
       await previewLetterTemplatePage.loadPage();
 
@@ -174,10 +140,9 @@ test.describe('Routing - Preview Letter template page', () => {
 
     test('when template ID is invalid', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingPreviewStandardLetterTemplatePage(page)
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', invalidTemplateId)
-          .setSearchParam('lockNumber', '0');
+          .setPathParam('templateId', invalidTemplateId);
 
       await previewLetterTemplatePage.loadPage();
 
@@ -186,30 +151,24 @@ test.describe('Routing - Preview Letter template page', () => {
 
     test('when template is not letter', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingPreviewStandardLetterTemplatePage(page)
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', templates.EMAIL.id)
-          .setSearchParam('lockNumber', '0');
+          .setPathParam('templateId', templates.EMAIL.id);
 
       await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
-  });
 
-  test('redirects to the edit message plan page when lockNumber is missing', async ({
-    page,
-    baseURL,
-  }) => {
-    const previewLetterTemplatePage =
-      new RoutingPreviewStandardLetterTemplatePage(page)
-        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.LETTER.id);
+    test('when template is a PDF letter', async ({ page, baseURL }) => {
+      const previewLetterTemplatePage =
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.PDF_LETTER.id);
 
-    await previewLetterTemplatePage.loadPage();
+      await previewLetterTemplatePage.loadPage();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.LETTER_ROUTING_CONFIG.id}`
-    );
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
   });
 });
