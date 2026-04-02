@@ -4,6 +4,7 @@ import type {
   RoutingConfig,
   Language,
   LetterType,
+  TemplateType,
 } from 'nhs-notify-web-template-management-types';
 
 export const templateTypeDisplayMappings: Record<string, string> = {
@@ -132,4 +133,20 @@ export type FactoryRoutingConfigWithModifiers = FactoryRoutingConfig & {
     accessibleFormat: LetterType,
     templateId?: string
   ) => FactoryRoutingConfigWithModifiers;
+};
+
+type DigitalTemplateType = Extract<TemplateType, 'EMAIL' | 'SMS' | 'NHS_APP'>;
+
+export type DigitalProofRequest = {
+  id: string;
+  owner: string;
+  createdAt: string;
+  personalisation: Record<string, string>;
+  contactDetails?: {
+    sms?: string;
+    email?: string;
+  };
+  templateId: string;
+  templateType: DigitalTemplateType;
+  testPatientNhsNumber: string;
 };
