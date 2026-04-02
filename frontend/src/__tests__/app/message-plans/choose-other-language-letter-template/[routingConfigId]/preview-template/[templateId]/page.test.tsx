@@ -19,8 +19,7 @@ describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
       searchParams: Promise.resolve({ lockNumber: '5' }),
     };
 
-    const page =
-      await PreviewOtherLanguageLetterTemplateFromMessagePlan(props);
+    const page = await PreviewOtherLanguageLetterTemplateFromMessagePlan(props);
 
     expect(page).toEqual(
       <SummaryPreviewLetter

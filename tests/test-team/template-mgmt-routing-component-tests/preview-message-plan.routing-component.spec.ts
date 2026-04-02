@@ -286,8 +286,11 @@ test.describe('Routing - Preview Message Plan page', () => {
         templateBlock.defaultTemplateCard.previewTemplateSummary
       ).toBeHidden();
 
-      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
         templates.LETTER.name
+      );
+      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+        'Preview template (opens in a new tab)'
       );
       await expect(
         templateBlock.defaultTemplateCard.templateLink
@@ -321,11 +324,16 @@ test.describe('Routing - Preview Message Plan page', () => {
         );
       }
 
-      await templateBlock.defaultTemplateCard.templateLink.click();
+      const [popup] = await Promise.all([
+        page.waitForEvent('popup'),
+        templateBlock.defaultTemplateCard.templateLink.click(),
+      ]);
 
-      await expect(page).toHaveURL(
+      await expect(popup).toHaveURL(
         `/templates/preview-submitted-letter-template/${templates.LETTER.id}`
       );
+
+      await popup.close();
     });
   });
 
@@ -354,8 +362,11 @@ test.describe('Routing - Preview Message Plan page', () => {
     const templateBlock =
       await previewMessagePlanPage.getTemplateBlock('LETTER');
 
-    await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+    await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
       templates.AUTHORING_LETTER.name
+    );
+    await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      'Preview template (opens in a new tab)'
     );
 
     await expect(

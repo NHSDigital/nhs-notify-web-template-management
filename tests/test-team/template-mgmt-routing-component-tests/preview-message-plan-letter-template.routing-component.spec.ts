@@ -30,21 +30,27 @@ function createMessagePlans(user: TestUser) {
 }
 
 function createTemplates(user: TestUser) {
+  const templateIds = {
+    EMAIL: randomUUID(),
+    AUTHORING_LETTER: randomUUID(),
+    PDF_LETTER: randomUUID(),
+  };
+
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
-      randomUUID(),
+      templateIds.EMAIL,
       user,
-      'Email template name'
+      `Test Email template - ${templateIds.EMAIL}`
     ),
     AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+      templateIds.AUTHORING_LETTER,
       user,
-      'Authoring letter template name'
+      `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`
     ),
     PDF_LETTER: TemplateFactory.uploadLetterTemplate(
-      randomUUID(),
+      templateIds.PDF_LETTER,
       user,
-      'PDF letter template name'
+      `Test PDF Letter template - ${templateIds.PDF_LETTER}`
     ),
   };
 }

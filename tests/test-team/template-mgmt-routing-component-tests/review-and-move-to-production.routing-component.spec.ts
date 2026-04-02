@@ -284,8 +284,11 @@ test.describe('Routing - Review and Move to Production page', () => {
         templateBlock.defaultTemplateCard.previewTemplateSummary
       ).toBeHidden();
 
-      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
         templates.LETTER.name
+      );
+      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+        'Preview template (opens in a new tab)'
       );
       await expect(
         templateBlock.defaultTemplateCard.templateLink
@@ -345,8 +348,11 @@ test.describe('Routing - Review and Move to Production page', () => {
 
     const templateBlock = await reviewPage.getTemplateBlock('LETTER');
 
-    await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+    await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
       templates.AUTHORING_LETTER.name
+    );
+    await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      'Preview template (opens in a new tab)'
     );
 
     await expect(
