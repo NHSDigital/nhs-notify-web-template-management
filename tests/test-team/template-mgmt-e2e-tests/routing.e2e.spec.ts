@@ -407,10 +407,13 @@ test.describe('Routing', () => {
 
       const letterBlock = reviewPage.getTemplateBlock('LETTER');
 
+      const newPagePromise = page.context().waitForEvent('page');
       await letterBlock.defaultTemplateCard.templateLink.click();
+      const newPage = await newPagePromise;
+      await newPage.waitForLoadState();
 
       const previewLetterPage =
-        new RoutingReviewAndMoveToProductionLetterTemplatePage(page);
+        new RoutingReviewAndMoveToProductionLetterTemplatePage(newPage);
 
       await expect(previewLetterPage.pageHeading).toContainText(
         templates.LETTER.name
@@ -420,7 +423,7 @@ test.describe('Routing', () => {
         templates.LETTER.id
       );
 
-      await page.goBack();
+      await newPage.close();
 
       await expect(reviewPage.pageHeading).toBeVisible();
     });
