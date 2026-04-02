@@ -23,6 +23,7 @@ exports[`GetReadyToApproveLetterTemplatePage matches snapshot 1`] = `
           </span>
           <h1
             class="nhsuk-heading-xl"
+            id="get-ready-to-approve-authoring-letter-template-name"
           >
             Get ready to approve 'authoring letter template name'
           </h1>

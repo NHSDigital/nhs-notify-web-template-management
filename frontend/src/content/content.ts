@@ -736,6 +736,12 @@ const getReadyToApproveLetterTemplate: {
   body: [
     {
       type: 'text',
+      text: "# Get ready to approve '{{templateName}}'",
+      overrides: { h1: { props: { className: 'nhsuk-heading-xl' } } },
+    },
+
+    {
+      type: 'text',
       text: 'After you approve this letter, you can use it in your message plans.',
       overrides: { p: { props: { className: 'nhsuk-body-l' } } },
     },

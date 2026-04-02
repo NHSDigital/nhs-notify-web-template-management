@@ -49,13 +49,10 @@ const GetReadyToApproveLetterTemplatePage = async (
           <div className='nhsuk-grid-column-two-thirds'>
             <span className='nhsuk-caption-xl'>{pageContent.stepCounter}</span>
 
-            <h1 className='nhsuk-heading-xl'>
-              {interpolate(pageContent.heading, {
-                templateName: validatedTemplate.name,
-              })}
-            </h1>
-
-            <ContentRenderer content={pageContent.body} />
+            <ContentRenderer
+              content={pageContent.body}
+              variables={{ templateName: validatedTemplate.name }}
+            />
 
             <div className='nhsuk-warning-callout'>
               <h3 className='nhsuk-warning-callout__label'>

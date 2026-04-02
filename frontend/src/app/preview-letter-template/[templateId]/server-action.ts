@@ -22,9 +22,9 @@ export async function submitAuthoringLetterAction(
     };
   }
 
-  const { templateId } = result.data;
+  const { templateId, lockNumber } = result.data;
 
   redirect(
-    `/get-ready-to-approve-letter-template/${templateId}?lockNumber=${result.data.lockNumber}`
+    `/get-ready-to-approve-letter-template/${templateId}?lockNumber=${lockNumber}`
   );
 }
