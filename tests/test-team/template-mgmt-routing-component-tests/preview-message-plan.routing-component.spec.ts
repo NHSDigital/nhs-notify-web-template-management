@@ -89,14 +89,13 @@ function createTemplates(user: TestUser) {
       `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`,
       'SUBMITTED'
     ),
-    AUTHORING_LARGE_PRINT_LETTER:
-      TemplateFactory.createAuthoringLetterTemplate(
-        templateIds.AUTHORING_LARGE_PRINT_LETTER,
-        user,
-        `Test Authoring Large Print Letter template - ${templateIds.AUTHORING_LARGE_PRINT_LETTER}`,
-        'SUBMITTED',
-        { letterType: 'x1' }
-      ),
+    AUTHORING_LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.AUTHORING_LARGE_PRINT_LETTER,
+      user,
+      `Test Authoring Large Print Letter template - ${templateIds.AUTHORING_LARGE_PRINT_LETTER}`,
+      'SUBMITTED',
+      { letterType: 'x1' }
+    ),
   };
 }
 

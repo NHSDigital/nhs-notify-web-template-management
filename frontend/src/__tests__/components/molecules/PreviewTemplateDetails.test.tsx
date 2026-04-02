@@ -569,4 +569,23 @@ describe('PreviewTemplateDetailsLetter', () => {
     expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
     expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
   });
+
+  it('renders "No preview available" when initialRender is not RENDERED', () => {
+    render(
+      <PreviewTemplateDetailsLetter
+        template={{
+          ...baseAuthoringLetter,
+          files: {
+            docxTemplate: baseAuthoringLetter.files.docxTemplate,
+            initialRender: {
+              status: 'PENDING',
+              requestedAt: '2026-02-27T09:42:04.142Z',
+            },
+          },
+        }}
+      />
+    );
+
+    expect(screen.getByText('No preview available')).toBeInTheDocument();
+  });
 });
