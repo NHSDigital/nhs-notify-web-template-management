@@ -230,6 +230,20 @@ test.describe('Routing - Preview foreign language letter template page', () => {
     await expect(
       previewForeignLanguageLetterTemplatePage.campaignId
     ).toContainText(templates.AUTHORING_FRENCH_LETTER.campaignId!);
+
+    await expect(
+      previewForeignLanguageLetterTemplatePage.letterPreviewHeading
+    ).toBeVisible();
+    await expect(
+      previewForeignLanguageLetterTemplatePage.letterPreviewIframe
+    ).toBeVisible();
+
+    await expect(
+      previewForeignLanguageLetterTemplatePage.letterPreviewIframe
+    ).toHaveAttribute(
+      'src',
+      `/templates/files/${templates.AUTHORING_FRENCH_LETTER.clientId}/renders/${templates.AUTHORING_FRENCH_LETTER.id}/initial-render.pdf`
+    );
   });
 
   test.describe('redirects to invalid template page', () => {

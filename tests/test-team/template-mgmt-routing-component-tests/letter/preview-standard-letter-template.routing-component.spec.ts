@@ -149,6 +149,14 @@ test.describe('Routing - Preview Letter template page', () => {
     );
 
     await expect(previewLetterTemplatePage.summaryList).toBeVisible();
+
+    await expect(previewLetterTemplatePage.letterPreviewHeading).toBeVisible();
+    await expect(previewLetterTemplatePage.letterPreviewIframe).toBeVisible();
+
+    await expect(previewLetterTemplatePage.letterPreviewIframe).toHaveAttribute(
+      'src',
+      `/templates/files/${templates.AUTHORING_LETTER.clientId}/renders/${templates.AUTHORING_LETTER.id}/initial-render.pdf`
+    );
   });
 
   test.describe('redirects to invalid template page', () => {

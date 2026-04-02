@@ -206,6 +206,20 @@ test.describe('Routing - Preview large print letter template page', () => {
     await expect(previewLargePrintLetterTemplatePage.campaignId).toContainText(
       templates.AUTHORING_LARGE_PRINT_LETTER.campaignId!
     );
+
+    await expect(
+      previewLargePrintLetterTemplatePage.letterPreviewHeading
+    ).toBeVisible();
+    await expect(
+      previewLargePrintLetterTemplatePage.letterPreviewIframe
+    ).toBeVisible();
+
+    await expect(
+      previewLargePrintLetterTemplatePage.letterPreviewIframe
+    ).toHaveAttribute(
+      'src',
+      `/templates/files/${templates.AUTHORING_LARGE_PRINT_LETTER.clientId}/renders/${templates.AUTHORING_LARGE_PRINT_LETTER.id}/initial-render.pdf`
+    );
   });
 
   test.describe('redirects to invalid template page', () => {
