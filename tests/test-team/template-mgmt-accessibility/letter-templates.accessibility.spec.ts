@@ -394,10 +394,9 @@ test.describe('Letter templates', () => {
 
     test('Review and approve letter template page', async ({ page, analyze }) =>
       analyze(
-        new TemplateMgmtReviewAndApproveLetterTemplatePage(page).setPathParam(
-          'templateId',
-          templateIds.AUTHORING_WITH_RENDERS
-        )
+        new TemplateMgmtReviewAndApproveLetterTemplatePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING_WITH_RENDERS)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Letter template approved', async ({ page, analyze }) =>
