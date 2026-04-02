@@ -16,11 +16,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const PreviewOtherLanguageLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
-) => (
-  <SummaryPreviewLetter
-    {...props}
-    validateTemplate={validateForeignLanguageLetterTemplate}
-  />
-);
+) => {
+  const { routingConfigId } = await props.params;
+  return (
+    <SummaryPreviewLetter
+      {...props}
+      validateTemplate={validateForeignLanguageLetterTemplate}
+      redirectUrl={`/message-plans/edit-message-plan/${routingConfigId}`}
+    />
+  );
+};
 
 export default PreviewOtherLanguageLetterTemplateFromMessagePlan;

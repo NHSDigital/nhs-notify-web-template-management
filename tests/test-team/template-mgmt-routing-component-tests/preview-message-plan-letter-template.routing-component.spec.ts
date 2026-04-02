@@ -73,8 +73,7 @@ test.describe('Routing - Preview Message Plan Letter template page', () => {
     const props = {
       page: new RoutingPreviewMessagePlanLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id)
-        .setSearchParam('lockNumber', '0'),
+        .setPathParam('templateId', templates.AUTHORING_LETTER.id),
       baseURL,
     };
     await assertSkipToMainContent(props);
@@ -87,13 +86,12 @@ test.describe('Routing - Preview Message Plan Letter template page', () => {
     const previewLetterTemplatePage =
       new RoutingPreviewMessagePlanLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id)
-        .setSearchParam('lockNumber', '0');
+        .setPathParam('templateId', templates.AUTHORING_LETTER.id);
 
     await previewLetterTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/preview-message-plan/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
+      `${baseURL}/templates/message-plans/preview-message-plan/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
@@ -119,8 +117,7 @@ test.describe('Routing - Preview Message Plan Letter template page', () => {
       const previewLetterTemplatePage =
         new RoutingPreviewMessagePlanLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', notFoundTemplateId)
-          .setSearchParam('lockNumber', '0');
+          .setPathParam('templateId', notFoundTemplateId);
 
       await previewLetterTemplatePage.loadPage();
 
@@ -131,8 +128,7 @@ test.describe('Routing - Preview Message Plan Letter template page', () => {
       const previewLetterTemplatePage =
         new RoutingPreviewMessagePlanLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', invalidTemplateId)
-          .setSearchParam('lockNumber', '0');
+          .setPathParam('templateId', invalidTemplateId);
 
       await previewLetterTemplatePage.loadPage();
 
@@ -143,8 +139,7 @@ test.describe('Routing - Preview Message Plan Letter template page', () => {
       const previewLetterTemplatePage =
         new RoutingPreviewMessagePlanLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', templates.EMAIL.id)
-          .setSearchParam('lockNumber', '0');
+          .setPathParam('templateId', templates.EMAIL.id);
 
       await previewLetterTemplatePage.loadPage();
 
@@ -155,28 +150,11 @@ test.describe('Routing - Preview Message Plan Letter template page', () => {
       const previewLetterTemplatePage =
         new RoutingPreviewMessagePlanLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', templates.PDF_LETTER.id)
-          .setSearchParam('lockNumber', '0');
+          .setPathParam('templateId', templates.PDF_LETTER.id);
 
       await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
-  });
-
-  test('redirects to the edit message plan page when lockNumber is missing', async ({
-    page,
-    baseURL,
-  }) => {
-    const previewLetterTemplatePage =
-      new RoutingPreviewMessagePlanLetterTemplatePage(page)
-        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id);
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.LETTER_ROUTING_CONFIG.id}`
-    );
   });
 });

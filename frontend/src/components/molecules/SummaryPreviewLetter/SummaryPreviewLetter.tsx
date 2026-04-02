@@ -14,22 +14,26 @@ import { NHSNotifyContainer } from '@layouts/container/container';
 type SummaryPreviewLetterProps = MessagePlanAndTemplatePageProps & {
   validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
   hideBackLinks?: boolean;
+  redirectUrl?: string;
 };
 
 export const SummaryPreviewLetter = async (
   props: SummaryPreviewLetterProps
 ) => {
   const { templateId, routingConfigId } = await props.params;
-  const searchParams = await props.searchParams;
-  const { validateTemplate, hideBackLinks } = props;
+  const { validateTemplate, hideBackLinks, redirectUrl } = props;
 
-  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+  let lockNumber: number | undefined;
 
-  if (!lockNumberResult.success) {
-    return redirect(
-      `/message-plans/edit-message-plan/${routingConfigId}`,
-      RedirectType.replace
-    );
+  if (redirectUrl) {
+    const searchParams = await props.searchParams;
+    const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+    if (!lockNumberResult.success) {
+      return redirect(redirectUrl, RedirectType.replace);
+    }
+
+    lockNumber = lockNumberResult.data;
   }
 
   const template = await getTemplate(templateId);
@@ -53,7 +57,7 @@ export const SummaryPreviewLetter = async (
         initialState={validatedTemplate}
         previewComponent={PreviewTemplateDetailsLetter}
         routingConfigId={routingConfigId}
-        lockNumber={lockNumberResult.data}
+        lockNumber={lockNumber}
         letterVariant={letterVariant}
         hideBackLinks={hideBackLinks}
       />

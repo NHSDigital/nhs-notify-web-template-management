@@ -20,7 +20,7 @@ export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
   PageComponentProps<T> & {
     previewComponent: PreviewTemplateComponent<T>;
     routingConfigId: string;
-    lockNumber: number;
+    lockNumber?: number;
     letterVariant?: LetterVariant;
     hideBackLinks?: boolean;
   };
@@ -45,18 +45,20 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
       : (template.letterType as RoutingSupportedLetterType);
   }
 
-  const backLinkHref = interpolate(content.backLink.href, {
-    templateType: templateTypeToUrlTextMappings(
-      template.templateType,
-      letterType
-    ),
-    routingConfigId,
-    lockNumber,
-  });
+  const backLinkHref = hideBackLinks
+    ? undefined
+    : interpolate(content.backLink.href, {
+        templateType: templateTypeToUrlTextMappings(
+          template.templateType,
+          letterType
+        ),
+        routingConfigId,
+        lockNumber: lockNumber as number,
+      });
 
   return (
     <>
-      {!hideBackLinks && (
+      {backLinkHref && (
         <Link href={backLinkHref} passHref legacyBehavior>
           <NotifyBackLink>{content.backLink.text}</NotifyBackLink>
         </Link>
@@ -71,7 +73,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
               hideStatus: true,
               hideEditActions: true,
             })}
-            {!hideBackLinks && (
+            {backLinkHref && (
               <Link
                 className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
                 href={backLinkHref}

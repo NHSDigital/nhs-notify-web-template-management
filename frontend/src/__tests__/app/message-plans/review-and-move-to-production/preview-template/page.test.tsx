@@ -1,17 +1,16 @@
-import { render } from '@testing-library/react';
+/**
+ * @jest-environment node
+ */
 import PreviewLetterTemplateFromReviewAndMoveToProduction, {
   generateMetadata,
 } from '@app/message-plans/review-and-move-to-production/[routingConfigId]/preview-template/[templateId]/page';
 import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { validateAuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
 
-const summaryPreviewLetterMock = jest.mocked(SummaryPreviewLetter);
-
 describe('PreviewLetterTemplateFromReviewAndMoveToProduction page', () => {
   it('should render SummaryPreviewLetter with hideBackLinks and authoring validator', async () => {
-    summaryPreviewLetterMock.mockResolvedValueOnce(<div>mock</div>);
-
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -23,16 +22,12 @@ describe('PreviewLetterTemplateFromReviewAndMoveToProduction page', () => {
     const page =
       await PreviewLetterTemplateFromReviewAndMoveToProduction(props);
 
-    render(page);
-
-    expect(summaryPreviewLetterMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        params: props.params,
-        searchParams: props.searchParams,
-        validateTemplate: expect.any(Function),
-        hideBackLinks: true,
-      }),
-      undefined
+    expect(page).toEqual(
+      <SummaryPreviewLetter
+        {...props}
+        validateTemplate={validateAuthoringLetterTemplate}
+        hideBackLinks
+      />
     );
   });
 

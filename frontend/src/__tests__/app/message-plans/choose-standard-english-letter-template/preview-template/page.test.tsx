@@ -1,4 +1,6 @@
-import { render } from '@testing-library/react';
+/**
+ * @jest-environment node
+ */
 import PreviewStandardEnglishLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-standard-english-letter-template/[routingConfigId]/preview-template/[templateId]/page';
@@ -7,12 +9,8 @@ import { validateLetterTemplate } from 'nhs-notify-web-template-management-utils
 
 jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
 
-const summaryPreviewLetterMock = jest.mocked(SummaryPreviewLetter);
-
 describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryPreviewLetter with validateLetterTemplate', async () => {
-    summaryPreviewLetterMock.mockResolvedValueOnce(<div>mock</div>);
-
+  it('should render SummaryPreviewLetter with validateLetterTemplate and redirectUrl', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -24,15 +22,12 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
     const page =
       await PreviewStandardEnglishLetterTemplateFromMessagePlan(props);
 
-    render(page);
-
-    expect(summaryPreviewLetterMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        params: props.params,
-        searchParams: props.searchParams,
-        validateTemplate: validateLetterTemplate,
-      }),
-      undefined
+    expect(page).toEqual(
+      <SummaryPreviewLetter
+        {...props}
+        validateTemplate={validateLetterTemplate}
+        redirectUrl='/message-plans/edit-message-plan/routing-config-id'
+      />
     );
   });
 

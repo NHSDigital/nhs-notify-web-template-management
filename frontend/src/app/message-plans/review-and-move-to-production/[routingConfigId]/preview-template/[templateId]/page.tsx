@@ -1,9 +1,7 @@
 import {
   MessagePlanAndTemplatePageProps,
-  zodValidate,
-  $AuthoringLetterTemplate,
+  validateAuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { Metadata } from 'next';
 import content from '@content/content';
 import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
@@ -15,9 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
     title: pageTitle,
   };
 }
-
-const validateAuthoringLetterTemplate = (template?: TemplateDto) =>
-  zodValidate($AuthoringLetterTemplate, template);
 
 const PreviewLetterTemplateFromReviewAndMoveToProduction = async (
   props: MessagePlanAndTemplatePageProps

@@ -1,4 +1,6 @@
-import { render } from '@testing-library/react';
+/**
+ * @jest-environment node
+ */
 import PreviewOtherLanguageLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-other-language-letter-template/[routingConfigId]/preview-template/[templateId]/page';
@@ -7,12 +9,8 @@ import { validateForeignLanguageLetterTemplate } from 'nhs-notify-web-template-m
 
 jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
 
-const summaryPreviewLetterMock = jest.mocked(SummaryPreviewLetter);
-
 describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryPreviewLetter with validateForeignLanguageLetterTemplate', async () => {
-    summaryPreviewLetterMock.mockResolvedValueOnce(<div>mock</div>);
-
+  it('should render SummaryPreviewLetter with validateForeignLanguageLetterTemplate and redirectUrl', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -21,17 +19,15 @@ describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
       searchParams: Promise.resolve({ lockNumber: '5' }),
     };
 
-    const page = await PreviewOtherLanguageLetterTemplateFromMessagePlan(props);
+    const page =
+      await PreviewOtherLanguageLetterTemplateFromMessagePlan(props);
 
-    render(page);
-
-    expect(summaryPreviewLetterMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        params: props.params,
-        searchParams: props.searchParams,
-        validateTemplate: validateForeignLanguageLetterTemplate,
-      }),
-      undefined
+    expect(page).toEqual(
+      <SummaryPreviewLetter
+        {...props}
+        validateTemplate={validateForeignLanguageLetterTemplate}
+        redirectUrl='/message-plans/edit-message-plan/routing-config-id'
+      />
     );
   });
 

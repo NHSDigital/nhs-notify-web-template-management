@@ -362,7 +362,7 @@ test.describe('Routing - Preview Message Plan page', () => {
       templateBlock.defaultTemplateCard.templateLink
     ).toHaveAttribute(
       'href',
-      `/templates/message-plans/preview-message-plan/${dbEntry.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
+      `/templates/message-plans/preview-message-plan/${dbEntry.id}/preview-template/${templates.AUTHORING_LETTER.id}`
     );
 
     await expect(
@@ -373,7 +373,7 @@ test.describe('Routing - Preview Message Plan page', () => {
       templateBlock.getAccessibilityFormatCard('x1').templateLink
     ).toHaveAttribute(
       'href',
-      `/templates/message-plans/preview-message-plan/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}?lockNumber=0`
+      `/templates/message-plans/preview-message-plan/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}`
     );
   });
 

@@ -21,6 +21,9 @@ const getTemplateMock = jest.mocked(getTemplate);
 const getLetterVariantByIdMock = jest.mocked(getLetterVariantById);
 const redirectMock = jest.mocked(redirect);
 
+const defaultRedirectUrl =
+  '/message-plans/edit-message-plan/routing-config-id';
+
 const defaultProps = (
   overrides: {
     routingConfigId?: string;
@@ -29,6 +32,7 @@ const defaultProps = (
     searchParams?: Record<string, string>;
     validateTemplate?: (template?: TemplateDto) => LetterTemplate | undefined;
     hideBackLinks?: boolean;
+    redirectUrl?: string | undefined;
   } = {}
 ) => ({
   params: Promise.resolve({
@@ -40,25 +44,40 @@ const defaultProps = (
   ),
   validateTemplate: overrides.validateTemplate ?? validateLetterTemplate,
   hideBackLinks: overrides.hideBackLinks,
+  redirectUrl:
+    'redirectUrl' in overrides
+      ? overrides.redirectUrl
+      : defaultRedirectUrl,
 });
 
 describe('SummaryPreviewLetter', () => {
-  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
-    await SummaryPreviewLetter(defaultProps({ lockNumber: 'invalid' }));
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
-    );
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
 
-  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
+  it('should redirect to redirectUrl when lockNumber is invalid', async () => {
+    await SummaryPreviewLetter(
+      defaultProps({ lockNumber: 'invalid', redirectUrl: '/custom-redirect' })
+    );
+
+    expect(redirectMock).toHaveBeenCalledWith('/custom-redirect', 'replace');
+  });
+
+  it('should redirect to redirectUrl when lockNumber is missing', async () => {
     await SummaryPreviewLetter(defaultProps({ searchParams: {} }));
 
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
+    expect(redirectMock).toHaveBeenCalledWith(defaultRedirectUrl, 'replace');
+  });
+
+  it('should not redirect when redirectUrl is not provided and lockNumber is missing', async () => {
+    getTemplateMock.mockResolvedValueOnce(PDF_LETTER_TEMPLATE);
+
+    const page = await SummaryPreviewLetter(
+      defaultProps({ searchParams: {}, redirectUrl: undefined })
     );
+
+    expect(redirectMock).not.toHaveBeenCalled();
+    expect(page).toBeDefined();
   });
 
   it('should redirect to invalid-template when template is not found', async () => {
@@ -137,6 +156,7 @@ describe('SummaryPreviewLetter', () => {
         routingConfigId: ROUTING_CONFIG.id,
         templateId: PDF_LETTER_TEMPLATE.id,
         hideBackLinks: true,
+        redirectUrl: undefined,
       })
     );
 

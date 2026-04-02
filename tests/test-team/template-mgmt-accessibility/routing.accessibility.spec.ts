@@ -240,7 +240,6 @@ test.describe('Routing', () => {
         new RoutingPreviewMessagePlanLetterTemplatePage(page)
           .setPathParam('messagePlanId', productionRoutingConfigId)
           .setPathParam('templateId', templateIds.LETTER)
-          .setSearchParam('lockNumber', '0')
       ));
 
     test('Review and move to production letter template', async ({
@@ -251,7 +250,6 @@ test.describe('Routing', () => {
         new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
           .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.LETTER)
-          .setSearchParam('lockNumber', '0')
       ));
   });
 

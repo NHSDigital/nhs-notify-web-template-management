@@ -1,4 +1,6 @@
-import { render } from '@testing-library/react';
+/**
+ * @jest-environment node
+ */
 import PreviewLargePrintLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-large-print-letter-template/[routingConfigId]/preview-template/[templateId]/page';
@@ -7,12 +9,8 @@ import { validateLargePrintLetterTemplate } from 'nhs-notify-web-template-manage
 
 jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
 
-const summaryPreviewLetterMock = jest.mocked(SummaryPreviewLetter);
-
 describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryPreviewLetter with validateLargePrintLetterTemplate', async () => {
-    summaryPreviewLetterMock.mockResolvedValueOnce(<div>mock</div>);
-
+  it('should render SummaryPreviewLetter with validateLargePrintLetterTemplate and redirectUrl', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -23,15 +21,12 @@ describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
 
     const page = await PreviewLargePrintLetterTemplateFromMessagePlan(props);
 
-    render(page);
-
-    expect(summaryPreviewLetterMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        params: props.params,
-        searchParams: props.searchParams,
-        validateTemplate: validateLargePrintLetterTemplate,
-      }),
-      undefined
+    expect(page).toEqual(
+      <SummaryPreviewLetter
+        {...props}
+        validateTemplate={validateLargePrintLetterTemplate}
+        redirectUrl='/message-plans/edit-message-plan/routing-config-id'
+      />
     );
   });
 

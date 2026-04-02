@@ -48,7 +48,7 @@ function getLetterTemplatePreviewHref(
     'letterVersion' in template &&
     template.letterVersion === 'AUTHORING'
   ) {
-    return `${letterPreviewHrefBase}/preview-template/${template.id}?lockNumber=${template.lockNumber}`;
+    return `${letterPreviewHrefBase}/preview-template/${template.id}`;
   }
 
   const linkTemplate =

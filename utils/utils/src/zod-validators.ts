@@ -143,6 +143,9 @@ export const validateEmailTemplate = (template?: TemplateDto) =>
 export const validateLetterTemplate = (template?: TemplateDto) =>
   zodValidate($LetterTemplate, template);
 
+export const validateAuthoringLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($AuthoringLetterTemplate, template);
+
 export const validateLargePrintLetterTemplate = (template?: TemplateDto) =>
   zodValidate($LargePrintLetterTemplate, template);
 

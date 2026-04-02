@@ -365,9 +365,9 @@ describe('letter only', () => {
 
     const card = within(block).getByTestId('channel-card');
 
-    expect(within(card).getByTestId('template-name')).toHaveTextContent(
-      template.name
-    );
+    const name = within(card).getByTestId('template-name');
+
+    expect(name).toHaveTextContent(template.name);
 
     const link = within(card).getByRole('link');
 

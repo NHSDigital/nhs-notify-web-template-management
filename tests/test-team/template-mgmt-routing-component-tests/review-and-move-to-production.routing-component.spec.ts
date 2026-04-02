@@ -353,7 +353,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       templateBlock.defaultTemplateCard.templateLink
     ).toHaveAttribute(
       'href',
-      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
+      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LETTER.id}`
     );
 
     await expect(
@@ -364,7 +364,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       templateBlock.getAccessibilityFormatCard('x1').templateLink
     ).toHaveAttribute(
       'href',
-      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}?lockNumber=0`
+      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}`
     );
   });
 

@@ -244,7 +244,7 @@ describe('MessagePlanCascadePreview', () => {
     const link = letterBlock.querySelector('a');
     expect(link).toHaveAttribute(
       'href',
-      `/message-plans/review-and-move-to-production/routing-config-id/preview-template/${AUTHORING_LETTER_TEMPLATE.id}?lockNumber=${AUTHORING_LETTER_TEMPLATE.lockNumber}`
+      `/message-plans/review-and-move-to-production/routing-config-id/preview-template/${AUTHORING_LETTER_TEMPLATE.id}`
     );
   });
 
