@@ -45,6 +45,7 @@ import {
   isFrontendSupportedLetterType,
   FRONTEND_SUPPORTED_LETTER_TYPES,
   getPreviewURL,
+  FrontendSupportedAccessibleFormats,
 } from '../enum';
 import { mockDeep } from 'jest-mock-extended';
 
@@ -616,9 +617,8 @@ describe('ORDINALS', () => {
 });
 
 describe('accessibleFormatDisplayMappings', () => {
-  const cases: [LetterType, string][] = [
+  const cases: [FrontendSupportedAccessibleFormats, string][] = [
     ['q4', 'British Sign Language letter'],
-    ['x0', 'Standard letter'],
     ['x1', 'Large print letter'],
   ];
 

@@ -438,14 +438,10 @@ export const channelDisplayMappings = (channel: Channel) => {
 };
 
 export const accessibleFormatDisplayMappings = (
-  letterType: Exclude<FrontendSupportedLetterType, 'language'>
+  letterType: Exclude<FrontendSupportedAccessibleFormats, 'language'>
 ) => {
-  const map: Record<
-    Exclude<FrontendSupportedLetterType, 'language'>,
-    string
-  > = {
+  const map: Record<FrontendSupportedAccessibleFormats, string> = {
     q4: 'British Sign Language letter',
-    x0: 'Standard letter',
     x1: 'Large print letter',
   };
 
