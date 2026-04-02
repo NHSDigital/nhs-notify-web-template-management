@@ -45,16 +45,17 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
       : (template.letterType as RoutingSupportedLetterType);
   }
 
-  const backLinkHref = hideBackLinks
-    ? undefined
-    : interpolate(content.backLink.href, {
-        templateType: templateTypeToUrlTextMappings(
-          template.templateType,
-          letterType
-        ),
-        routingConfigId,
-        lockNumber: lockNumber as number,
-      });
+  const backLinkHref =
+    hideBackLinks || lockNumber === undefined
+      ? undefined
+      : interpolate(content.backLink.href, {
+          templateType: templateTypeToUrlTextMappings(
+            template.templateType,
+            letterType
+          ),
+          routingConfigId,
+          lockNumber,
+        });
 
   return (
     <>
