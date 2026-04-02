@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewTemplateDetailsBanner should show request proof banner when digital proofing is disabled for EMAIL template 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-summary-list message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="request-proof-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/request-a-proof/template-id-123"
+        rel=""
+        target=""
+      >
+        Request a proof
+      </a>
+       to preview this template properly.
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsBanner should show request proof banner when digital proofing is disabled for NHS_APP template 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-summary-list message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="request-proof-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/request-a-proof/template-id-123"
+        rel=""
+        target=""
+      >
+        Request a proof
+      </a>
+       to preview this template properly.
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsBanner should show request proof banner when digital proofing is disabled for SMS template 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-summary-list message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="request-proof-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/request-a-proof/template-id-123"
+        rel=""
+        target=""
+      >
+        Request a proof
+      </a>
+       to preview this template properly.
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsBanner should show test message banner when digital proofing is enabled for email template 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-summary-list message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="test-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/send-test-email/template-id-123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Send a test email
+      </a>
+       to preview this message properly.
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsBanner should show test message banner when digital proofing is enabled for nhs-app-message template 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-summary-list message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="test-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/send-test-nhs-app-message/template-id-123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Send a test NHS App message
+      </a>
+       to preview this message properly.
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsBanner should show test message banner when digital proofing is enabled for text-message template 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-summary-list message-banner"
+  >
+    <div
+      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+      data-testid="test-message-banner"
+    >
+      This is only a basic preview. 
+      <a
+        href="/templates/send-test-text-message/template-id-123"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Send a test text message
+      </a>
+       to preview this message properly.
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -6,6 +6,8 @@ import {
   assertSkipToMainContent,
   assertAndClickBackLinkTop,
   assertBackLinkBottom,
+  assertRequestProofBannerVisible,
+  assertAndClickTestMessageBannerLink,
 } from '../../helpers/template-mgmt-common.steps';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
@@ -15,6 +17,7 @@ import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-tem
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
+import { loginAsUser } from 'helpers/auth/login-as-user';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -46,12 +49,13 @@ function createTemplates(user: TestUser) {
   };
 }
 
+const context = getTestContext();
+
 test.describe('Routing - Preview SMS template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
 
   test.beforeAll(async () => {
-    const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
 
     messagePlans = createMessagePlans(user);
@@ -104,6 +108,11 @@ test.describe('Routing - Preview SMS template page', () => {
     await expect(page.locator('[id="preview-content-message"]')).toHaveText(
       templates.SMS.message || ''
     );
+
+    await assertRequestProofBannerVisible(
+      previewSmsTemplatePage,
+      templates.SMS.id
+    );
   });
 
   test.describe('redirects to invalid template page', () => {
@@ -154,5 +163,51 @@ test.describe('Routing - Preview SMS template page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.SMS_ROUTING_CONFIG.id}`
     );
+  });
+
+  test.describe('sms digital proofing enabled', () => {
+    let digitalProofingEnabledMessagePlanId: string;
+    let digitalProofingEnabledTemplateId: string;
+
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test.beforeEach(async ({ page }) => {
+      const digitalProofingEnabledUser = await context.auth.getTestUser(
+        testUsers.UserDigitalProofingEnabled.userId
+      );
+
+      const proofingPlans = createMessagePlans(digitalProofingEnabledUser);
+      const proofingTemplates = createTemplates(digitalProofingEnabledUser);
+
+      await templateStorageHelper.seedTemplateData([proofingTemplates.SMS]);
+      await routingConfigStorageHelper.seed([proofingPlans.SMS_ROUTING_CONFIG]);
+
+      digitalProofingEnabledMessagePlanId = proofingPlans.SMS_ROUTING_CONFIG.id;
+
+      digitalProofingEnabledTemplateId = proofingTemplates.SMS.id;
+
+      await loginAsUser(digitalProofingEnabledUser, page);
+    });
+
+    test('loads the SMS template with "Send a test text message" message banner', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewTemplatePage = new RoutingPreviewSmsTemplatePage(page)
+        .setPathParam('messagePlanId', digitalProofingEnabledMessagePlanId)
+        .setPathParam('templateId', digitalProofingEnabledTemplateId)
+        .setSearchParam('lockNumber', '0');
+
+      await previewTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/message-plans/choose-text-message-template/${digitalProofingEnabledMessagePlanId}/preview-template/${digitalProofingEnabledTemplateId}?lockNumber=0`
+      );
+
+      await assertAndClickTestMessageBannerLink(
+        previewTemplatePage,
+        `${baseURL}/templates/send-test-text-message/${digitalProofingEnabledTemplateId}`
+      );
+    });
   });
 });

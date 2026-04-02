@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import type { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
+import { TemplateMgmtPreviewBasePage } from 'pages/template-mgmt-preview-base-page';
 
 type CommonStepsProps = {
   page: TemplateMgmtBasePage;
@@ -308,3 +309,34 @@ export function assertFooterLinks(props: CommonStepsProps) {
     await Promise.all(promises);
   });
 }
+
+export const assertRequestProofBannerVisible = async (
+  previewPage: TemplateMgmtPreviewBasePage,
+  templateId: string
+) =>
+  test.step('request a proof banner is visible and navigates correctly', async () => {
+    await expect(previewPage.requestProofMessageBanner).toBeVisible();
+    await expect(previewPage.requestProofMessageBannerLink).toContainText(
+      'Request a proof'
+    );
+    await expect(previewPage.requestProofMessageBannerLink).toHaveAttribute(
+      'href',
+      `/templates/request-a-proof/${templateId}`
+    );
+  });
+
+export const assertAndClickTestMessageBannerLink = async (
+  previewPage: TemplateMgmtPreviewBasePage,
+  expectedURL: string
+) =>
+  test.step('when user clicks the test message banner link, then a new tab is opened to the send a test message page', async () => {
+    // Test banner link (opens in new tab)
+    const newPagePromise = previewPage.page.context().waitForEvent('page');
+    await previewPage.testMessageBannerLink.click();
+    const newPage = await newPagePromise;
+    await newPage.waitForLoadState();
+
+    await expect(newPage).toHaveURL(expectedURL);
+
+    await newPage.close();
+  });
