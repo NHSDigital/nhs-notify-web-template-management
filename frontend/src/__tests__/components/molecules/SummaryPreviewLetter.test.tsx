@@ -35,7 +35,7 @@ describe('SummaryPreviewLetter', () => {
     jest.resetAllMocks();
   });
 
-  it('should redirect to redirectUrl when lockNumber is invalid', async () => {
+  it('should redirect when lockNumber is invalid', async () => {
     await SummaryPreviewLetter({
       ...defaultProps,
       searchParams: Promise.resolve({ lockNumber: 'invalid' }),
@@ -45,7 +45,7 @@ describe('SummaryPreviewLetter', () => {
     expect(redirectMock).toHaveBeenCalledWith('/custom-redirect', 'replace');
   });
 
-  it('should redirect to redirectUrl when lockNumber is missing', async () => {
+  it('should redirect when lockNumber is missing', async () => {
     await SummaryPreviewLetter({
       ...defaultProps,
       searchParams: Promise.resolve({}),
@@ -54,7 +54,7 @@ describe('SummaryPreviewLetter', () => {
     expect(redirectMock).toHaveBeenCalledWith(defaultRedirectUrl, 'replace');
   });
 
-  it('should not redirect when redirectUrl is not provided and lockNumber is missing', async () => {
+  it('should skip lockNumber validation when redirectUrl is not provided', async () => {
     getTemplateMock.mockResolvedValueOnce(PDF_LETTER_TEMPLATE);
 
     const page = await SummaryPreviewLetter({
@@ -93,7 +93,7 @@ describe('SummaryPreviewLetter', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('renders a PDF letter template preview without letterVariant', async () => {
+  it('renders a PDF letter template preview', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...PDF_LETTER_TEMPLATE,
       templateStatus: 'SUBMITTED',
@@ -114,7 +114,7 @@ describe('SummaryPreviewLetter', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('renders an authoring letter template preview with letterVariant', async () => {
+  it('renders an authoring letter template preview', async () => {
     const letterVariant = makeLetterVariant();
 
     getTemplateMock.mockResolvedValueOnce({
@@ -138,7 +138,7 @@ describe('SummaryPreviewLetter', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('passes hideBackLinks to PreviewTemplateFromMessagePlan', async () => {
+  it('renders without back links when hideBackLinks is true', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...PDF_LETTER_TEMPLATE,
       templateStatus: 'SUBMITTED',
