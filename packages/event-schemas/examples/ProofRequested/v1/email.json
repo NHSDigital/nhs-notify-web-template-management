@@ -1,0 +1,25 @@
+{
+  "data": {
+    "id": "c3d4e5f6-a7b8-4012-8def-123456789012",
+    "templateId": "8c7ae592-97cd-4900-897e-ef4794c8a745",
+    "templateType": "EMAIL",
+    "testPatientNhsNumber": "9000000009",
+    "contactDetails": {
+      "email": "test.patient@example.com"
+    },
+    "personalisation": {
+      "firstName": "Jane",
+      "surgeryName": "Test Surgery"
+    }
+  },
+  "datacontenttype": "application/json",
+  "dataschema": "https://notify.nhs.uk/events/schemas/ProofRequested/v1.json",
+  "dataschemaversion": "1.0.0",
+  "id": "b3c4d5e6-f7a8-9012-bcde-f12345678902",
+  "plane": "data",
+  "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",
+  "specversion": "1.0",
+  "subject": "c3d4e5f6-a7b8-4012-8def-123456789012",
+  "time": "2025-07-29T10:05:45.145Z",
+  "type": "uk.nhs.notify.template-management.ProofRequested.v1"
+}
