@@ -53,6 +53,9 @@ export const $DynamoDBRoutingConfig = schemaFor<Partial<RoutingConfig>>()(
 );
 export type DynamoDBRoutingConfig = z.infer<typeof $DynamoDBRoutingConfig>;
 
+export const $DynamoDBProofRequest = z.object({ id: z.string() });
+export type DynamoDBProofRequest = z.infer<typeof $DynamoDBProofRequest>;
+
 // the lambda doesn't necessarily have to only accept inputs from a dynamodb stream via an
 // eventbridge pipe, but that's all it is doing at the moment
 export const $PublishableEventRecord = $DynamoDBStreamRecord;
