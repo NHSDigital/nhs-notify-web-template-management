@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {
+  $ProofRequestedEventV1,
   $TemplateCompletedEventV1,
   $TemplateDeletedEventV1,
   $TemplateDraftedEventV1,
@@ -61,6 +62,13 @@ function writeSchema(
     )}\n`
   );
 }
+
+writeSchema(
+  'ProofRequested',
+  $ProofRequestedEventV1,
+  '1',
+  'https://notify.nhs.uk/events/schemas/ProofRequested/v1.json'
+);
 
 writeSchema(
   'TemplateCompleted',
