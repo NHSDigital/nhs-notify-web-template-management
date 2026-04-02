@@ -155,6 +155,15 @@ export const testUsers: Record<
   },
 
   /**
+   * UserLegacyLettersEnabled belongs to an alternate client with legacy letters enabled
+   */
+  UserLegacyLettersEnabled: {
+    userId: 'UserWithLegacyLettersEnabled',
+    internalUserId: 'InternalUserLegacyLettersEnabled',
+    clientKey: 'ClientLegacyLettersEnabled',
+  },
+
+  /**
    * UserDigitalProofingEnabled belongs to an alternate client with all digital proofing flags enabled
    */
   UserDigitalProofingEnabled: {
