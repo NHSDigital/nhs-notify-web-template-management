@@ -621,7 +621,6 @@ exports[`Preview email form renders digitalProofingEmail enabled matches snapsho
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-email

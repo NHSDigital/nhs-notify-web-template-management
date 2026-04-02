@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import {
-  previewTemplatePages,
+  getPreviewURL,
   TemplatePageProps,
 } from 'nhs-notify-web-template-management-utils';
 import pageContent from '@content/content';
@@ -30,9 +30,7 @@ const RequestDigitalProofPage = async (props: TemplatePageProps) => {
 
   return (
     <NHSNotifyContainer>
-      <NHSNotifyBackLink
-        href={`/${previewTemplatePages(template.templateType)}/${templateId}`}
-      >
+      <NHSNotifyBackLink href={getPreviewURL(template)}>
         {backLink.text}
       </NHSNotifyBackLink>
       <NHSNotifyMain>

@@ -573,7 +573,6 @@ exports[`Preview nhs app form renders digitalProofingNhsApp enabled matches snap
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-nhs-app

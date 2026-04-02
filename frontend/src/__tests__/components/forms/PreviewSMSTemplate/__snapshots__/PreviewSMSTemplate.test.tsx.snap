@@ -571,7 +571,6 @@ exports[`Review sms form renders digitalProofingSms enabled matches snapshot 1`]
             Template
           </span>
           <h1
-            class="preview__heading"
             data-testid="preview-message__heading"
           >
             test-template-sms

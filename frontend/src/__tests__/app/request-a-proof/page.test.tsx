@@ -47,29 +47,29 @@ describe('RequestADigitalProofPage', () => {
   });
 
   test.each([
-    [NHS_APP_TEMPLATE, 'nhs-app'],
-    [SMS_TEMPLATE, 'text-message'],
-    [EMAIL_TEMPLATE, 'email'],
+    ['nhs-app', NHS_APP_TEMPLATE],
+    ['text-message', SMS_TEMPLATE],
+    ['email', EMAIL_TEMPLATE],
   ])(
     'should render page for %s template type with expected back link',
-    async (template, channelSlug) => {
+    async (channelSlug, template) => {
       getTemplateMock.mockResolvedValueOnce(template);
 
       render(
         await RequestADigitalProofPage({
           params: Promise.resolve({
-            templateId: 'template-id',
+            templateId: template.id,
           }),
         })
       );
 
-      expect(getTemplateMock).toHaveBeenCalledWith('template-id');
+      expect(getTemplateMock).toHaveBeenCalledWith(template.id);
 
       const backLinkElement = screen.getByRole('link', { name: backLink.text });
 
       expect(backLinkElement).toHaveAttribute(
         'href',
-        `/preview-${channelSlug}-template/template-id`
+        `/preview-${channelSlug}-template/${template.id}`
       );
     }
   );
