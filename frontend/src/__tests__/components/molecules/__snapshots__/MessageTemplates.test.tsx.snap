@@ -1132,6 +1132,106 @@ exports[`MessageTemplates component matches snapshot with proof approved status 
               </div>
             </td>
           </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/preview-approved-letter-template/2"
+              >
+                Template 2
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                ID 
+              </span>
+              2
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Standard letter
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag nhsuk-tag--green"
+              >
+                Approved
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Last edited 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <div
+                class="actionLinksWrapper"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 2"
+                    data-testid="delete-link"
+                    href="/delete-template/2"
+                  >
+                    Delete
+                  </a>
+                </p>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

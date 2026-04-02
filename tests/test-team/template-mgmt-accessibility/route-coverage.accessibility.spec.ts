@@ -49,6 +49,7 @@ import {
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtGetReadyToApproveLetterTemplatePage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtReviewAndApproveLetterTemplatePage,
@@ -134,6 +135,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   // Letter
   TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtLetterTemplateApprovedPage,
