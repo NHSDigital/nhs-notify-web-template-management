@@ -7,6 +7,7 @@ import {
   TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
@@ -378,6 +379,16 @@ test.describe('Letter templates', () => {
             await p.errorSummary.isVisible();
           },
         }
+      ));
+
+    test('Get ready to approve letter template page', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new TemplateMgmtGetReadyToApproveLetterTemplatePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING_WITH_RENDERS)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Review and approve letter template page', async ({ page, analyze }) =>
