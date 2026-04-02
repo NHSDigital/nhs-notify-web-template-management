@@ -724,7 +724,7 @@ test.describe('Preview Letter template Page', () => {
       await previewPage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/get-ready-to-approve-letter-template/${templates.authoringValid.id}`
+        `${baseURL}/templates/get-ready-to-approve-letter-template/${templates.authoringValid.id}?lockNumber=${templates.authoringValid.lockNumber}`
       );
     });
 

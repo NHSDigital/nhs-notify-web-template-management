@@ -56,20 +56,22 @@ test.describe('Get ready to approve letter template page', () => {
   test('should load page', async ({ page, baseURL }) => {
     const approvePage = new TemplateMgmtGetReadyToApproveLetterTemplatePage(
       page
-    ).setPathParam('templateId', templateIds.LETTER_AUTHORING);
+    )
+      .setPathParam('templateId', templateIds.LETTER_AUTHORING)
+      .setSearchParam('lockNumber', '0');
 
     await approvePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/get-ready-to-approve-letter-template/${templateIds.LETTER_AUTHORING}`
+      `${baseURL}/templates/get-ready-to-approve-letter-template/${templateIds.LETTER_AUTHORING}?lockNumber=0`
     );
   });
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new TemplateMgmtGetReadyToApproveLetterTemplatePage(
-        page
-      ).setPathParam('templateId', templateIds.LETTER_AUTHORING),
+      page: new TemplateMgmtGetReadyToApproveLetterTemplatePage(page)
+        .setPathParam('templateId', templateIds.LETTER_AUTHORING)
+        .setSearchParam('lockNumber', '0'),
       baseURL,
     };
 
@@ -85,14 +87,16 @@ test.describe('Get ready to approve letter template page', () => {
   }) => {
     const approvePage = new TemplateMgmtGetReadyToApproveLetterTemplatePage(
       page
-    ).setPathParam('templateId', templateIds.LETTER_AUTHORING);
+    )
+      .setPathParam('templateId', templateIds.LETTER_AUTHORING)
+      .setSearchParam('lockNumber', '0');
 
     await approvePage.loadPage();
 
     await approvePage.continueButton.click();
 
     await page.waitForURL(
-      `${baseURL}/templates/review-and-approve-letter-template/${templateIds.LETTER_AUTHORING}`
+      `${baseURL}/templates/review-and-approve-letter-template/${templateIds.LETTER_AUTHORING}?lockNumber=0`
     );
   });
 
@@ -102,7 +106,9 @@ test.describe('Get ready to approve letter template page', () => {
   }) => {
     const approvePage = new TemplateMgmtGetReadyToApproveLetterTemplatePage(
       page
-    ).setPathParam('templateId', templateIds.LETTER_AUTHORING);
+    )
+      .setPathParam('templateId', templateIds.LETTER_AUTHORING)
+      .setSearchParam('lockNumber', '0');
 
     await approvePage.loadPage();
 
@@ -119,7 +125,9 @@ test.describe('Get ready to approve letter template page', () => {
   }) => {
     const approvePage = new TemplateMgmtGetReadyToApproveLetterTemplatePage(
       page
-    ).setPathParam('templateId', 'unknown-template-id');
+    )
+      .setPathParam('templateId', 'unknown-template-id')
+      .setSearchParam('lockNumber', '0');
 
     await approvePage.loadPage();
 
@@ -132,7 +140,9 @@ test.describe('Get ready to approve letter template page', () => {
   }) => {
     const approvePage = new TemplateMgmtGetReadyToApproveLetterTemplatePage(
       page
-    ).setPathParam('templateId', templateIds.LETTER_PDF);
+    )
+      .setPathParam('templateId', templateIds.LETTER_PDF)
+      .setSearchParam('lockNumber', '0');
 
     await approvePage.loadPage();
 

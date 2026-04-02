@@ -24,5 +24,7 @@ export async function submitAuthoringLetterAction(
 
   const { templateId } = result.data;
 
-  redirect(`/get-ready-to-approve-letter-template/${templateId}`);
+  redirect(
+    `/get-ready-to-approve-letter-template/${templateId}?lockNumber=${result.data.lockNumber}`
+  );
 }

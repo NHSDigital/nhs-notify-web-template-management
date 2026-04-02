@@ -1,12 +1,17 @@
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
-import { TemplatePageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  getPreviewURL,
+  TemplatePageProps,
+  validateLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { getTemplate } from '@utils/form-actions';
 import { interpolate } from '@utils/interpolate';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import content from '@content/content';
 
 const pageContent = content.pages.getReadyToApproveLetterTemplate;
@@ -23,12 +28,18 @@ const GetReadyToApproveLetterTemplatePage = async (
 
   const template = await getTemplate(templateId);
 
-  if (
-    !template ||
-    template.templateType !== 'LETTER' ||
-    template.letterVersion !== 'AUTHORING'
-  ) {
+  const validatedTemplate = validateLetterTemplate(template);
+
+  if (!validatedTemplate || validatedTemplate.letterVersion !== 'AUTHORING') {
     return redirect('/invalid-template', RedirectType.replace);
+  }
+
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(getPreviewURL(validatedTemplate), RedirectType.replace);
   }
 
   return (
@@ -40,7 +51,7 @@ const GetReadyToApproveLetterTemplatePage = async (
 
             <h1 className='nhsuk-heading-xl'>
               {interpolate(pageContent.heading, {
-                templateName: template.name,
+                templateName: validatedTemplate.name,
               })}
             </h1>
 
@@ -56,7 +67,10 @@ const GetReadyToApproveLetterTemplatePage = async (
 
             <div className='nhsuk-form-group'>
               <NHSNotifyButton
-                href={pageContent.continue.href(template.id)}
+                href={interpolate(pageContent.continue.href, {
+                  templateId: validatedTemplate.id,
+                  lockNumber: lockNumberResult.data,
+                })}
                 data-testid='continue-button'
               >
                 {pageContent.continue.text}
@@ -64,7 +78,9 @@ const GetReadyToApproveLetterTemplatePage = async (
 
               <NHSNotifyButton
                 secondary
-                href={pageContent.back.href(template.id)}
+                href={interpolate(pageContent.back.href, {
+                  templateId: validatedTemplate.id,
+                })}
                 className='nhsuk-u-margin-left-3'
                 data-testid='back-button'
               >

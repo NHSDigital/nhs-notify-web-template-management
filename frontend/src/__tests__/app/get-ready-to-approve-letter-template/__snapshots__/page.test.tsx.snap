@@ -85,7 +85,7 @@ exports[`GetReadyToApproveLetterTemplatePage matches snapshot 1`] = `
               class="nhsuk-button"
               data-testid="continue-button"
               draggable="false"
-              href="/templates/review-and-approve-letter-template/authoring-letter-template-id"
+              href="/templates/review-and-approve-letter-template/authoring-letter-template-id?lockNumber=1"
               role="button"
             >
               Continue

@@ -723,11 +723,11 @@ const getReadyToApproveLetterTemplate: {
   };
   continue: {
     text: string;
-    href: (id: string) => string;
+    href: string;
   };
   back: {
     text: string;
-    href: (id: string) => string;
+    href: string;
   };
 } = {
   pageTitle: generatePageTitle('Get ready to approve letter template'),
@@ -780,11 +780,11 @@ const getReadyToApproveLetterTemplate: {
   },
   continue: {
     text: 'Continue',
-    href: (id: string) => `/templates/review-and-approve-letter-template/${id}`,
+    href: '/templates/review-and-approve-letter-template/{{templateId}}?lockNumber={{lockNumber}}',
   },
   back: {
     text: goBackButtonText,
-    href: (id: string) => `/templates/preview-letter-template/${id}`,
+    href: '/templates/preview-letter-template/{{templateId}}',
   },
 };
 

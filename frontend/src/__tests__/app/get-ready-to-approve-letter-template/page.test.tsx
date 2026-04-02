@@ -38,6 +38,7 @@ describe('GetReadyToApproveLetterTemplatePage', () => {
         params: Promise.resolve({
           templateId: AUTHORING_LETTER_TEMPLATE.id,
         }),
+        searchParams: Promise.resolve({ lockNumber: '1' }),
       })
     );
 
@@ -47,7 +48,7 @@ describe('GetReadyToApproveLetterTemplatePage', () => {
 
     expect(continueElement).toHaveAttribute(
       'href',
-      `/templates/review-and-approve-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`
+      `/templates/review-and-approve-letter-template/${AUTHORING_LETTER_TEMPLATE.id}?lockNumber=1`
     );
 
     const backLinkElement = page.getByRole('button', { name: back.text });
@@ -102,8 +103,25 @@ describe('GetReadyToApproveLetterTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+      searchParams: Promise.resolve({ lockNumber: '1' }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+  });
+
+  it('should redirect to preview page when template is valid but lockNumber is missing', async () => {
+    getTemplateMock.mockResolvedValueOnce(AUTHORING_LETTER_TEMPLATE);
+
+    await GetReadyToApproveLetterTemplatePage({
+      params: Promise.resolve({
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
+      }),
+      searchParams: Promise.resolve({ notLockNumber: 'value' }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      `/preview-letter-template/${AUTHORING_LETTER_TEMPLATE.id}`,
+      'replace'
+    );
   });
 });
