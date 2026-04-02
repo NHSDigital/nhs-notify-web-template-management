@@ -52,15 +52,11 @@ function createTemplates(user: TestUser) {
       `Test SMS template - ${templateIds.SMS}`,
       'SUBMITTED'
     ),
-    LETTER: TemplateFactory.createAuthoringLetterTemplate(
+    LETTER: TemplateFactory.uploadPdfLetterTemplate(
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`,
-      'SUBMITTED',
-      {
-        shortFormRender: { status: 'RENDERED' },
-        longFormRender: { status: 'RENDERED' },
-      }
+      'SUBMITTED'
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
