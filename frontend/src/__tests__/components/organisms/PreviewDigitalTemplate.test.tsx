@@ -149,7 +149,7 @@ describe('PreviewDigitalTemplate', () => {
     });
   });
 
-  describe('Routing enabled', () => {
+  describe('Routing enabled with letter authoring enabled', () => {
     beforeEach(() => {
       jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
     });

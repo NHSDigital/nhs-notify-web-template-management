@@ -414,6 +414,9 @@
           "letterAuthoring": {
             "type": "boolean"
           },
+          "legacyLetters": {
+            "type": "boolean"
+          },
           "proofing": {
             "type": "boolean"
           },
