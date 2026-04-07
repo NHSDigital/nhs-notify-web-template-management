@@ -1,6 +1,6 @@
 # Template Management Event Schemas
 
-Zod validators, TypeScript type definitions, JSON Schemas and Sample Events for events emitted by Template Management service
+Zod Validators, TypeScript type definitions, JSON Schemas and Sample Events for events emitted by Template Management service
 
 ## Installation
 
