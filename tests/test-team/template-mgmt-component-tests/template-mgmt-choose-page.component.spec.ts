@@ -58,14 +58,13 @@ test.describe('Choose Template Type Page', () => {
     await chooseTemplateTypePage.loadPage();
 
     await expect(chooseTemplateTypePage.templateTypeRadioButtons).toHaveCount(
-      4
+      3
     );
 
     for (const [templateType, label] of [
       ['nhsapp', 'NHS App message'],
       ['email', 'Email'],
       ['sms', 'Text message (SMS)'],
-      ['letter', 'Letter'],
     ] as const) {
       const radio = chooseTemplateTypePage.getTemplateTypeRadio(templateType);
       await expect(radio).toBeVisible();
@@ -111,17 +110,6 @@ test.describe('Choose Template Type Page', () => {
 
       await page.waitForURL(`${baseURL}/templates/create-${path}-template`);
     });
-
-  test('should not show letter type conditional radios when Letter is selected', async ({
-    page,
-  }) => {
-    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplateTypePage.loadPage();
-    await chooseTemplateTypePage.getTemplateTypeRadio('letter').check();
-
-    await expect(chooseTemplateTypePage.letterTypeRadioButtons).toHaveCount(0);
-  });
 });
 
 test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
@@ -138,6 +126,29 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
 
   test.beforeEach(async ({ page }) => {
     await loginAsUser(userLetterAuthoringEnabled, page);
+  });
+
+  test('should display correct number of radio button options for template type', async ({
+    page,
+  }) => {
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplateTypePage.loadPage();
+
+    await expect(chooseTemplateTypePage.templateTypeRadioButtons).toHaveCount(
+      4
+    );
+
+    for (const [templateType, label] of [
+      ['nhsapp', 'NHS App message'],
+      ['email', 'Email'],
+      ['sms', 'Text message (SMS)'],
+      ['letter', 'Letter'],
+    ] as const) {
+      const radio = chooseTemplateTypePage.getTemplateTypeRadio(templateType);
+      await expect(radio).toBeVisible();
+      await expect(radio).toHaveAccessibleName(label);
+    }
   });
 
   test('should only show letter type conditional radios when Letter template type is selected', async ({
@@ -254,4 +265,77 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
 
       await page.waitForURL(`${baseURL}/templates/${path}`);
     });
+});
+
+test.describe('Choose Template Type Page - Legacy Letters Enabled', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  let userLegacyLettersEnabled: TestUser;
+
+  test.beforeAll(async () => {
+    const context = getTestContext();
+    userLegacyLettersEnabled = await context.auth.getTestUser(
+      testUsers.UserLegacyLettersEnabled.userId
+    );
+  });
+
+  test.beforeEach(async ({ page }) => {
+    await loginAsUser(userLegacyLettersEnabled, page);
+  });
+
+  test('should display 4 template type radios including letter', async ({
+    page,
+  }) => {
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplateTypePage.loadPage();
+
+    await expect(chooseTemplateTypePage.templateTypeRadioButtons).toHaveCount(
+      4
+    );
+
+    for (const [templateType, label] of [
+      ['nhsapp', 'NHS App message'],
+      ['email', 'Email'],
+      ['sms', 'Text message (SMS)'],
+      ['letter', 'Letter'],
+    ] as const) {
+      const radio = chooseTemplateTypePage.getTemplateTypeRadio(templateType);
+      await expect(radio).toBeVisible();
+      await expect(radio).toHaveAccessibleName(label);
+    }
+  });
+
+  test('should not display letter type subtypes or warning callout when letter is selected', async ({
+    page,
+  }) => {
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplateTypePage.loadPage();
+
+    await expect(chooseTemplateTypePage.letterTypeRadioButtons).toHaveCount(0);
+
+    await chooseTemplateTypePage.getTemplateTypeRadio('letter').check();
+
+    await expect(chooseTemplateTypePage.letterTypeRadioButtons).toHaveCount(0);
+
+    await expect(
+      page.getByRole('heading', { name: 'To create a letter template' })
+    ).toBeHidden();
+  });
+
+  test('should navigate to legacy letter upload page when letter type is selected', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplateTypePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplateTypePage.loadPage();
+
+    await chooseTemplateTypePage.getTemplateTypeRadio('letter').check();
+
+    await chooseTemplateTypePage.clickContinueButton();
+
+    await page.waitForURL(`${baseURL}/templates/upload-letter-template`);
+  });
 });

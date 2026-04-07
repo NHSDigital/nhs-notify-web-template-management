@@ -5,6 +5,7 @@ const $Config = z.object({
   ROUTING_CONFIG_TABLE_NAME: z.string(),
   SNS_TOPIC_ARN: z.string(),
   TEMPLATES_TABLE_NAME: z.string(),
+  PROOF_REQUESTS_TABLE_NAME: z.string(),
 });
 
 export const loadConfig = () => {

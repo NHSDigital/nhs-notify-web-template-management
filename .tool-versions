@@ -10,10 +10,8 @@ terraform-docs 0.21.0
 # trivy 0.69.3
 vale 3.14.1
 python 3.13.2
-
 # ==============================================================================
 # The section below is reserved for Docker image versions.
-
 # TODO: Move this section - consider using a different file for the repository template dependencies.
 # docker/ghcr.io/anchore/grype v0.110.0@sha256:af65fbc0c664691067788fe95ff88760b435543e45595eb2ca6f102fc476fbe1  # SEE: https://github.com/anchore/grype/pkgs/container/grype
 # docker/ghcr.io/anchore/syft v1.42.3@sha256:5999d209a342e55e9edf70bf8930fb5b86d8f2a783fa401178372c50e21b1d36 # SEE: https://github.com/anchore/syft/pkgs/container/syft
