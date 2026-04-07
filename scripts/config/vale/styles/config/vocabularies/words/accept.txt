@@ -26,4 +26,5 @@ Syft
 Terraform
 toolchain
 Trufflehog
+[Vv]alidators
 Zod

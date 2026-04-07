@@ -5,11 +5,12 @@ import type {
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
 import type { DigitalTemplateType } from 'nhs-notify-web-template-management-utils';
-
-import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
+import type {
+  ContentBlock,
+  MarkdownToJSX,
+} from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
-import { MarkdownToJSX } from 'markdown-to-jsx';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;

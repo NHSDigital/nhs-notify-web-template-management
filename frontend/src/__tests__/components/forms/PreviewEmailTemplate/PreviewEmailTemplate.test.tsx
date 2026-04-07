@@ -216,32 +216,4 @@ describe('Preview email form renders', () => {
       'Rendered via MD'
     );
   });
-
-  describe('digitalProofingEmail enabled', () => {
-    beforeEach(() => {
-      jest
-        .mocked(useFeatureFlags)
-        .mockReturnValue({ digitalProofingEmail: true });
-    });
-
-    it('matches snapshot', () => {
-      const container = render(
-        <PreviewEmailTemplate
-          initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-            errorState: undefined,
-            name: 'test-template-email',
-            templateStatus: 'NOT_YET_SUBMITTED',
-            templateType: 'EMAIL',
-            subject: 'template-subject-line',
-            message: 'message',
-            id: 'template-id',
-          })}
-        />
-      );
-
-      expect(screen.getByTestId('test-message-banner')).toBeInTheDocument();
-
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-  });
 });

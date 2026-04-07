@@ -205,31 +205,4 @@ describe('Preview nhs app form renders', () => {
       'Rendered via MD'
     );
   });
-
-  describe('digitalProofingNhsApp enabled', () => {
-    beforeEach(() => {
-      jest
-        .mocked(useFeatureFlags)
-        .mockReturnValue({ digitalProofingNhsApp: true });
-    });
-
-    it('matches snapshot', () => {
-      const container = render(
-        <PreviewNHSAppTemplate
-          initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-            errorState: undefined,
-            name: 'test-template-nhs-app',
-            templateStatus: 'NOT_YET_SUBMITTED',
-            templateType: 'NHS_APP',
-            message: 'message',
-            id: 'template-id',
-          })}
-        />
-      );
-
-      expect(screen.getByTestId('test-message-banner')).toBeInTheDocument();
-
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-  });
 });

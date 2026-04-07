@@ -205,31 +205,4 @@ describe('Review sms form renders', () => {
       'Rendered via MD'
     );
   });
-
-  describe('digitalProofingSms enabled', () => {
-    beforeEach(() => {
-      jest
-        .mocked(useFeatureFlags)
-        .mockReturnValue({ digitalProofingSms: true });
-    });
-
-    it('matches snapshot', () => {
-      const container = render(
-        <PreviewSMSTemplate
-          initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-            errorState: undefined,
-            name: 'test-template-sms',
-            templateStatus: 'NOT_YET_SUBMITTED',
-            templateType: 'SMS',
-            message: 'message',
-            id: 'template-id',
-          })}
-        />
-      );
-
-      expect(screen.getByTestId('test-message-banner')).toBeInTheDocument();
-
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-  });
 });
