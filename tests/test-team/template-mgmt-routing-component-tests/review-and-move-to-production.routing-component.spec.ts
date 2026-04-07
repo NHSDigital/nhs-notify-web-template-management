@@ -331,7 +331,7 @@ test.describe('Routing - Review and Move to Production page', () => {
     });
   });
 
-  test('displays AUTHORING letter template links pointing to in-flow preview', async ({
+  test('displays AUTHORING letter template links pointing to summary preview', async ({
     page,
   }) => {
     const { dbEntry } = RoutingConfigFactory.createWithChannels(

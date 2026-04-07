@@ -12,11 +12,13 @@ export default function PreviewTemplateDetailsLetter({
   letterVariant,
   hideStatus,
   hideEditActions,
+  hideLearnMore,
 }: {
   template: LetterTemplate;
   letterVariant?: LetterVariant;
   hideStatus?: boolean;
   hideEditActions?: boolean;
+  hideLearnMore?: boolean;
 }) {
   if (template.letterVersion === 'PDF') {
     return (
@@ -41,6 +43,7 @@ export default function PreviewTemplateDetailsLetter({
         letterVariant={letterVariant}
         hideStatus={hideStatus}
         hideEditActions={hideEditActions}
+        hideLearnMore={hideLearnMore}
       />
       <h2 className='nhsuk-heading-m'>Example preview</h2>
       <LetterRenderIframe
