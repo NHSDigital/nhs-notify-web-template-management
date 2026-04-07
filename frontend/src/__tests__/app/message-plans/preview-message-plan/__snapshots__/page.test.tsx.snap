@@ -722,12 +722,15 @@ exports[`full cascade plan matches snapshot 1`] = `
                       <p
                         data-testid="template-name"
                       >
-                        <a
-                          href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
-                        >
-                          letter template name
-                        </a>
+                        letter template name
                       </p>
+                      <a
+                        href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Preview template (opens in a new tab)
+                      </a>
                     </div>
                   </div>
                 </li>
@@ -748,25 +751,29 @@ exports[`full cascade plan matches snapshot 1`] = `
                         Other language letters (optional)
                       </h3>
                       <p
-                        class="nhsuk-u-margin-bottom-0"
                         data-testid="template-name"
                       >
-                        <a
-                          href="/preview-submitted-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
-                        >
-                          letter template name
-                        </a>
+                        letter template name
                       </p>
+                      <a
+                        href="/preview-submitted-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Preview template (opens in a new tab)
+                      </a>
                       <p
-                        class="nhsuk-u-margin-bottom-0"
                         data-testid="template-name"
                       >
-                        <a
-                          href="/preview-submitted-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
-                        >
-                          letter template name
-                        </a>
+                        letter template name
                       </p>
+                      <a
+                        href="/preview-submitted-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Preview template (opens in a new tab)
+                      </a>
                     </div>
                   </div>
                 </li>

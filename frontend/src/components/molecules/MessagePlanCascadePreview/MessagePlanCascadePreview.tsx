@@ -182,16 +182,19 @@ export function MessagePlanCascadePreview({
                           )}
                           data-testid='channel-card'
                         >
-                          <p data-testid='template-name'>
+                          <>
+                            <p data-testid='template-name'>{template.name}</p>
                             <Link
                               href={getLetterTemplatePreviewHref(
                                 template,
                                 letterPreviewHrefBase
                               )}
+                              target='_blank'
+                              rel='noopener noreferrer'
                             >
-                              {template.name}
+                              {pageContent.letterTemplateLinkText}
                             </Link>
-                          </p>
+                          </>
                         </MessagePlanChannelCard>
                       </MessagePlanConditionalTemplatesListItem>
                     ))}
@@ -203,20 +206,20 @@ export function MessagePlanCascadePreview({
                           data-testid='channel-card'
                         >
                           {languageTemplates.map((template) => (
-                            <p
-                              data-testid='template-name'
-                              key={template.id}
-                              className='nhsuk-u-margin-bottom-0'
-                            >
+                            <>
+                              <p data-testid='template-name'>{template.name}</p>
                               <Link
                                 href={getLetterTemplatePreviewHref(
                                   template,
                                   letterPreviewHrefBase
                                 )}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                // className='nhsuk-u-margin-bottom-0'
                               >
-                                {template.name}
+                                {pageContent.letterTemplateLinkText}
                               </Link>
-                            </p>
+                            </>
                           ))}
                         </MessagePlanChannelCard>
                       </MessagePlanConditionalTemplatesListItem>

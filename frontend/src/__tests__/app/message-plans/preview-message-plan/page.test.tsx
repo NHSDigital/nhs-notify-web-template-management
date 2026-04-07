@@ -418,9 +418,13 @@ describe('letter only', () => {
       within(conditionalTemplatesList).getByTestId('conditional-template-x1')
     ).getByTestId('channel-card');
 
+    const name = within(largePrintCard).getByTestId('template-name');
+
+    expect(name).toHaveTextContent(template.name);
+
     const link = within(largePrintCard).getByRole('link');
 
-    expect(link).toHaveTextContent(template.name);
+    expect(link).toHaveTextContent('Preview template (opens in a new tab)');
 
     expect(link).toHaveAttribute(
       'href',
@@ -465,8 +469,10 @@ describe('letter only', () => {
     ).getByTestId('channel-card');
 
     const links = within(languagesCard).getAllByRole('link');
+    const names = within(languagesCard).getAllByTestId('template-name');
 
     expect(links).toHaveLength(2);
+    expect(names).toHaveLength(2);
 
     for (const [
       index,
@@ -474,7 +480,10 @@ describe('letter only', () => {
     ] of routingConfig.cascade[0].conditionalTemplates!.entries()) {
       const template = templates[templateId!];
 
-      expect(links[index]).toHaveTextContent(template.name);
+      expect(names[index]).toHaveTextContent(template.name);
+      expect(links[index]).toHaveTextContent(
+        'Preview template (opens in a new tab)'
+      );
 
       expect(links[index]).toHaveAttribute(
         'href',
