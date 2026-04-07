@@ -28,6 +28,7 @@ function createTemplates(user: TestUser) {
     SMS: randomUUID(),
     LETTER: randomUUID(),
     LARGE_PRINT_LETTER: randomUUID(),
+    BSL_LETTER: randomUUID(),
     FRENCH_LETTER: randomUUID(),
     SPANISH_LETTER: randomUUID(),
     AUTHORING_LETTER: randomUUID(),
@@ -53,35 +54,55 @@ function createTemplates(user: TestUser) {
       `Test SMS template - ${templateIds.SMS}`,
       'SUBMITTED'
     ),
-    LETTER: TemplateFactory.uploadLetterTemplate(
+    LETTER: TemplateFactory.uploadPdfLetterTemplate(
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`,
       'SUBMITTED'
     ),
-    LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
-      'PASSED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.BSL_LETTER,
+      user,
+      `Test BSL Letter template - ${templateIds.BSL_LETTER}`,
+      'SUBMITTED',
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    ),
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       `Test Letter template French - ${templateIds.FRENCH_LETTER}`,
       'SUBMITTED',
-      'PASSED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
-    SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
+    SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'SUBMITTED',
-      'PASSED',
-      { language: 'es' }
+      {
+        language: 'es',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.AUTHORING_LETTER,
@@ -201,6 +222,7 @@ test.describe('Routing - Preview Message Plan page', () => {
       .addTemplate('SMS', templates.SMS.id)
       .addTemplate('LETTER', templates.LETTER.id)
       .addAccessibleFormatTemplate('x1', templates.LARGE_PRINT_LETTER.id)
+      .addAccessibleFormatTemplate('q4', templates.BSL_LETTER.id)
       .addLanguageTemplate('fr', templates.FRENCH_LETTER.id)
       .addLanguageTemplate('es', templates.SPANISH_LETTER.id);
 
@@ -319,6 +341,17 @@ test.describe('Routing - Preview Message Plan page', () => {
       ).toHaveAttribute(
         'href',
         `/templates/preview-submitted-letter-template/${templates.LARGE_PRINT_LETTER.id}`
+      );
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('q4').templateLink
+      ).toHaveText(templates.BSL_LETTER.name);
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('q4').templateLink
+      ).toHaveAttribute(
+        'href',
+        `/templates/preview-submitted-letter-template/${templates.BSL_LETTER.id}`
       );
 
       for (const [index, language] of (

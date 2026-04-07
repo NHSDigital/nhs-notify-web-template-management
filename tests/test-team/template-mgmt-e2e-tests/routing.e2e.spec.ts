@@ -19,6 +19,7 @@ import {
   RoutingGetReadyToMovePage,
   RoutingReviewAndMoveToProductionPage,
   RoutingReviewAndMoveToProductionLetterTemplatePage,
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
@@ -35,6 +36,7 @@ function createTemplates(user: TestUser) {
     SMS: randomUUID(),
     LETTER: randomUUID(),
     LARGE_PRINT_LETTER: randomUUID(),
+    BSL_LETTER: randomUUID(),
     ARABIC_LETTER: randomUUID(),
     POLISH_LETTER: randomUUID(),
   };
@@ -62,28 +64,55 @@ function createTemplates(user: TestUser) {
       templateIds.LETTER,
       user,
       `E2E Letter template - ${templateIds.LETTER}`,
-      'PROOF_APPROVED'
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `E2E Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'PROOF_APPROVED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    ),
+    BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.BSL_LETTER,
+      user,
+      `E2E BSL Letter template - ${templateIds.BSL_LETTER}`,
+      'PROOF_APPROVED',
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.ARABIC_LETTER,
       user,
       `E2E Letter template Arabic - ${templateIds.ARABIC_LETTER}`,
       'PROOF_APPROVED',
-      { language: 'ar' }
+      {
+        language: 'ar',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     POLISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.POLISH_LETTER,
       user,
       `E2E Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'SUBMITTED',
-      { language: 'pl' }
+      {
+        language: 'pl',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }
@@ -184,6 +213,10 @@ test.describe('Routing', () => {
         { template: templates.LETTER, expectedStatus: 'Approved' },
         {
           template: templates.LARGE_PRINT_LETTER,
+          expectedStatus: 'Approved',
+        },
+        {
+          template: templates.BSL_LETTER,
           expectedStatus: 'Approved',
         },
         { template: templates.ARABIC_LETTER, expectedStatus: 'Approved' },
@@ -360,6 +393,15 @@ test.describe('Routing', () => {
       ).toBeVisible();
     });
 
+    await test.step('add BSL letter template', async () => {
+      await selectTemplateRadio(
+        editMessagePlanPage.letter.britishSignLanguage.chooseTemplateLink,
+        new RoutingChooseBritishSignLanguageLetterTemplatePage(page),
+        templates.BSL_LETTER,
+        editMessagePlanPage.letter.britishSignLanguage.templateName
+      );
+    });
+
     await test.step('review and move to production', async () => {
       await editMessagePlanPage.clickMoveToProduction();
 
@@ -392,6 +434,10 @@ test.describe('Routing', () => {
       await expect(
         letterBlock.getAccessibilityFormatCard('x1').locator
       ).toBeHidden();
+
+      await expect(
+        letterBlock.getAccessibilityFormatCard('q4').templateName
+      ).toHaveText(templates.BSL_LETTER.name);
 
       const languageTemplateNames = await letterBlock
         .getLanguagesCard()
@@ -458,6 +504,7 @@ test.describe('Routing', () => {
         { template: templates.EMAIL, expectedStatus: 'Locked' },
         { template: templates.SMS, expectedStatus: 'Locked' },
         { template: templates.LETTER, expectedStatus: 'Locked' },
+        { template: templates.BSL_LETTER, expectedStatus: 'Locked' },
         { template: templates.ARABIC_LETTER, expectedStatus: 'Locked' },
         { template: templates.POLISH_LETTER, expectedStatus: 'Locked' },
         {

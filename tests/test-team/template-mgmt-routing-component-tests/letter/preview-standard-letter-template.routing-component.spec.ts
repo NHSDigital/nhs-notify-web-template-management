@@ -38,7 +38,7 @@ function createTemplates(user: TestUser) {
       user,
       'Email template name'
     ),
-    LETTER: TemplateFactory.uploadLetterTemplate(
+    LETTER: TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       user,
       'Letter template name'

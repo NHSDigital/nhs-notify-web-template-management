@@ -69,28 +69,44 @@ function getTemplates(
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`,
-      'SUBMITTED'
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       `Test French Letter template - ${templateIds.FRENCH_LETTER}`,
       'SUBMITTED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     FRENCH_LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER_APPROVED,
       user,
       `Test Duplicate French Letter template - ${templateIds.FRENCH_LETTER_APPROVED}`,
       'PROOF_APPROVED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     FRENCH_LETTER_NOT_SUBMITTED: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER_NOT_SUBMITTED,
@@ -104,14 +120,22 @@ function getTemplates(
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'SUBMITTED',
-      { language: 'es' }
+      {
+        language: 'es',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
     POLISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.POLISH_LETTER,
       user,
       `Test Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'SUBMITTED',
-      { language: 'pl' }
+      {
+        language: 'pl',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }
@@ -576,6 +600,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .check();
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 
@@ -610,6 +635,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       .getCheckbox(templates.FRENCH_LETTER_APPROVED.id)
       .uncheck();
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 

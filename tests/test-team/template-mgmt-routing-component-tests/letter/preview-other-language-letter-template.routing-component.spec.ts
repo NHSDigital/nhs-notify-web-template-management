@@ -45,12 +45,12 @@ function createTemplates(user: TestUser) {
       user,
       'Email template name'
     ),
-    STANDARD_LETTER: TemplateFactory.uploadLetterTemplate(
+    STANDARD_LETTER: TemplateFactory.uploadPdfLetterTemplate(
       templateIds.STANDARD_LETTER,
       user,
       'Standard letter template name'
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    FRENCH_LETTER: TemplateFactory.uploadPdfLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       'French letter template name',
@@ -63,7 +63,11 @@ function createTemplates(user: TestUser) {
       user,
       'Authoring French letter template name',
       'SUBMITTED',
-      { language: 'fr' }
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }
