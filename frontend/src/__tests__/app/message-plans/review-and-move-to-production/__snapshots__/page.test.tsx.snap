@@ -673,10 +673,10 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                       <p
                         data-testid="template-name"
                       >
-                        letter template name
+                        authoring letter template name
                       </p>
                       <a
-                        href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
+                        href="/message-plans/review-and-move-to-production/rc-123/preview-template/770ed5da-765d-431c-b4b4-4068d11ffed1"
                         rel="noopener noreferrer"
                         target="_blank"
                       >

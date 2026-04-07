@@ -9,6 +9,7 @@ import {
   PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
+  AUTHORING_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { RoutingConfigFactory } from '@testhelpers/routing-config-factory';
 import {
@@ -59,6 +60,7 @@ const letterTemplateId = '278e1a92-353f-42a3-b08d-565ea1c9d763';
 const kuTemplateId = '31399023-08a2-4dc7-81c7-e25b284b2aab';
 const sqTemplateId = '35746144-cac4-4e1f-b92b-4f58e9f1154f';
 const largePrintTemplateId = '72ebc15c-d950-4e2e-99d4-3de7f174fba6';
+const authoringLetterTemplateId = '770ed5da-765d-431c-b4b4-4068d11ffed1';
 
 const templates: MessagePlanTemplates = {
   [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
@@ -71,6 +73,11 @@ const templates: MessagePlanTemplates = {
     ...PDF_LETTER_TEMPLATE,
     id: largePrintTemplateId,
     templateStatus: 'SUBMITTED',
+  },
+  [authoringLetterTemplateId]: {
+    ...AUTHORING_LETTER_TEMPLATE,
+    id: authoringLetterTemplateId,
+    templateStatus: 'PROOF_APPROVED',
   },
 };
 
@@ -305,7 +312,7 @@ describe('Review and move to production page', () => {
       ).toBeInTheDocument();
     });
 
-    it('renders letter template as link', async () => {
+    it('renders PDF letter template as link', async () => {
       const routingConfig = createRoutingConfig({
         cascade: [
           {
@@ -330,6 +337,37 @@ describe('Review and move to production page', () => {
         'href',
         `/preview-letter-template/${letterTemplateId}`
       );
+      expect(link).toHaveAttribute('target', '_blank');
+    });
+
+    it('renders AUTHORING letter template as link', async () => {
+      const routingConfig = createRoutingConfig({
+        cascade: [
+          {
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: authoringLetterTemplateId,
+            cascadeGroups: ['standard'],
+          },
+        ],
+      });
+
+      await renderPage(routingConfig);
+
+      const block = screen.getByTestId('message-plan-block-LETTER');
+      const templateName = within(block).getByTestId('template-name');
+
+      expect(templateName).toHaveTextContent(
+        templates[authoringLetterTemplateId].name
+      );
+
+      const link = within(block).getByRole('link');
+      expect(link).toHaveTextContent('Preview template (opens in a new tab)');
+      expect(link).toHaveAttribute(
+        'href',
+        `/message-plans/review-and-move-to-production/${routingConfig.id}/preview-template/${authoringLetterTemplateId}`
+      );
+      expect(link).toHaveAttribute('target', '_blank');
     });
 
     it('renders fallback conditions between channels', async () => {
@@ -453,7 +491,7 @@ describe('Review and move to production page', () => {
           conditionalTemplates: [
             { templateId: kuTemplateId, language: 'ku' },
             { templateId: sqTemplateId, language: 'sq' },
-            { templateId: largePrintTemplateId, accessibleFormat: 'x1' },
+            { templateId: authoringLetterTemplateId, accessibleFormat: 'x1' },
           ],
         },
       ],
