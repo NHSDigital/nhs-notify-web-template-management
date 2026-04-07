@@ -325,7 +325,7 @@ test.describe('Routing - Review and Move to Production page', () => {
         templateBlock.defaultTemplateCard.templateLink
       ).toHaveAttribute(
         'href',
-        `/templates/preview-submitted-letter-template/${templates.LETTER.id}`
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.LETTER.id}`
       );
 
       await expect(
@@ -334,25 +334,29 @@ test.describe('Routing - Review and Move to Production page', () => {
 
       await expect(
         templateBlock.getAccessibilityFormatCard('x1').templateLink
-      ).toHaveText(templates.LARGE_PRINT_LETTER.name);
+      ).toHaveText('Preview template (opens in a new tab)');
 
       await expect(
         templateBlock.getAccessibilityFormatCard('x1').templateLink
       ).toHaveAttribute(
         'href',
-        `/templates/preview-letter-template/${templates.LARGE_PRINT_LETTER.id}`
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.LARGE_PRINT_LETTER.id}`
       );
 
       await expect(
         templateBlock.getAccessibilityFormatCard('q4').templateLink
-      ).toHaveText(templates.BSL_LETTER.name);
+      ).toHaveText('Preview template (opens in a new tab)');
 
       await expect(
         templateBlock.getAccessibilityFormatCard('q4').templateLink
       ).toHaveAttribute(
         'href',
-        `/templates/preview-letter-template/${templates.BSL_LETTER.id}`
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.BSL_LETTER.id}`
       );
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('q4').templateLink
+      ).toHaveAttribute('target', '_blank');
 
       for (const [index, language] of (
         ['FRENCH_LETTER', 'SPANISH_LETTER'] satisfies (keyof ReturnType<
@@ -360,12 +364,15 @@ test.describe('Routing - Review and Move to Production page', () => {
         >)[]
       ).entries()) {
         const links = await templateBlock.getLanguagesCard().templateLink.all();
-        await expect(links[index]).toHaveText(templates[language].name);
+        await expect(links[index]).toHaveText(
+          'Preview template (opens in a new tab)'
+        );
 
         await expect(links[index]).toHaveAttribute(
           'href',
-          `/templates/preview-letter-template/${templates[language].id}`
+          `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates[language].id}`
         );
+        await expect(links[index]).toHaveAttribute('target', '_blank');
       }
     });
   });
@@ -414,7 +421,7 @@ test.describe('Routing - Review and Move to Production page', () => {
 
     await expect(
       templateBlock.getAccessibilityFormatCard('x1').templateLink
-    ).toHaveText(templates.AUTHORING_LARGE_PRINT_LETTER.name);
+    ).toHaveText('Preview template (opens in a new tab)');
 
     await expect(
       templateBlock.getAccessibilityFormatCard('x1').templateLink
