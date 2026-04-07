@@ -22,11 +22,13 @@ export type PreviewTemplateComponent<T extends TemplateDto> = ({
   template,
   hideStatus,
   hideEditActions,
+  hideLearnMore,
   letterVariant,
 }: {
   template: T;
   hideStatus?: boolean;
   hideEditActions?: boolean;
+  hideLearnMore?: boolean;
   letterVariant?: LetterVariant;
 }) => JSX.Element;
 

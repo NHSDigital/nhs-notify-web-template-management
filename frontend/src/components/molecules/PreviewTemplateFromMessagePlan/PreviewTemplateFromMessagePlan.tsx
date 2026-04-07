@@ -73,6 +73,7 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
               letterVariant,
               hideStatus: true,
               hideEditActions: true,
+              hideLearnMore: true,
             })}
             {backLinkHref && (
               <Link
