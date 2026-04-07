@@ -5,6 +5,7 @@ import {
 } from '@nhsdigital/nhs-notify-event-schemas-template-management';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
+  $DynamoDBProofRequest,
   $DynamoDBRoutingConfig,
   $DynamoDBTemplate,
   PublishableEventRecord,
@@ -16,6 +17,7 @@ export class EventBuilder {
   constructor(
     private readonly templatesTableName: string,
     private readonly routingConfigTableName: string,
+    private readonly proofRequestsTableName: string,
     private readonly eventSource: string,
     private readonly logger: Logger
   ) {}
@@ -52,14 +54,19 @@ export class EventBuilder {
     }
   }
 
-  private buildEventMetadata(id: string, type: string, subject: string) {
+  private buildEventMetadata(
+    id: string,
+    type: string,
+    subject: string,
+    plane: 'control' | 'data' = 'control'
+  ) {
     return {
       id,
       datacontenttype: 'application/json',
       time: new Date().toISOString(),
       source: this.eventSource,
       specversion: '1.0',
-      plane: 'control',
+      plane,
       subject,
       type: `uk.nhs.notify.template-management.${type}.v${MAJOR_VERSION}`,
       dataschema: `https://notify.nhs.uk/events/schemas/${type}/v${MAJOR_VERSION}.json`,
@@ -165,6 +172,45 @@ export class EventBuilder {
     return event.data;
   }
 
+  private buildProofRequestedEvent(
+    publishableEventRecord: PublishableEventRecord
+  ): Event | undefined {
+    if (!publishableEventRecord.dynamodb.NewImage) {
+      // Do not publish an event if a proof-request record is deleted
+      this.logger.debug({
+        description: 'No new image found',
+        publishableEventRecord,
+      });
+
+      return undefined;
+    }
+
+    const dynamoRecord = unmarshall(publishableEventRecord.dynamodb.NewImage);
+
+    const databaseProofRequest = $DynamoDBProofRequest.parse(dynamoRecord);
+
+    try {
+      return $Event.parse({
+        ...this.buildEventMetadata(
+          publishableEventRecord.eventID,
+          'ProofRequested',
+          databaseProofRequest.id,
+          'data'
+        ),
+        data: dynamoRecord,
+      });
+    } catch (error) {
+      this.logger
+        .child({
+          description: 'Failed to parse outgoing event for proof request',
+          publishableEventRecord,
+        })
+        .error(error);
+
+      throw error;
+    }
+  }
+
   buildEvent(
     publishableEventRecord: PublishableEventRecord
   ): Event | undefined {
@@ -174,6 +220,9 @@ export class EventBuilder {
       }
       case this.routingConfigTableName: {
         return this.buildRoutingConfigDatabaseEvent(publishableEventRecord);
+      }
+      case this.proofRequestsTableName: {
+        return this.buildProofRequestedEvent(publishableEventRecord);
       }
       default: {
         this.logger.error({

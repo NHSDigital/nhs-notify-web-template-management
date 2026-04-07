@@ -112,6 +112,7 @@ export type ClientFeatures = {
   digitalProofingNhsApp?: boolean;
   digitalProofingSms?: boolean;
   letterAuthoring?: boolean;
+  legacyLetters?: boolean;
   proofing?: boolean;
   routing?: boolean;
 };

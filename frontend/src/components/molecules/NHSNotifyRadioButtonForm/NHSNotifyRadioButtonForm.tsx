@@ -33,6 +33,7 @@ export type NHSNotifyRadioButtonFormProps = {
     text: string;
     url: string;
   };
+  children?: React.ReactNode;
 };
 
 const normaliseId = (id: string) =>
@@ -52,6 +53,7 @@ export const NHSNotifyRadioButtonForm = ({
   learnMoreLink = '',
   learnMoreText = '',
   backLink,
+  children,
 }: NHSNotifyRadioButtonFormProps) => (
   <NHSNotifyFormWrapper
     action={action}
@@ -93,6 +95,8 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
+    {/* Render any passed children here */}
+    {children}
     <NHSNotifyButton
       type='submit'
       data-testid='submit-button'

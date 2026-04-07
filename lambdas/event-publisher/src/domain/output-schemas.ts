@@ -1,4 +1,5 @@
 import {
+  $ProofRequestedEventV1,
   $RoutingConfigCompletedEventV1,
   $RoutingConfigDeletedEventV1,
   $RoutingConfigDraftedEventV1,
@@ -9,11 +10,12 @@ import {
 import { z } from 'zod';
 
 export const $Event = z.discriminatedUnion('type', [
-  $TemplateCompletedEventV1,
-  $TemplateDraftedEventV1,
-  $TemplateDeletedEventV1,
+  $ProofRequestedEventV1,
   $RoutingConfigCompletedEventV1,
-  $RoutingConfigDraftedEventV1,
   $RoutingConfigDeletedEventV1,
+  $RoutingConfigDraftedEventV1,
+  $TemplateCompletedEventV1,
+  $TemplateDeletedEventV1,
+  $TemplateDraftedEventV1,
 ]);
 export type Event = z.infer<typeof $Event>;
