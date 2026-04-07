@@ -139,23 +139,28 @@ describe('SummaryPreviewLetter', () => {
   });
 
   it('renders without back links when hideBackLinks is true', async () => {
+    const letterVariant = makeLetterVariant();
+
     getTemplateMock.mockResolvedValueOnce({
-      ...PDF_LETTER_TEMPLATE,
+      ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'SUBMITTED',
+      campaignId: 'campaign',
+      letterVariantId: 'letter-variant',
     });
+
+    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 
     const page = await SummaryPreviewLetter({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
-        templateId: PDF_LETTER_TEMPLATE.id,
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
       }),
       hideBackLinks: true,
       redirectUrl: undefined,
     });
 
     const container = render(page);
-
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

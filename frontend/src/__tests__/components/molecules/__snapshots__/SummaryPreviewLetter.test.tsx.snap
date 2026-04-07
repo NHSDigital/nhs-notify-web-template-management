@@ -327,14 +327,14 @@ exports[`SummaryPreviewLetter renders without back links when hideBackLinks is t
             <h1
               data-testid="preview-message__heading"
             >
-              letter template name
+              authoring letter template name
             </h1>
           </div>
           <div
             class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
           >
             <dl
-              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
             >
               <div
                 class="nhsuk-summary-list__row"
@@ -348,8 +348,11 @@ exports[`SummaryPreviewLetter renders without back links when hideBackLinks is t
                   class="nhsuk-summary-list__value monospace-font"
                   data-testid="preview-template-id"
                 >
-                  letter-template-id
+                  authoring-letter-template-id
                 </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
               </div>
               <div
                 class="nhsuk-summary-list__row"
@@ -364,6 +367,28 @@ exports[`SummaryPreviewLetter renders without back links when hideBackLinks is t
                 >
                   Standard letter
                 </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+                id="campaign-id"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Campaign
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  campaign
+                </dd>
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
               </div>
               <div
                 class="nhsuk-summary-list__row"
@@ -371,38 +396,67 @@ exports[`SummaryPreviewLetter renders without back links when hideBackLinks is t
                 <dt
                   class="nhsuk-summary-list__key"
                 >
-                  Template file
+                  Total pages
                 </dt>
                 <dd
                   class="nhsuk-summary-list__value"
                 >
-                  <div
-                    class="container"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="icon"
-                      fill="none"
-                      height="26"
-                      viewBox="0 0 20 26"
-                      width="20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                        fill="#4C6272"
-                      />
-                    </svg>
-                    <p
-                      class="text"
-                    >
-                      template.pdf
-                    </p>
-                  </div>
+                  2
                 </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Sheets
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  1
+                </dd>
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+                id="printing-and-postage"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Printing and postage
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  Standard C5
+                </dd>
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
               </div>
             </dl>
           </div>
+          <h2
+            class="nhsuk-heading-m"
+          >
+            Example preview
+          </h2>
+          <iframe
+            aria-label="PDF preview of letter template"
+            class="letter-render-iframe nhsuk-u-margin-bottom-6"
+            src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
+            title="Letter preview"
+          />
         </div>
       </div>
     </main>

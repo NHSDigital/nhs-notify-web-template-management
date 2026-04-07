@@ -158,6 +158,20 @@ test.describe('Routing - Preview British Sign Language letter template page', ()
     await expect(previewBSLLetterTemplatePage.campaignId).toContainText(
       templates.BSL_LETTER.campaignId!
     );
+
+    await expect(
+      previewBSLLetterTemplatePage.letterPreviewHeading
+    ).toBeVisible();
+    await expect(
+      previewBSLLetterTemplatePage.letterPreviewIframe
+    ).toBeVisible();
+
+    await expect(
+      previewBSLLetterTemplatePage.letterPreviewIframe
+    ).toHaveAttribute(
+      'src',
+      `/templates/files/${templates.BSL_LETTER.clientId}/renders/${templates.BSL_LETTER.id}/initial-render.pdf`
+    );
   });
 
   test.describe('redirects to invalid template page', () => {
