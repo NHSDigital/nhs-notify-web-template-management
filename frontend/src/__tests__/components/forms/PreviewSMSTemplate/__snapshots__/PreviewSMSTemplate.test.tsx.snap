@@ -151,8 +151,6 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -422,8 +420,6 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -673,8 +669,6 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -912,8 +906,6 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1070,8 +1062,6 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1304,8 +1294,6 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>

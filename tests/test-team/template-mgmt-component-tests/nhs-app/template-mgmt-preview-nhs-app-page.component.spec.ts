@@ -7,7 +7,7 @@ import {
   assertBackLinkBottom,
   assertAndClickBackLinkTop,
   assertRequestProofBannerVisible,
-  assertAndClickTestMessageBannerLink,
+  assertTestMessageBannerVisible,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertFooterLinks,
@@ -344,7 +344,7 @@ test.describe('Preview NHS App template Page', () => {
 
       const expectedUrl = `${baseURL}/templates/send-test-nhs-app-message/${templates.digitalProofing.id}`;
 
-      await assertAndClickTestMessageBannerLink(previewPage, expectedUrl);
+      await assertTestMessageBannerVisible(previewPage, expectedUrl);
 
       // Test button (same page navigation)
       await previewPage.sendTestMessageButton.click();

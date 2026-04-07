@@ -7,7 +7,7 @@ import {
   assertAndClickBackLinkTop,
   assertBackLinkBottom,
   assertRequestProofBannerVisible,
-  assertAndClickTestMessageBannerLink,
+  assertTestMessageBannerVisible,
 } from '../../helpers/template-mgmt-common.steps';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
@@ -211,7 +211,7 @@ test.describe('Routing - Preview email template page', () => {
         `${baseURL}/templates/message-plans/choose-email-template/${digitalProofingEnabledMessagePlanId}/preview-template/${digitalProofingEnabledTemplateId}?lockNumber=0`
       );
 
-      await assertAndClickTestMessageBannerLink(
+      await assertTestMessageBannerVisible(
         previewTemplatePage,
         `${baseURL}/templates/send-test-email/${digitalProofingEnabledTemplateId}`
       );

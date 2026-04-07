@@ -151,8 +151,6 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -423,8 +421,6 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -675,8 +671,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -915,8 +909,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1074,8 +1066,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1309,8 +1299,6 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>

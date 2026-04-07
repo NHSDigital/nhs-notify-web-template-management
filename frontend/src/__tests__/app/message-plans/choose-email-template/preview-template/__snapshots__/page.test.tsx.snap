@@ -142,8 +142,6 @@ exports[`PreviewEmailTemplateFromMessagePlan page renders Email template preview
               This is only a basic preview. 
               <a
                 href="/templates/request-a-proof/email-template-id"
-                rel=""
-                target=""
               >
                 Request a proof
               </a>

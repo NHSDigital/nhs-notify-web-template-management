@@ -314,7 +314,7 @@ export const assertRequestProofBannerVisible = async (
   previewPage: TemplateMgmtPreviewBasePage,
   templateId: string
 ) =>
-  test.step('request a proof banner is visible and navigates correctly', async () => {
+  test.step('should display "Request a proof" banner with correct link', async () => {
     await expect(previewPage.requestProofMessageBanner).toBeVisible();
     await expect(previewPage.requestProofMessageBannerLink).toContainText(
       'Request a proof'
@@ -325,18 +325,17 @@ export const assertRequestProofBannerVisible = async (
     );
   });
 
-export const assertAndClickTestMessageBannerLink = async (
+export const assertTestMessageBannerVisible = async (
   previewPage: TemplateMgmtPreviewBasePage,
   expectedURL: string
 ) =>
-  test.step('when user clicks the test message banner link, then a new tab is opened to the send a test message page', async () => {
-    // Test banner link (opens in new tab)
-    const newPagePromise = previewPage.page.context().waitForEvent('page');
-    await previewPage.testMessageBannerLink.click();
-    const newPage = await newPagePromise;
-    await newPage.waitForLoadState();
-
-    await expect(newPage).toHaveURL(expectedURL);
-
-    await newPage.close();
+  test.step('should display "Send a test message" banner with correct link', async () => {
+    await expect(previewPage.testMessageBanner).toBeVisible();
+    await expect(previewPage.testMessageBannerLink).toContainText(
+      'Send a test message'
+    );
+    await expect(previewPage.testMessageBannerLink).toHaveAttribute(
+      'href',
+      expectedURL
+    );
   });

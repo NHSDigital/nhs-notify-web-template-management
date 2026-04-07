@@ -311,8 +311,6 @@ exports[`PreviewTemplateFromMessagePlan renders Email template preview with the 
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/email-template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -686,8 +684,6 @@ exports[`PreviewTemplateFromMessagePlan renders NHS App template preview with th
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/app-template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -941,8 +937,6 @@ exports[`PreviewTemplateFromMessagePlan renders SMS template preview with the co
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/sms-template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>

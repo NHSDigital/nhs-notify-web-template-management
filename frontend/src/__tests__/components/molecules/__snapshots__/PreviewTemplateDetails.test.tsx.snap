@@ -932,8 +932,6 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
       This is only a basic preview. 
       <a
         href="/templates/request-a-proof/template-id"
-        rel=""
-        target=""
       >
         Request a proof
       </a>
@@ -1084,8 +1082,6 @@ exports[`PreviewTemplateDetailsEmail renders "request-proof-message-banner" when
       This is only a basic preview. 
       <a
         href="/templates/request-a-proof/template-id"
-        rel=""
-        target=""
       >
         Request a proof
       </a>
@@ -1236,8 +1232,6 @@ exports[`PreviewTemplateDetailsEmail renders "test-message-banner" when digitalP
       This is only a basic preview. 
       <a
         href="/templates/send-test-email/template-id"
-        rel="noopener noreferrer"
-        target="_blank"
       >
         Send a test email
       </a>
@@ -1363,8 +1357,6 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
       This is only a basic preview. 
       <a
         href="/templates/request-a-proof/template-id"
-        rel=""
-        target=""
       >
         Request a proof
       </a>
@@ -1490,8 +1482,6 @@ exports[`PreviewTemplateDetailsNhsApp renders "request-proof-message-banner" whe
       This is only a basic preview. 
       <a
         href="/templates/request-a-proof/template-id"
-        rel=""
-        target=""
       >
         Request a proof
       </a>
@@ -1617,8 +1607,6 @@ exports[`PreviewTemplateDetailsNhsApp renders "test-message-banner" when digital
       This is only a basic preview. 
       <a
         href="/templates/send-test-nhs-app-message/template-id"
-        rel="noopener noreferrer"
-        target="_blank"
       >
         Send a test NHS App message
       </a>
@@ -2242,8 +2230,6 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
       This is only a basic preview. 
       <a
         href="/templates/request-a-proof/template-id"
-        rel=""
-        target=""
       >
         Request a proof
       </a>
@@ -2369,8 +2355,6 @@ exports[`PreviewTemplateDetailsSms renders "request-proof-message-banner" when d
       This is only a basic preview. 
       <a
         href="/templates/request-a-proof/template-id"
-        rel=""
-        target=""
       >
         Request a proof
       </a>
@@ -2496,8 +2480,6 @@ exports[`PreviewTemplateDetailsSms renders "test-message-banner" when digitalPro
       This is only a basic preview. 
       <a
         href="/templates/send-test-text-message/template-id"
-        rel="noopener noreferrer"
-        target="_blank"
       >
         Send a test text message
       </a>

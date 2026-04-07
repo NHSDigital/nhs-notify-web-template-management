@@ -117,8 +117,6 @@ exports[`PreviewTextMessageTemplateFromMessagePlan page renders SMS template pre
               This is only a basic preview. 
               <a
                 href="/templates/request-a-proof/sms-template-id"
-                rel=""
-                target=""
               >
                 Request a proof
               </a>

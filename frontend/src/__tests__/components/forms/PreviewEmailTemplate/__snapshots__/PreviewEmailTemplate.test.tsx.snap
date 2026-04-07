@@ -176,8 +176,6 @@ exports[`Preview email form renders Routing feature flag - Disabled Client-side 
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -472,8 +470,6 @@ exports[`Preview email form renders Routing feature flag - Disabled matches erro
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -748,8 +744,6 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1012,8 +1006,6 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1195,8 +1187,6 @@ exports[`Preview email form renders matches snapshot when navigating from manage
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1454,8 +1444,6 @@ exports[`Preview email form renders matches snapshot when navigating from manage
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>

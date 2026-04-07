@@ -5,10 +5,7 @@ import type {
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
 import type { DigitalTemplateType } from 'nhs-notify-web-template-management-utils';
-import type {
-  ContentBlock,
-  MarkdownToJSX,
-} from '@molecules/ContentRenderer/ContentRenderer';
+import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
 
@@ -1328,7 +1325,6 @@ const howToRequestADigitalProof: {
 type PreviewDigitalContent = {
   content: string;
   'data-testid': string;
-  overrides?: MarkdownToJSX.Overrides;
 };
 
 const previewDigitalTemplate = {
@@ -1355,14 +1351,6 @@ const previewDigitalTemplate = {
     'data-testid': 'request-proof-message-banner',
     content:
       'This is only a basic preview. [Request a proof](/templates/request-a-proof/{{templateId}}) to preview this template properly.',
-    overrides: {
-      a: {
-        props: {
-          target: '',
-          rel: '',
-        },
-      },
-    },
   } satisfies PreviewDigitalContent,
 };
 

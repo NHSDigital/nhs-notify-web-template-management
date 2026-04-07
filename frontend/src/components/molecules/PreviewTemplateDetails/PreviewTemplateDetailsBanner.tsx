@@ -29,7 +29,14 @@ export const PreviewTemplateDetailsBanner = ({
           variables={{ templateId: template.id }}
           mode='inline'
           content={banner.content}
-          overrides={banner?.overrides}
+          overrides={{
+            a: {
+              props: {
+                target: undefined,
+                rel: undefined,
+              },
+            },
+          }}
         />
       </NHSNotifyWarningCallout>
     </div>

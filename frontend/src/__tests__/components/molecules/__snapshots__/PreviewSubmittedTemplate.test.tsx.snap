@@ -399,8 +399,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render app me
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -586,8 +584,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render email 
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -748,8 +744,6 @@ exports[`PreviewSubmittedTemplate component routing = false should render sms 1`
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1193,8 +1187,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render app mes
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1395,8 +1387,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render email 1
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
@@ -1572,8 +1562,6 @@ exports[`PreviewSubmittedTemplate component routing = true should render sms 1`]
             This is only a basic preview. 
             <a
               href="/templates/request-a-proof/template-id"
-              rel=""
-              target=""
             >
               Request a proof
             </a>
