@@ -146,6 +146,7 @@ describe('MessagePlanCascadePreview', () => {
       'href',
       `/preview-letter-template/${PDF_LETTER_TEMPLATE.id}`
     );
+    expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveTextContent('Preview template (opens in a new tab)');
   });
 
@@ -181,6 +182,7 @@ describe('MessagePlanCascadePreview', () => {
       'href',
       `/preview-submitted-letter-template/${submittedTemplate.id}`
     );
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('renders non-letter templates with preview details', () => {
@@ -246,6 +248,7 @@ describe('MessagePlanCascadePreview', () => {
       'href',
       `/message-plans/review-and-move-to-production/routing-config-id/preview-template/${AUTHORING_LETTER_TEMPLATE.id}`
     );
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('renders PDF letter template with standard link even when letterPreviewHrefBase is provided', () => {
@@ -263,6 +266,7 @@ describe('MessagePlanCascadePreview', () => {
       'href',
       `/preview-letter-template/${PDF_LETTER_TEMPLATE.id}`
     );
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('matches snapshot', () => {

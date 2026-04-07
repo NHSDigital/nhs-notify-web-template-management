@@ -492,6 +492,8 @@ describe('letter only', () => {
       'href',
       `/preview-submitted-letter-template/${template.id}`
     );
+
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('shows the fallback conditions and card for BSL accessible format', async () => {
@@ -602,6 +604,8 @@ describe('letter only', () => {
         'href',
         `/preview-submitted-letter-template/${template.id}`
       );
+
+      expect(links[index]).toHaveAttribute('target', '_blank');
     }
   });
 });
