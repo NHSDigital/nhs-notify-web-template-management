@@ -24,8 +24,9 @@ paths = [
   '''Gemfile.lock''',
 ]
 
-# Exclude Chrome version in user agent
+# Exclude Chrome version in user agent and email addresses with IP domains in test files
 regexTarget = "line"
 regexes = [
-  '''Chrome/[\d.]+'''
+  '''Chrome/[\d.]+''',
+  '''email@\[?\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\]?''',
 ]
