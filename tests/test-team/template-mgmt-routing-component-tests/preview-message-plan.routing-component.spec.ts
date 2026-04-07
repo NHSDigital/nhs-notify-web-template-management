@@ -307,6 +307,10 @@ test.describe('Routing - Preview Message Plan page', () => {
       );
 
       await expect(
+        templateBlock.defaultTemplateCard.templateLink
+      ).toHaveAttribute('target', '_blank');
+
+      await expect(
         templateBlock.getAccessibilityFormatCard('x1').templateLink
       ).toHaveText(templates.LARGE_PRINT_LETTER.name);
 
@@ -384,6 +388,10 @@ test.describe('Routing - Preview Message Plan page', () => {
     );
 
     await expect(
+      templateBlock.defaultTemplateCard.templateLink
+    ).toHaveAttribute('target', '_blank');
+
+    await expect(
       templateBlock.getAccessibilityFormatCard('x1').templateLink
     ).toHaveText(templates.AUTHORING_LARGE_PRINT_LETTER.name);
 
@@ -393,6 +401,10 @@ test.describe('Routing - Preview Message Plan page', () => {
       'href',
       `/templates/message-plans/preview-message-plan/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}`
     );
+
+    await expect(
+      templateBlock.getAccessibilityFormatCard('x1').templateLink
+    ).toHaveAttribute('target', '_blank');
   });
 
   test('letter only with no conditional templates', async ({ page }) => {

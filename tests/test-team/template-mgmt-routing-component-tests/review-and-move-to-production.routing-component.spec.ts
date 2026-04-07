@@ -305,6 +305,10 @@ test.describe('Routing - Review and Move to Production page', () => {
       );
 
       await expect(
+        templateBlock.defaultTemplateCard.templateLink
+      ).toHaveAttribute('target', '_blank');
+
+      await expect(
         templateBlock.getAccessibilityFormatCard('x1').templateLink
       ).toHaveText(templates.LARGE_PRINT_LETTER.name);
 
@@ -370,6 +374,10 @@ test.describe('Routing - Review and Move to Production page', () => {
     );
 
     await expect(
+      templateBlock.defaultTemplateCard.templateLink
+    ).toHaveAttribute('target', '_blank');
+
+    await expect(
       templateBlock.getAccessibilityFormatCard('x1').templateLink
     ).toHaveText(templates.AUTHORING_LARGE_PRINT_LETTER.name);
 
@@ -379,6 +387,10 @@ test.describe('Routing - Review and Move to Production page', () => {
       'href',
       `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}`
     );
+
+    await expect(
+      templateBlock.getAccessibilityFormatCard('x1').templateLink
+    ).toHaveAttribute('target', '_blank');
   });
 
   test('keep in draft button navigates to the edit message plan page', async ({
