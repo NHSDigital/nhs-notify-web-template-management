@@ -88,7 +88,7 @@ export const TemplateFactory = {
     });
   },
 
-  uploadLetterTemplate: (
+  uploadPdfLetterTemplate: (
     id: string,
     user: TestUser,
     name: string,

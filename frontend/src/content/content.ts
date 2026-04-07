@@ -1,10 +1,12 @@
 import type {
-  LetterType,
   RoutingConfigStatusActive,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
-import type { DigitalTemplateType } from 'nhs-notify-web-template-management-utils';
+import type {
+  DigitalTemplateType,
+  FrontendSupportedLetterType,
+} from 'nhs-notify-web-template-management-utils';
 
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
@@ -1413,12 +1415,25 @@ const chooseLargePrintLetterTemplate = {
   noTemplatesText: 'You do not have any large print letter templates yet.',
 };
 
+const chooseBritishSignLanguageLetterTemplate = {
+  pageTitle: generatePageTitle(
+    'Choose a British Sign Language letter template'
+  ),
+  pageHeading: 'Choose a British Sign Language letter template',
+  noTemplatesText:
+    'You do not have any British Sign Language letter templates yet.',
+};
+
 const previewStandardEnglishLetterTemplate = {
   pageTitle: previewLetterTitle,
 };
 
 const previewLargePrintLetterTemplate = {
   pageTitle: generatePageTitle('Preview large print letter template'),
+};
+
+const previewBritishSignLanguageLetterTemplate = {
+  pageTitle: generatePageTitle('Preview British Sign Language letter template'),
 };
 
 const previewOtherLanguageLetterTemplate = {
@@ -1767,9 +1782,7 @@ const uploadDocxLetterTemplateForm = {
   },
 };
 
-type DocxTemplateType = LetterType | 'language';
-
-const docxLetterDisplayMappings: Record<DocxTemplateType, string> = {
+const docxLetterDisplayMappings: Record<FrontendSupportedLetterType, string> = {
   x0: 'standard English',
   x1: 'large print',
   q4: 'British Sign Language',
@@ -1778,7 +1791,7 @@ const docxLetterDisplayMappings: Record<DocxTemplateType, string> = {
 
 const article = (noun: string) => (/^[aeiou]/i.test(noun) ? 'an' : 'a');
 
-const uploadDocxLetterTemplatePage = (type: DocxTemplateType) => {
+const uploadDocxLetterTemplatePage = (type: FrontendSupportedLetterType) => {
   const display = docxLetterDisplayMappings[type];
 
   return {
@@ -1981,6 +1994,7 @@ const content = {
     viewSubmittedTemplate,
   },
   pages: {
+    chooseBritishSignLanguageLetterTemplate,
     chooseEmailTemplate,
     chooseLargePrintLetterTemplate,
     chooseNhsAppTemplate,
@@ -2002,6 +2016,7 @@ const content = {
     messagePlanInvalidConfiguration,
     messagePlansPage,
     messageTemplates,
+    previewBritishSignLanguageLetterTemplate,
     previewLargePrintLetterTemplate,
     previewLetterTemplate,
     previewMessagePlan,

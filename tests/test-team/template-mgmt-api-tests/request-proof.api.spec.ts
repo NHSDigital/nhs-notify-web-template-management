@@ -67,7 +67,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
   test('returns 404 if template exists but is owned by a different client', async ({
     request,
   }) => {
-    const template = TemplateFactory.uploadLetterTemplate(
+    const template = TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       userProofingEnabled,
       'userProofingEnabledtemplate',
@@ -101,7 +101,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const currentVersion = randomUUID();
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         userProofingEnabled,
         'userProofingEnabledtemplate',
@@ -162,7 +162,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const currentVersion = randomUUID();
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         userProofingEnabled,
         'userProofingEnabledtemplate',
@@ -241,7 +241,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const currentVersion = randomUUID();
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         sameClientUser,
         'sameClientUserTemplate',
@@ -293,7 +293,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     request,
   }) => {
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         userProofingEnabled,
         'userProofingEnabledtemplate',
@@ -341,7 +341,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     request,
   }) => {
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         userProofingEnabled,
         'userProofingEnabledtemplate',

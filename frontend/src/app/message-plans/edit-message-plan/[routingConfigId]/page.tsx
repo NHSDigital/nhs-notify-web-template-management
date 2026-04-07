@@ -10,7 +10,7 @@ import {
   MessagePlanPageProps,
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
-  ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES,
+  FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS,
 } from 'nhs-notify-web-template-management-utils';
 import {
   SummaryList,
@@ -188,7 +188,7 @@ export default async function EditMessagePlanPage(props: MessagePlanPageProps) {
                               />
                             </MessagePlanFallbackConditionsListItem>
 
-                            {ROUTING_ACCESSIBLE_FORMAT_LETTER_TYPES.map(
+                            {FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS.map(
                               (format) => {
                                 const template = getTemplateForAccessibleFormat(
                                   format,

@@ -29,7 +29,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
-      TemplateFactory.uploadLetterTemplate(
+      TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         user,
         'test-template-id-proofing-e2e-success',
@@ -146,7 +146,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
-      TemplateFactory.uploadLetterTemplate(
+      TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         user,
         'test-template-id-proofing-e2e-failure',

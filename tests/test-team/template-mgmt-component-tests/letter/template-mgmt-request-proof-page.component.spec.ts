@@ -9,7 +9,7 @@ import { TemplateMgmtPreviewLetterPage } from 'pages/letter/template-mgmt-previe
 async function createTemplates() {
   const user = await getTestContext().auth.getTestUser(testUsers.User1.userId);
   return {
-    valid: TemplateFactory.uploadLetterTemplate(
+    valid: TemplateFactory.uploadPdfLetterTemplate(
       'AC85D9AB-9B56-4C34-8CD7-8B713310A37A',
       user,
       'request-proof'

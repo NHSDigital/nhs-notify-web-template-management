@@ -9,7 +9,7 @@ import {
   templateTypeDisplayMappings,
   ErrorState,
   templateTypeToUrlTextMappings,
-  RoutingSupportedLetterType,
+  FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { interpolate } from '@utils/interpolate';
@@ -34,7 +34,7 @@ export function ChannelTemplates({
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
-  letterType?: RoutingSupportedLetterType;
+  letterType?: FrontendSupportedLetterType;
   lockNumber: number;
 }) {
   return (

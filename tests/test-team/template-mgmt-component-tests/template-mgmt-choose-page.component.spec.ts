@@ -207,6 +207,7 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
       'Select a template type'
     );
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 
@@ -229,6 +230,7 @@ test.describe('Choose Template Type Page - Letter Authoring Enabled', () => {
       'Select a letter template type'
     );
 
+    // TODO CCM-12653 reduce
     // eslint-disable-next-line playwright/no-wait-for-timeout
     await page.waitForTimeout(5000); // Wait for debounce
 

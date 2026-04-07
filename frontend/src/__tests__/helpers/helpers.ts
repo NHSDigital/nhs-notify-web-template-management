@@ -101,8 +101,10 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
   lockNumber: 1,
 } as const;
 
-export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
-  id: 'authoring-letter-template-id',
+const BASE_AUTHORING_LETTER_TEMPLATE: Omit<
+  AuthoringLetterTemplate,
+  'id' | 'name'
+> = {
   clientId: 'client-1',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -124,10 +126,22 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
     },
   },
   systemPersonalisation: [],
-  name: 'authoring letter template name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   lockNumber: 1,
+} as const;
+
+export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
+  ...BASE_AUTHORING_LETTER_TEMPLATE,
+  id: 'authoring-letter-template-id',
+  name: 'authoring letter template name',
+} as const;
+
+export const BSL_LETTER_TEMPLATE: AuthoringLetterTemplate = {
+  ...BASE_AUTHORING_LETTER_TEMPLATE,
+  id: 'bsl-letter-template-id',
+  name: 'British Sign Language letter template name',
+  letterType: 'q4',
 } as const;
 
 export const ROUTING_CONFIG: RoutingConfig = {
