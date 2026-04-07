@@ -24,7 +24,7 @@ runs:
 
   steps:
     - name: Fetch terraform output
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
       with:
         name: terraform-output-${{ inputs.targetComponent }}
     - name: "Repo setup"
@@ -45,7 +45,7 @@ runs:
         make test-${{ inputs.testType }}
 
     - name: Archive test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       if: always()
       with:
         name: ${{ inputs.testType }} - test report

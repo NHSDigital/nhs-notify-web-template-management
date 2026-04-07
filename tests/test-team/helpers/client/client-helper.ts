@@ -12,6 +12,7 @@ export type ClientConfiguration = {
     proofing: boolean;
     routing?: boolean;
     letterAuthoring?: boolean;
+    legacyLetters?: boolean;
     digitalProofingNhsApp?: boolean;
     digitalProofingEmail?: boolean;
     digitalProofingSms?: boolean;
@@ -24,7 +25,7 @@ export type ClientConfigurationWithId = ClientConfiguration & {
 };
 
 export type ClientKey =
-  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled' | 'DigitalProofingEnabled'}`;
+  `Client${1 | 2 | 3 | 4 | 5 | 6 | 'WithMultipleCampaigns' | 'RoutingEnabled' | 'LetterAuthoringEnabled' | 'LegacyLettersEnabled' | 'DigitalProofingEnabled'}`;
 
 export const testClients: Record<ClientKey, ClientConfiguration | undefined> = {
   /**
@@ -124,6 +125,20 @@ export const testClients: Record<ClientKey, ClientConfiguration | undefined> = {
       proofing: false,
       routing: true,
       letterAuthoring: true,
+    },
+  },
+
+  /**
+   * ClientLegacyLettersEnabled is an alternative client with legacy letters enabled
+   */
+  ClientLegacyLettersEnabled: {
+    campaignIds: ['LegacyLettersEnabledCampaign'],
+    name: 'Legacy Letters Enabled Client',
+    features: {
+      proofing: false,
+      routing: true,
+      letterAuthoring: false,
+      legacyLetters: true,
     },
   },
 
