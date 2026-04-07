@@ -215,7 +215,7 @@ export function MessagePlanCascadePreview({
                                 )}
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                // className='nhsuk-u-margin-bottom-0'
+                                className='nhsuk-u-margin-bottom-0'
                               >
                                 {pageContent.letterTemplateLinkText}
                               </Link>
