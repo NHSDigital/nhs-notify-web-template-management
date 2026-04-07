@@ -47,7 +47,7 @@ function createTemplates(user: TestUser) {
       user,
       `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`
     ),
-    PDF_LETTER: TemplateFactory.uploadLetterTemplate(
+    PDF_LETTER: TemplateFactory.uploadPdfLetterTemplate(
       templateIds.PDF_LETTER,
       user,
       `Test PDF Letter template - ${templateIds.PDF_LETTER}`
