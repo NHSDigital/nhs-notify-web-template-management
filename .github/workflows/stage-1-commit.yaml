@@ -44,33 +44,33 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0 # Full history is needed to scan all commits
       - name: "Scan secrets"
-        uses: ./.github/actions/scan-secrets
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-secrets@3.0.8
   check-file-format:
     name: "Check file format"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check file format"
-        uses: ./.github/actions/check-file-format
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-file-format@3.0.8
   check-markdown-format:
     name: "Check Markdown format"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check Markdown format"
-        uses: ./.github/actions/check-markdown-format
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-markdown-format@3.0.8
   terraform-docs:
     name: "Run terraform-docs"
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
       contents: write
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check to see if Terraform Docs are up-to-date"
@@ -101,22 +101,22 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check English usage"
-        uses: ./.github/actions/check-english-usage
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-english-usage@3.0.8
   check-todo-usage:
     name: "Check TODO usage"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0 # Full history is needed to compare branches
       - name: "Check TODO usage"
-        uses: ./.github/actions/check-todo-usage
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/check-todo-usage@3.0.8
   detect-terraform-changes:
     name: "Detect Terraform Changes"
     runs-on: ubuntu-latest
@@ -124,8 +124,7 @@ jobs:
       terraform_changed: ${{ steps.check.outputs.terraform_changed }}
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
-
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: "Check for Terraform changes"
         id: check
         run: |
@@ -148,7 +147,7 @@ jobs:
     if: needs.detect-terraform-changes.outputs.terraform_changed == 'true'
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: "Setup ASDF"
         uses: asdf-vm/actions/setup@1902764435ca0dd2f3388eea723a4f92a4eb8302
       - name: "Lint Terraform"
@@ -164,11 +163,11 @@ jobs:
   #   if: needs.detect-terraform-changes.outputs.terraform_changed == 'true'
   #   steps:
   #     - name: "Checkout code"
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
   #     - name: "Setup ASDF"
   #       uses: asdf-vm/actions/setup@1902764435ca0dd2f3388eea723a4f92a4eb8302
   #     - name: "Trivy IaC Scan"
-  #       uses: ./.github/actions/trivy-iac
+  #       uses: NHSDigital/nhs-notify-shared-modules/.github/actions/trivy-iac@3.0.8
   # trivy-package:
   #   if: ${{ !inputs.skip_trivy_package }}
   #   name: "Trivy Package Scan"
@@ -178,11 +177,11 @@ jobs:
   #   timeout-minutes: 10
   #   steps:
   #     - name: "Checkout code"
-  #       uses: actions/checkout@v4
+  #       uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
   #     - name: "Setup ASDF"
   #       uses: asdf-vm/actions/setup@1902764435ca0dd2f3388eea723a4f92a4eb8302
   #     - name: "Trivy Package Scan"
-  #       uses: ./.github/actions/trivy-package
+  #       uses: NHSDigital/nhs-notify-shared-modules/.github/actions/trivy-package@3.0.8
   count-lines-of-code:
     name: "Count lines of code"
     runs-on: ubuntu-latest
@@ -192,9 +191,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: "Count lines of code"
-        uses: ./.github/actions/create-lines-of-code-report
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/create-lines-of-code-report@3.0.8
         with:
           build_datetime: "${{ inputs.build_datetime }}"
           build_timestamp: "${{ inputs.build_timestamp }}"
@@ -211,9 +210,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: "Scan dependencies"
-        uses: ./.github/actions/scan-dependencies
+        uses: NHSDigital/nhs-notify-shared-modules/.github/actions/scan-dependencies@3.0.8
         with:
           build_datetime: "${{ inputs.build_datetime }}"
           build_timestamp: "${{ inputs.build_timestamp }}"
@@ -233,7 +232,7 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
@@ -268,8 +267,7 @@ jobs:
       contents: read
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: "Restore node_modules from cache"
         uses: ./.github/actions/node-modules-cache
         with:
@@ -290,8 +288,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Check schema versions
         run: |
           source scripts/is_valid_increment.sh
