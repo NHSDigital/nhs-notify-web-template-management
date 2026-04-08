@@ -110,7 +110,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     const createProofAvailableLetterTemplate = async (
       user: TestUser
     ): Promise<Template> => {
-      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+      const letterTemplate = TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         user,
         'Test Letter template',
@@ -137,7 +137,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     };
 
     const createVirusScanFailedLetterTemplate = async (): Promise<Template> => {
-      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+      const letterTemplate = TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         user1,
         'Test Letter template',

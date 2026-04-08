@@ -11,7 +11,7 @@ import {
 import { useActionState } from 'react';
 import { ChooseChannelTemplateFormState } from '@forms/ChooseChannelTemplate/server-action';
 import { usePathname } from 'next/navigation';
-import { LetterType } from 'nhs-notify-web-template-management-types';
+import { FrontendSupportedAccessibleFormats } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation');
 
@@ -61,7 +61,7 @@ const createEmptyMessagePlan = (channel: string, cascadeIndex = 0) => {
 
 const createMessagePlanWithConditionalTemplate = (
   templateId: string,
-  accessibleFormat: Exclude<LetterType, 'x0'>
+  accessibleFormat: FrontendSupportedAccessibleFormats
 ) => ({
   ...ROUTING_CONFIG,
   cascade: [
@@ -103,7 +103,7 @@ const propsByChannel = {
     pageHeading: 'Choose a large print letter template',
     cascadeIndex: 3,
     templateList: [LARGE_PRINT_LETTER_TEMPLATE],
-    accessibleFormat: 'x1' as Exclude<LetterType, 'x0'>,
+    accessibleFormat: 'x1',
   },
 };
 
@@ -430,7 +430,7 @@ describe('ChooseChannelTemplate', () => {
     const container = renderComponent({
       ...propsByChannel.LARGE_PRINT_LETTER,
       messagePlan: createEmptyMessagePlan('LETTER', 3),
-      accessibleFormat: 'x1' as Exclude<LetterType, 'x0'>,
+      accessibleFormat: 'x1',
     });
     expect(container.asFragment()).toMatchSnapshot();
   });

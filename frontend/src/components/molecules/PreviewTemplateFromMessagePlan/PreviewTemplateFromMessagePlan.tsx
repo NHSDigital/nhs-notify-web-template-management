@@ -8,7 +8,8 @@ import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   templateTypeToUrlTextMappings,
   PageComponentProps,
-  RoutingSupportedLetterType,
+  isFrontendSupportedLetterType,
+  FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
 import { interpolate } from '@utils/interpolate';
@@ -28,13 +29,14 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
-  let letterType: RoutingSupportedLetterType | undefined;
-  if (template.templateType === 'LETTER' && 'letterType' in template) {
-    const isForeignLanguage =
-      'language' in template && template.language && template.language !== 'en';
-    letterType = isForeignLanguage
-      ? 'language'
-      : (template.letterType as RoutingSupportedLetterType);
+  let letterType: FrontendSupportedLetterType | undefined;
+  if (template.templateType === 'LETTER') {
+    const isForeignLanguage = template.language && template.language !== 'en';
+    if (isForeignLanguage) {
+      letterType = 'language';
+    } else if (isFrontendSupportedLetterType(template.letterType)) {
+      letterType = template.letterType;
+    }
   }
 
   const backLinkHref = interpolate(content.backLink.href, {
