@@ -15,7 +15,6 @@ import {
   EMAIL_TEMPLATE,
   LARGE_PRINT_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { RoutingConfigFactory } from '@testhelpers/routing-config-factory';
@@ -60,7 +59,6 @@ const kuTemplateId = '31399023-08a2-4dc7-81c7-e25b284b2aab';
 const sqTemplateId = '35746144-cac4-4e1f-b92b-4f58e9f1154f';
 const largePrintTemplateId = '72ebc15c-d950-4e2e-99d4-3de7f174fba6';
 const bslTemplateId = 'a4e82c0f-3b91-47d5-86e2-5c9f1a7d3b04';
-const authoringLetterTemplateId = '770ed5da-765d-431c-b4b4-4068d11ffed1';
 
 const templates: MessagePlanTemplates = {
   [appTemplateId]: {
@@ -79,17 +77,17 @@ const templates: MessagePlanTemplates = {
     templateStatus: 'SUBMITTED',
   },
   [letterTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...AUTHORING_LETTER_TEMPLATE,
     id: letterTemplateId,
     templateStatus: 'SUBMITTED',
   },
   [kuTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...AUTHORING_LETTER_TEMPLATE,
     id: kuTemplateId,
     templateStatus: 'SUBMITTED',
   },
   [sqTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...AUTHORING_LETTER_TEMPLATE,
     id: sqTemplateId,
     templateStatus: 'SUBMITTED',
   },
@@ -102,11 +100,6 @@ const templates: MessagePlanTemplates = {
     ...BSL_LETTER_TEMPLATE,
     id: bslTemplateId,
     templateStatus: 'SUBMITTED',
-  },
-  [authoringLetterTemplateId]: {
-    ...AUTHORING_LETTER_TEMPLATE,
-    id: authoringLetterTemplateId,
-    templateStatus: 'PROOF_APPROVED',
   },
 };
 
@@ -355,7 +348,7 @@ describe.each(digitalChannels)(
 );
 
 describe('letter only', () => {
-  it('shows only the card for the default template when no conditional templates are included (PDF letter)', async () => {
+  it('shows only the card for the default template when no conditional templates are included', async () => {
     const routingConfig = createRoutingConfig({
       cascade: [
         {
@@ -368,50 +361,6 @@ describe('letter only', () => {
     });
 
     const template = templates[letterTemplateId];
-
-    await renderPage(routingConfig);
-
-    expect(
-      screen.queryByRole('button', {
-        name: 'Open all digital template previews',
-      })
-    ).not.toBeInTheDocument();
-
-    const block = screen.getByTestId('message-plan-block-LETTER');
-
-    const card = within(block).getByTestId('channel-card');
-
-    const name = within(card).getByTestId('template-name');
-
-    expect(name).toHaveTextContent(template.name);
-
-    const link = within(card).getByRole('link');
-
-    expect(link).toHaveTextContent('Preview template (opens in a new tab)');
-
-    expect(link).toHaveAttribute(
-      'href',
-      `/preview-submitted-letter-template/${template.id}`
-    );
-
-    expect(
-      within(block).queryByTestId('conditional-templates')
-    ).not.toBeInTheDocument();
-  });
-
-  it('shows only the card for the default template when no conditional templates are included (AUTHORING letter)', async () => {
-    const routingConfig = createRoutingConfig({
-      cascade: [
-        {
-          channel: 'LETTER',
-          channelType: 'primary',
-          defaultTemplateId: authoringLetterTemplateId,
-          cascadeGroups: ['standard'],
-        },
-      ],
-    });
-
-    const template = templates[authoringLetterTemplateId];
 
     await renderPage(routingConfig);
 
@@ -490,7 +439,7 @@ describe('letter only', () => {
 
     expect(link).toHaveAttribute(
       'href',
-      `/preview-submitted-letter-template/${template.id}`
+      `/message-plans/preview-message-plan/${routingConfig.id}/preview-template/${template.id}`
     );
 
     expect(link).toHaveAttribute('target', '_blank');
@@ -602,7 +551,7 @@ describe('letter only', () => {
 
       expect(links[index]).toHaveAttribute(
         'href',
-        `/preview-submitted-letter-template/${template.id}`
+        `/message-plans/preview-message-plan/${routingConfig.id}/preview-template/${template.id}`
       );
 
       expect(links[index]).toHaveAttribute('target', '_blank');

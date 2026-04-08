@@ -13,6 +13,7 @@ import { RoutingReviewAndMoveToProductionPreviewLetterTemplatePage } from 'pages
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
+import { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -29,11 +30,10 @@ function createMessagePlans(user: TestUser) {
   };
 }
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   const templateIds = {
     EMAIL: randomUUID(),
     LETTER: randomUUID(),
-    PDF_LETTER: randomUUID(),
   };
 
   return {
@@ -45,12 +45,13 @@ function createTemplates(user: TestUser) {
     LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LETTER,
       user,
-      `Test Letter template - ${templateIds.LETTER}`
-    ),
-    PDF_LETTER: TemplateFactory.uploadPdfLetterTemplate(
-      templateIds.PDF_LETTER,
-      user,
-      `Test PDF Letter template - ${templateIds.PDF_LETTER}`
+      `Test Letter template - ${templateIds.LETTER}`,
+      'PROOF_APPROVED',
+      {
+        letterVariantId: letterVariant.id,
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }
@@ -63,8 +64,11 @@ test.describe('Routing - Review and Move to Production / Preview Letter template
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
 
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     messagePlans = createMessagePlans(user);
-    templates = createTemplates(user);
+    templates = createTemplates(user, globalLetterVariant);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
     await templateStorageHelper.seedTemplateData(Object.values(templates));
@@ -154,17 +158,6 @@ test.describe('Routing - Review and Move to Production / Preview Letter template
         new RoutingReviewAndMoveToProductionPreviewLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.EMAIL.id);
-
-      await previewLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
-    test('when template is a PDF letter', async ({ page, baseURL }) => {
-      const previewLetterTemplatePage =
-        new RoutingReviewAndMoveToProductionPreviewLetterTemplatePage(page)
-          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-          .setPathParam('templateId', templates.PDF_LETTER.id);
 
       await previewLetterTemplatePage.loadPage();
 

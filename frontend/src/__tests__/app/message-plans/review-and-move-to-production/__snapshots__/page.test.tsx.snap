@@ -557,10 +557,10 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                   <p
                     data-testid="template-name"
                   >
-                    letter template name
+                    authoring letter template name
                   </p>
                   <a
-                    href="/preview-letter-template/278e1a92-353f-42a3-b08d-565ea1c9d763"
+                    href="/message-plans/review-and-move-to-production/rc-123/preview-template/278e1a92-353f-42a3-b08d-565ea1c9d763"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -673,10 +673,10 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                       <p
                         data-testid="template-name"
                       >
-                        authoring letter template name
+                        large print letter template name
                       </p>
                       <a
-                        href="/message-plans/review-and-move-to-production/rc-123/preview-template/770ed5da-765d-431c-b4b4-4068d11ffed1"
+                        href="/message-plans/review-and-move-to-production/rc-123/preview-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -735,11 +735,11 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                       <p
                         data-testid="template-name"
                       >
-                        letter template name
+                        authoring letter template name
                       </p>
                       <a
                         class="nhsuk-u-margin-bottom-0"
-                        href="/preview-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
+                        href="/message-plans/review-and-move-to-production/rc-123/preview-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -748,11 +748,11 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                       <p
                         data-testid="template-name"
                       >
-                        letter template name
+                        authoring letter template name
                       </p>
                       <a
                         class="nhsuk-u-margin-bottom-0"
-                        href="/preview-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
+                        href="/message-plans/review-and-move-to-production/rc-123/preview-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
                         rel="noopener noreferrer"
                         target="_blank"
                       >

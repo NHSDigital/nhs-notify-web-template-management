@@ -5,7 +5,6 @@ import PreviewLetterTemplateFromReviewAndMoveToProduction, {
   generateMetadata,
 } from '@app/message-plans/review-and-move-to-production/[routingConfigId]/preview-template/[templateId]/page';
 import { SummaryLetterFromMessagePlan } from '@molecules/SummaryLetterFromMessagePlan/SummaryLetterFromMessagePlan';
-import { validateAuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock(
   '@molecules/SummaryLetterFromMessagePlan/SummaryLetterFromMessagePlan'
@@ -23,12 +22,7 @@ describe('PreviewLetterTemplateFromReviewAndMoveToProduction page', () => {
     const page =
       await PreviewLetterTemplateFromReviewAndMoveToProduction(props);
 
-    expect(page).toEqual(
-      <SummaryLetterFromMessagePlan
-        {...props}
-        validateTemplate={validateAuthoringLetterTemplate}
-      />
-    );
+    expect(page).toEqual(<SummaryLetterFromMessagePlan {...props} />);
   });
 
   it('should have the correct page title', async () => {

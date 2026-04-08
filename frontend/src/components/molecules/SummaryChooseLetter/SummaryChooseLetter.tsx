@@ -1,5 +1,4 @@
 import {
-  AuthoringLetterTemplate,
   LetterTemplate,
   MessagePlanAndTemplatePageProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -18,7 +17,7 @@ type SummaryChooseLetterProps = MessagePlanAndTemplatePageProps & {
 
 export const SummaryChooseLetter = async (props: SummaryChooseLetterProps) => {
   const { templateId, routingConfigId } = await props.params;
-  const { validateTemplate, redirectUrlOnLockNumberFailure } = props;
+  const { redirectUrlOnLockNumberFailure } = props;
 
   const searchParams = await props.searchParams;
   const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
@@ -31,18 +30,19 @@ export const SummaryChooseLetter = async (props: SummaryChooseLetterProps) => {
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateTemplate(template);
+  const validatedTemplate = props.validateTemplate(template);
 
-  if (!validatedTemplate) {
+  if (
+    !validatedTemplate ||
+    !('letterVariantId' in validatedTemplate) ||
+    !validatedTemplate.letterVariantId
+  ) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const letterVariantId = (validatedTemplate as AuthoringLetterTemplate)
-    .letterVariantId;
-
-  const letterVariant = letterVariantId
-    ? await getLetterVariantById(letterVariantId)
-    : undefined;
+  const letterVariant = await getLetterVariantById(
+    validatedTemplate.letterVariantId
+  );
 
   return (
     <NHSNotifyContainer>

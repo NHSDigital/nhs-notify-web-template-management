@@ -1,5 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import type { Channel } from 'nhs-notify-web-template-management-types';
+import type {
+  Channel,
+  LetterVariant,
+} from 'nhs-notify-web-template-management-types';
 import { test, expect } from '@playwright/test';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
@@ -20,7 +23,7 @@ import { getTestContext } from 'helpers/context/context';
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   const templateIds = {
     NHSAPP: randomUUID(),
     EMAIL: randomUUID(),
@@ -30,7 +33,6 @@ function createTemplates(user: TestUser) {
     BSL_LETTER: randomUUID(),
     FRENCH_LETTER: randomUUID(),
     SPANISH_LETTER: randomUUID(),
-    PDF_LETTER: randomUUID(),
   };
 
   return {
@@ -56,6 +58,7 @@ function createTemplates(user: TestUser) {
       `Test Letter template - ${templateIds.LETTER}`,
       'SUBMITTED',
       {
+        letterVariantId: letterVariant.id,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -69,6 +72,7 @@ function createTemplates(user: TestUser) {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -80,6 +84,7 @@ function createTemplates(user: TestUser) {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -91,6 +96,7 @@ function createTemplates(user: TestUser) {
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -102,13 +108,8 @@ function createTemplates(user: TestUser) {
         language: 'es',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
-    ),
-    PDF_LETTER: TemplateFactory.uploadPdfLetterTemplate(
-      templateIds.PDF_LETTER,
-      user,
-      `Test PDF Letter template - ${templateIds.PDF_LETTER}`,
-      'SUBMITTED'
     ),
   };
 }
@@ -121,7 +122,11 @@ test.describe('Routing - Review and Move to Production page', () => {
   test.beforeAll(async () => {
     const context = getTestContext();
     user = await context.auth.getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user);
+
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    templates = createTemplates(user, globalLetterVariant);
 
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
@@ -370,53 +375,6 @@ test.describe('Routing - Review and Move to Production page', () => {
 
       await newTab.close();
     });
-  });
-
-  test('displays PDF letter template link pointing to submitted letter page', async ({
-    page,
-  }) => {
-    const { dbEntry } = RoutingConfigFactory.createWithChannels(
-      user,
-      ['LETTER'],
-      { status: 'DRAFT' }
-    ).addTemplate('LETTER', templates.PDF_LETTER.id);
-
-    await routingConfigStorageHelper.seed([dbEntry]);
-
-    const reviewPage = new RoutingReviewAndMoveToProductionPage(
-      page
-    ).setPathParam('messagePlanId', dbEntry.id);
-
-    await reviewPage.loadPage();
-
-    const templateBlock = await reviewPage.getTemplateBlock('LETTER');
-
-    await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
-      templates.PDF_LETTER.name
-    );
-    await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
-      'Preview template (opens in a new tab)'
-    );
-    await expect(
-      templateBlock.defaultTemplateCard.templateLink
-    ).toHaveAttribute(
-      'href',
-      `/templates/preview-submitted-letter-template/${templates.PDF_LETTER.id}`
-    );
-    await expect(
-      templateBlock.defaultTemplateCard.templateLink
-    ).toHaveAttribute('target', '_blank');
-
-    const [newTab] = await Promise.all([
-      page.context().waitForEvent('page'),
-      templateBlock.defaultTemplateCard.templateLink.click(),
-    ]);
-
-    await expect(newTab).toHaveURL(
-      `/templates/preview-submitted-letter-template/${templates.PDF_LETTER.id}`
-    );
-
-    await newTab.close();
   });
 
   test('keep in draft button navigates to the edit message plan page', async ({

@@ -1,9 +1,9 @@
 import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   LARGE_PRINT_LETTER_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
   ROUTING_CONFIG,
   SMS_TEMPLATE,
@@ -97,7 +97,7 @@ const propsByChannel = {
   LETTER: {
     pageHeading: 'Choose a letter template',
     cascadeIndex: 3,
-    templateList: [PDF_LETTER_TEMPLATE],
+    templateList: [AUTHORING_LETTER_TEMPLATE],
   },
   LARGE_PRINT_LETTER: {
     pageHeading: 'Choose a large print letter template',

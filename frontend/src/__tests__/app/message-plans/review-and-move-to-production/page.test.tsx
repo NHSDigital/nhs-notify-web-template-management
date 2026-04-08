@@ -9,7 +9,6 @@ import {
   EMAIL_TEMPLATE,
   LARGE_PRINT_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
   AUTHORING_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
@@ -62,25 +61,19 @@ const letterTemplateId = '278e1a92-353f-42a3-b08d-565ea1c9d763';
 const kuTemplateId = '31399023-08a2-4dc7-81c7-e25b284b2aab';
 const sqTemplateId = '35746144-cac4-4e1f-b92b-4f58e9f1154f';
 const largePrintTemplateId = '72ebc15c-d950-4e2e-99d4-3de7f174fba6';
-const authoringLetterTemplateId = '770ed5da-765d-431c-b4b4-4068d11ffed1';
 const bslTemplateId = 'c7d93e1a-4b05-48f6-97a3-6d2e3b8c5f17';
 
 const templates: MessagePlanTemplates = {
   [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
   [emailTemplateId]: { ...EMAIL_TEMPLATE, id: emailTemplateId },
   [smsTemplateId]: { ...SMS_TEMPLATE, id: smsTemplateId },
-  [letterTemplateId]: { ...PDF_LETTER_TEMPLATE, id: letterTemplateId },
-  [kuTemplateId]: { ...PDF_LETTER_TEMPLATE, id: kuTemplateId },
-  [sqTemplateId]: { ...PDF_LETTER_TEMPLATE, id: sqTemplateId },
+  [letterTemplateId]: { ...AUTHORING_LETTER_TEMPLATE, id: letterTemplateId },
+  [kuTemplateId]: { ...AUTHORING_LETTER_TEMPLATE, id: kuTemplateId },
+  [sqTemplateId]: { ...AUTHORING_LETTER_TEMPLATE, id: sqTemplateId },
   [largePrintTemplateId]: {
     ...LARGE_PRINT_LETTER_TEMPLATE,
     id: largePrintTemplateId,
     templateStatus: 'SUBMITTED',
-  },
-  [authoringLetterTemplateId]: {
-    ...AUTHORING_LETTER_TEMPLATE,
-    id: authoringLetterTemplateId,
-    templateStatus: 'PROOF_APPROVED',
   },
   [bslTemplateId]: {
     ...BSL_LETTER_TEMPLATE,
@@ -320,7 +313,7 @@ describe('Review and move to production page', () => {
       ).toBeInTheDocument();
     });
 
-    it('renders PDF letter template as link', async () => {
+    it('renders letter templates with a link', async () => {
       const routingConfig = createRoutingConfig({
         cascade: [
           {
@@ -343,37 +336,7 @@ describe('Review and move to production page', () => {
       expect(link).toHaveTextContent('Preview template (opens in a new tab)');
       expect(link).toHaveAttribute(
         'href',
-        `/preview-letter-template/${letterTemplateId}`
-      );
-      expect(link).toHaveAttribute('target', '_blank');
-    });
-
-    it('renders AUTHORING letter template as link', async () => {
-      const routingConfig = createRoutingConfig({
-        cascade: [
-          {
-            channel: 'LETTER',
-            channelType: 'primary',
-            defaultTemplateId: authoringLetterTemplateId,
-            cascadeGroups: ['standard'],
-          },
-        ],
-      });
-
-      await renderPage(routingConfig);
-
-      const block = screen.getByTestId('message-plan-block-LETTER');
-      const templateName = within(block).getByTestId('template-name');
-
-      expect(templateName).toHaveTextContent(
-        templates[authoringLetterTemplateId].name
-      );
-
-      const link = within(block).getByRole('link');
-      expect(link).toHaveTextContent('Preview template (opens in a new tab)');
-      expect(link).toHaveAttribute(
-        'href',
-        `/message-plans/review-and-move-to-production/${routingConfig.id}/preview-template/${authoringLetterTemplateId}`
+        `/message-plans/review-and-move-to-production/${routingConfig.id}/preview-template/${letterTemplateId}`
       );
       expect(link).toHaveAttribute('target', '_blank');
     });
@@ -501,7 +464,6 @@ describe('Review and move to production page', () => {
           conditionalTemplates: [
             { templateId: kuTemplateId, language: 'ku' },
             { templateId: sqTemplateId, language: 'sq' },
-            { templateId: authoringLetterTemplateId, accessibleFormat: 'x1' },
             { templateId: largePrintTemplateId, accessibleFormat: 'x1' },
             { templateId: bslTemplateId, accessibleFormat: 'q4' },
           ],

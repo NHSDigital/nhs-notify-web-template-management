@@ -4,17 +4,22 @@ import {
   AUTHORING_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   NHS_APP_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
   ROUTING_CONFIG,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
+import { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+
+const APPROVED_LETTER: AuthoringLetterTemplate = {
+  ...AUTHORING_LETTER_TEMPLATE,
+  templateStatus: 'PROOF_APPROVED',
+};
 
 describe('MessagePlanCascadePreview', () => {
   const templates = {
     [NHS_APP_TEMPLATE.id]: NHS_APP_TEMPLATE,
     [EMAIL_TEMPLATE.id]: EMAIL_TEMPLATE,
     [SMS_TEMPLATE.id]: SMS_TEMPLATE,
-    [PDF_LETTER_TEMPLATE.id]: PDF_LETTER_TEMPLATE,
+    [APPROVED_LETTER.id]: APPROVED_LETTER,
   };
 
   it('renders cascade preview with all channels', () => {
@@ -22,6 +27,7 @@ describe('MessagePlanCascadePreview', () => {
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -37,6 +43,7 @@ describe('MessagePlanCascadePreview', () => {
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -45,7 +52,7 @@ describe('MessagePlanCascadePreview', () => {
     expect(templateNames[0]).toHaveTextContent(NHS_APP_TEMPLATE.name);
     expect(templateNames[1]).toHaveTextContent(EMAIL_TEMPLATE.name);
     expect(templateNames[2]).toHaveTextContent(SMS_TEMPLATE.name);
-    expect(templateNames[3]).toHaveTextContent(PDF_LETTER_TEMPLATE.name);
+    expect(templateNames[3]).toHaveTextContent(AUTHORING_LETTER_TEMPLATE.name);
   });
 
   it('renders open/close all previews button when non-letter channels present', () => {
@@ -53,6 +60,7 @@ describe('MessagePlanCascadePreview', () => {
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -71,7 +79,7 @@ describe('MessagePlanCascadePreview', () => {
           cascadeGroups: ['standard' as const],
           channel: 'LETTER' as const,
           channelType: 'primary' as const,
-          defaultTemplateId: PDF_LETTER_TEMPLATE.id,
+          defaultTemplateId: AUTHORING_LETTER_TEMPLATE.id,
         },
       ],
     };
@@ -80,6 +88,7 @@ describe('MessagePlanCascadePreview', () => {
       <MessagePlanCascadePreview
         messagePlan={letterOnlyRoutingConfig}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -93,6 +102,7 @@ describe('MessagePlanCascadePreview', () => {
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -124,6 +134,7 @@ describe('MessagePlanCascadePreview', () => {
       <MessagePlanCascadePreview
         messagePlan={singleChannelRoutingConfig}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -132,11 +143,12 @@ describe('MessagePlanCascadePreview', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('renders letter template as link', () => {
+  it('renders letter template with link using letterPreviewHrefBase prop', () => {
     render(
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templates}
+        letterPreviewHrefBase={`/base-url`}
       />
     );
 
@@ -144,45 +156,10 @@ describe('MessagePlanCascadePreview', () => {
     const link = letterBlock.querySelector('a');
     expect(link).toHaveAttribute(
       'href',
-      `/preview-letter-template/${PDF_LETTER_TEMPLATE.id}`
+      `/base-url/preview-template/${AUTHORING_LETTER_TEMPLATE.id}`
     );
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveTextContent('Preview template (opens in a new tab)');
-  });
-
-  it('renders submitted letter template with submitted link', () => {
-    const submittedTemplate = {
-      ...PDF_LETTER_TEMPLATE,
-      id: 'submitted-letter-id',
-      templateStatus: 'SUBMITTED' as const,
-    };
-    const templatesWithSubmitted = {
-      ...templates,
-      [submittedTemplate.id]: submittedTemplate,
-    };
-    const routingConfigWithSubmitted = {
-      ...ROUTING_CONFIG,
-      cascade: ROUTING_CONFIG.cascade.map((item) =>
-        item.channel === 'LETTER'
-          ? { ...item, defaultTemplateId: submittedTemplate.id }
-          : item
-      ),
-    };
-
-    render(
-      <MessagePlanCascadePreview
-        messagePlan={routingConfigWithSubmitted}
-        templates={templatesWithSubmitted}
-      />
-    );
-
-    const letterBlock = screen.getByTestId('message-plan-block-LETTER');
-    const link = letterBlock.querySelector('a');
-    expect(link).toHaveAttribute(
-      'href',
-      `/preview-submitted-letter-template/${submittedTemplate.id}`
-    );
-    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('renders non-letter templates with preview details', () => {
@@ -190,6 +167,7 @@ describe('MessagePlanCascadePreview', () => {
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -202,13 +180,14 @@ describe('MessagePlanCascadePreview', () => {
       [NHS_APP_TEMPLATE.id]: NHS_APP_TEMPLATE,
       // EMAIL_TEMPLATE is missing
       [SMS_TEMPLATE.id]: SMS_TEMPLATE,
-      [PDF_LETTER_TEMPLATE.id]: PDF_LETTER_TEMPLATE,
+      [AUTHORING_LETTER_TEMPLATE.id]: AUTHORING_LETTER_TEMPLATE,
     };
 
     render(
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templatesWithMissing}
+        letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${ROUTING_CONFIG.id}`}
       />
     );
 
@@ -220,60 +199,12 @@ describe('MessagePlanCascadePreview', () => {
     expect(screen.getByTestId('message-plan-block-LETTER')).toBeInTheDocument();
   });
 
-  it('renders authoring letter template with letterPreviewHrefBase link', () => {
-    const authoringTemplates = {
-      ...templates,
-      [AUTHORING_LETTER_TEMPLATE.id]: AUTHORING_LETTER_TEMPLATE,
-    };
-    const routingConfigWithAuthoring = {
-      ...ROUTING_CONFIG,
-      cascade: ROUTING_CONFIG.cascade.map((item) =>
-        item.channel === 'LETTER'
-          ? { ...item, defaultTemplateId: AUTHORING_LETTER_TEMPLATE.id }
-          : item
-      ),
-    };
-
-    render(
-      <MessagePlanCascadePreview
-        messagePlan={routingConfigWithAuthoring}
-        templates={authoringTemplates}
-        letterPreviewHrefBase='/message-plans/review-and-move-to-production/routing-config-id'
-      />
-    );
-
-    const letterBlock = screen.getByTestId('message-plan-block-LETTER');
-    const link = letterBlock.querySelector('a');
-    expect(link).toHaveAttribute(
-      'href',
-      `/message-plans/review-and-move-to-production/routing-config-id/preview-template/${AUTHORING_LETTER_TEMPLATE.id}`
-    );
-    expect(link).toHaveAttribute('target', '_blank');
-  });
-
-  it('renders PDF letter template with standard link even when letterPreviewHrefBase is provided', () => {
-    render(
-      <MessagePlanCascadePreview
-        messagePlan={ROUTING_CONFIG}
-        templates={templates}
-        letterPreviewHrefBase='/message-plans/review-and-move-to-production/routing-config-id'
-      />
-    );
-
-    const letterBlock = screen.getByTestId('message-plan-block-LETTER');
-    const link = letterBlock.querySelector('a');
-    expect(link).toHaveAttribute(
-      'href',
-      `/preview-letter-template/${PDF_LETTER_TEMPLATE.id}`
-    );
-    expect(link).toHaveAttribute('target', '_blank');
-  });
-
   it('matches snapshot', () => {
     const { asFragment } = render(
       <MessagePlanCascadePreview
         messagePlan={ROUTING_CONFIG}
         templates={templates}
+        letterPreviewHrefBase={`/message-plans/preview-message-plan/${ROUTING_CONFIG.id}`}
       />
     );
 

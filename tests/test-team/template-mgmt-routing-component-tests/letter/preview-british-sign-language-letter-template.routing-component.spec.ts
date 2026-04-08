@@ -15,6 +15,7 @@ import { RoutingPreviewBritishSignLanguageLetterTemplatePage } from 'pages/routi
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
+import { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -31,7 +32,7 @@ function createMessagePlans(user: TestUser) {
   };
 }
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
       randomUUID(),
@@ -41,7 +42,13 @@ function createTemplates(user: TestUser) {
     STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
-      'Standard letter template name'
+      'Standard letter template name',
+      'SUBMITTED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
+      }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
@@ -52,6 +59,7 @@ function createTemplates(user: TestUser) {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
   };
@@ -65,8 +73,11 @@ test.describe('Routing - Preview British Sign Language letter template page', ()
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
 
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     messagePlans = createMessagePlans(user);
-    templates = createTemplates(user);
+    templates = createTemplates(user, globalLetterVariant);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
     await templateStorageHelper.seedTemplateData(Object.values(templates));
@@ -152,12 +163,6 @@ test.describe('Routing - Preview British Sign Language letter template page', ()
     );
 
     await expect(previewBSLLetterTemplatePage.summaryList).toBeVisible();
-
-    expect(templates.BSL_LETTER.campaignId).toBeTruthy();
-
-    await expect(previewBSLLetterTemplatePage.campaignId).toContainText(
-      templates.BSL_LETTER.campaignId!
-    );
 
     await expect(
       previewBSLLetterTemplatePage.letterPreviewHeading

@@ -15,6 +15,7 @@ import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/p
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
+import { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -31,22 +32,23 @@ function createMessagePlans(user: TestUser) {
   };
 }
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
       randomUUID(),
       user,
       'Email template name'
     ),
-    LETTER: TemplateFactory.uploadPdfLetterTemplate(
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user,
-      'Letter template name'
-    ),
-    AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
-      user,
-      'Authoring letter template name'
+      'Letter template name',
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
+      }
     ),
   };
 }
@@ -59,8 +61,11 @@ test.describe('Routing - Preview Letter template page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
 
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     messagePlans = createMessagePlans(user);
-    templates = createTemplates(user);
+    templates = createTemplates(user, globalLetterVariant);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
     await templateStorageHelper.seedTemplateData(Object.values(templates));
@@ -88,7 +93,7 @@ test.describe('Routing - Preview Letter template page', () => {
     await assertAndClickBackLinkTop(props);
   });
 
-  test('loads the Letter template', async ({ page, baseURL }) => {
+  test('loads the letter template', async ({ page, baseURL }) => {
     const previewLetterTemplatePage =
       new RoutingPreviewStandardLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
@@ -111,41 +116,9 @@ test.describe('Routing - Preview Letter template page', () => {
       templates.LETTER.campaignId!
     );
 
-    await expect(
-      page.getByText(templates.LETTER.files!.pdfTemplate!.fileName)
-    ).toBeVisible();
-
-    await expect(
-      page.getByText(templates.LETTER.files!.testDataCsv!.fileName)
-    ).toBeVisible();
-  });
-
-  test('loads the AUTHORING letter template', async ({ page, baseURL }) => {
-    const previewLetterTemplatePage =
-      new RoutingPreviewStandardLetterTemplatePage(page)
-        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id)
-        .setSearchParam('lockNumber', '0');
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
-    );
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.AUTHORING_LETTER.name
-    );
-
-    expect(templates.AUTHORING_LETTER.campaignId).toBeTruthy();
-
-    await expect(previewLetterTemplatePage.campaignId).toContainText(
-      templates.AUTHORING_LETTER.campaignId!
-    );
-
     await expect(previewLetterTemplatePage.templateId).toBeVisible();
     await expect(previewLetterTemplatePage.templateId).toContainText(
-      templates.AUTHORING_LETTER.id
+      templates.LETTER.id
     );
 
     await expect(previewLetterTemplatePage.summaryList).toBeVisible();
@@ -155,7 +128,7 @@ test.describe('Routing - Preview Letter template page', () => {
 
     await expect(previewLetterTemplatePage.letterPreviewIframe).toHaveAttribute(
       'src',
-      `/templates/files/${templates.AUTHORING_LETTER.clientId}/renders/${templates.AUTHORING_LETTER.id}/initial-render.pdf`
+      `/templates/files/${templates.LETTER.clientId}/renders/${templates.LETTER.id}/initial-render.pdf`
     );
   });
 

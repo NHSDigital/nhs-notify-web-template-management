@@ -1,39 +1,29 @@
 import {
-  AuthoringLetterTemplate,
-  LetterTemplate,
   MessagePlanAndTemplatePageProps,
+  validateAuthoringLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-type SummaryLetterFromMessagePlanProps = MessagePlanAndTemplatePageProps & {
-  validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
-};
-
 export const SummaryLetterFromMessagePlan = async (
-  props: SummaryLetterFromMessagePlanProps
+  props: MessagePlanAndTemplatePageProps
 ) => {
   const { templateId, routingConfigId } = await props.params;
-  const { validateTemplate } = props;
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateTemplate(template);
+  const validatedTemplate = validateAuthoringLetterTemplate(template);
 
-  if (!validatedTemplate) {
+  if (!validatedTemplate || !validatedTemplate.letterVariantId) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const letterVariantId = (validatedTemplate as AuthoringLetterTemplate)
-    .letterVariantId;
-
-  const letterVariant = letterVariantId
-    ? await getLetterVariantById(letterVariantId)
-    : undefined;
+  const letterVariant = await getLetterVariantById(
+    validatedTemplate.letterVariantId
+  );
 
   return (
     <NHSNotifyContainer>

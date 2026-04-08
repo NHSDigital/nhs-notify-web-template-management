@@ -1,7 +1,6 @@
 import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
 import {
   AUTHORING_LETTER_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
   makeLetterVariant,
   ROUTING_CONFIG,
 } from '@testhelpers/helpers';
@@ -71,7 +70,7 @@ describe('SummaryChooseLetter', () => {
 
   it('should redirect to invalid-template when template fails validation', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...PDF_LETTER_TEMPLATE,
+      ...AUTHORING_LETTER_TEMPLATE,
       templateType: 'EMAIL',
     } as unknown as TemplateDto);
 
@@ -80,28 +79,7 @@ describe('SummaryChooseLetter', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('renders a PDF letter template preview', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      ...PDF_LETTER_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-    });
-
-    const page = await SummaryChooseLetter({
-      ...defaultProps,
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: PDF_LETTER_TEMPLATE.id,
-      }),
-    });
-
-    const container = render(page);
-
-    expect(getTemplateMock).toHaveBeenCalledWith(PDF_LETTER_TEMPLATE.id);
-    expect(getLetterVariantByIdMock).not.toHaveBeenCalled();
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('renders an authoring letter template preview', async () => {
+  it('renders a letter template preview', async () => {
     const letterVariant = makeLetterVariant();
 
     getTemplateMock.mockResolvedValueOnce({

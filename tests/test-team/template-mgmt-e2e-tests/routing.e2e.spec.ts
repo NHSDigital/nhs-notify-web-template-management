@@ -27,11 +27,14 @@ import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
 import type { Template } from '../helpers/types';
 import { loginAsUser } from 'helpers/auth/login-as-user';
-import type { Channel } from 'nhs-notify-web-template-management-types';
+import type {
+  Channel,
+  LetterVariant,
+} from 'nhs-notify-web-template-management-types';
 
 const templateStorageHelper = new TemplateStorageHelper();
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   const templateIds = {
     NHSAPP: randomUUID(),
     EMAIL: randomUUID(),
@@ -70,6 +73,7 @@ function createTemplates(user: TestUser) {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -81,6 +85,7 @@ function createTemplates(user: TestUser) {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -92,6 +97,7 @@ function createTemplates(user: TestUser) {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -103,6 +109,7 @@ function createTemplates(user: TestUser) {
         language: 'ar',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     POLISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -114,6 +121,7 @@ function createTemplates(user: TestUser) {
         language: 'pl',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
   };
@@ -178,7 +186,10 @@ test.describe('Routing', () => {
     user = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
-    templates = createTemplates(user);
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    templates = createTemplates(user, globalLetterVariant);
 
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

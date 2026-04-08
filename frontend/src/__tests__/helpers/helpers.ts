@@ -176,7 +176,7 @@ export const ROUTING_CONFIG: RoutingConfig = {
       cascadeGroups: ['standard'],
       channel: 'LETTER',
       channelType: 'primary',
-      defaultTemplateId: PDF_LETTER_TEMPLATE.id,
+      defaultTemplateId: AUTHORING_LETTER_TEMPLATE.id,
     },
   ],
   lockNumber: 0,

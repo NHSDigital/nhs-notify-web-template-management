@@ -43,25 +43,13 @@ function getLetterTemplatePreviewHref(
   template: TemplateDto,
   letterPreviewHrefBase?: string
 ): string {
-  if (
-    letterPreviewHrefBase &&
-    'letterVersion' in template &&
-    template.letterVersion === 'AUTHORING'
-  ) {
-    return `${letterPreviewHrefBase}/preview-template/${template.id}`;
-  }
-
-  const linkTemplate =
-    template.templateStatus === 'SUBMITTED'
-      ? pageContent.letterTemplateLinks.previewSubmitted
-      : pageContent.letterTemplateLinks.preview;
-  return interpolate(linkTemplate, { id: template.id });
+  return `${letterPreviewHrefBase}/preview-template/${template.id}`;
 }
 
 export type MessagePlanCascadePreviewProps = {
   messagePlan: RoutingConfig;
   templates: MessagePlanTemplates;
-  letterPreviewHrefBase?: string;
+  letterPreviewHrefBase: string;
 };
 
 export function MessagePlanCascadePreview({
