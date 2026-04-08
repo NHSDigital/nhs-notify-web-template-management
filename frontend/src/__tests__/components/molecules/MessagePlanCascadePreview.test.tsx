@@ -52,7 +52,7 @@ describe('MessagePlanCascadePreview', () => {
     expect(templateNames[0]).toHaveTextContent(NHS_APP_TEMPLATE.name);
     expect(templateNames[1]).toHaveTextContent(EMAIL_TEMPLATE.name);
     expect(templateNames[2]).toHaveTextContent(SMS_TEMPLATE.name);
-    expect(templateNames[3]).toHaveTextContent(AUTHORING_LETTER_TEMPLATE.name);
+    expect(templateNames[3]).toHaveTextContent(APPROVED_LETTER.name);
   });
 
   it('renders open/close all previews button when non-letter channels present', () => {
@@ -79,7 +79,7 @@ describe('MessagePlanCascadePreview', () => {
           cascadeGroups: ['standard' as const],
           channel: 'LETTER' as const,
           channelType: 'primary' as const,
-          defaultTemplateId: AUTHORING_LETTER_TEMPLATE.id,
+          defaultTemplateId: APPROVED_LETTER.id,
         },
       ],
     };
@@ -156,7 +156,7 @@ describe('MessagePlanCascadePreview', () => {
     const link = letterBlock.querySelector('a');
     expect(link).toHaveAttribute(
       'href',
-      `/base-url/preview-template/${AUTHORING_LETTER_TEMPLATE.id}`
+      `/base-url/preview-template/${APPROVED_LETTER.id}`
     );
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveTextContent('Preview template (opens in a new tab)');
@@ -180,7 +180,7 @@ describe('MessagePlanCascadePreview', () => {
       [NHS_APP_TEMPLATE.id]: NHS_APP_TEMPLATE,
       // EMAIL_TEMPLATE is missing
       [SMS_TEMPLATE.id]: SMS_TEMPLATE,
-      [AUTHORING_LETTER_TEMPLATE.id]: AUTHORING_LETTER_TEMPLATE,
+      [APPROVED_LETTER.id]: APPROVED_LETTER,
     };
 
     render(
