@@ -4,7 +4,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
 
 const { pageTitle } = content.pages.previewStandardEnglishLetterTemplate;
 
@@ -19,10 +19,10 @@ const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
 ) => {
   const { routingConfigId } = await props.params;
   return (
-    <SummaryPreviewLetter
+    <SummaryChooseLetter
       {...props}
       validateTemplate={validateLetterTemplate}
-      redirectUrl={`/message-plans/edit-message-plan/${routingConfigId}`}
+      redirectUrlOnLockNumberFailure={`/message-plans/edit-message-plan/${routingConfigId}`}
     />
   );
 };

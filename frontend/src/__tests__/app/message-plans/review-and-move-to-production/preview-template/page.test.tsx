@@ -4,13 +4,15 @@
 import PreviewLetterTemplateFromReviewAndMoveToProduction, {
   generateMetadata,
 } from '@app/message-plans/review-and-move-to-production/[routingConfigId]/preview-template/[templateId]/page';
-import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { SummaryLetterFromMessagePlan } from '@molecules/SummaryLetterFromMessagePlan/SummaryLetterFromMessagePlan';
 import { validateAuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
+jest.mock(
+  '@molecules/SummaryLetterFromMessagePlan/SummaryLetterFromMessagePlan'
+);
 
 describe('PreviewLetterTemplateFromReviewAndMoveToProduction page', () => {
-  it('should render SummaryPreviewLetter with hideBackLinks and authoring validator', async () => {
+  it('should render SummaryLetterFromMessagePlan with authoring letter validator', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -22,10 +24,9 @@ describe('PreviewLetterTemplateFromReviewAndMoveToProduction page', () => {
       await PreviewLetterTemplateFromReviewAndMoveToProduction(props);
 
     expect(page).toEqual(
-      <SummaryPreviewLetter
+      <SummaryLetterFromMessagePlan
         {...props}
         validateTemplate={validateAuthoringLetterTemplate}
-        hideBackLinks
       />
     );
   });

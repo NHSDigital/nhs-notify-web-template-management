@@ -8,33 +8,17 @@ import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
-import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-type SummaryPreviewLetterProps = MessagePlanAndTemplatePageProps & {
+type SummaryLetterFromMessagePlanProps = MessagePlanAndTemplatePageProps & {
   validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
-  hideBackLinks?: boolean;
-  redirectUrl?: string;
 };
 
-export const SummaryPreviewLetter = async (
-  props: SummaryPreviewLetterProps
+export const SummaryLetterFromMessagePlan = async (
+  props: SummaryLetterFromMessagePlanProps
 ) => {
   const { templateId, routingConfigId } = await props.params;
-  const { validateTemplate, hideBackLinks, redirectUrl } = props;
-
-  let lockNumber: number | undefined;
-
-  if (redirectUrl) {
-    const searchParams = await props.searchParams;
-    const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
-
-    if (!lockNumberResult.success) {
-      return redirect(redirectUrl, RedirectType.replace);
-    }
-
-    lockNumber = lockNumberResult.data;
-  }
+  const { validateTemplate } = props;
 
   const template = await getTemplate(templateId);
 
@@ -57,9 +41,8 @@ export const SummaryPreviewLetter = async (
         initialState={validatedTemplate}
         previewComponent={PreviewTemplateDetailsLetter}
         routingConfigId={routingConfigId}
-        lockNumber={lockNumber}
         letterVariant={letterVariant}
-        hideBackLinks={hideBackLinks}
+        hideBackLinks
       />
     </NHSNotifyContainer>
   );

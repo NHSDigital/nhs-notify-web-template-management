@@ -6,7 +6,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
 
 const { pageTitle } = content.pages.previewBritishSignLanguageLetterTemplate;
 
@@ -21,10 +21,10 @@ const PreviewBritishSignLanguageLetterTemplateFromMessagePlan = async (
 ) => {
   const { routingConfigId } = await props.params;
   return (
-    <SummaryPreviewLetter
+    <SummaryChooseLetter
       {...props}
       validateTemplate={validateBritishSignLanguageLetterTemplate}
-      redirectUrl={`/message-plans/edit-message-plan/${routingConfigId}`}
+      redirectUrlOnLockNumberFailure={`/message-plans/edit-message-plan/${routingConfigId}`}
     />
   );
 };

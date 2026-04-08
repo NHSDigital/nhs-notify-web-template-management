@@ -4,13 +4,13 @@
 import PreviewLargePrintLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-large-print-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
 import { validateLargePrintLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
+jest.mock('@molecules/SummaryChooseLetter/SummaryChooseLetter');
 
 describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryPreviewLetter with validateLargePrintLetterTemplate and redirectUrl', async () => {
+  it('should render SummaryChooseLetter with validateLargePrintLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -22,10 +22,10 @@ describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
     const page = await PreviewLargePrintLetterTemplateFromMessagePlan(props);
 
     expect(page).toEqual(
-      <SummaryPreviewLetter
+      <SummaryChooseLetter
         {...props}
         validateTemplate={validateLargePrintLetterTemplate}
-        redirectUrl='/message-plans/edit-message-plan/routing-config-id'
+        redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'
       />
     );
   });

@@ -1,4 +1,4 @@
-import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
 import {
   AUTHORING_LETTER_TEMPLATE,
   PDF_LETTER_TEMPLATE,
@@ -27,26 +27,26 @@ const defaultProps = {
   }),
   searchParams: Promise.resolve({ lockNumber: '5' }),
   validateTemplate: validateLetterTemplate,
-  redirectUrl: defaultRedirectUrl,
+  redirectUrlOnLockNumberFailure: defaultRedirectUrl,
 };
 
-describe('SummaryPreviewLetter', () => {
+describe('SummaryChooseLetter', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
   it('should redirect when lockNumber is invalid', async () => {
-    await SummaryPreviewLetter({
+    await SummaryChooseLetter({
       ...defaultProps,
       searchParams: Promise.resolve({ lockNumber: 'invalid' }),
-      redirectUrl: '/custom-redirect',
+      redirectUrlOnLockNumberFailure: '/custom-redirect',
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/custom-redirect', 'replace');
   });
 
   it('should redirect when lockNumber is missing', async () => {
-    await SummaryPreviewLetter({
+    await SummaryChooseLetter({
       ...defaultProps,
       searchParams: Promise.resolve({}),
     });
@@ -54,23 +54,10 @@ describe('SummaryPreviewLetter', () => {
     expect(redirectMock).toHaveBeenCalledWith(defaultRedirectUrl, 'replace');
   });
 
-  it('should skip lockNumber validation when redirectUrl is not provided', async () => {
-    getTemplateMock.mockResolvedValueOnce(PDF_LETTER_TEMPLATE);
-
-    const page = await SummaryPreviewLetter({
-      ...defaultProps,
-      searchParams: Promise.resolve({}),
-      redirectUrl: undefined,
-    });
-
-    expect(redirectMock).not.toHaveBeenCalled();
-    expect(page).toBeDefined();
-  });
-
   it('should redirect to invalid-template when template is not found', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
-    await SummaryPreviewLetter({
+    await SummaryChooseLetter({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -88,7 +75,7 @@ describe('SummaryPreviewLetter', () => {
       templateType: 'EMAIL',
     } as unknown as TemplateDto);
 
-    await SummaryPreviewLetter(defaultProps);
+    await SummaryChooseLetter(defaultProps);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -99,7 +86,7 @@ describe('SummaryPreviewLetter', () => {
       templateStatus: 'SUBMITTED',
     });
 
-    const page = await SummaryPreviewLetter({
+    const page = await SummaryChooseLetter({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
@@ -123,7 +110,7 @@ describe('SummaryPreviewLetter', () => {
     });
     getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 
-    const page = await SummaryPreviewLetter({
+    const page = await SummaryChooseLetter({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
@@ -135,32 +122,6 @@ describe('SummaryPreviewLetter', () => {
 
     expect(getTemplateMock).toHaveBeenCalledWith(AUTHORING_LETTER_TEMPLATE.id);
     expect(getLetterVariantByIdMock).toHaveBeenCalledWith('variant-123');
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('renders without back links when hideBackLinks is true', async () => {
-    const letterVariant = makeLetterVariant();
-
-    getTemplateMock.mockResolvedValueOnce({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-      campaignId: 'campaign',
-      letterVariantId: 'letter-variant',
-    });
-
-    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
-
-    const page = await SummaryPreviewLetter({
-      ...defaultProps,
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
-      }),
-      hideBackLinks: true,
-      redirectUrl: undefined,
-    });
-
-    const container = render(page);
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

@@ -4,13 +4,13 @@
 import PreviewOtherLanguageLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-other-language-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
 import { validateForeignLanguageLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@molecules/SummaryPreviewLetter/SummaryPreviewLetter');
+jest.mock('@molecules/SummaryChooseLetter/SummaryChooseLetter');
 
 describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryPreviewLetter with validateForeignLanguageLetterTemplate and redirectUrl', async () => {
+  it('should render SummaryChooseLetter with validateForeignLanguageLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -22,10 +22,10 @@ describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
     const page = await PreviewOtherLanguageLetterTemplateFromMessagePlan(props);
 
     expect(page).toEqual(
-      <SummaryPreviewLetter
+      <SummaryChooseLetter
         {...props}
         validateTemplate={validateForeignLanguageLetterTemplate}
-        redirectUrl='/message-plans/edit-message-plan/routing-config-id'
+        redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'
       />
     );
   });

@@ -4,7 +4,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { SummaryPreviewLetter } from '@molecules/SummaryPreviewLetter/SummaryPreviewLetter';
+import { SummaryLetterFromMessagePlan } from '@molecules/SummaryLetterFromMessagePlan/SummaryLetterFromMessagePlan';
 
 const { pageTitle } = content.pages.previewMessagePlanPreviewLetter;
 
@@ -17,10 +17,9 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewLetterTemplateFromPreviewMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => (
-  <SummaryPreviewLetter
+  <SummaryLetterFromMessagePlan
     {...props}
     validateTemplate={validateAuthoringLetterTemplate}
-    hideBackLinks
   />
 );
 
