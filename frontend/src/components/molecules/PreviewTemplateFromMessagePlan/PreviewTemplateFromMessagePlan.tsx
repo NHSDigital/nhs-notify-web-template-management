@@ -61,9 +61,9 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   return (
     <>
       {backLinkHref && (
-        <Link href={backLinkHref} passHref legacyBehavior>
-          <NotifyBackLink>{content.backLink.text}</NotifyBackLink>
-        </Link>
+        <NotifyBackLink href={backLinkHref}>
+          {content.backLink.text}
+        </NotifyBackLink>
       )}
 
       <NHSNotifyMain>
