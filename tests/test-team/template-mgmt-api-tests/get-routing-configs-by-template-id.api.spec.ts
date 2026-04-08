@@ -111,13 +111,16 @@ test.describe('GET /v1/template/:templateId/routing-configurations', () => {
     request,
   }) => {
     const templateId = randomUUID();
-    const template = TemplateFactory.uploadLetterTemplate(
+    const template = TemplateFactory.createAuthoringLetterTemplate(
       templateId,
       user1,
       'Large print letter template',
       'PROOF_APPROVED',
-      'PASSED',
-      { letterType: 'x1' }
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     );
 
     const messagePlan = RoutingConfigFactory.createForMessageOrder(

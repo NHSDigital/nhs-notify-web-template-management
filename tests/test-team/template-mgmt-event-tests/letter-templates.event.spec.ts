@@ -49,7 +49,7 @@ test.describe('Event publishing - Letters', () => {
     const start = new Date();
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         userProofingDisabled,
         'user-proof-disabled'
@@ -93,7 +93,7 @@ test.describe('Event publishing - Letters', () => {
     const start = new Date();
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         userRoutingEnabled,
         'user-proof-disabled',
@@ -133,7 +133,7 @@ test.describe('Event publishing - Letters', () => {
     const templateId = randomUUID();
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         userRoutingDisabledProofingEnabled,
         'userProofingEnabledTemplate',
@@ -260,7 +260,7 @@ test.describe('Event publishing - Letters', () => {
   }) => {
     const templateId = randomUUID();
 
-    const template = TemplateFactory.uploadLetterTemplate(
+    const template = TemplateFactory.uploadPdfLetterTemplate(
       templateId,
       userRoutingEnabled,
       'userRoutingEnabledTemplate',
@@ -309,7 +309,7 @@ test.describe('Event publishing - Letters', () => {
     const start = new Date();
 
     const template = {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         templateId,
         userRoutingEnabled,
         'user-proof-deleted',

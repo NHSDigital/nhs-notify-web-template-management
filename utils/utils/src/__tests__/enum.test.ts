@@ -37,14 +37,30 @@ import {
   sendDigitalTemplateTestMessageUrl,
   templateTypeToUrlTextMappings,
   accessibleFormatDisplayMappings,
-  type SupportedLetterType,
+  type FrontendSupportedLetterType,
   createTemplateUrl,
   isLanguage,
   getMessageOrderOptions,
   MESSAGE_ORDER_OPTIONS_LIST,
+  isFrontendSupportedLetterType,
+  FRONTEND_SUPPORTED_LETTER_TYPES,
   getPreviewURL,
+  FrontendSupportedAccessibleFormats,
 } from '../enum';
 import { mockDeep } from 'jest-mock-extended';
+
+describe('isFrontendSupportedLetterType', () => {
+  it.each(FRONTEND_SUPPORTED_LETTER_TYPES)(
+    'returns true when letter type is %s',
+    (letterType) => {
+      expect(isFrontendSupportedLetterType(letterType)).toBe(true);
+    }
+  );
+
+  it('returns false when letter type is not valid', () => {
+    expect(isFrontendSupportedLetterType('q14')).toBe(false);
+  });
+});
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -299,7 +315,7 @@ describe('createTemplateUrl', () => {
     '$letterType $templateType returns $slug',
     (
       templateType: TemplateType,
-      letterType: SupportedLetterType | undefined,
+      letterType: FrontendSupportedLetterType | undefined,
       slug: string
     ) => {
       expect(createTemplateUrl(templateType, letterType)).toEqual(slug);
@@ -321,6 +337,7 @@ describe('messagePlanChooseTemplateUrl', () => {
     test.each([
       ['x0', 'choose-standard-english-letter-template'],
       ['x1', 'choose-large-print-letter-template'],
+      ['q4', 'choose-british-sign-language-letter-template'],
       ['language', 'choose-other-language-letter-template'],
     ] as const)(
       'should map LETTER with conditionalType %s to "%s"',
@@ -600,9 +617,8 @@ describe('ORDINALS', () => {
 });
 
 describe('accessibleFormatDisplayMappings', () => {
-  const cases: [LetterType, string][] = [
+  const cases: [FrontendSupportedAccessibleFormats, string][] = [
     ['q4', 'British Sign Language letter'],
-    ['x0', 'Standard letter'],
     ['x1', 'Large print letter'],
   ];
 

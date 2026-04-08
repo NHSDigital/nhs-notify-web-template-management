@@ -70,7 +70,7 @@ async function createTemplates(user: TestUser) {
       'authoring-letter-template-preview-approved-invalid',
       'NOT_A_STATUS'
     ),
-    pdf: TemplateFactory.uploadLetterTemplate(
+    pdf: TemplateFactory.uploadPdfLetterTemplate(
       'ec8d9f84-35ef-454b-b7c4-233e0af8f764',
       user,
       'pdf-letter-template-submitted',

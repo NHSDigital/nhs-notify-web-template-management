@@ -77,7 +77,7 @@ test.describe('POST /v1/template/:templateId/generate-letter-proof', () => {
   test('returns 404 if template exists but is owned by a different client', async ({
     request,
   }) => {
-    const template = TemplateFactory.uploadLetterTemplate(
+    const template = TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       user,
       'otherOwner',
@@ -112,7 +112,7 @@ test.describe('POST /v1/template/:templateId/generate-letter-proof', () => {
   });
 
   test('returns 400 if no request body', async ({ request }) => {
-    const template = TemplateFactory.uploadLetterTemplate(
+    const template = TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       user,
       'noBody',

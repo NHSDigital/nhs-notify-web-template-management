@@ -194,7 +194,7 @@ test.describe('Edit Template Name page', () => {
     test('redirects to template preview page if template is a PDF letter', async ({
       page,
     }) => {
-      const template = TemplateFactory.uploadLetterTemplate(
+      const template = TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         user,
         'PDF Letter Template'
@@ -220,7 +220,11 @@ test.describe('Edit Template Name page', () => {
         randomUUID(),
         user,
         'Letter Template',
-        'SUBMITTED'
+        'SUBMITTED',
+        {
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       );
 
       await templateStorageHelper.seedTemplateData([template]);
