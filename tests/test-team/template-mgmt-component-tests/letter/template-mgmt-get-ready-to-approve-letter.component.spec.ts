@@ -29,7 +29,7 @@ test.describe('Get ready to approve letter template page', () => {
       await context.letterVariants.getGlobalLetterVariants();
 
     await templateStorageHelper.seedTemplateData([
-      TemplateFactory.uploadLetterTemplate(
+      TemplateFactory.uploadPdfLetterTemplate(
         templateIds.LETTER_PDF,
         user,
         `PDF letter - ${templateIds.LETTER_PDF}`
