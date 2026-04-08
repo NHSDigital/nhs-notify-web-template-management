@@ -101,7 +101,7 @@ test.describe('GET /v1/templates', () => {
       data: expect.arrayContaining([created1.data, created2.data]),
     });
 
-    expect(user1ResponseBody.data.length).toBe(2);
+    expect(user1ResponseBody.data).toHaveLength(2);
 
     // exercise - request user 2 templates (they have no templates)
     const user2ListResponse = await request.get(

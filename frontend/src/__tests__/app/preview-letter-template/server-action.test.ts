@@ -13,7 +13,7 @@ describe('submitAuthoringLetterAction', () => {
     jest.resetAllMocks();
   });
 
-  it('should redirect to submit-letter-template page with valid form data', async () => {
+  it('should redirect to get-ready-to-approve-letter-template page with valid form data', async () => {
     const formData = new FormData();
     formData.append('templateId', 'template-123');
     formData.append('lockNumber', '1');
@@ -21,7 +21,7 @@ describe('submitAuthoringLetterAction', () => {
     await submitAuthoringLetterAction({}, formData);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/review-and-approve-letter-template/template-123?lockNumber=1'
+      '/get-ready-to-approve-letter-template/template-123?lockNumber=1'
     );
   });
 
