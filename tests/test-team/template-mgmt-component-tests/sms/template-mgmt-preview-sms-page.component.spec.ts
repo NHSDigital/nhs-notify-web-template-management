@@ -338,14 +338,18 @@ test.describe('Preview SMS message template Page', () => {
       await expect(previewPage.continueButton).toBeHidden();
       await expect(previewPage.requestProofMessageBanner).toBeHidden();
 
-      const expectedUrl = `${baseURL}/templates/send-test-text-message/${templates.digitalProofing.id}`;
+      const expectedUrl = `/templates/send-test-text-message/${templates.digitalProofing.id}`;
 
-      await assertTestMessageBannerVisible(previewPage, expectedUrl);
+      await assertTestMessageBannerVisible(
+        previewPage,
+        'Send a test text message',
+        expectedUrl
+      );
 
       // Test button (same page navigation)
       await previewPage.sendTestMessageButton.click();
 
-      await expect(previewPage.page).toHaveURL(expectedUrl);
+      await expect(previewPage.page).toHaveURL(`${baseURL}${expectedUrl}`);
     });
   });
 });

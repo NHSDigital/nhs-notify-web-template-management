@@ -327,15 +327,16 @@ export const assertRequestProofBannerVisible = async (
 
 export const assertTestMessageBannerVisible = async (
   previewPage: TemplateMgmtPreviewBasePage,
-  expectedURL: string
+  expectedLinkText: string,
+  expectedLink: string
 ) =>
   test.step('should display "Send a test message" banner with correct link', async () => {
     await expect(previewPage.testMessageBanner).toBeVisible();
     await expect(previewPage.testMessageBannerLink).toContainText(
-      'Send a test message'
+      expectedLinkText
     );
     await expect(previewPage.testMessageBannerLink).toHaveAttribute(
       'href',
-      expectedURL
+      expectedLink
     );
   });

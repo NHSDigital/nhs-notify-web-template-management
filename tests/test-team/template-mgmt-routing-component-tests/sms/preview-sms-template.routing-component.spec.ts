@@ -204,10 +204,16 @@ test.describe('Routing - Preview SMS template page', () => {
         `${baseURL}/templates/message-plans/choose-text-message-template/${digitalProofingEnabledMessagePlanId}/preview-template/${digitalProofingEnabledTemplateId}?lockNumber=0`
       );
 
+      const sendTestMessageURL = `/templates/send-test-text-message/${digitalProofingEnabledTemplateId}`;
+
       await assertTestMessageBannerVisible(
         previewTemplatePage,
-        `${baseURL}/templates/send-test-text-message/${digitalProofingEnabledTemplateId}`
+        'Send a test text message',
+        sendTestMessageURL
       );
+
+      await previewTemplatePage.testMessageBannerLink.click();
+      await expect(page).toHaveURL(`${baseURL}${sendTestMessageURL}`);
     });
   });
 });

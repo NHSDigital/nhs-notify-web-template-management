@@ -342,7 +342,11 @@ test.describe('Preview Email message template Page', () => {
 
       const expectedUrl = `${baseURL}/templates/send-test-email/${templates.digitalProofing.id}`;
 
-      await assertTestMessageBannerVisible(previewPage, expectedUrl);
+      await assertTestMessageBannerVisible(
+        previewPage,
+        'Send a test email',
+        expectedUrl
+      );
 
       // Test button (same page navigation)
       await previewPage.sendTestMessageButton.click();

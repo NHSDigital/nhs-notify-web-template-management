@@ -344,7 +344,11 @@ test.describe('Preview NHS App template Page', () => {
 
       const expectedUrl = `${baseURL}/templates/send-test-nhs-app-message/${templates.digitalProofing.id}`;
 
-      await assertTestMessageBannerVisible(previewPage, expectedUrl);
+      await assertTestMessageBannerVisible(
+        previewPage,
+        'Send a test NHS App message',
+        expectedUrl
+      );
 
       // Test button (same page navigation)
       await previewPage.sendTestMessageButton.click();

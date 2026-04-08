@@ -211,10 +211,16 @@ test.describe('Routing - Preview email template page', () => {
         `${baseURL}/templates/message-plans/choose-email-template/${digitalProofingEnabledMessagePlanId}/preview-template/${digitalProofingEnabledTemplateId}?lockNumber=0`
       );
 
+      const sendTestMessageLink = `/templates/send-test-email/${digitalProofingEnabledTemplateId}`;
+
       await assertTestMessageBannerVisible(
         previewTemplatePage,
-        `${baseURL}/templates/send-test-email/${digitalProofingEnabledTemplateId}`
+        'Send a test email',
+        sendTestMessageLink
       );
+
+      await previewTemplatePage.testMessageBannerLink.click();
+      await expect(page).toHaveURL(`${baseURL}${sendTestMessageLink}`);
     });
   });
 });

@@ -54,7 +54,7 @@ test.describe('How to request a digital proof', () => {
       templateId: templateIds.NHS_APP,
     },
   ] as const) {
-    test(`should load page ${channelName}`, async ({ page, baseURL }) => {
+    test(`should load page for ${channelName}`, async ({ page, baseURL }) => {
       const requestADigitalProofPage = new TemplateMgmtRequestADigitalProofPage(
         page
       ).setPathParam('templateId', templateId);
@@ -69,11 +69,7 @@ test.describe('How to request a digital proof', () => {
         'Request a proof'
       );
 
-      const backLink = page.getByRole('link', {
-        name: 'Back to template',
-      });
-
-      await expect(backLink).toHaveAttribute(
+      await expect(requestADigitalProofPage.backLinkTop).toHaveAttribute(
         'href',
         `/templates/preview-${channelIdentifier}-template/${templateId}`
       );

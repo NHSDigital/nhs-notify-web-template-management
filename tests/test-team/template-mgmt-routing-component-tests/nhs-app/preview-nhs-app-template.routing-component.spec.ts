@@ -210,10 +210,16 @@ test.describe('Routing - Preview app template page', () => {
         `${baseURL}/templates/message-plans/choose-nhs-app-template/${digitalProofingEnabledMessagePlanId}/preview-template/${digitalProofingEnabledTemplateId}?lockNumber=0`
       );
 
+      const sendTestMessageLink = `/templates/send-test-nhs-app-message/${digitalProofingEnabledTemplateId}`;
+
       await assertTestMessageBannerVisible(
         previewTemplatePage,
-        `${baseURL}/templates/send-test-nhs-app-message/${digitalProofingEnabledTemplateId}`
+        'Send a test NHS App message',
+        sendTestMessageLink
       );
+
+      await previewTemplatePage.testMessageBannerLink.click();
+      await expect(page).toHaveURL(`${baseURL}${sendTestMessageLink}`);
     });
   });
 });

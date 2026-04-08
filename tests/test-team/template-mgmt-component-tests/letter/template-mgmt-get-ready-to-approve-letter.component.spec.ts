@@ -53,27 +53,21 @@ test.describe('Get ready to approve letter template page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('should load page', async ({ page, baseURL }) => {
+  test('common page tests', async ({ page, baseURL }) => {
     const approvePage = new TemplateMgmtGetReadyToApproveLetterTemplatePage(
       page
     )
       .setPathParam('templateId', templateIds.LETTER_AUTHORING)
       .setSearchParam('lockNumber', '0');
 
-    await approvePage.loadPage();
+    const props = {
+      page: approvePage,
+      baseURL,
+    };
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/get-ready-to-approve-letter-template/${templateIds.LETTER_AUTHORING}?lockNumber=0`
     );
-  });
-
-  test('common page tests', async ({ page, baseURL }) => {
-    const props = {
-      page: new TemplateMgmtGetReadyToApproveLetterTemplatePage(page)
-        .setPathParam('templateId', templateIds.LETTER_AUTHORING)
-        .setSearchParam('lockNumber', '0'),
-      baseURL,
-    };
 
     await assertSkipToMainContent(props);
     await assertHeaderLogoLink(props);
@@ -100,7 +94,7 @@ test.describe('Get ready to approve letter template page', () => {
     );
   });
 
-  test('when user clicks "Go back", then user is taken to template details page', async ({
+  test('when user clicks "Go back", then user is taken back to preview template page', async ({
     page,
     baseURL,
   }) => {
@@ -119,7 +113,7 @@ test.describe('Get ready to approve letter template page', () => {
     );
   });
 
-  test('should not load page when template is not a letter', async ({
+  test('should redirect to invalid template when template is not a letter', async ({
     page,
     baseURL,
   }) => {
@@ -134,7 +128,7 @@ test.describe('Get ready to approve letter template page', () => {
     await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });
 
-  test('should not load page when template is not an authoring letter', async ({
+  test('should redirect to invalid template when template is not an authoring letter', async ({
     page,
     baseURL,
   }) => {
