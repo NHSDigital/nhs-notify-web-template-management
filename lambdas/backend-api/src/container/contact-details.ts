@@ -18,11 +18,13 @@ export function contactDetailsContainer() {
 
   const repo = new ContactDetailsRepository(
     dynamodb,
+    ssm,
     config.contactDetailsTableName,
-    config.contactDetailsUnverifiedTtlSeconds
+    config.contactDetailsUnverifiedTtlSeconds,
+    config.contactDetailsOtpSecretPath
   );
 
-  const otpService = new OtpService(ssm, config.contactDetailsOtpSecretPath);
+  const otpService = new OtpService();
 
   const { clientConfigRepo } = clientConfigContainer(config);
 

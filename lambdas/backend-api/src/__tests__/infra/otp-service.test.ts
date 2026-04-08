@@ -1,101 +1,32 @@
-import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
-import { mockClient } from 'aws-sdk-client-mock';
-import 'aws-sdk-client-mock-jest';
+import crypto from 'node:crypto';
 import { OtpService } from '@backend-api/infra/otp-service';
-import { TOTP } from 'totp-generator';
 
-const SECRET_PATH = '/path/to/secret/parameter';
-
-jest.mock('totp-generator');
-
-function setup() {
-  const ssm = mockClient(SSMClient);
-  const service = new OtpService(ssm as unknown as SSMClient, SECRET_PATH);
-
-  return { service, mocks: { ssm } };
-}
+const service = new OtpService();
 
 describe('OtpService', () => {
   describe('generate', () => {
-    it('returns an OTP generated using the secret stored in SSM', async () => {
-      const { service, mocks } = setup();
-
-      mocks.ssm.on(GetParameterCommand).resolvesOnce({
-        Parameter: { Value: 'SUPER_SECRET' },
-      });
-
-      jest
-        .mocked(TOTP)
-        .generate.mockResolvedValueOnce({ otp: '1234', expires: 0 });
+    it('returns a random 6 digit integer OTP', async () => {
+      jest.spyOn(crypto, 'randomInt').mockImplementationOnce(() => 123_456);
 
       const result = await service.generate();
 
-      expect(result).toEqual({ data: '1234' });
+      expect(result).toEqual({ data: '123456' });
 
-      expect(mocks.ssm).toHaveReceivedCommandWith(GetParameterCommand, {
-        Name: SECRET_PATH,
-        WithDecryption: true,
-      });
-
-      expect(TOTP.generate).toHaveBeenCalledWith('SUPER_SECRET');
+      expect(crypto.randomInt).toHaveBeenCalledWith(0, 1_000_000);
     });
 
-    it('returns internal error result if ssm call fails', async () => {
-      const { service, mocks } = setup();
-
-      mocks.ssm.on(GetParameterCommand).rejectsOnce(new Error('oh no'));
+    it('pads with leading 0s', async () => {
+      jest.spyOn(crypto, 'randomInt').mockImplementationOnce(() => 123);
 
       const result = await service.generate();
 
-      expect(result.data).toBeUndefined();
-      expect(result.error?.errorMeta.code).toBe(500);
-      expect(result.error?.errorMeta.description).toBe(
-        'Unable to generate OTP'
-      );
+      expect(result).toEqual({ data: '000123' });
     });
 
-    it('returns internal error result if ssm call returns no parameter', async () => {
-      const { service, mocks } = setup();
-
-      mocks.ssm.on(GetParameterCommand).resolvesOnce({});
-
-      const result = await service.generate();
-
-      expect(result.data).toBeUndefined();
-      expect(result.error?.errorMeta.code).toBe(500);
-      expect(result.error?.errorMeta.description).toBe(
-        'Unable to generate OTP'
-      );
-    });
-
-    it('returns internal error result if ssm call returns empty parameter', async () => {
-      const { service, mocks } = setup();
-
-      mocks.ssm.on(GetParameterCommand).resolvesOnce({
-        Parameter: {
-          Value: '',
-        },
+    it('returns internal error result if number generation fails', async () => {
+      jest.spyOn(crypto, 'randomInt').mockImplementationOnce(() => {
+        throw new Error('Oh no');
       });
-
-      const result = await service.generate();
-
-      expect(result.data).toBeUndefined();
-      expect(result.error?.errorMeta.code).toBe(500);
-      expect(result.error?.errorMeta.description).toBe(
-        'Unable to generate OTP'
-      );
-    });
-
-    it('returns internal error result if OTP generation fails', async () => {
-      const { service, mocks } = setup();
-
-      mocks.ssm.on(GetParameterCommand).resolvesOnce({
-        Parameter: {
-          Value: 'SUPER_SECRET',
-        },
-      });
-
-      jest.mocked(TOTP.generate).mockRejectedValueOnce(new Error('oh no'));
 
       const result = await service.generate();
 
@@ -115,8 +46,6 @@ describe('OtpService', () => {
     it('stub implementation - logs the contact details and otp', async () => {
       jest.spyOn(console, 'log');
 
-      const { service } = setup();
-
       const result = await service.send(
         {
           id: 'contact-details-id',
@@ -124,7 +53,7 @@ describe('OtpService', () => {
           type: 'EMAIL',
           value: 'email@nhs.net',
         },
-        '1234'
+        '123456'
       );
 
       expect(result.data).toBeUndefined();
@@ -132,7 +61,7 @@ describe('OtpService', () => {
 
       expect(console.log).toHaveBeenCalledWith({
         id: 'contact-details-id',
-        otp: '1234',
+        otp: '123456',
       });
     });
   });

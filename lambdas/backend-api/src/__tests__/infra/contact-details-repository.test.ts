@@ -1,4 +1,6 @@
+import crypto from 'node:crypto';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import 'aws-sdk-client-mock-jest';
@@ -6,26 +8,19 @@ import type { ContactDetailInputNormalized } from 'nhs-notify-web-template-manag
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { ContactDetailsRepository } from '@backend-api/infra/contact-details-repository';
 
-const RANDOM_UUID = 'omg-so-random';
-
-jest.mock('node:crypto', () => {
-  const crypto = jest.requireActual('node:crypto');
-  return {
-    ...crypto,
-    randomUUID: () => RANDOM_UUID,
-  };
-});
-
+const RANDOM_UUID = 'omg-so-totally-like-random';
 const TABLE_NAME = 'client-details-table';
+const SECRET_PATH = '/path/to/secret/parameter';
+const SECRET_VALUE = 'super_secret';
 
 const USER: User = {
   internalUserId: 'user-id',
   clientId: 'client-id',
 };
 
-const OTP = '1234';
+const OTP = '123456';
 const EXPECTED_OTP_HASH =
-  '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+  '292f143e47aa4516587e994b6ef3fe597c4720ba0b5564bc445b8c7aa9632739';
 
 const NOW = new Date('2026-04-07T11:07:08.490Z');
 const UNVERIFIED_TTL_SECONDS = 300;
@@ -35,25 +30,38 @@ beforeEach(() => {
   jest.useFakeTimers({
     now: NOW,
   });
+  jest.spyOn(crypto, 'randomUUID').mockReturnValue(RANDOM_UUID);
+  jest.spyOn(crypto, 'createHmac');
 });
 
 afterEach(() => {
   jest.useRealTimers();
+  jest.restoreAllMocks();
 });
 
 function setup() {
   const dynamodb = mockClient(DynamoDBDocumentClient);
+  const ssm = mockClient(SSMClient);
+
+  ssm.on(GetParameterCommand).resolvesOnce({
+    Parameter: {
+      Value: SECRET_VALUE,
+    },
+  });
 
   const repo = new ContactDetailsRepository(
     dynamodb as unknown as DynamoDBDocumentClient,
+    ssm as unknown as SSMClient,
     TABLE_NAME,
-    UNVERIFIED_TTL_SECONDS
+    UNVERIFIED_TTL_SECONDS,
+    SECRET_PATH
   );
 
   return {
     repo,
     mocks: {
       dynamodb,
+      ssm,
     },
   };
 }
@@ -87,6 +95,13 @@ describe('ContactDetailsRepository', () => {
           },
         });
 
+        expect(mocks.ssm).toHaveReceivedCommandWith(GetParameterCommand, {
+          Name: SECRET_PATH,
+          WithDecryption: true,
+        });
+
+        expect(crypto.createHmac).toHaveBeenCalledWith('sha256', SECRET_VALUE);
+
         expect(mocks.dynamodb).toHaveReceivedCommandWith(PutCommand, {
           TableName: TABLE_NAME,
           Item: {
@@ -111,6 +126,102 @@ describe('ContactDetailsRepository', () => {
         });
       }
     );
+
+    it('does not re-fetch secret from SSM after initial fetch', async () => {
+      const { repo, mocks } = setup();
+
+      await repo.putContactDetail(
+        {
+          type: 'EMAIL',
+          value: 'email@nhs.net',
+          rawValue: 'email@nhs.net',
+        },
+        OTP,
+        USER
+      );
+
+      await repo.putContactDetail(
+        {
+          type: 'SMS',
+          value: '+447890123456',
+          rawValue: '07890 123 456',
+        },
+        OTP,
+        USER
+      );
+
+      expect(mocks.ssm).toHaveReceivedCommandTimes(GetParameterCommand, 1);
+    });
+
+    it('returns internal error result if ssm call fails', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.ssm.on(GetParameterCommand).rejectsOnce(new Error('oh no'));
+
+      const result = await repo.putContactDetail(
+        {
+          type: 'EMAIL',
+          value: 'email@nhs.net',
+          rawValue: 'email@nhs.net',
+        },
+        OTP,
+        USER
+      );
+
+      expect(result.data).toBeUndefined();
+      expect(result.error?.errorMeta.code).toBe(500);
+      expect(result.error?.errorMeta.description).toBe(
+        'Failed to save contact details.'
+      );
+    });
+
+    it('returns internal error result if ssm call returns no parameter', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.ssm.on(GetParameterCommand).resolvesOnce({});
+
+      const result = await repo.putContactDetail(
+        {
+          type: 'EMAIL',
+          value: 'email@nhs.net',
+          rawValue: 'email@nhs.net',
+        },
+        OTP,
+        USER
+      );
+
+      expect(result.data).toBeUndefined();
+      expect(result.error?.errorMeta.code).toBe(500);
+      expect(result.error?.errorMeta.description).toBe(
+        'Failed to save contact details.'
+      );
+    });
+
+    it('returns internal error result if ssm call returns empty parameter', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.ssm.on(GetParameterCommand).resolvesOnce({
+        Parameter: {
+          Value: '',
+        },
+      });
+
+      const result = await repo.putContactDetail(
+        {
+          type: 'EMAIL',
+          value: 'email@nhs.net',
+          rawValue: 'email@nhs.net',
+        },
+        OTP,
+        USER
+      );
+
+      expect(result.data).toBeUndefined();
+      expect(result.error?.errorMeta.code).toBe(500);
+      expect(result.error?.errorMeta.description).toBe(
+        'Failed to save contact details.'
+      );
+    });
 
     it('returns a conflict error result if a conditional check exception occurs', async () => {
       const { repo, mocks } = setup();

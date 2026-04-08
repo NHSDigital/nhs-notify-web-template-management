@@ -4,7 +4,7 @@ import type {
   ContactDetail,
   ContactDetailInput,
 } from 'nhs-notify-web-template-management-types';
-import { createHandler } from '@backend-api/api/contact-details-request-verification';
+import { createHandler } from '@backend-api/api/request-contact-details-verification';
 import type { ContactDetailsClient } from '@backend-api/app/contact-details-client';
 
 function setup() {
