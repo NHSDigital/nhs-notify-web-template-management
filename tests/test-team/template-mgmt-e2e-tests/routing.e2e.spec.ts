@@ -18,8 +18,10 @@ import {
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingGetReadyToMovePage,
   RoutingReviewAndMoveToProductionPage,
-  RoutingReviewAndMoveToProductionLetterTemplatePage,
+  RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
   RoutingChooseBritishSignLanguageLetterTemplatePage,
+  RoutingPreviewMessagePlanPage,
+  RoutingPreviewMessagePlanPreviewLetterTemplatePage,
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
@@ -199,6 +201,7 @@ test.describe('Routing', () => {
     const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     const messagePlansPage = new RoutingMessagePlansPage(page);
     const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
+    const previewMessagePlanPage = new RoutingPreviewMessagePlanPage(page);
 
     await test.step('check initial template statuses', async () => {
       await messageTemplatesPage.loadPage();
@@ -459,7 +462,7 @@ test.describe('Routing', () => {
       await newPage.waitForLoadState();
 
       const previewLetterPage =
-        new RoutingReviewAndMoveToProductionLetterTemplatePage(newPage);
+        new RoutingReviewAndMoveToProductionPreviewLetterTemplatePage(newPage);
 
       await expect(previewLetterPage.pageHeading).toContainText(
         templates.LETTER.name
@@ -494,8 +497,34 @@ test.describe('Routing', () => {
       );
     });
 
+    await test.step('preview letter template from preview message plan page', async () => {
+      await expect(previewMessagePlanPage.pageHeading).toBeVisible();
+
+      const letterBlock = previewMessagePlanPage.getTemplateBlock('LETTER');
+
+      const newPagePromise = page.context().waitForEvent('page');
+      await letterBlock.defaultTemplateCard.templateLink.click();
+      const newPage = await newPagePromise;
+      await newPage.waitForLoadState();
+
+      const previewLetterPage =
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(newPage);
+
+      await expect(previewLetterPage.pageHeading).toContainText(
+        templates.LETTER.name
+      );
+
+      await expect(previewLetterPage.templateId).toContainText(
+        templates.LETTER.id
+      );
+
+      await newPage.close();
+
+      await expect(previewMessagePlanPage.pageHeading).toBeVisible();
+    });
+
     await test.step('verify all templates are locked (except removed large print letter)', async () => {
-      await messagePlansPage.clickTemplatesHeaderLink();
+      await previewMessagePlanPage.clickTemplatesHeaderLink();
 
       await expect(messageTemplatesPage.pageHeading).toBeVisible();
 

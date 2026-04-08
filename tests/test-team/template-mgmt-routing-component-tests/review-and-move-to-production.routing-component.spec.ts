@@ -30,8 +30,7 @@ function createTemplates(user: TestUser) {
     BSL_LETTER: randomUUID(),
     FRENCH_LETTER: randomUUID(),
     SPANISH_LETTER: randomUUID(),
-    AUTHORING_LETTER: randomUUID(),
-    AUTHORING_LARGE_PRINT_LETTER: randomUUID(),
+    PDF_LETTER: randomUUID(),
   };
 
   return {
@@ -105,26 +104,11 @@ function createTemplates(user: TestUser) {
         longFormRender: { status: 'RENDERED' },
       }
     ),
-    AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      templateIds.AUTHORING_LETTER,
+    PDF_LETTER: TemplateFactory.uploadPdfLetterTemplate(
+      templateIds.PDF_LETTER,
       user,
-      `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`,
-      'SUBMITTED',
-      {
-        longFormRender: { status: 'RENDERED' },
-        shortFormRender: { status: 'RENDERED' },
-      }
-    ),
-    AUTHORING_LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      templateIds.AUTHORING_LARGE_PRINT_LETTER,
-      user,
-      `Test Authoring Large Print Letter template - ${templateIds.AUTHORING_LARGE_PRINT_LETTER}`,
-      'SUBMITTED',
-      {
-        letterType: 'x1',
-        longFormRender: { status: 'RENDERED' },
-        shortFormRender: { status: 'RENDERED' },
-      }
+      `Test PDF Letter template - ${templateIds.PDF_LETTER}`,
+      'SUBMITTED'
     ),
   };
 }
@@ -374,22 +358,28 @@ test.describe('Routing - Review and Move to Production page', () => {
         );
         await expect(links[index]).toHaveAttribute('target', '_blank');
       }
+
+      const [newTab] = await Promise.all([
+        page.context().waitForEvent('page'),
+        templateBlock.defaultTemplateCard.templateLink.click(),
+      ]);
+
+      await expect(newTab).toHaveURL(
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.LETTER.id}`
+      );
+
+      await newTab.close();
     });
   });
 
-  test('displays AUTHORING letter template links pointing to summary preview', async ({
+  test('displays PDF letter template link pointing to submitted letter page', async ({
     page,
   }) => {
     const { dbEntry } = RoutingConfigFactory.createWithChannels(
       user,
       ['LETTER'],
       { status: 'DRAFT' }
-    )
-      .addTemplate('LETTER', templates.AUTHORING_LETTER.id)
-      .addAccessibleFormatTemplate(
-        'x1',
-        templates.AUTHORING_LARGE_PRINT_LETTER.id
-      );
+    ).addTemplate('LETTER', templates.PDF_LETTER.id);
 
     await routingConfigStorageHelper.seed([dbEntry]);
 
@@ -402,37 +392,31 @@ test.describe('Routing - Review and Move to Production page', () => {
     const templateBlock = await reviewPage.getTemplateBlock('LETTER');
 
     await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
-      templates.AUTHORING_LETTER.name
+      templates.PDF_LETTER.name
     );
     await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
       'Preview template (opens in a new tab)'
     );
-
     await expect(
       templateBlock.defaultTemplateCard.templateLink
     ).toHaveAttribute(
       'href',
-      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LETTER.id}`
+      `/templates/preview-submitted-letter-template/${templates.PDF_LETTER.id}`
     );
-
     await expect(
       templateBlock.defaultTemplateCard.templateLink
     ).toHaveAttribute('target', '_blank');
 
-    await expect(
-      templateBlock.getAccessibilityFormatCard('x1').templateLink
-    ).toHaveText('Preview template (opens in a new tab)');
+    const [newTab] = await Promise.all([
+      page.context().waitForEvent('page'),
+      templateBlock.defaultTemplateCard.templateLink.click(),
+    ]);
 
-    await expect(
-      templateBlock.getAccessibilityFormatCard('x1').templateLink
-    ).toHaveAttribute(
-      'href',
-      `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}`
+    await expect(newTab).toHaveURL(
+      `/templates/preview-submitted-letter-template/${templates.PDF_LETTER.id}`
     );
 
-    await expect(
-      templateBlock.getAccessibilityFormatCard('x1').templateLink
-    ).toHaveAttribute('target', '_blank');
+    await newTab.close();
   });
 
   test('keep in draft button navigates to the edit message plan page', async ({

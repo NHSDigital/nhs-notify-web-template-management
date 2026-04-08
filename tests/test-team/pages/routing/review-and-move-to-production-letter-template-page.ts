@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from 'pages/template-mgmt-preview-base-page';
 
-export class RoutingReviewAndMoveToProductionLetterTemplatePage extends TemplateMgmtPreviewBasePage {
+export class RoutingReviewAndMoveToProductionPreviewLetterTemplatePage extends TemplateMgmtPreviewBasePage {
   static readonly pathTemplate =
     '/message-plans/review-and-move-to-production/:messagePlanId/preview-template/:templateId';
 

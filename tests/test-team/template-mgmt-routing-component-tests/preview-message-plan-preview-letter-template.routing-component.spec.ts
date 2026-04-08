@@ -9,7 +9,7 @@ import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
-import { RoutingReviewAndMoveToProductionLetterTemplatePage } from 'pages/routing/review-and-move-to-production-letter-template-page';
+import { RoutingPreviewMessagePlanPreviewLetterTemplatePage } from 'pages/routing/preview-message-plan-letter-template-page';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
@@ -32,7 +32,7 @@ function createMessagePlans(user: TestUser) {
 function createTemplates(user: TestUser) {
   const templateIds = {
     EMAIL: randomUUID(),
-    AUTHORING_LETTER: randomUUID(),
+    LETTER: randomUUID(),
     PDF_LETTER: randomUUID(),
   };
 
@@ -42,10 +42,10 @@ function createTemplates(user: TestUser) {
       user,
       `Test Email template - ${templateIds.EMAIL}`
     ),
-    AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      templateIds.AUTHORING_LETTER,
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LETTER,
       user,
-      `Test Authoring Letter template - ${templateIds.AUTHORING_LETTER}`
+      `Test Authoring Letter template - ${templateIds.LETTER}`
     ),
     PDF_LETTER: TemplateFactory.uploadPdfLetterTemplate(
       templateIds.PDF_LETTER,
@@ -55,7 +55,7 @@ function createTemplates(user: TestUser) {
   };
 }
 
-test.describe('Routing - Review and Move to Production Letter template page', () => {
+test.describe('Routing - Preview Message Plan / Preview Letter template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
 
@@ -77,9 +77,9 @@ test.describe('Routing - Review and Move to Production Letter template page', ()
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+      page: new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id),
+        .setPathParam('templateId', templates.LETTER.id),
       baseURL,
     };
     await assertSkipToMainContent(props);
@@ -88,31 +88,31 @@ test.describe('Routing - Review and Move to Production Letter template page', ()
     await assertSignOutLink(props);
   });
 
-  test('loads the AUTHORING letter template', async ({ page, baseURL }) => {
+  test('loads the letter template', async ({ page, baseURL }) => {
     const previewLetterTemplatePage =
-      new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+      new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id);
+        .setPathParam('templateId', templates.LETTER.id);
 
     await previewLetterTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/review-and-move-to-production/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}`
+      `${baseURL}/templates/message-plans/preview-message-plan/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.LETTER.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.AUTHORING_LETTER.name
+      templates.LETTER.name
     );
 
-    expect(templates.AUTHORING_LETTER.campaignId).toBeTruthy();
+    expect(templates.LETTER.campaignId).toBeTruthy();
 
     await expect(previewLetterTemplatePage.campaignId).toContainText(
-      templates.AUTHORING_LETTER.campaignId!
+      templates.LETTER.campaignId!
     );
 
     await expect(previewLetterTemplatePage.templateId).toBeVisible();
     await expect(previewLetterTemplatePage.templateId).toContainText(
-      templates.AUTHORING_LETTER.id
+      templates.LETTER.id
     );
 
     await expect(previewLetterTemplatePage.summaryList).toBeVisible();
@@ -122,14 +122,14 @@ test.describe('Routing - Review and Move to Production Letter template page', ()
 
     await expect(previewLetterTemplatePage.letterPreviewIframe).toHaveAttribute(
       'src',
-      `/templates/files/${templates.AUTHORING_LETTER.clientId}/renders/${templates.AUTHORING_LETTER.id}/initial-render.pdf`
+      `/templates/files/${templates.LETTER.clientId}/renders/${templates.LETTER.id}/initial-render.pdf`
     );
   });
 
   test.describe('redirects to invalid template page', () => {
     test('when template cannot be found', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', notFoundTemplateId);
 
@@ -140,7 +140,7 @@ test.describe('Routing - Review and Move to Production Letter template page', ()
 
     test('when template ID is invalid', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', invalidTemplateId);
 
@@ -149,9 +149,9 @@ test.describe('Routing - Review and Move to Production Letter template page', ()
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('when template is not letter', async ({ page, baseURL }) => {
+    test('when template is not a letter', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.EMAIL.id);
 
@@ -162,7 +162,7 @@ test.describe('Routing - Review and Move to Production Letter template page', ()
 
     test('when template is a PDF letter', async ({ page, baseURL }) => {
       const previewLetterTemplatePage =
-        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.PDF_LETTER.id);
 

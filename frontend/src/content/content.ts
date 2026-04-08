@@ -573,6 +573,14 @@ const previewSubmittedLetterTemplate = {
   pageTitle: previewLetterTitle,
 };
 
+const previewMessagePlanPreviewLetter = {
+  pageTitle: previewLetterTitle,
+};
+
+const reviewAndMoveToProductionPreviewLetter = {
+  pageTitle: previewLetterTitle,
+};
+
 const letterRender = {
   heading: 'Letter preview',
   guidance: 'Check how your personalisation fields will appear in your letter.',
@@ -2021,11 +2029,13 @@ const content = {
     previewLargePrintLetterTemplate,
     previewLetterTemplate,
     previewMessagePlan,
+    previewMessagePlanPreviewLetter,
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
     reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
+    reviewAndMoveToProductionPreviewLetter,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,
   },

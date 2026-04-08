@@ -26,14 +26,14 @@ import {
   RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
-  RoutingPreviewMessagePlanLetterTemplatePage,
+  RoutingPreviewMessagePlanPreviewLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
   RoutingReviewAndMoveToProductionPage,
-  RoutingReviewAndMoveToProductionLetterTemplatePage,
+  RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
 } from 'pages/routing';
 import { getTestContext } from 'helpers/context/context';
 
@@ -283,19 +283,22 @@ test.describe('Routing', () => {
           .setSearchParam('lockNumber', '0')
       ));
 
-    test('Preview message plan letter template', async ({ page, analyze }) =>
-      analyze(
-        new RoutingPreviewMessagePlanLetterTemplatePage(page)
-          .setPathParam('messagePlanId', productionRoutingConfigId)
-          .setPathParam('templateId', templateIds.LETTER)
-      ));
-
-    test('Review and move to production letter template', async ({
+    test('Preview message plan / preview letter template', async ({
       page,
       analyze,
     }) =>
       analyze(
-        new RoutingReviewAndMoveToProductionLetterTemplatePage(page)
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
+          .setPathParam('messagePlanId', productionRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER)
+      ));
+
+    test('Review and move to production / preview letter template', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new RoutingReviewAndMoveToProductionPreviewLetterTemplatePage(page)
           .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.LETTER)
       ));
