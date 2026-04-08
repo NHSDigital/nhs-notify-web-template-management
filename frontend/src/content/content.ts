@@ -3,6 +3,7 @@ import type {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
+import type { RenderKey } from '@utils/types';
 import type {
   DigitalTemplateType,
   FrontendSupportedLetterType,
@@ -594,6 +595,21 @@ const letterRender = {
     long: 'Long examples',
   },
   loadingText: 'Loading letter preview',
+  iframe: {
+    noPreview: 'No preview available',
+    title: {
+      initialRender: 'Letter preview',
+      shortFormRender: 'Letter preview - short examples',
+      longFormRender: 'Letter preview - long examples',
+    } satisfies Record<RenderKey, string>,
+    ariaLabel: {
+      initialRender: 'PDF preview of letter template',
+      shortFormRender:
+        'PDF preview of letter template with short example personalisation data',
+      longFormRender:
+        'PDF preview of letter template with long example personalisation data',
+    } satisfies Record<RenderKey, string>,
+  },
   pdsSection: {
     heading: 'PDS personalisation fields',
     hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',

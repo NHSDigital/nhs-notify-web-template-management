@@ -1,4 +1,5 @@
 import type { RenderKey } from '@utils/types';
+import content from '@content/content';
 
 type LetterRenderIframeProps = {
   renderType: RenderKey;
@@ -10,21 +11,21 @@ export function LetterRenderIframe({
   pdfUrl,
   ...rest
 }: LetterRenderIframeProps) {
-  if (!pdfUrl) return <p className='nhsuk-body'>No preview available</p>;
+  if (!pdfUrl)
+    return (
+      <p className='nhsuk-body'>
+        {content.components.letterRender.iframe.noPreview}
+      </p>
+    );
 
-  const tabName = renderType === 'shortFormRender' ? 'short' : 'long';
+  const { title, ariaLabel } = content.components.letterRender.iframe;
 
-  const tabbedViewSuffix =
-    renderType === 'initialRender' ? '' : ` - ${tabName} examples`;
-
-  const ariaLabelSuffix =
-    renderType === 'initialRender'
-      ? ''
-      : ` with ${tabName} example personalisation data`;
-
-  const ariaLabel = `PDF preview of letter template${ariaLabelSuffix}`;
-
-  const title = `Letter preview${tabbedViewSuffix}`;
-
-  return <iframe src={pdfUrl} title={title} aria-label={ariaLabel} {...rest} />;
+  return (
+    <iframe
+      src={pdfUrl}
+      title={title[renderType]}
+      aria-label={ariaLabel[renderType]}
+      {...rest}
+    />
+  );
 }
