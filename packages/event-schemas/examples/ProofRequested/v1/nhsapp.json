@@ -1,15 +1,15 @@
 {
   "data": {
     "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "personalisation": {
-      "appointmentDate": "2025-08-01",
-      "appointmentTime": "10:00",
-      "firstName": "Jane",
-      "surgeryName": "Test Surgery"
-    },
     "templateId": "3a58a370-75ab-4788-a75e-cd2572a68523",
     "templateType": "NHS_APP",
-    "testPatientNhsNumber": "9000000009"
+    "testPatientNhsNumber": "9000000009",
+    "personalisation": {
+      "firstName": "Jane",
+      "appointmentTime": "10:00",
+      "appointmentDate": "2025-08-01",
+      "surgeryName": "Test Surgery"
+    }
   },
   "datacontenttype": "application/json",
   "dataschema": "https://notify.nhs.uk/events/schemas/ProofRequested/v1.json",

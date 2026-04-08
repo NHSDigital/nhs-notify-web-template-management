@@ -411,10 +411,10 @@
           "digitalProofingSms": {
             "type": "boolean"
           },
-          "legacyLetters": {
+          "letterAuthoring": {
             "type": "boolean"
           },
-          "letterAuthoring": {
+          "legacyLetters": {
             "type": "boolean"
           },
           "proofing": {
