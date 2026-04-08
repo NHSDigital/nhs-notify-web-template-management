@@ -22,7 +22,11 @@ import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
 import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
-import { RoutingReviewAndMoveToProductionPage } from 'pages/routing';
+import {
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
+  RoutingPreviewBritishSignLanguageLetterTemplatePage,
+  RoutingReviewAndMoveToProductionPage,
+} from 'pages/routing';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { TemplateMgmtChoosePrintingAndPostagePage } from 'pages/letter/template-mgmt-choose-printing-and-postage-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
@@ -71,6 +75,7 @@ import { TemplateMgmtLetterTemplateApprovedPage } from 'pages/letter';
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
   RoutingChooseEmailTemplatePage,
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseMessageOrderPage,
@@ -85,6 +90,7 @@ const protectedPages = [
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
+  RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
@@ -108,6 +114,7 @@ const protectedPages = [
   TemplateMgmtEditTemplateNamePage,
   TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtInvalidTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtMessageTemplatesPage,
   TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewEmailPage,
@@ -134,7 +141,6 @@ const protectedPages = [
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
-  TemplateMgmtLetterTemplateApprovedPage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

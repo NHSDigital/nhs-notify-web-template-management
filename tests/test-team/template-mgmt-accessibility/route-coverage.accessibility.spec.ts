@@ -67,6 +67,7 @@ import { TemplateMgmtRequestProofPage } from 'pages/template-mgmt-request-proof-
 
 // Routing (message plan) pages
 import {
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
   RoutingChooseEmailTemplatePage,
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseMessageOrderPage,
@@ -81,6 +82,7 @@ import {
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
+  RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
@@ -153,6 +155,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
 
   // Routing / Message plans
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
   RoutingChooseEmailTemplatePage,
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseMessageOrderPage,
@@ -167,6 +170,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
+  RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewMessagePlanPage,

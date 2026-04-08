@@ -38,6 +38,7 @@ const templateIds = {
   SMS: randomUUID(),
   LETTER: randomUUID(),
   LARGE_PRINT_LETTER: randomUUID(),
+  BSL_LETTER: randomUUID(),
   FRENCH_LETTER: randomUUID(),
   SPANISH_LETTER: randomUUID(),
 };
@@ -87,10 +88,8 @@ function createRoutingConfigs(
       .addTemplate('LETTER', templateIds.LETTER)
       .addLanguageTemplate('fr', templateIds.FRENCH_LETTER)
       .addLanguageTemplate('es', templateIds.SPANISH_LETTER)
-      .addAccessibleFormatTemplate(
-        'x1',
-        templateIds.LARGE_PRINT_LETTER
-      ).dbEntry;
+      .addAccessibleFormatTemplate('x1', templateIds.LARGE_PRINT_LETTER)
+      .addAccessibleFormatTemplate('q4', templateIds.BSL_LETTER).dbEntry;
 
   routingConfigs.withConditionalTemplateSelected =
     RoutingConfigFactory.createForMessageOrder(
@@ -138,33 +137,37 @@ function createTemplates(user: TestUser) {
       user,
       `Test SMS template - ${templateIds.SMS}`
     ),
-    LETTER: TemplateFactory.uploadLetterTemplate(
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LETTER,
       user,
       `Test Letter template - ${templateIds.LETTER}`
     ),
-    LARGE_PRINT_LETTER: TemplateFactory.uploadLetterTemplate(
+    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER,
       user,
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'NOT_YET_SUBMITTED',
-      'PASSED',
       { letterType: 'x1' }
     ),
-    FRENCH_LETTER: TemplateFactory.uploadLetterTemplate(
+    BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.BSL_LETTER,
+      user,
+      `Test BSL Letter template - ${templateIds.BSL_LETTER}`,
+      'NOT_YET_SUBMITTED',
+      { letterType: 'q4' }
+    ),
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.FRENCH_LETTER,
       user,
       `Test Letter template French - ${templateIds.FRENCH_LETTER}`,
       'NOT_YET_SUBMITTED',
-      'PASSED',
       { language: 'fr' }
     ),
-    SPANISH_LETTER: TemplateFactory.uploadLetterTemplate(
+    SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
       user,
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'NOT_YET_SUBMITTED',
-      'PASSED',
       { language: 'es' }
     ),
   };
@@ -534,9 +537,10 @@ test.describe('Routing - Edit Message Plan page', () => {
     await expect(alternativeLetterFormats.fallbackConditions).toBeVisible();
 
     const listItems = await alternativeLetterFormats.listItems;
-    await expect(listItems).toHaveCount(2);
+    expect(await listItems.count()).toBe(3);
 
     const largePrintItem = alternativeLetterFormats.largePrint;
+    const bslItem = alternativeLetterFormats.britishSignLanguage;
     const otherLanguagesItem = alternativeLetterFormats.otherLanguages;
 
     await expect(largePrintItem.heading).toHaveText(
@@ -551,6 +555,19 @@ test.describe('Routing - Edit Message Plan page', () => {
     );
     await expect(largePrintItem.changeTemplateLink).toBeHidden();
     await expect(largePrintItem.removeTemplateLink).toBeHidden();
+
+    await expect(bslItem.heading).toHaveText(
+      'British Sign Language letter (optional)'
+    );
+    await expect(bslItem.templateName).toBeHidden();
+    await expect(bslItem.chooseTemplateLink).toBeVisible();
+    const chooseBslTemplateLink =
+      await bslItem.chooseTemplateLink.getAttribute('href');
+    expect(chooseBslTemplateLink).toMatch(
+      `/templates/message-plans/choose-british-sign-language-letter-template/${routingConfigIds.valid}?lockNumber=`
+    );
+    await expect(bslItem.changeTemplateLink).toBeHidden();
+    await expect(bslItem.removeTemplateLink).toBeHidden();
 
     await expect(otherLanguagesItem.heading).toHaveText(
       'Other language letters (optional)'
@@ -617,10 +634,11 @@ test.describe('Routing - Edit Message Plan page', () => {
       await expect(alternativeLetterFormats.fallbackConditions).toBeVisible();
 
       const listItems = await alternativeLetterFormats.listItems;
-      await expect(listItems).toHaveCount(2);
+      expect(await listItems.count()).toBe(3);
     });
 
     const largePrintItem = alternativeLetterFormats.largePrint;
+    const bslItem = alternativeLetterFormats.britishSignLanguage;
     const otherLanguagesItem = alternativeLetterFormats.otherLanguages;
 
     await test.step('accessible formats - large print template has name and change link', async () => {
@@ -634,6 +652,17 @@ test.describe('Routing - Edit Message Plan page', () => {
       );
       await expect(largePrintItem.removeTemplateLink).toBeVisible();
       await expect(largePrintItem.chooseTemplateLink).toBeHidden();
+    });
+
+    await test.step('accessible formats - BSL template has name and change link', async () => {
+      await expect(bslItem.templateName).toHaveText(templates.BSL_LETTER.name);
+      await expect(bslItem.changeTemplateLink).toBeVisible();
+      await expect(bslItem.changeTemplateLink).toHaveAttribute(
+        'href',
+        `/templates/message-plans/choose-british-sign-language-letter-template/${routingConfigIds.validWithLetterTemplates}?lockNumber=${messagePlans.validWithLetterTemplates.lockNumber}`
+      );
+      await expect(bslItem.removeTemplateLink).toBeVisible();
+      await expect(bslItem.chooseTemplateLink).toBeHidden();
     });
 
     await test.step('foreign language templates are displayed with names and change link', async () => {

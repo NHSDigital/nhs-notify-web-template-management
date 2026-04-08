@@ -35,7 +35,11 @@ function createTemplates(user: TestUser) {
       templateIds.LETTER,
       user,
       `Event Letter Template - ${templateIds.LETTER}`,
-      'PROOF_APPROVED'
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }

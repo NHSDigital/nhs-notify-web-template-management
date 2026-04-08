@@ -26,6 +26,8 @@ const protectedPaths = [
   /^\/message-plans\/campaign-id-required$/,
   /^\/message-plans\/choose-email-template\/[^/]+$/,
   /^\/message-plans\/choose-email-template\/[^/]+\/preview-template\/[^/]+$/,
+  /^\/message-plans\/choose-british-sign-language-letter-template\/[^/]+$/,
+  /^\/message-plans\/choose-british-sign-language-letter-template\/[^/]+\/preview-template\/[^/]+$/,
   /^\/message-plans\/choose-large-print-letter-template\/[^/]+$/,
   /^\/message-plans\/choose-large-print-letter-template\/[^/]+\/preview-template\/[^/]+$/,
   /^\/message-plans\/choose-message-order$/,

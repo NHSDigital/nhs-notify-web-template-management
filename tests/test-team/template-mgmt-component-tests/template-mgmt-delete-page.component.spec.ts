@@ -33,7 +33,7 @@ function createTemplates(user: TestUser) {
       message: 'delete-page-confirm-email-message',
       subject: 'template-subject',
     },
-    confirmLetter: TemplateFactory.uploadLetterTemplate(
+    confirmLetter: TemplateFactory.uploadPdfLetterTemplate(
       '7bf812d1-7469-4623-92a9-c5db4289a4cb',
       user,
       'delete-page-confirm-letter-name'

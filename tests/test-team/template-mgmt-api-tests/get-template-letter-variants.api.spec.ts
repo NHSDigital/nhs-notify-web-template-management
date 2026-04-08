@@ -115,7 +115,7 @@ test.describe('GET /v1/template/:id/letter-variants', () => {
   test('returns 403 if template is a PDF letter template', async ({
     request,
   }) => {
-    const template = TemplateFactory.uploadLetterTemplate(
+    const template = TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       user1,
       'PDF Letter Template'

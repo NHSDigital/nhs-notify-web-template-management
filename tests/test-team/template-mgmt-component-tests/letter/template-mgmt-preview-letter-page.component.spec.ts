@@ -40,7 +40,7 @@ function createTemplates(
   user: TestUser,
   variants: Awaited<ReturnType<typeof createLetterVariants>>
 ) {
-  const withProofsBase = TemplateFactory.uploadLetterTemplate(
+  const withProofsBase = TemplateFactory.uploadPdfLetterTemplate(
     'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',
     user,
     'proofs-template-letter',
@@ -78,39 +78,39 @@ function createTemplates(
       owner: `CLIENT#${user.clientId}`,
       letterVersion: 'PDF',
     } as Template,
-    notYetSubmitted: TemplateFactory.uploadLetterTemplate(
+    notYetSubmitted: TemplateFactory.uploadPdfLetterTemplate(
       '9AACCD57-C6A3-4273-854C-3839A081B4D9',
       user,
       'notYetSubmitted',
       'NOT_YET_SUBMITTED'
     ),
-    pendingProofRequest: TemplateFactory.uploadLetterTemplate(
+    pendingProofRequest: TemplateFactory.uploadPdfLetterTemplate(
       '10AE654B-72B5-4A67-913C-2E103C7FF47B',
       user,
       'pendingProofRequest',
       'PENDING_PROOF_REQUEST'
     ),
-    pendingUpload: TemplateFactory.uploadLetterTemplate(
+    pendingUpload: TemplateFactory.uploadPdfLetterTemplate(
       '5C442DA9-B555-4CEA-AFE9-143851FD210B',
       user,
       'pendingUpload',
       'PENDING_UPLOAD'
     ),
-    pending: TemplateFactory.uploadLetterTemplate(
+    pending: TemplateFactory.uploadPdfLetterTemplate(
       '7110530b-3565-4d4d-b2d7-56a319d55fde',
       user,
       'test-pending-template-letter',
       'PENDING_UPLOAD',
       'PENDING'
     ),
-    virus: TemplateFactory.uploadLetterTemplate(
+    virus: TemplateFactory.uploadPdfLetterTemplate(
       'd2d32123-0a60-4333-bbde-d22e5d5ef6d9',
       user,
       'test-virus-template-letter',
       'VIRUS_SCAN_FAILED',
       'FAILED'
     ),
-    invalid: TemplateFactory.uploadLetterTemplate(
+    invalid: TemplateFactory.uploadPdfLetterTemplate(
       'b6cace12-556a-4e84-ab79-768d82539b6f',
       user,
       'test-invalid-template-letter',
@@ -118,7 +118,7 @@ function createTemplates(
       'PASSED'
     ),
     proofingDisabled: {
-      ...TemplateFactory.uploadLetterTemplate(
+      ...TemplateFactory.uploadPdfLetterTemplate(
         '9AACCD57-C6A3-4273-854C-3839A081B4D8',
         user,
         'ProofingDisabled',

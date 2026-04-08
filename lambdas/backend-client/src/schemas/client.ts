@@ -10,6 +10,7 @@ const $ClientFeatures = schemaFor<ClientFeatures>()(
     proofing: z.boolean(),
     routing: z.boolean().optional(),
     letterAuthoring: z.boolean().optional(),
+    legacyLetters: z.boolean().optional(),
     digitalProofingNhsApp: z.boolean().optional(),
     digitalProofingEmail: z.boolean().optional(),
     digitalProofingSms: z.boolean().optional(),

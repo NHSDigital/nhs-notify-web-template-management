@@ -5,9 +5,11 @@ import '@testing-library/jest-dom';
 
 import { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import {
+  BSL_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
+  LARGE_PRINT_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
+  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { RoutingConfigFactory } from '@testhelpers/routing-config-factory';
@@ -59,6 +61,7 @@ const letterTemplateId = '278e1a92-353f-42a3-b08d-565ea1c9d763';
 const kuTemplateId = '31399023-08a2-4dc7-81c7-e25b284b2aab';
 const sqTemplateId = '35746144-cac4-4e1f-b92b-4f58e9f1154f';
 const largePrintTemplateId = '72ebc15c-d950-4e2e-99d4-3de7f174fba6';
+const bslTemplateId = 'c7d93e1a-4b05-48f6-97a3-6d2e3b8c5f17';
 
 const templates: MessagePlanTemplates = {
   [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
@@ -68,9 +71,14 @@ const templates: MessagePlanTemplates = {
   [kuTemplateId]: { ...PDF_LETTER_TEMPLATE, id: kuTemplateId },
   [sqTemplateId]: { ...PDF_LETTER_TEMPLATE, id: sqTemplateId },
   [largePrintTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...LARGE_PRINT_LETTER_TEMPLATE,
     id: largePrintTemplateId,
     templateStatus: 'SUBMITTED',
+  },
+  [bslTemplateId]: {
+    ...BSL_LETTER_TEMPLATE,
+    id: bslTemplateId,
+    templateStatus: 'PROOF_APPROVED',
   },
 };
 
@@ -363,6 +371,7 @@ describe('Review and move to production page', () => {
             cascadeGroups: ['standard', 'accessible'],
             conditionalTemplates: [
               { templateId: largePrintTemplateId, accessibleFormat: 'x1' },
+              { templateId: bslTemplateId, accessibleFormat: 'q4' },
             ],
           },
         ],
@@ -371,6 +380,7 @@ describe('Review and move to production page', () => {
       await renderPage(routingConfig);
 
       expect(screen.getByTestId('conditional-template-x1')).toBeInTheDocument();
+      expect(screen.getByTestId('conditional-template-q4')).toBeInTheDocument();
     });
 
     it('renders language templates', async () => {
@@ -448,6 +458,7 @@ describe('Review and move to production page', () => {
             { templateId: kuTemplateId, language: 'ku' },
             { templateId: sqTemplateId, language: 'sq' },
             { templateId: largePrintTemplateId, accessibleFormat: 'x1' },
+            { templateId: bslTemplateId, accessibleFormat: 'q4' },
           ],
         },
       ],

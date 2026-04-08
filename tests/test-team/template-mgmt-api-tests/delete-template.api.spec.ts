@@ -110,7 +110,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
 
   test.describe('LETTER templates', () => {
     const createLetterTemplate = async (user: TestUser): Promise<Template> => {
-      const letterTemplate = TemplateFactory.uploadLetterTemplate(
+      const letterTemplate = TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         user,
         'Test Letter template',

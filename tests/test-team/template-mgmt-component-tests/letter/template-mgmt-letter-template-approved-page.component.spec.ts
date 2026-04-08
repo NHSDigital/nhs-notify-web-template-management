@@ -47,7 +47,7 @@ async function createTemplates() {
       'NOT_YET_SUBMITTED'
     ),
 
-    PDF_LETTER: TemplateFactory.uploadLetterTemplate(
+    PDF_LETTER: TemplateFactory.uploadPdfLetterTemplate(
       templateIds.PDF_LETTER,
       user,
       `pdf-letter-template ${templateIds.PDF_LETTER}`,

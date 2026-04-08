@@ -2,12 +2,11 @@
 
 import { useActionState, useState } from 'react';
 import { Radios } from 'nhsuk-react-components';
-import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import copy from '@content/content';
 import {
   ErrorState,
-  SUPPORTED_LETTER_TYPES,
+  FRONTEND_SUPPORTED_LETTER_TYPES,
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateTypeAction } from './server-action';
@@ -20,6 +19,10 @@ import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+
+const content = copy.components.chooseTemplateType;
 
 export const ChooseTemplateType = ({
   templateTypes,
@@ -33,12 +36,16 @@ export const ChooseTemplateType = ({
 
   const features = useFeatureFlags();
 
+  const filterLetters = !features.letterAuthoring && !features.legacyLetters;
+
+  const filteredTemplateTypes = filterLetters
+    ? templateTypes.filter((type) => type !== 'LETTER')
+    : templateTypes;
+
   const $ChooseTemplateType = features.letterAuthoring
     ? $ChooseTemplateTypeWithLetterAuthoring
     : $ChooseTemplateTypeBase;
   const formValidate = validate($ChooseTemplateType, setErrorState);
-
-  const content = copy.components.chooseTemplateType;
 
   const letterTypes = (
     <Radios
@@ -46,7 +53,7 @@ export const ChooseTemplateType = ({
       error={errorState?.fieldErrors?.['letterType']?.join(', ')}
       errorProps={{ id: 'letterType--error-message' }}
     >
-      {SUPPORTED_LETTER_TYPES.map((letterType) => {
+      {FRONTEND_SUPPORTED_LETTER_TYPES.map((letterType) => {
         return (
           <Radios.Radio
             value={letterType}
@@ -61,7 +68,7 @@ export const ChooseTemplateType = ({
     </Radios>
   );
 
-  const templateTypeOptions = templateTypes.map((templateType) => ({
+  const templateTypeOptions = filteredTemplateTypes.map((templateType) => ({
     id: templateType,
     text: content.templateTypes[templateType],
     conditional:
@@ -93,7 +100,20 @@ export const ChooseTemplateType = ({
           learnMoreLink={content.learnMoreLink}
           learnMoreText={content.learnMoreText}
           formAttributes={{ onSubmit: formValidate }}
-        />
+        >
+          {filterLetters && (
+            <div className='nhsuk-card nhsuk-card--warning nhsuk-u-reading-width'>
+              <div className='nhsuk-card__content'>
+                <h2 className='nhsuk-card__heading'>
+                  {content.warningCalloutContent.headingLabel}
+                </h2>
+                <ContentRenderer
+                  content={content.warningCalloutContent.paragraphs}
+                />
+              </div>
+            </div>
+          )}
+        </NHSNotifyRadioButtonForm>
       </NHSNotifyMain>
     </>
   );

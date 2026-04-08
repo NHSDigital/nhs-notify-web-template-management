@@ -93,6 +93,7 @@ export class RoutingEditMessagePlanPage extends TemplateMgmtBasePage {
   public readonly letter = {
     standard: this.messagePlanChannel('LETTER'),
     largePrint: this.messagePlanChannel('x1'),
+    britishSignLanguage: this.messagePlanChannel('q4'),
     language: this.messagePlanChannel('foreign-language'),
   };
 
@@ -109,6 +110,7 @@ export class RoutingEditMessagePlanPage extends TemplateMgmtBasePage {
         '[class*=message-plan-conditional-templates__list-item]'
       ),
       largePrint: this.messagePlanItem('x1'),
+      britishSignLanguage: this.messagePlanItem('q4'),
       otherLanguages: this.messagePlanItem('foreign-language'),
     };
   }
