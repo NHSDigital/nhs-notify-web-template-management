@@ -416,7 +416,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       editMessagePlanPage.alternativeLetterFormats().otherLanguages
         .templateNames;
     const templateTexts = await templateNames.allTextContents();
-    expect(templateTexts.length).toBe(2);
+    expect(templateTexts).toHaveLength(2);
     expect(templateTexts).toContain(templates.FRENCH_LETTER.name);
     expect(templateTexts).toContain(templates.SPANISH_LETTER.name);
   });
@@ -471,7 +471,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       editMessagePlanPage.alternativeLetterFormats().otherLanguages;
     const templateNames = otherLanguagesItem.templateNames;
     const templateTexts = await templateNames.allTextContents();
-    expect(templateTexts.length).toBe(2);
+    expect(templateTexts).toHaveLength(2);
     expect(templateTexts).toContain(templates.FRENCH_LETTER.name);
     expect(templateTexts).toContain(templates.POLISH_LETTER.name);
 
@@ -550,7 +550,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       editMessagePlanPage.alternativeLetterFormats().otherLanguages;
     const templateNames = otherLanguagesItem.templateNames;
     const templateTexts = await templateNames.allTextContents();
-    expect(templateTexts.length).toBe(2);
+    expect(templateTexts).toHaveLength(2);
     expect(templateTexts).toContain(templates.FRENCH_LETTER.name);
     expect(templateTexts).toContain(templates.SPANISH_LETTER.name);
   });
