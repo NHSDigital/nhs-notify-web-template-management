@@ -332,7 +332,7 @@ test.describe('Choose Printing and Postage page', () => {
     test('redirects to template preview page if template is a PDF letter', async ({
       page,
     }) => {
-      const template = TemplateFactory.uploadLetterTemplate(
+      const template = TemplateFactory.uploadPdfLetterTemplate(
         randomUUID(),
         userLetterAuthoringEnabled,
         'PDF Letter Template'
@@ -362,7 +362,11 @@ test.describe('Choose Printing and Postage page', () => {
         userLetterAuthoringEnabled,
         'Letter Template',
         'SUBMITTED',
-        { letterVariantId: globalVariant.id }
+        {
+          letterVariantId: globalVariant.id,
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
       );
 
       await templateStorageHelper.seedTemplateData([template]);

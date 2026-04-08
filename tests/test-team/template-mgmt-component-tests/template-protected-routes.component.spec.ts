@@ -22,7 +22,11 @@ import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
 import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
-import { RoutingReviewAndMoveToProductionPage } from 'pages/routing';
+import {
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
+  RoutingPreviewBritishSignLanguageLetterTemplatePage,
+  RoutingReviewAndMoveToProductionPage,
+} from 'pages/routing';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { TemplateMgmtChoosePrintingAndPostagePage } from 'pages/letter/template-mgmt-choose-printing-and-postage-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
@@ -34,6 +38,7 @@ import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
 import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-email-page';
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
+import { TemplateMgmtGetReadyToApproveLetterTemplatePage } from '../pages/letter/template-mgmt-get-ready-to-approve-letter-template-page';
 import { TemplateMgmtEditTemplateCampaignPage } from 'pages/letter/template-mgmt-edit-template-campaign-page';
 import { TemplateMgmtEditTemplateNamePage } from 'pages/letter/template-mgmt-edit-template-name-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
@@ -71,6 +76,7 @@ import { TemplateMgmtLetterTemplateApprovedPage } from 'pages/letter';
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
+  RoutingChooseBritishSignLanguageLetterTemplatePage,
   RoutingChooseEmailTemplatePage,
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingChooseMessageOrderPage,
@@ -85,6 +91,7 @@ const protectedPages = [
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
   RoutingMessagePlansPage,
+  RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
@@ -106,7 +113,9 @@ const protectedPages = [
   TemplateMgmtEditSmsPage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtInvalidTemplatePage,
+  TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtMessageTemplatesPage,
   TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewEmailPage,
@@ -134,7 +143,6 @@ const protectedPages = [
   TemplateMgmtUploadLetterPage,
   TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
-  TemplateMgmtLetterTemplateApprovedPage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];
@@ -161,7 +169,7 @@ test.describe('Protected Routes Tests', () => {
 
     expect(uncovered).toHaveLength(0);
 
-    expect(nonPublic.length).toBe(protectedPages.length);
+    expect(nonPublic).toHaveLength(protectedPages.length);
   });
 
   for (const PageModel of protectedPages)

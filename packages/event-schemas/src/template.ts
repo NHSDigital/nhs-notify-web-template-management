@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { languages } from './common';
 
-const letterTypes = ['q4', 'x0', 'x1'];
+const letterTypes = ['q1', 'q4', 'x0', 'x1', 'x3'];
 
 const $TemplateEventV1BaseData = z.object({
   owner: z.string().meta({
@@ -100,7 +100,7 @@ const $LetterTemplateEventV1Data = $TemplateEventV1BaseData
     }),
     letterType: z.enum(letterTypes).meta({
       description:
-        'Letter type - q4:British Sign Language, x1:Large Print, x0:Standard',
+        'Letter type - q1:Braille, q4:British Sign Language, x0:Standard, x1:Large Print, x3:Audio',
     }),
     personalisationParameters: z.array(z.string().max(1000)).meta({
       description: 'List of personalisation parameters used in the template',

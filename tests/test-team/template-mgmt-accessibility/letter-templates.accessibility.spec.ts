@@ -7,6 +7,7 @@ import {
   TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
@@ -84,34 +85,34 @@ test.beforeAll(async () => {
     }
   );
 
-  const letter = TemplateFactory.uploadLetterTemplate(
+  const letter = TemplateFactory.uploadPdfLetterTemplate(
     templateIds.LETTER,
     defaultUser,
     `Proofing letter template - ${templateIds.LETTER}`
   );
 
-  const letterWithError = TemplateFactory.uploadLetterTemplate(
+  const letterWithError = TemplateFactory.uploadPdfLetterTemplate(
     templateIds.LETTER_ERROR,
     defaultUser,
     `Proofing error letter template - ${templateIds.LETTER_ERROR}`,
     'VALIDATION_FAILED'
   );
 
-  const letterSubmitted = TemplateFactory.uploadLetterTemplate(
+  const letterSubmitted = TemplateFactory.uploadPdfLetterTemplate(
     templateIds.LETTER_SUBMITTED,
     defaultUser,
     `Proofing submitted letter template - ${templateIds.LETTER_SUBMITTED}`,
     'SUBMITTED'
   );
 
-  const letterProof = TemplateFactory.uploadLetterTemplate(
+  const letterProof = TemplateFactory.uploadPdfLetterTemplate(
     templateIds.LETTER_PROOF,
     defaultUser,
     `Proofing letter template - ${templateIds.LETTER_PROOF}`,
     'PENDING_PROOF_REQUEST'
   );
 
-  const letterProofDisabled = TemplateFactory.uploadLetterTemplate(
+  const letterProofDisabled = TemplateFactory.uploadPdfLetterTemplate(
     templateIds.LETTER_PROOF_DISABLED,
     userWithProofingDisabled,
     `Proofing disabled letter template - ${templateIds.LETTER_PROOF_DISABLED}`
@@ -378,6 +379,16 @@ test.describe('Letter templates', () => {
             await p.errorSummary.isVisible();
           },
         }
+      ));
+
+    test('Get ready to approve letter template page', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new TemplateMgmtGetReadyToApproveLetterTemplatePage(page)
+          .setPathParam('templateId', templateIds.AUTHORING_WITH_RENDERS)
+          .setSearchParam('lockNumber', '0')
       ));
 
     test('Review and approve letter template page', async ({ page, analyze }) =>

@@ -32,6 +32,7 @@ import {
   LARGE_PRINT_LETTER_TEMPLATE,
   PDF_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
+  BSL_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { randomUUID } from 'node:crypto';
 
@@ -1867,6 +1868,8 @@ describe('getAccessibleTemplatesForCascadeItem', () => {
   it('returns the supported accessible format templates for a cascade item', () => {
     const id = randomUUID();
     const id2 = randomUUID();
+    const id3 = randomUUID();
+    const id4 = randomUUID();
 
     const item: CascadeItem = {
       cascadeGroups: ['standard'],
@@ -1880,14 +1883,25 @@ describe('getAccessibleTemplatesForCascadeItem', () => {
       ],
     };
 
-    const template = { ...PDF_LETTER_TEMPLATE, id };
+    const largePrintTemplate = { ...LARGE_PRINT_LETTER_TEMPLATE, id };
+    const bslTemplate = { ...BSL_LETTER_TEMPLATE, id: id2 };
+    const standardTemplate = { ...PDF_LETTER_TEMPLATE, id: id3 };
+    const languageTemplate = {
+      ...PDF_LETTER_TEMPLATE,
+      id: id4,
+      language: 'es' as const,
+    };
+
     const templates: MessagePlanTemplates = {
-      [id]: template,
-      [id2]: { ...PDF_LETTER_TEMPLATE, id: id2 },
+      [id]: largePrintTemplate,
+      [id2]: bslTemplate,
+      [id3]: standardTemplate,
+      [id4]: languageTemplate,
     };
 
     expect(getAccessibleTemplatesForCascadeItem(item, templates)).toEqual([
-      ['x1', template],
+      ['x1', largePrintTemplate],
+      ['q4', bslTemplate],
     ]);
   });
 });
