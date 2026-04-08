@@ -37,7 +37,7 @@ export class OtpService {
     details: ContactDetail,
     otp: string
   ): Promise<ApplicationResult<void>> {
-    console.log(JSON.stringify({ ...details, otp }));
+    console.log({ id: details.id, otp });
 
     return { data: undefined };
   }

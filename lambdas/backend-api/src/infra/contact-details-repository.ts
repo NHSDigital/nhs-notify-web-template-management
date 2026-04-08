@@ -32,6 +32,8 @@ export class ContactDetailsRepository {
       status: 'PENDING_VERIFICATION',
     };
 
+    const now = new Date();
+
     try {
       await this.dynamodb.send(
         new PutCommand({
@@ -42,10 +44,10 @@ export class ContactDetailsRepository {
             ...dto,
             rawValue: details.rawValue,
             otpHash: hash(otp),
-            ttl: this.getUnverifiedTtl(),
-            createdAt: new Date().toISOString(),
+            ttl: this.getUnverifiedTtl(now),
+            createdAt: now.toISOString(),
             createdBy: user.internalUserId,
-            updatedAt: new Date().toISOString(),
+            updatedAt: now.toISOString(),
             updatedBy: user.internalUserId,
           },
           ExpressionAttributeNames: {
@@ -72,17 +74,17 @@ export class ContactDetailsRepository {
 
       return failure(
         ErrorCase.INTERNAL,
-        'Failed to save contact details',
+        'Failed to save contact details.',
         error
       );
     }
   }
 
   private getContactDetailKey(detail: ContactDetailInputNormalized) {
-    return `${detail.type}#${hash(detail.value)}`;
+    return `${detail.type}#${detail.value}`;
   }
 
-  private getUnverifiedTtl() {
-    return Date.now() / 1000 + this.unverifiedTtlSeconds;
+  private getUnverifiedTtl(now: Date) {
+    return Math.floor(now.getTime() / 1000) + this.unverifiedTtlSeconds;
   }
 }

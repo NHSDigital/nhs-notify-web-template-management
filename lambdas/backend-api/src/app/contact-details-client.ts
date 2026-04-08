@@ -10,11 +10,11 @@ import { failure, validate } from '@backend-api/utils';
 export class ContactDetailsClient {
   constructor(
     private contactDetailsRepo: ContactDetailsRepository,
-    private optService: OtpService,
+    private otpService: OtpService,
     private clientConfigRepo: ClientConfigRepository
   ) {}
 
-  async putContactDetail(
+  async requestVerification(
     payload: unknown,
     user: User
   ): Promise<Result<ContactDetail>> {
@@ -38,7 +38,7 @@ export class ContactDetailsClient {
       );
     }
 
-    const otp = await this.optService.generate();
+    const otp = await this.otpService.generate();
 
     if (otp.error) return otp;
 
@@ -50,7 +50,7 @@ export class ContactDetailsClient {
 
     if (contactDetail.error) return contactDetail;
 
-    const send = await this.optService.send(contactDetail.data, otp.data);
+    const send = await this.otpService.send(contactDetail.data, otp.data);
 
     if (send.error) return send;
 

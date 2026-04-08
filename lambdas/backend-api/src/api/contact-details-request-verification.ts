@@ -26,7 +26,7 @@ export function createHandler({
 
     const log = logger.child(user);
 
-    const { data, error } = await contactDetailsClient.putContactDetail(
+    const { data, error } = await contactDetailsClient.requestVerification(
       payload,
       user
     );
