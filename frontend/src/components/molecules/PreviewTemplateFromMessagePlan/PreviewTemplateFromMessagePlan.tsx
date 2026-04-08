@@ -3,7 +3,7 @@
 import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import type {
   LetterVariant,
   TemplateDto,
@@ -61,9 +61,9 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   return (
     <>
       {backLinkHref && (
-        <NotifyBackLink href={backLinkHref}>
+        <NHSNotifyBackLink href={backLinkHref}>
           {content.backLink.text}
-        </NotifyBackLink>
+        </NHSNotifyBackLink>
       )}
 
       <NHSNotifyMain>
