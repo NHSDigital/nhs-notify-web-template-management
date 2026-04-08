@@ -10,6 +10,7 @@ import type {
   UpdateRoutingConfig,
 } from 'nhs-notify-web-template-management-types';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
+import { TemplateClient } from '@backend-api/app/template-client';
 
 const user = { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' };
 
@@ -18,14 +19,18 @@ function setup() {
 
   const clientConfigRepository = mock<ClientConfigRepository>();
 
+  const templateClient = mock<TemplateClient>();
+
   const mocks = {
     routingConfigRepository,
     clientConfigRepository,
+    templateClient,
   };
 
   const client = new RoutingConfigClient(
     routingConfigRepository,
-    clientConfigRepository
+    clientConfigRepository,
+    templateClient
   );
 
   return { client, mocks };

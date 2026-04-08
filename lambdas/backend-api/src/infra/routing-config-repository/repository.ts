@@ -97,7 +97,8 @@ export class RoutingConfigRepository {
     id: string,
     updateData: UpdateRoutingConfig,
     user: User,
-    lockNumber: number
+    lockNumber: number,
+    expectedCampaignId: string
   ): Promise<ApplicationResult<RoutingConfig>> {
     const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
 
@@ -114,6 +115,8 @@ export class RoutingConfigRepository {
 
     if (campaignId) {
       update.setCampaignId(campaignId);
+    } else {
+      update.expectCampaignId(expectedCampaignId);
     }
 
     if (cascade && cascadeGroupOverrides) {

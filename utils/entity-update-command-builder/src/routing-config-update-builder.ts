@@ -42,6 +42,11 @@ export class RoutingConfigUpdateBuilder extends EntityUpdateBuilder<
     return this;
   }
 
+  expectCampaignId(expectedCampaignId: string) {
+    this.updateBuilder.conditions.and('campaignId', '=', expectedCampaignId);
+    return this;
+  }
+
   setCascade(cascade: CascadeItem[]) {
     this.updateBuilder.setValue('cascade', cascade);
     return this;
