@@ -370,7 +370,7 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
   test('returns 400 - cannot approve a PDF letter template', async ({
     request,
   }) => {
-    const pdfLetterTemplate = TemplateFactory.uploadLetterTemplate(
+    const pdfLetterTemplate = TemplateFactory.uploadPdfLetterTemplate(
       randomUUID(),
       userLetterAuthoring,
       'Test PDF Letter template'

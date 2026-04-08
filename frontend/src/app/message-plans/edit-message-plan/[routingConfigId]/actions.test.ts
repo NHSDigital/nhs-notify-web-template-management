@@ -1,14 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { moveToProduction, removeTemplateFromMessagePlan } from './actions';
 import { getRoutingConfig, updateRoutingConfig } from '@utils/message-plans';
-import type {
-  CascadeGroupName,
-  Channel,
-  ChannelType,
-  Language,
-  LetterType,
-  RoutingConfigStatus,
-} from 'nhs-notify-web-template-management-types';
+import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import { redirect } from 'next/navigation';
 import { getChannelsMissingTemplates } from '@utils/routing-utils';
 
@@ -36,27 +29,27 @@ const baseConfig = {
   campaignId: 'campaign1',
   name: 'Test',
   clientId: 'client1',
-  status: 'DRAFT' as RoutingConfigStatus,
+  status: 'DRAFT',
   createdAt: '2025-01-01T00:00:00.000Z',
   updatedAt: '2025-01-01T00:00:00.000Z',
   cascade: [
     {
-      channel: 'EMAIL' as Channel,
-      channelType: 'primary' as ChannelType,
-      cascadeGroups: ['standard' as CascadeGroupName],
+      channel: 'EMAIL',
+      channelType: 'primary',
+      cascadeGroups: ['standard'],
       defaultTemplateId: emailTemplateId,
     },
     {
-      channel: 'SMS' as Channel,
-      channelType: 'primary' as ChannelType,
-      cascadeGroups: ['standard' as CascadeGroupName],
+      channel: 'SMS',
+      channelType: 'primary',
+      cascadeGroups: ['standard'],
       defaultTemplateId: smsTemplateId,
     },
   ],
   cascadeGroupOverrides: [],
   lockNumber: 0,
   defaultCascadeGroup: 'standard',
-};
+} satisfies RoutingConfig;
 
 describe('removeTemplateFromMessagePlan', () => {
   beforeEach(() => {
@@ -101,16 +94,16 @@ describe('removeTemplateFromMessagePlan', () => {
           ...baseConfig.cascade[0],
           conditionalTemplates: [
             {
-              accessibleFormat: 'x1' as LetterType,
+              accessibleFormat: 'x1',
               templateId: largePrintId,
             },
-            { language: 'pl' as Language, templateId: polishTemplateId },
-            { language: 'fr' as Language, templateId: frenchTemplateId },
+            { language: 'pl', templateId: polishTemplateId },
+            { language: 'fr', templateId: frenchTemplateId },
           ],
         },
         baseConfig.cascade[1],
       ],
-    };
+    } satisfies RoutingConfig;
 
     mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplates);
 
@@ -151,13 +144,13 @@ describe('removeTemplateFromMessagePlan', () => {
       cascade: [
         {
           ...baseConfig.cascade[0],
-          channel: 'LETTER' as Channel,
+          channel: 'LETTER',
           conditionalTemplates: [
-            { accessibleFormat: 'x1' as LetterType, templateId: largePrintId },
+            { accessibleFormat: 'x1', templateId: largePrintId },
           ],
         },
       ],
-    };
+    } satisfies RoutingConfig;
 
     mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplate);
 
@@ -190,26 +183,22 @@ describe('removeTemplateFromMessagePlan', () => {
       ...baseConfig,
       cascade: [
         {
-          channel: 'LETTER' as Channel,
-          channelType: 'primary' as ChannelType,
-          cascadeGroups: [
-            'standard' as CascadeGroupName,
-            'accessible' as CascadeGroupName,
-            'translations' as CascadeGroupName,
-          ],
+          channel: 'LETTER',
+          channelType: 'primary',
+          cascadeGroups: ['standard', 'accessible', 'translations'],
           defaultTemplateId: emailTemplateId,
           conditionalTemplates: [
             {
-              accessibleFormat: 'x1' as LetterType,
+              accessibleFormat: 'x1',
               templateId: largePrintId,
             },
-            { language: 'pl' as Language, templateId: polishTemplateId },
-            { language: 'fr' as Language, templateId: frenchTemplateId },
+            { language: 'pl', templateId: polishTemplateId },
+            { language: 'fr', templateId: frenchTemplateId },
           ],
         },
       ],
       cascadeGroupOverrides: [],
-    };
+    } satisfies RoutingConfig;
 
     mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplates);
 
@@ -246,23 +235,20 @@ describe('removeTemplateFromMessagePlan', () => {
       ...baseConfig,
       cascade: [
         {
-          channel: 'LETTER' as Channel,
-          channelType: 'primary' as ChannelType,
-          cascadeGroups: [
-            'standard' as CascadeGroupName,
-            'accessible' as CascadeGroupName,
-          ],
+          channel: 'LETTER',
+          channelType: 'primary',
+          cascadeGroups: ['standard', 'accessible'],
           defaultTemplateId: emailTemplateId,
           conditionalTemplates: [
             {
-              accessibleFormat: 'x1' as LetterType,
+              accessibleFormat: 'x1',
               templateId: largePrintId,
             },
           ],
         },
       ],
       cascadeGroupOverrides: [],
-    };
+    } satisfies RoutingConfig;
 
     mockGetRoutingConfig.mockResolvedValue(configWithConditionalTemplates);
 

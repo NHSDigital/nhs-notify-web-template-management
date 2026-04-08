@@ -827,6 +827,43 @@ exports[`EditMessagePlanPage renders correctly for a message plan with multiple 
                 >
                   <div
                     class="channel-template-outer"
+                    data-testid="channel-template-q4"
+                  >
+                    <div
+                      class="channel-template-inner"
+                    >
+                      <h3
+                        class="nhsuk-heading-s"
+                      >
+                        British Sign Language letter (optional)
+                      </h3>
+                      <ul
+                        class="channel-template-actions"
+                      >
+                        <li>
+                          <a
+                            class="nhsuk-link nhsuk-link--no-visited-state"
+                            data-testid="choose-template-link-q4"
+                            href="/message-plans/choose-british-sign-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
+                          >
+                            Choose
+                            <span
+                              class="nhsuk-u-visually-hidden"
+                            >
+                              British Sign Language letter
+                            </span>
+                             template
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li
+                  class="message-plan-conditional-templates__list-item"
+                >
+                  <div
+                    class="channel-template-outer"
                     data-testid="channel-template-foreign-language"
                   >
                     <div
@@ -1697,6 +1734,43 @@ exports[`EditMessagePlanPage validation should match snapshot when displaying va
                               class="nhsuk-u-visually-hidden"
                             >
                               Large print letter
+                            </span>
+                             template
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li
+                  class="message-plan-conditional-templates__list-item"
+                >
+                  <div
+                    class="channel-template-outer"
+                    data-testid="channel-template-q4"
+                  >
+                    <div
+                      class="channel-template-inner"
+                    >
+                      <h3
+                        class="nhsuk-heading-s"
+                      >
+                        British Sign Language letter (optional)
+                      </h3>
+                      <ul
+                        class="channel-template-actions"
+                      >
+                        <li>
+                          <a
+                            class="nhsuk-link nhsuk-link--no-visited-state"
+                            data-testid="choose-template-link-q4"
+                            href="/message-plans/choose-british-sign-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
+                          >
+                            Choose
+                            <span
+                              class="nhsuk-u-visually-hidden"
+                            >
+                              British Sign Language letter
                             </span>
                              template
                           </a>

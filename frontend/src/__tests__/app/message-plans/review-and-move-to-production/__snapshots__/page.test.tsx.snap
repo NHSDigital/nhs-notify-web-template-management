@@ -673,7 +673,35 @@ exports[`Review and move to production page matches snapshot for full cascade 1`
                         <a
                           href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
                         >
-                          letter template name
+                          large print letter template name
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li
+                  class="message-plan-conditional-templates__list-item"
+                  data-testid="conditional-template-q4"
+                >
+                  <div
+                    class="channel-template-outer"
+                    data-testid="channel-card"
+                  >
+                    <div
+                      class="channel-template-inner"
+                    >
+                      <h3
+                        class="nhsuk-heading-s"
+                      >
+                        British Sign Language letter (optional)
+                      </h3>
+                      <p
+                        data-testid="template-name"
+                      >
+                        <a
+                          href="/preview-letter-template/c7d93e1a-4b05-48f6-97a3-6d2e3b8c5f17"
+                        >
+                          British Sign Language letter template name
                         </a>
                       </p>
                     </div>
