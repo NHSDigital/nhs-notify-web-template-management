@@ -64,6 +64,9 @@ test.describe('Routing', () => {
       testUsers.UserWithMultipleCampaigns.userId
     );
 
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     const createRoutingConfig = (id: string, status: RoutingConfigStatus) =>
       RoutingConfigFactory.createForMessageOrder(user, messageOrder, {
         id,
@@ -126,6 +129,7 @@ test.describe('Routing', () => {
         {
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: globalLetterVariant.id,
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -137,6 +141,7 @@ test.describe('Routing', () => {
           letterType: 'x1',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: globalLetterVariant.id,
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -148,6 +153,7 @@ test.describe('Routing', () => {
           letterType: 'q4',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: globalLetterVariant.id,
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -159,6 +165,7 @@ test.describe('Routing', () => {
           language: 'fr',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: globalLetterVariant.id,
         }
       ),
     ]);
