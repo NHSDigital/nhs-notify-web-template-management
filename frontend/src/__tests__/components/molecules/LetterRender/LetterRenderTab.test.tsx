@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { LetterRenderTab } from '@molecules/LetterRender/LetterRenderTab';
 import { updateLetterPreview } from '@molecules/LetterRender/server-action';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
+import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
 import type {
   AuthoringLetterTemplate,
   FormState,
@@ -14,6 +15,10 @@ jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 jest.mock('@molecules/LetterRender/server-action');
 
+jest.mock('@providers/letter-preview-error-provider', () => ({
+  useLetterPreviewError: jest.fn(),
+}));
+
 jest.mock('next/navigation');
 
 jest.mock('@utils/get-base-path', () => ({
@@ -21,6 +26,17 @@ jest.mock('@utils/get-base-path', () => ({
 }));
 
 const mockUpdateLetterPreview = jest.mocked(updateLetterPreview);
+
+const mockSetUpdatePreviewErrorState = jest.fn();
+
+beforeEach(() => {
+  jest.mocked(useLetterPreviewError).mockReturnValue({
+    approveErrorState: undefined,
+    setApproveErrorState: jest.fn(),
+    updatePreviewErrorState: undefined,
+    setUpdatePreviewErrorState: mockSetUpdatePreviewErrorState,
+  });
+});
 
 function Provider({ children }: PropsWithChildren) {
   return <LetterRenderPollingProvider>{children}</LetterRenderPollingProvider>;

@@ -13,6 +13,7 @@ import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
+import { LetterPreviewErrorProvider } from '@providers/letter-preview-error-provider';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -57,25 +58,27 @@ export default async function PreviewApprovedLetterTemplatePage({
   return (
     <NHSNotifyContainer fullWidth>
       <LetterRenderPollingProvider>
-        <NHSNotifyContainer>
-          <NHSNotifyBackLink href={links.messageTemplates}>
-            {backLinkText}
-          </NHSNotifyBackLink>
-        </NHSNotifyContainer>
-        <NHSNotifyMain>
+        <LetterPreviewErrorProvider>
           <NHSNotifyContainer>
-            <div className='nhsuk-grid-row'>
-              <div className='nhsuk-grid-column-full'>
-                <PreviewTemplateDetailsAuthoringLetter
-                  template={validatedTemplate}
-                  letterVariant={letterVariant}
-                  hideEditActions
-                />
-              </div>
-            </div>
+            <NHSNotifyBackLink href={links.messageTemplates}>
+              {backLinkText}
+            </NHSNotifyBackLink>
           </NHSNotifyContainer>
-          <LetterRender template={validatedTemplate} hideEditActions={true} />
-        </NHSNotifyMain>
+          <NHSNotifyMain>
+            <NHSNotifyContainer>
+              <div className='nhsuk-grid-row'>
+                <div className='nhsuk-grid-column-full'>
+                  <PreviewTemplateDetailsAuthoringLetter
+                    template={validatedTemplate}
+                    letterVariant={letterVariant}
+                    hideEditActions
+                  />
+                </div>
+              </div>
+            </NHSNotifyContainer>
+            <LetterRender template={validatedTemplate} hideEditActions={true} />
+          </NHSNotifyMain>
+        </LetterPreviewErrorProvider>
       </LetterRenderPollingProvider>
     </NHSNotifyContainer>
   );

@@ -1,22 +1,26 @@
 import { render, screen } from '@testing-library/react';
 import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
+import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
 
 jest.mock('@providers/letter-render-polling-provider');
+jest.mock('@providers/letter-preview-error-provider');
 
 describe('LetterSubmitButton', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    jest.mocked(useLetterPreviewError).mockReturnValue({
+      approveErrorState: undefined,
+      setApproveErrorState: jest.fn(),
+      updatePreviewErrorState: undefined,
+      setUpdatePreviewErrorState: jest.fn(),
+    });
   });
 
   it('renders an enabled submit button when no tab is polling', () => {
     jest.mocked(useLetterRenderPolling).mockReturnValue({
       isAnyTabPolling: false,
       registerPolling: jest.fn(),
-      tabErrorState: undefined,
-      setTabErrorState: jest.fn(),
-      pageErrorState: undefined,
-      setPageErrorState: jest.fn(),
     });
 
     render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
@@ -34,10 +38,6 @@ describe('LetterSubmitButton', () => {
     jest.mocked(useLetterRenderPolling).mockReturnValue({
       isAnyTabPolling: true,
       registerPolling: jest.fn(),
-      tabErrorState: undefined,
-      setTabErrorState: jest.fn(),
-      pageErrorState: undefined,
-      setPageErrorState: jest.fn(),
     });
 
     render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
@@ -54,10 +54,6 @@ describe('LetterSubmitButton', () => {
     jest.mocked(useLetterRenderPolling).mockReturnValue({
       isAnyTabPolling: false,
       registerPolling: jest.fn(),
-      tabErrorState: undefined,
-      setTabErrorState: jest.fn(),
-      pageErrorState: undefined,
-      setPageErrorState: jest.fn(),
     });
 
     render(<LetterSubmitButton>Custom text</LetterSubmitButton>);

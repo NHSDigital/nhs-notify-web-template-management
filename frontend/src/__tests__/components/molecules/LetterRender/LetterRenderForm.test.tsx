@@ -5,6 +5,7 @@ import {
   LetterRenderPollingProvider,
   useLetterRenderPolling,
 } from '@providers/letter-render-polling-provider';
+import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
 import type {
   AuthoringLetterTemplate,
   FormState,
@@ -19,6 +20,10 @@ jest.mock('@providers/letter-render-polling-provider', () => {
     useLetterRenderPolling: jest.fn(actual.useLetterRenderPolling),
   };
 });
+
+jest.mock('@providers/letter-preview-error-provider', () => ({
+  useLetterPreviewError: jest.fn(),
+}));
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
@@ -79,6 +84,12 @@ function renderWithProvider(
 describe('LetterRenderForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.mocked(useLetterPreviewError).mockReturnValue({
+      approveErrorState: undefined,
+      setApproveErrorState: jest.fn(),
+      updatePreviewErrorState: undefined,
+      setUpdatePreviewErrorState: jest.fn(),
+    });
   });
 
   describe('PDS personalisation section', () => {
@@ -249,10 +260,6 @@ describe('LetterRenderForm', () => {
       jest.mocked(useLetterRenderPolling).mockReturnValueOnce({
         isAnyTabPolling: true,
         registerPolling: jest.fn(),
-        tabErrorState: undefined,
-        setTabErrorState: jest.fn(),
-        pageErrorState: undefined,
-        setPageErrorState: jest.fn(),
       });
 
       renderWithProvider(
@@ -281,9 +288,7 @@ describe('LetterRenderForm', () => {
         initialState
       );
 
-      expect(
-        screen.getByText('Choose example recipient')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Choose example recipient')).toBeInTheDocument();
 
       const formGroup = screen
         .getByText('Choose example recipient')
@@ -313,9 +318,7 @@ describe('LetterRenderForm', () => {
         initialState
       );
 
-      expect(
-        screen.getByText('Choose example recipient')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Choose example recipient')).toBeInTheDocument();
 
       const formGroup = screen
         .getByText('Choose example recipient')

@@ -10,6 +10,7 @@ import {
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
+import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
@@ -21,7 +22,8 @@ type LetterRenderFormProps = {
 
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
-  const { isAnyTabPolling, setPageErrorState } = useLetterRenderPolling();
+  const { isAnyTabPolling } = useLetterRenderPolling();
+  const { setApproveErrorState } = useLetterPreviewError();
 
   const exampleRecipients =
     tab === 'shortFormRender'
@@ -94,7 +96,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         secondary
         className='nhsuk-u-margin-top-4'
         disabled={isAnyTabPolling}
-        onClick={() => setPageErrorState(undefined)}
+        onClick={() => setApproveErrorState(undefined)}
       >
         {copy.updatePreviewButton}
       </NHSNotifyButton>
