@@ -411,10 +411,10 @@
           "digitalProofingSms": {
             "type": "boolean"
           },
-          "letterAuthoring": {
+          "legacyLetters": {
             "type": "boolean"
           },
-          "legacyLetters": {
+          "letterAuthoring": {
             "type": "boolean"
           },
           "proofing": {
@@ -479,6 +479,9 @@
           },
           {
             "properties": {
+              "clientId": {
+                "type": "string"
+              },
               "id": {
                 "type": "string"
               },
@@ -490,6 +493,7 @@
               }
             },
             "required": [
+              "clientId",
               "id",
               "status"
             ],
@@ -1628,7 +1632,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_CONTACT_DETAIL_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${REQUEST_CONTACT_DETAILS_VERIFICATION_LAMBDA_ARN}/invocations"
         }
       }
     },

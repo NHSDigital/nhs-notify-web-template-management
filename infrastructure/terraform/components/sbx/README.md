@@ -38,6 +38,7 @@
 | <a name="output_client_ssm_path_prefix"></a> [client\_ssm\_path\_prefix](#output\_client\_ssm\_path\_prefix) | n/a |
 | <a name="output_cognito_user_pool_client_id"></a> [cognito\_user\_pool\_client\_id](#output\_cognito\_user\_pool\_client\_id) | n/a |
 | <a name="output_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#output\_cognito\_user\_pool\_id) | n/a |
+| <a name="output_contact_details_table_name"></a> [contact\_details\_table\_name](#output\_contact\_details\_table\_name) | n/a |
 | <a name="output_deployment"></a> [deployment](#output\_deployment) | Deployment details used for post-deployment scripts |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_events_sns_topic_arn"></a> [events\_sns\_topic\_arn](#output\_events\_sns\_topic\_arn) | n/a |
@@ -45,6 +46,7 @@
 | <a name="output_letter_variants_table_name"></a> [letter\_variants\_table\_name](#output\_letter\_variants\_table\_name) | n/a |
 | <a name="output_proof_requests_table_name"></a> [proof\_requests\_table\_name](#output\_proof\_requests\_table\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
+| <a name="output_request_contact_details_verification_log_group_name"></a> [request\_contact\_details\_verification\_log\_group\_name](#output\_request\_contact\_details\_verification\_log\_group\_name) | n/a |
 | <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
 | <a name="output_routing_config_table_name"></a> [routing\_config\_table\_name](#output\_routing\_config\_table\_name) | n/a |
 | <a name="output_sftp_environment"></a> [sftp\_environment](#output\_sftp\_environment) | n/a |

@@ -4,10 +4,10 @@ import {
   parsePhoneNumberFromString,
 } from 'libphonenumber-js/max';
 
-const PERMITTED_COUNTRY_CODES = new Set<CountryCode>(['GB', 'GG', 'JE']);
+const PERMITTED_COUNTRY_CODES = new Set<CountryCode>(['GB', 'GG', 'IM', 'JE']);
 
 /**
- * Adapted from core phone number validation. Only allows UK mobile numbers.
+ * Adapted from core phone number validation. Only allows UK/Crown Dependency mobile numbers.
  * https://github.com/NHSDigital/comms-mgr/blob/536e6e807154e64752371ec6477facdd14c491b8/packages/libs/utils/src/validators/validate-phone-number.ts
  * @returns String - E.164 format phone number
  * @returns null - if the phone number is not valid

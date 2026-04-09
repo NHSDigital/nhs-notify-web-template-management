@@ -88,6 +88,7 @@ describe('ContactDetailsRepository', () => {
 
         expect(result).toEqual({
           data: {
+            clientId: USER.clientId,
             id: RANDOM_UUID,
             status: 'PENDING_VERIFICATION',
             type: input.type,
@@ -108,7 +109,8 @@ describe('ContactDetailsRepository', () => {
             PK: `CLIENT#${USER.clientId}`,
             SK: `${input.type}#${input.value}`,
             createdAt: NOW.toISOString(),
-            createdBy: USER.internalUserId,
+            createdBy: `INTERNAL_USER#${USER.internalUserId}`,
+            clientId: USER.clientId,
             id: RANDOM_UUID,
             otpHash: EXPECTED_OTP_HASH,
             rawValue: input.rawValue,
@@ -116,7 +118,7 @@ describe('ContactDetailsRepository', () => {
             ttl: EXPECTED_TTL,
             type: input.type,
             updatedAt: NOW.toISOString(),
-            updatedBy: USER.internalUserId,
+            updatedBy: `INTERNAL_USER#${USER.internalUserId}`,
             value: input.value,
           },
           ExpressionAttributeNames: { '#pk': 'PK', '#status': 'status' },

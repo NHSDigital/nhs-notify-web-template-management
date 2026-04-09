@@ -53,3 +53,11 @@ output "proof_requests_table_name" {
 output "letter_variants_table_name" {
   value = aws_dynamodb_table.letter_variants.name
 }
+
+output "contact_details_table_name" {
+  value = aws_dynamodb_table.client_contact_details.name
+}
+
+output "request_contact_details_verification_log_group_name" {
+  value = module.request_contact_details_verification_lambda.cloudwatch_log_group_name
+}

@@ -41,7 +41,6 @@ No requirements.
 |------|--------|---------|
 | <a name="module_approve_template_lambda"></a> [approve\_template\_lambda](#module\_approve\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.6/terraform-lambda.zip | n/a |
 | <a name="module_authorizer_lambda"></a> [authorizer\_lambda](#module\_authorizer\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
-| <a name="module_contact_details_request_verification_lambda"></a> [contact\_details\_request\_verification\_lambda](#module\_contact\_details\_request\_verification\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.8/terraform-lambda.zip | n/a |
 | <a name="module_count_routing_configs_lambda"></a> [count\_routing\_configs\_lambda](#module\_count\_routing\_configs\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_create_routing_config_lambda"></a> [create\_routing\_config\_lambda](#module\_create\_routing\_config\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
@@ -67,6 +66,7 @@ No requirements.
 | <a name="module_list_routing_configs_lambda"></a> [list\_routing\_configs\_lambda](#module\_list\_routing\_configs\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_patch_template_lambda"></a> [patch\_template\_lambda](#module\_patch\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
+| <a name="module_request_contact_details_verification_lambda"></a> [request\_contact\_details\_verification\_lambda](#module\_request\_contact\_details\_verification\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.8/terraform-lambda.zip | n/a |
 | <a name="module_request_proof_lambda"></a> [request\_proof\_lambda](#module\_request\_proof\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_s3bucket_download"></a> [s3bucket\_download](#module\_s3bucket\_download) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
@@ -90,12 +90,14 @@ No requirements.
 |------|-------------|
 | <a name="output_api_base_url"></a> [api\_base\_url](#output\_api\_base\_url) | n/a |
 | <a name="output_client_ssm_path_prefix"></a> [client\_ssm\_path\_prefix](#output\_client\_ssm\_path\_prefix) | n/a |
+| <a name="output_contact_details_table_name"></a> [contact\_details\_table\_name](#output\_contact\_details\_table\_name) | n/a |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
 | <a name="output_letter_variants_table_name"></a> [letter\_variants\_table\_name](#output\_letter\_variants\_table\_name) | n/a |
 | <a name="output_proof_requests_table_name"></a> [proof\_requests\_table\_name](#output\_proof\_requests\_table\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
+| <a name="output_request_contact_details_verification_log_group_name"></a> [request\_contact\_details\_verification\_log\_group\_name](#output\_request\_contact\_details\_verification\_log\_group\_name) | n/a |
 | <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
 | <a name="output_routing_config_table_name"></a> [routing\_config\_table\_name](#output\_routing\_config\_table\_name) | n/a |
 | <a name="output_sftp_environment"></a> [sftp\_environment](#output\_sftp\_environment) | n/a |

@@ -1,4 +1,4 @@
-import punycode from 'node:punycode';
+import punycode from 'punycode/'; // trailing slash is to avoid conflict with deprecated node:punycode module
 
 // Adapted from core email validation, but only allows nhs.net email addresses
 // https://github.com/NHSDigital/comms-mgr/blob/536e6e807154e64752371ec6477facdd14c491b8/packages/libs/utils/src/validators/validate-email-address.ts

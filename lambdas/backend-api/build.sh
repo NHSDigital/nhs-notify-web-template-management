@@ -35,6 +35,7 @@ npx esbuild \
     src/patch-template.ts \
     src/process-proof.ts \
     src/proof.ts \
+    src/request-contact-details-verification.ts \
     src/set-letter-upload-virus-scan-status.ts \
     src/submit-routing-config.ts \
     src/submit.ts \

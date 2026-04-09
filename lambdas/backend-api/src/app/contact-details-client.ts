@@ -34,7 +34,7 @@ export class ContactDetailsClient {
     ) {
       return failure(
         ErrorCase.FEATURE_DISABLED,
-        `User cannot request contact detail verification for ${validation.data.type}`
+        `User cannot request contact detail verification for ${validation.data.type}.`
       );
     }
 

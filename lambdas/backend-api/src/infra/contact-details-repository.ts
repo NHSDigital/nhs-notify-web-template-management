@@ -27,10 +27,11 @@ export class ContactDetailsRepository {
     user: User
   ): Promise<ApplicationResult<ContactDetail>> {
     const dto: ContactDetail = {
+      clientId: user.clientId,
       id: randomUUID(),
+      status: 'PENDING_VERIFICATION',
       type: details.type,
       value: details.value,
-      status: 'PENDING_VERIFICATION',
     };
 
     const now = new Date();
@@ -47,9 +48,9 @@ export class ContactDetailsRepository {
             otpHash: await this.hashOtp(otp),
             ttl: this.getUnverifiedTtl(now),
             createdAt: now.toISOString(),
-            createdBy: user.internalUserId,
+            createdBy: `INTERNAL_USER#${user.internalUserId}`,
             updatedAt: now.toISOString(),
-            updatedBy: user.internalUserId,
+            updatedBy: `INTERNAL_USER#${user.internalUserId}`,
           },
           ExpressionAttributeNames: {
             '#pk': 'PK',

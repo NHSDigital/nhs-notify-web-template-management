@@ -134,6 +134,7 @@ export type ConditionalTemplateLanguage = {
 };
 
 export type ContactDetail = ContactDetailInput & {
+  clientId: string;
   id: string;
   status: 'PENDING_VERIFICATION';
 };

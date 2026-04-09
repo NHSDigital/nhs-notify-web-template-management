@@ -6,12 +6,14 @@ declare global {
       CLIENT_SSM_PATH_PREFIX: string;
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
+      CONTACT_DETAILS_TABLE_NAME: string;
       ENVIRONMENT: string;
       EVENTS_SNS_TOPIC_ARN: string;
       LETTER_VARIANTS_TABLE_NAME: string;
       PLAYWRIGHT_RUN_ID: string;
       PROOF_REQUESTS_TABLE_NAME: string;
       REQUEST_PROOF_QUEUE_URL: string;
+      REQUEST_CONTACT_DETAILS_VERIFICATION_LOG_GROUP_NAME: string;
       ROUTING_CONFIG_TABLE_NAME: string;
       SFTP_ENVIRONMENT: string;
       SFTP_MOCK_CREDENTIAL_PATH: string;

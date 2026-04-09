@@ -16,10 +16,11 @@ const OTP = '1234';
 function setup() {
   const contactDetailsRepo = mock<ContactDetailsRepository>();
   contactDetailsRepo.putContactDetail.mockImplementation(
-    ({ rawValue, ...input }) =>
+    ({ rawValue, ...input }, _, user) =>
       Promise.resolve({
         data: {
           ...input,
+          clientId: user.clientId,
           id: 'contact-details-id',
           status: 'PENDING_VERIFICATION',
         },
@@ -67,6 +68,7 @@ describe('ContactDetailsClient', () => {
           rawValue: ' TEST@nhs.net ',
         },
         expected: {
+          clientId: USER.clientId,
           id: 'contact-details-id',
           type: 'EMAIL',
           value: 'test@nhs.net',
@@ -81,6 +83,7 @@ describe('ContactDetailsClient', () => {
           rawValue: '07890 123 456',
         },
         expected: {
+          clientId: USER.clientId,
           id: 'contact-details-id',
           type: 'SMS',
           value: '+447890123456',
@@ -243,7 +246,7 @@ describe('ContactDetailsClient', () => {
         expect(result.data).toBeUndefined();
         expect(result.error?.errorMeta.code).toBe(403);
         expect(result.error?.errorMeta.description).toBe(
-          'User cannot request contact detail verification for EMAIL'
+          'User cannot request contact detail verification for EMAIL.'
         );
       });
 
@@ -270,7 +273,7 @@ describe('ContactDetailsClient', () => {
         expect(result.data).toBeUndefined();
         expect(result.error?.errorMeta.code).toBe(403);
         expect(result.error?.errorMeta.description).toBe(
-          'User cannot request contact detail verification for SMS'
+          'User cannot request contact detail verification for SMS.'
         );
       });
     });
