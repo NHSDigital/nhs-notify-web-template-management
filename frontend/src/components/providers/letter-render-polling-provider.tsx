@@ -1,6 +1,7 @@
 'use client';
 
 import { RenderKey } from '@utils/types';
+import type { ErrorState } from 'nhs-notify-web-template-management-utils';
 import {
   createContext,
   useCallback,
@@ -13,6 +14,10 @@ import {
 type LetterRenderPollingContextValue = {
   isAnyTabPolling: boolean;
   registerPolling: (key: RenderKey, polling: boolean) => void;
+  tabErrorState: ErrorState | undefined;
+  setTabErrorState: (state: ErrorState | undefined) => void;
+  pageErrorState: ErrorState | undefined;
+  setPageErrorState: (state: ErrorState | undefined) => void;
 };
 
 const LetterRenderPollingContext =
@@ -32,6 +37,10 @@ export function useLetterRenderPolling() {
 
 export function LetterRenderPollingProvider({ children }: PropsWithChildren) {
   const [isAnyTabPolling, setIsAnyTabPolling] = useState(false);
+  const [tabErrorState, setTabErrorState] = useState<ErrorState | undefined>();
+  const [pageErrorState, setPageErrorState] = useState<
+    ErrorState | undefined
+  >();
 
   const pollingMapRef = useRef<Partial<Record<RenderKey, boolean>>>({});
 
@@ -43,7 +52,14 @@ export function LetterRenderPollingProvider({ children }: PropsWithChildren) {
 
   return (
     <LetterRenderPollingContext.Provider
-      value={{ isAnyTabPolling, registerPolling }}
+      value={{
+        isAnyTabPolling,
+        registerPolling,
+        tabErrorState,
+        setTabErrorState,
+        pageErrorState,
+        setPageErrorState,
+      }}
     >
       {children}
     </LetterRenderPollingContext.Provider>

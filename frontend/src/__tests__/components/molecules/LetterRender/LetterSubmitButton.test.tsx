@@ -13,6 +13,10 @@ describe('LetterSubmitButton', () => {
     jest.mocked(useLetterRenderPolling).mockReturnValue({
       isAnyTabPolling: false,
       registerPolling: jest.fn(),
+      tabErrorState: undefined,
+      setTabErrorState: jest.fn(),
+      pageErrorState: undefined,
+      setPageErrorState: jest.fn(),
     });
 
     render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
@@ -30,6 +34,10 @@ describe('LetterSubmitButton', () => {
     jest.mocked(useLetterRenderPolling).mockReturnValue({
       isAnyTabPolling: true,
       registerPolling: jest.fn(),
+      tabErrorState: undefined,
+      setTabErrorState: jest.fn(),
+      pageErrorState: undefined,
+      setPageErrorState: jest.fn(),
     });
 
     render(<LetterSubmitButton>Submit template</LetterSubmitButton>);
@@ -46,6 +54,10 @@ describe('LetterSubmitButton', () => {
     jest.mocked(useLetterRenderPolling).mockReturnValue({
       isAnyTabPolling: false,
       registerPolling: jest.fn(),
+      tabErrorState: undefined,
+      setTabErrorState: jest.fn(),
+      pageErrorState: undefined,
+      setPageErrorState: jest.fn(),
     });
 
     render(<LetterSubmitButton>Custom text</LetterSubmitButton>);

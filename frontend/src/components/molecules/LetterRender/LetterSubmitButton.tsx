@@ -5,7 +5,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
 
 export function LetterSubmitButton({ children }: PropsWithChildren) {
-  const { isAnyTabPolling } = useLetterRenderPolling();
+  const { isAnyTabPolling, setTabErrorState } = useLetterRenderPolling();
 
   return (
     <NHSNotifyButton
@@ -13,6 +13,7 @@ export function LetterSubmitButton({ children }: PropsWithChildren) {
       data-testid='preview-letter-template-cta'
       id='preview-letter-template-cta'
       disabled={isAnyTabPolling}
+      onClick={() => setTabErrorState(undefined)}
     >
       {children}
     </NHSNotifyButton>

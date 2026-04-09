@@ -249,6 +249,10 @@ describe('LetterRenderForm', () => {
       jest.mocked(useLetterRenderPolling).mockReturnValueOnce({
         isAnyTabPolling: true,
         registerPolling: jest.fn(),
+        tabErrorState: undefined,
+        setTabErrorState: jest.fn(),
+        pageErrorState: undefined,
+        setPageErrorState: jest.fn(),
       });
 
       renderWithProvider(

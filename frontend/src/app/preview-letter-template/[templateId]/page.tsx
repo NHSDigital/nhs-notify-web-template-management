@@ -21,6 +21,9 @@ import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
 import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
+import { LetterRenderTabErrorSummary } from '@molecules/LetterRender/LetterRenderTabErrorSummary';
+import { LetterRenderPageErrorSummary } from '@molecules/LetterRender/LetterRenderPageErrorSummary';
+import { LetterRenderPageErrorSyncer } from '@molecules/LetterRender/LetterRenderPageErrorSyncer';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
@@ -116,7 +119,9 @@ export default async function PreviewLetterTemplatePage({
             </NHSNotifyContainer>
             <NHSNotifyMain>
               <NHSNotifyContainer>
-                <NHSNotifyForm.ErrorSummary />
+                <LetterRenderPageErrorSyncer />
+                <LetterRenderPageErrorSummary />
+                <LetterRenderTabErrorSummary />
                 <div className='nhsuk-grid-row'>
                   <div className='nhsuk-grid-column-full'>
                     <PreviewTemplateDetailsAuthoringLetter
