@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "3.995.0",
     "@aws-sdk/client-cognito-identity-provider": "3.995.0",
     "@aws-sdk/client-dynamodb": "3.995.0",
     "@aws-sdk/client-eventbridge": "3.995.0",

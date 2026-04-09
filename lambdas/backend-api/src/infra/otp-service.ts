@@ -15,9 +15,9 @@ export class OtpService {
 
   async send(
     details: ContactDetail,
-    otp: string
+    _otp: string
   ): Promise<ApplicationResult<void>> {
-    console.log({ id: details.id, otp });
+    console.log({ id: details.id });
 
     return { data: undefined };
   }

@@ -43,7 +43,7 @@ describe('OtpService', () => {
       jest.restoreAllMocks();
     });
 
-    it('stub implementation - logs the contact details and otp', async () => {
+    it('stub implementation - logs the contact detail id', async () => {
       jest.spyOn(console, 'log');
 
       const result = await service.send(
@@ -62,7 +62,6 @@ describe('OtpService', () => {
 
       expect(console.log).toHaveBeenCalledWith({
         id: 'contact-details-id',
-        otp: '123456',
       });
     });
   });
