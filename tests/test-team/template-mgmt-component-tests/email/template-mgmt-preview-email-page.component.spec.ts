@@ -314,7 +314,6 @@ test.describe('Preview Email message template Page', () => {
 
     test('when digitalProofingEmail is enabled, then banner and button are visible and both navigate correctly', async ({
       page,
-      baseURL,
     }) => {
       await loginAsUser(digitalProofingUser, page);
 
@@ -340,7 +339,7 @@ test.describe('Preview Email message template Page', () => {
       await expect(previewPage.continueButton).toBeHidden();
       await expect(previewPage.requestProofMessageBanner).toBeHidden();
 
-      const expectedUrl = `${baseURL}/templates/send-test-email/${templates.digitalProofing.id}`;
+      const expectedUrl = `/templates/send-test-email/${templates.digitalProofing.id}`;
 
       await assertTestMessageBannerVisible(
         previewPage,

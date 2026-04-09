@@ -316,7 +316,6 @@ test.describe('Preview NHS App template Page', () => {
 
     test('when digitalProofingNhsApp is enabled, then banner and button are visible and both navigate correctly', async ({
       page,
-      baseURL,
     }) => {
       await loginAsUser(digitalProofingUser, page);
 
@@ -342,7 +341,7 @@ test.describe('Preview NHS App template Page', () => {
       await expect(previewPage.continueButton).toBeHidden();
       await expect(previewPage.requestProofMessageBanner).toBeHidden();
 
-      const expectedUrl = `${baseURL}/templates/send-test-nhs-app-message/${templates.digitalProofing.id}`;
+      const expectedUrl = `/templates/send-test-nhs-app-message/${templates.digitalProofing.id}`;
 
       await assertTestMessageBannerVisible(
         previewPage,

@@ -60,6 +60,8 @@ test.describe('Get ready to approve letter template page', () => {
       .setPathParam('templateId', templateIds.LETTER_AUTHORING)
       .setSearchParam('lockNumber', '0');
 
+    await approvePage.loadPage();
+
     const props = {
       page: approvePage,
       baseURL,
