@@ -69,17 +69,18 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
         letterVariantId: letterVariant.id,
       }
     ),
-    LARGE_PRINT_LETTER_WITHOUT_VARIANT: TemplateFactory.createAuthoringLetterTemplate(
-      templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT,
-      user,
-      `Large print letter template no variant - ${templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT}`,
-      'PROOF_APPROVED',
-      {
-        letterType: 'x1',
-        shortFormRender: { status: 'RENDERED' },
-        longFormRender: { status: 'RENDERED' },
-      }
-    ),
+    LARGE_PRINT_LETTER_WITHOUT_VARIANT:
+      TemplateFactory.createAuthoringLetterTemplate(
+        templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT,
+        user,
+        `Large print letter template no variant - ${templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT}`,
+        'PROOF_APPROVED',
+        {
+          letterType: 'x1',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
+      ),
   };
 }
 
@@ -260,7 +261,10 @@ test.describe('Routing - Preview large print letter template page', () => {
 
       await previewLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.LARGE_PRINT_LETTER_WITHOUT_VARIANT.id)
+        .setPathParam(
+          'templateId',
+          templates.LARGE_PRINT_LETTER_WITHOUT_VARIANT.id
+        )
         .setSearchParam('lockNumber', '0')
         .loadPage();
 
