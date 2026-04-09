@@ -111,8 +111,8 @@ export type ClientFeatures = {
   digitalProofingEmail?: boolean;
   digitalProofingNhsApp?: boolean;
   digitalProofingSms?: boolean;
-  letterAuthoring?: boolean;
   legacyLetters?: boolean;
+  letterAuthoring?: boolean;
   proofing?: boolean;
   routing?: boolean;
 };

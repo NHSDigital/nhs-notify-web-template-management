@@ -11,5 +11,5 @@ resource "aws_ssm_parameter" "contact_details_otp_secret" {
 }
 
 resource "random_bytes" "contact_details_otp_secret" {
-  length = 64
+  length = 32
 }
