@@ -85,7 +85,3 @@ output "letter_variants_table_name" {
 output "contact_details_table_name" {
   value = module.backend_api.contact_details_table_name
 }
-
-output "request_contact_details_verification_log_group_name" {
-  value = module.backend_api.request_contact_details_verification_log_group_name
-}

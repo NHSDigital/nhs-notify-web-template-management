@@ -10,7 +10,6 @@ export type BackendConfig = {
   environment: string;
   eventsSnsTopicArn: string;
   letterVariantsTableName: string;
-  requestContactDetailsVerificationLogGroupName: string;
   requestProofQueueUrl: string;
   routingConfigTableName: string;
   sftpEnvironment: string;
@@ -38,8 +37,6 @@ export const BackendConfigHelper = {
       eventsSnsTopicArn: process.env.EVENTS_SNS_TOPIC_ARN ?? '',
       letterVariantsTableName: process.env.LETTER_VARIANTS_TABLE_NAME ?? '',
       proofRequestsTableName: process.env.PROOF_REQUESTS_TABLE_NAME ?? '',
-      requestContactDetailsVerificationLogGroupName:
-        process.env.REQUEST_CONTACT_DETAILS_VERIFICATION_LOG_GROUP_NAME ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
       routingConfigTableName: process.env.ROUTING_CONFIG_TABLE_NAME ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
@@ -70,8 +67,6 @@ export const BackendConfigHelper = {
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
     process.env.LETTER_VARIANTS_TABLE_NAME = config.letterVariantsTableName;
     process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
-    process.env.REQUEST_CONTACT_DETAILS_VERIFICATION_LOG_GROUP_NAME =
-      config.requestContactDetailsVerificationLogGroupName;
     process.env.REQUEST_PROOF_QUEUE_URL = config.requestProofQueueUrl;
     process.env.ROUTING_CONFIG_TABLE_NAME = config.routingConfigTableName;
     process.env.SFTP_ENVIRONMENT = config.sftpEnvironment;
@@ -105,9 +100,6 @@ export const BackendConfigHelper = {
         outputsFileContent.proof_requests_table_name?.value ?? '',
       letterVariantsTableName:
         outputsFileContent.letter_variants_table_name?.value ?? '',
-      requestContactDetailsVerificationLogGroupName:
-        outputsFileContent.request_contact_details_verification_log_group_name
-          ?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
       routingConfigTableName:

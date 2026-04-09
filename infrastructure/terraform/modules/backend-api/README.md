@@ -97,7 +97,6 @@ No requirements.
 | <a name="output_letter_variants_table_name"></a> [letter\_variants\_table\_name](#output\_letter\_variants\_table\_name) | n/a |
 | <a name="output_proof_requests_table_name"></a> [proof\_requests\_table\_name](#output\_proof\_requests\_table\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
-| <a name="output_request_contact_details_verification_log_group_name"></a> [request\_contact\_details\_verification\_log\_group\_name](#output\_request\_contact\_details\_verification\_log\_group\_name) | n/a |
 | <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
 | <a name="output_routing_config_table_name"></a> [routing\_config\_table\_name](#output\_routing\_config\_table\_name) | n/a |
 | <a name="output_sftp_environment"></a> [sftp\_environment](#output\_sftp\_environment) | n/a |
