@@ -43,7 +43,6 @@ locals {
   backend_lambda_environment_variables = {
     CLIENT_CONFIG_SSM_KEY_PREFIX            = local.client_ssm_path_prefix
     CLIENT_CONFIG_TTL_SECONDS               = 900
-    CONTACT_DETAILS_OTP_SECRET_PATH         = aws_ssm_parameter.contact_details_otp_secret.name
     CONTACT_DETAILS_TABLE_NAME              = aws_dynamodb_table.client_contact_details.name
     CONTACT_DETAILS_UNVERIFIED_TTL_SECONDS  = 60 * 60
     DEFAULT_LETTER_SUPPLIER                 = local.default_letter_supplier_name
