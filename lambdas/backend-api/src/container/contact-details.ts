@@ -1,4 +1,5 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { SSMClient } from '@aws-sdk/client-ssm';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ContactDetailsClient } from '@backend-api/app/contact-details-client';
 import { clientConfigContainer } from '@backend-api/container/client-config';
@@ -13,10 +14,14 @@ export function contactDetailsContainer() {
     marshallOptions: { removeUndefinedValues: true },
   });
 
+  const ssm = new SSMClient();
+
   const repo = new ContactDetailsRepository(
     dynamodb,
+    ssm,
     config.contactDetailsTableName,
-    config.contactDetailsUnverifiedTtlSeconds
+    config.contactDetailsUnverifiedTtlSeconds,
+    config.contactDetailsOtpSecretPath
   );
 
   const otpService = new OtpService();

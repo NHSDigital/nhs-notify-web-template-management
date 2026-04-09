@@ -1,5 +1,6 @@
-import { createHash, randomUUID } from 'node:crypto';
+import { createHmac, randomUUID } from 'node:crypto';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { GetParameterCommand, type SSMClient } from '@aws-sdk/client-ssm';
 import { PutCommand, type DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ErrorCase } from 'nhs-notify-backend-client/types';
 import type {
@@ -10,10 +11,14 @@ import type { User } from 'nhs-notify-web-template-management-utils';
 import { failure, success, type ApplicationResult } from '@backend-api/utils';
 
 export class ContactDetailsRepository {
+  private otpSecret: string | null = null;
+
   constructor(
     private dynamodb: DynamoDBDocumentClient,
+    private ssm: SSMClient,
     private tableName: string,
-    private unverifiedTtlSeconds: number
+    private unverifiedTtlSeconds: number,
+    private otpSecretPath: string
   ) {}
 
   async putContactDetail(
@@ -40,7 +45,7 @@ export class ContactDetailsRepository {
             SK: this.getContactDetailKey(details),
             ...dto,
             rawValue: details.rawValue,
-            otpHash: this.hashOtp(dto, otp),
+            otpHash: await this.hashOtp(otp),
             ttl: this.getUnverifiedTtl(now),
             createdAt: now.toISOString(),
             createdBy: `INTERNAL_USER#${user.internalUserId}`,
@@ -85,12 +90,32 @@ export class ContactDetailsRepository {
     return Math.floor(now.getTime() / 1000) + this.unverifiedTtlSeconds;
   }
 
-  private hashOtp(details: ContactDetail, otp: string) {
-    return createHash('sha256')
-      .update(details.id)
-      .update(details.value)
-      .update(otp)
-      .digest()
-      .toString('hex');
+  private async getOtpSecret() {
+    if (this.otpSecret) {
+      return this.otpSecret;
+    }
+
+    const { Parameter } = await this.ssm.send(
+      new GetParameterCommand({
+        Name: this.otpSecretPath,
+        WithDecryption: true,
+      })
+    );
+
+    const secret = Parameter?.Value;
+
+    if (!secret) {
+      throw new Error('No secret returned from parameter store.');
+    }
+
+    this.otpSecret = secret;
+
+    return secret;
+  }
+
+  private async hashOtp(otp: string) {
+    const secret = await this.getOtpSecret();
+
+    return createHmac('sha256', secret).update(otp).digest().toString('hex');
   }
 }
