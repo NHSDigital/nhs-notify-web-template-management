@@ -55,6 +55,19 @@ describe('SummaryLetterFromMessagePlan', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
+  it('should redirect to invalid-template when authoring letter template has no letterVariantId', async () => {
+    getTemplateMock.mockResolvedValueOnce({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+      letterVariantId: undefined,
+    });
+
+    await SummaryLetterFromMessagePlan(defaultProps);
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+    expect(getLetterVariantByIdMock).not.toHaveBeenCalled();
+  });
+
   it('renders an authoring letter template preview', async () => {
     const letterVariant = makeLetterVariant();
 

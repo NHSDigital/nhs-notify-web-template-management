@@ -79,6 +79,19 @@ describe('SummaryChooseLetter', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
+  it('should redirect to invalid-template when authoring letter template has no letterVariantId', async () => {
+    getTemplateMock.mockResolvedValueOnce({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'PROOF_APPROVED',
+      letterVariantId: undefined,
+    });
+
+    await SummaryChooseLetter(defaultProps);
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+    expect(getLetterVariantByIdMock).not.toHaveBeenCalled();
+  });
+
   it('renders a letter template preview', async () => {
     const letterVariant = makeLetterVariant();
 
