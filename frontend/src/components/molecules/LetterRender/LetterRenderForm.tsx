@@ -38,11 +38,15 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
+      <NHSNotifyForm.FormGroup
+        htmlFor={`system-personalisation-pack-id-${tab}`}
+      >
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        <NHSNotifyForm.ErrorMessage htmlFor='systemPersonalisationPackId' />
+        <NHSNotifyForm.ErrorMessage
+          htmlFor={`system-personalisation-pack-id-${tab}`}
+        />
         <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
           name='systemPersonalisationPackId'

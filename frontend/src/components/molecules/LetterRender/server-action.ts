@@ -27,6 +27,9 @@ const $FormSchema = z.object({
   tab: z.enum(['longFormRender', 'shortFormRender']),
 });
 
+const systemPackIdErrorKey = (tab?: string) =>
+  `system-personalisation-pack-id-${tab}`;
+
 export async function updateLetterPreview(
   _: FormState,
   formData: FormData
@@ -34,13 +37,14 @@ export async function updateLetterPreview(
   const result = $FormSchema.safeParse(Object.fromEntries(formData.entries()));
 
   const fields = formDataToFormStateFields(formData);
+  const { tab } = fields;
 
   const personalisationFieldErrors: Record<string, string[]> = {};
 
   for (const [key, value] of Object.entries(fields)) {
     if (key.startsWith(PERSONALISATION_FORMDATA_PREFIX) && !value) {
       const fieldName = key.slice(PERSONALISATION_FORMDATA_PREFIX.length);
-      personalisationFieldErrors[`custom-${fieldName}-${fields.tab}`] = [
+      personalisationFieldErrors[`custom-${fieldName}-${tab}`] = [
         interpolate(customSection.error.required, { field: fieldName }),
       ];
     }
@@ -48,12 +52,18 @@ export async function updateLetterPreview(
 
   if (result.error) {
     const baseError = z.flattenError(result.error);
+    const { systemPersonalisationPackId, ...otherFieldErrors } =
+      baseError.fieldErrors;
 
     return {
       errorState: {
         ...baseError,
         fieldErrors: {
-          ...baseError.fieldErrors,
+          // need to convert to field id so summary link works
+          ...(systemPersonalisationPackId && {
+            [systemPackIdErrorKey(tab)]: systemPersonalisationPackId,
+          }),
+          ...otherFieldErrors,
           ...personalisationFieldErrors,
         },
       },
@@ -70,8 +80,7 @@ export async function updateLetterPreview(
     };
   }
 
-  const { templateId, systemPersonalisationPackId, tab, lockNumber } =
-    result.data;
+  const { templateId, systemPersonalisationPackId, lockNumber } = result.data;
 
   const customPersonalisation = Object.fromEntries(
     Object.entries(fields).flatMap(([k, v]) =>
@@ -91,7 +100,7 @@ export async function updateLetterPreview(
     return {
       errorState: {
         fieldErrors: {
-          systemPersonalisationPackId: [pdsSection.error.invalid],
+          [systemPackIdErrorKey(tab)]: [pdsSection.error.invalid],
         },
       },
       fields,

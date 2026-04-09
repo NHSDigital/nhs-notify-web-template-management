@@ -537,7 +537,9 @@ describe('LetterRenderTab', () => {
           errorState: {
             formErrors: [],
             fieldErrors: {
-              systemPersonalisationPackId: ['Select an example recipient'],
+              'system-personalisation-pack-id-shortFormRender': [
+                'Select an example recipient',
+              ],
             },
           },
         })

@@ -146,10 +146,12 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
     expect(
-      result.errorState?.fieldErrors?.systemPersonalisationPackId
+      result.errorState?.fieldErrors?.[
+        'system-personalisation-pack-id-shortFormRender'
+      ]
     ).toContain('Choose example recipient');
     expect(result.fields?.systemPersonalisationPackId).toBe('');
   });
@@ -163,7 +165,7 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
   });
 
@@ -175,14 +177,14 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
     expect(result.fields?.systemPersonalisationPackId).toBe(
       'invalid-recipient-id'
     );
   });
 
-  it('error key for recipient is the same regardless of tab', async () => {
+  it('error key for recipient includes the tab value', async () => {
     const formData = buildFormData({
       systemPersonalisationPackId: '',
       tab: 'longFormRender',
@@ -191,7 +193,10 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-longFormRender'
+    );
+    expect(result.errorState?.fieldErrors).not.toHaveProperty(
+      'system-personalisation-pack-id-shortFormRender'
     );
   });
 
@@ -204,7 +209,7 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
     expect(result.fields?.systemPersonalisationPackId).toBe('long-1');
   });
@@ -253,7 +258,7 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
     expect(result.errorState?.fieldErrors).toHaveProperty(
       'custom-appointmentDate-shortFormRender'

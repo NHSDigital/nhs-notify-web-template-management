@@ -18,8 +18,6 @@ import { useNHSNotifyForm } from '@providers/form-provider';
 const content = copy.components.uploadDocxLetterTemplateForm;
 
 export function NameField() {
-  const [state] = useNHSNotifyForm();
-
   return (
     <NHSNotifyForm.FormGroup className='nhsuk-u-margin-bottom-6' htmlFor='name'>
       <Label size='s' htmlFor='name'>
@@ -29,12 +27,11 @@ export function NameField() {
 
       <TemplateNameGuidance className='nhsuk-u-margin-top-3' />
       <NHSNotifyForm.ErrorMessage htmlFor='name' />
-      <input
+      <NHSNotifyForm.Input
         type='text'
         id='name'
         name='name'
-        className='nhsuk-input nhsuk-u-margin-bottom-2'
-        defaultValue={state.fields?.name}
+        className='nhsuk-u-margin-bottom-2'
       />
     </NHSNotifyForm.FormGroup>
   );

@@ -1512,7 +1512,7 @@ test.describe('Preview Letter template Page', () => {
         });
         await expect(summaryLink).toHaveAttribute(
           'href',
-          '#systemPersonalisationPackId'
+          '#system-personalisation-pack-id-shortFormRender'
         );
 
         await expect(
@@ -1552,7 +1552,7 @@ test.describe('Preview Letter template Page', () => {
         });
         await expect(summaryLink).toHaveAttribute(
           'href',
-          '#systemPersonalisationPackId'
+          '#system-personalisation-pack-id-longFormRender'
         );
 
         await expect(

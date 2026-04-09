@@ -31,6 +31,7 @@ import { validate } from '@utils/client-validate-form';
 import type { Language } from 'nhs-notify-web-template-management-types';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { FormContext } from '@providers/form-provider';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<UploadLetterTemplate> & {
@@ -107,7 +108,7 @@ export const LetterTemplateForm: FC<
   ];
 
   return (
-    <>
+    <FormContext.Provider value={[{ errorState }, action, false]}>
       <Link href='/choose-a-template-type' passHref legacyBehavior>
         <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
@@ -298,6 +299,6 @@ export const LetterTemplateForm: FC<
           </div>
         </div>
       </NHSNotifyMain>
-    </>
+    </FormContext.Provider>
   );
 };

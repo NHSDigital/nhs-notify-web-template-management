@@ -278,7 +278,9 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Choose example recipient'],
+            'system-personalisation-pack-id-shortFormRender': [
+              'Choose example recipient',
+            ],
           },
         },
       });
@@ -308,7 +310,9 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Choose example recipient'],
+            'system-personalisation-pack-id-longFormRender': [
+              'Choose example recipient',
+            ],
           },
         },
       });
@@ -410,7 +414,9 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Choose example recipient'],
+            'system-personalisation-pack-id-shortFormRender': [
+              'Choose example recipient',
+            ],
           },
         },
       });

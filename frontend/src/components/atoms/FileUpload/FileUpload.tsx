@@ -2,19 +2,32 @@ import classNames from 'classnames';
 import { ErrorMessage, HintText, Label } from 'nhsuk-react-components';
 import React, { HTMLProps } from 'react';
 import styles from './FileUpload.module.scss';
+import { useNHSNotifyForm } from '@providers/form-provider';
 
 interface FileUploadProps extends HTMLProps<HTMLDivElement> {
+  id: string;
   error?: string;
   hint?: string;
 }
 
 export function FileUploadInput({
   className,
+  id,
   ...props
-}: Omit<HTMLProps<HTMLInputElement>, 'type'>) {
+}: Omit<HTMLProps<HTMLInputElement>, 'type'> & { id: string; name: string }) {
+  const [state] = useNHSNotifyForm();
+
+  const error = Boolean(state.errorState?.fieldErrors?.[id]?.length);
+
   return (
     <input
-      className={classNames(styles['file-upload'], 'nhsuk-input', className)}
+      className={classNames(
+        styles['file-upload'],
+        'nhsuk-input',
+        { 'nhsuk-input--error': error },
+        className
+      )}
+      id={id}
       type='file'
       {...props}
     />
