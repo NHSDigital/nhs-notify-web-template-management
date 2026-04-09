@@ -26,8 +26,8 @@ const notFoundTemplateId = randomUUID();
 const templateIds = {
   EMAIL: randomUUID(),
   STANDARD_LETTER: randomUUID(),
-  FRENCH_LETTER: randomUUID(),
   AUTHORING_FRENCH_LETTER: randomUUID(),
+  FRENCH_LETTER_WITHOUT_VARIANT: randomUUID(),
 };
 
 function createMessagePlans(user: TestUser) {
@@ -44,12 +44,12 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
     EMAIL: TemplateFactory.createEmailTemplate(
       templateIds.EMAIL,
       user,
-      'Email template name'
+      `Email template name - ${templateIds.EMAIL}`
     ),
     STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.STANDARD_LETTER,
       user,
-      'Standard letter template name',
+      `Standard letter template name - ${templateIds.STANDARD_LETTER}`,
       'PROOF_APPROVED',
       {
         shortFormRender: { status: 'RENDERED' },
@@ -60,13 +60,24 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.AUTHORING_FRENCH_LETTER,
       user,
-      'Authoring French letter template name',
+      `French letter template name - ${templateIds.AUTHORING_FRENCH_LETTER}`,
       'SUBMITTED',
       {
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: letterVariant.id,
+      }
+    ),
+    FRENCH_LETTER_WITHOUT_VARIANT: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.FRENCH_LETTER_WITHOUT_VARIANT,
+      user,
+      `French letter template no variant - ${templateIds.FRENCH_LETTER_WITHOUT_VARIANT}`,
+      'PROOF_APPROVED',
+      {
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
   };
@@ -241,6 +252,21 @@ test.describe('Routing - Preview foreign language letter template page', () => {
         new RoutingPreviewOtherLanguageLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.STANDARD_LETTER.id)
+          .setSearchParam('lockNumber', '0');
+
+      await previewForeignLanguageLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewForeignLanguageLetterTemplatePage =
+        new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.FRENCH_LETTER_WITHOUT_VARIANT.id)
           .setSearchParam('lockNumber', '0');
 
       await previewForeignLanguageLetterTemplatePage.loadPage();

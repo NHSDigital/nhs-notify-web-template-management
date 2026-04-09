@@ -7,7 +7,6 @@ import {
 import { render } from '@testing-library/react';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { validateAuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
@@ -23,7 +22,6 @@ const defaultProps = {
     templateId: 'template-id',
   }),
   searchParams: Promise.resolve({}),
-  validateTemplate: validateAuthoringLetterTemplate,
 };
 
 describe('SummaryLetterFromMessagePlan', () => {

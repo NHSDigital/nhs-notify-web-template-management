@@ -21,7 +21,14 @@ const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const invalidTemplateId = 'invalid-id';
-const notFoundTemplateId = 'dc67b576-af7d-47b3-97d7-48fa204e7525';
+const notFoundTemplateId = randomUUID();
+
+const templateIds = {
+  EMAIL: randomUUID(),
+  STANDARD_LETTER: randomUUID(),
+  LARGE_PRINT_LETTER: randomUUID(),
+  LARGE_PRINT_LETTER_WITHOUT_VARIANT: randomUUID(),
+};
 
 function createMessagePlans(user: TestUser) {
   return {
@@ -35,14 +42,14 @@ function createMessagePlans(user: TestUser) {
 function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
-      randomUUID(),
+      templateIds.EMAIL,
       user,
-      'Email template name'
+      `Email template name - ${templateIds.EMAIL}`
     ),
     STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+      templateIds.STANDARD_LETTER,
       user,
-      'Standard letter template name',
+      `Standard letter template name - ${templateIds.STANDARD_LETTER}`,
       'SUBMITTED',
       {
         shortFormRender: { status: 'RENDERED' },
@@ -51,15 +58,26 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+      templateIds.LARGE_PRINT_LETTER,
       user,
-      'Authoring large print letter template name',
+      `Large print letter template name - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
       {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: letterVariant.id,
+      }
+    ),
+    LARGE_PRINT_LETTER_WITHOUT_VARIANT: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT,
+      user,
+      `Large print letter template no variant - ${templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT}`,
+      'PROOF_APPROVED',
+      {
+        letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
   };
@@ -227,6 +245,22 @@ test.describe('Routing - Preview large print letter template page', () => {
       await previewLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
         .setPathParam('templateId', templates.STANDARD_LETTER.id)
+        .setSearchParam('lockNumber', '0')
+        .loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewLargePrintLetterTemplatePage =
+        new RoutingPreviewLargePrintLetterTemplatePage(page);
+
+      await previewLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.LARGE_PRINT_LETTER_WITHOUT_VARIANT.id)
         .setSearchParam('lockNumber', '0')
         .loadPage();
 

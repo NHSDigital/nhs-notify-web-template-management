@@ -21,7 +21,14 @@ const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const invalidTemplateId = 'invalid-id';
-const notFoundTemplateId = 'dc67b576-af7d-47b3-97d7-48fa204e7525';
+const notFoundTemplateId = randomUUID();
+
+const templateIds = {
+  EMAIL: randomUUID(),
+  STANDARD_LETTER: randomUUID(),
+  BSL_LETTER: randomUUID(),
+  BSL_LETTER_WITHOUT_VARIANT: randomUUID(),
+};
 
 function createMessagePlans(user: TestUser) {
   return {
@@ -35,14 +42,14 @@ function createMessagePlans(user: TestUser) {
 function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
-      randomUUID(),
+      templateIds.EMAIL,
       user,
-      'Email template name'
+      `Email template name - ${templateIds.EMAIL}`
     ),
     STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+      templateIds.STANDARD_LETTER,
       user,
-      'Standard letter template name',
+      `Standard letter template name - ${templateIds.STANDARD_LETTER}`,
       'SUBMITTED',
       {
         shortFormRender: { status: 'RENDERED' },
@@ -51,15 +58,26 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
       }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+      templateIds.BSL_LETTER,
       user,
-      'BSL letter template name',
+      `BSL letter template name - ${templateIds.BSL_LETTER}`,
       'SUBMITTED',
       {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: letterVariant.id,
+      }
+    ),
+    BSL_LETTER_WITHOUT_VARIANT: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.BSL_LETTER_WITHOUT_VARIANT,
+      user,
+      `BSL letter template no variant - ${templateIds.BSL_LETTER_WITHOUT_VARIANT}`,
+      'PROOF_APPROVED',
+      {
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
   };
@@ -229,6 +247,22 @@ test.describe('Routing - Preview British Sign Language letter template page', ()
       await previewBSLLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
         .setPathParam('templateId', templates.STANDARD_LETTER.id)
+        .setSearchParam('lockNumber', '0')
+        .loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewBSLLetterTemplatePage =
+        new RoutingPreviewBritishSignLanguageLetterTemplatePage(page);
+
+      await previewBSLLetterTemplatePage
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam('templateId', templates.BSL_LETTER_WITHOUT_VARIANT.id)
         .setSearchParam('lockNumber', '0')
         .loadPage();
 

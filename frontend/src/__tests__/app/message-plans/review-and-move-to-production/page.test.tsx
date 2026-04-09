@@ -67,9 +67,21 @@ const templates: MessagePlanTemplates = {
   [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
   [emailTemplateId]: { ...EMAIL_TEMPLATE, id: emailTemplateId },
   [smsTemplateId]: { ...SMS_TEMPLATE, id: smsTemplateId },
-  [letterTemplateId]: { ...AUTHORING_LETTER_TEMPLATE, id: letterTemplateId },
-  [kuTemplateId]: { ...AUTHORING_LETTER_TEMPLATE, id: kuTemplateId },
-  [sqTemplateId]: { ...AUTHORING_LETTER_TEMPLATE, id: sqTemplateId },
+  [letterTemplateId]: {
+    ...AUTHORING_LETTER_TEMPLATE,
+    id: letterTemplateId,
+    templateStatus: 'PROOF_APPROVED',
+  },
+  [kuTemplateId]: {
+    ...AUTHORING_LETTER_TEMPLATE,
+    id: kuTemplateId,
+    templateStatus: 'PROOF_APPROVED',
+  },
+  [sqTemplateId]: {
+    ...AUTHORING_LETTER_TEMPLATE,
+    id: sqTemplateId,
+    templateStatus: 'PROOF_APPROVED',
+  },
   [largePrintTemplateId]: {
     ...LARGE_PRINT_LETTER_TEMPLATE,
     id: largePrintTemplateId,

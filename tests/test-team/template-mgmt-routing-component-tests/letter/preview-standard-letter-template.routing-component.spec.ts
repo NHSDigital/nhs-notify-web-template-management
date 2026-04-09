@@ -21,7 +21,13 @@ const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const invalidTemplateId = 'invalid-id';
-const notFoundTemplateId = 'dc67b576-af7d-47b3-97d7-48fa204e7525';
+const notFoundTemplateId = randomUUID();
+
+const templateIds = {
+  EMAIL: randomUUID(),
+  LETTER: randomUUID(),
+  LETTER_WITHOUT_VARIANT: randomUUID(),
+};
 
 function createMessagePlans(user: TestUser) {
   return {
@@ -35,19 +41,29 @@ function createMessagePlans(user: TestUser) {
 function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
-      randomUUID(),
+      templateIds.EMAIL,
       user,
-      'Email template name'
+      `Email template name - ${templateIds.EMAIL}`
     ),
     LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+      templateIds.LETTER,
       user,
-      'Letter template name',
+      `Letter template name - ${templateIds.LETTER}`,
       'PROOF_APPROVED',
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: letterVariant.id,
+      }
+    ),
+    LETTER_WITHOUT_VARIANT: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LETTER_WITHOUT_VARIANT,
+      user,
+      `Letter template no variant - ${templateIds.LETTER_WITHOUT_VARIANT}`,
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
   };
@@ -162,6 +178,21 @@ test.describe('Routing - Preview Letter template page', () => {
         new RoutingPreviewStandardLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.EMAIL.id)
+          .setSearchParam('lockNumber', '0');
+
+      await previewLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewLetterTemplatePage =
+        new RoutingPreviewStandardLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.LETTER_WITHOUT_VARIANT.id)
           .setSearchParam('lockNumber', '0');
 
       await previewLetterTemplatePage.loadPage();

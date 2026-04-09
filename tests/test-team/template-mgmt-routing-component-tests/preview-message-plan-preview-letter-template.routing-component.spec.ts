@@ -19,7 +19,13 @@ const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const invalidTemplateId = 'invalid-id';
-const notFoundTemplateId = 'dc67b576-af7d-47b3-97d7-48fa204e7525';
+const notFoundTemplateId = randomUUID();
+
+const templateIds = {
+  EMAIL: randomUUID(),
+  LETTER: randomUUID(),
+  LETTER_WITHOUT_VARIANT: randomUUID(),
+};
 
 function createMessagePlans(user: TestUser) {
   return {
@@ -31,11 +37,6 @@ function createMessagePlans(user: TestUser) {
 }
 
 function createTemplates(user: TestUser, letterVariant: LetterVariant) {
-  const templateIds = {
-    EMAIL: randomUUID(),
-    LETTER: randomUUID(),
-  };
-
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
       templateIds.EMAIL,
@@ -45,10 +46,20 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
     LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LETTER,
       user,
-      `Test Authoring Letter template - ${templateIds.LETTER}`,
+      `Test Letter template - ${templateIds.LETTER}`,
       'PROOF_APPROVED',
       {
         letterVariantId: letterVariant.id,
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+      }
+    ),
+    LETTER_WITHOUT_VARIANT: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LETTER_WITHOUT_VARIANT,
+      user,
+      `Test Letter template no variant - ${templateIds.LETTER_WITHOUT_VARIANT}`,
+      'PROOF_APPROVED',
+      {
         longFormRender: { status: 'RENDERED' },
         shortFormRender: { status: 'RENDERED' },
       }
@@ -158,6 +169,20 @@ test.describe('Routing - Preview Message Plan / Preview Letter template page', (
         new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.EMAIL.id);
+
+      await previewLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewLetterTemplatePage =
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.LETTER_WITHOUT_VARIANT.id);
 
       await previewLetterTemplatePage.loadPage();
 

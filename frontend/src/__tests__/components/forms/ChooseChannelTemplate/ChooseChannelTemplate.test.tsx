@@ -97,12 +97,16 @@ const propsByChannel = {
   LETTER: {
     pageHeading: 'Choose a letter template',
     cascadeIndex: 3,
-    templateList: [AUTHORING_LETTER_TEMPLATE],
+    templateList: [
+      { ...AUTHORING_LETTER_TEMPLATE, templateStatus: 'PROOF_APPROVED' },
+    ],
   },
   LARGE_PRINT_LETTER: {
     pageHeading: 'Choose a large print letter template',
     cascadeIndex: 3,
-    templateList: [LARGE_PRINT_LETTER_TEMPLATE],
+    templateList: [
+      { ...LARGE_PRINT_LETTER_TEMPLATE, templateStatus: 'SUBMITTED' },
+    ],
     accessibleFormat: 'x1',
   },
 };

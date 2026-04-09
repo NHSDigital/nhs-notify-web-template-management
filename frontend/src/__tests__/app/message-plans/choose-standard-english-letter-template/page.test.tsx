@@ -66,7 +66,9 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
 
   it('renders letter template selection', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
-    getTemplatesMock.mockResolvedValueOnce([AUTHORING_LETTER_TEMPLATE]);
+    getTemplatesMock.mockResolvedValueOnce([
+      { ...AUTHORING_LETTER_TEMPLATE, templateStatus: 'PROOF_APPROVED' },
+    ]);
 
     const page = await ChooseStandardEnglishLetterTemplate({
       params: Promise.resolve({
