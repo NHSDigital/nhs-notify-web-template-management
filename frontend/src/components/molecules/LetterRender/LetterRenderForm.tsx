@@ -23,7 +23,7 @@ type LetterRenderFormProps = {
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
   const { isAnyTabPolling } = useLetterRenderPolling();
-  const { setParentErrorState: setApproveErrorState } = useLetterRenderError();
+  const { setParentErrorState } = useLetterRenderError();
 
   const exampleRecipients =
     tab === 'shortFormRender'
@@ -93,7 +93,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         secondary
         className='nhsuk-u-margin-top-4'
         disabled={isAnyTabPolling}
-        onClick={() => setApproveErrorState(undefined)}
+        onClick={() => setParentErrorState(undefined)}
       >
         {copy.updatePreviewButton}
       </NHSNotifyButton>

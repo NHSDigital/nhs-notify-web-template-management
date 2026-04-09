@@ -213,4 +213,31 @@ describe('submitAuthoringLetterAction', () => {
     );
     expect(redirectMock).not.toHaveBeenCalled();
   });
+
+  it('should return error when long render exists but is not RENDERED status', async () => {
+    getTemplateMock.mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        ...AUTHORING_LETTER_TEMPLATE.files,
+        shortFormRender: {
+          status: 'RENDERED' as const,
+          fileName: 'short.pdf',
+          currentVersion: 'v1',
+          pageCount: 2,
+        },
+        longFormRender: { status: 'FAILED' as const },
+      },
+    });
+
+    const formData = new FormData();
+    formData.append('templateId', AUTHORING_LETTER_TEMPLATE.id);
+    formData.append('lockNumber', '1');
+
+    const result = await submitAuthoringLetterAction({}, formData);
+
+    expect(result.errorState?.fieldErrors?.['tab-long']).toContain(
+      approveErrors.longExampleRequired
+    );
+    expect(redirectMock).not.toHaveBeenCalled();
+  });
 });

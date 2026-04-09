@@ -81,12 +81,11 @@ function LetterRenderTabContent({
   hideEditActions?: boolean;
 }) {
   const [state, _dispatch, isPending] = useNHSNotifyForm();
-  const { setLetterRenderErrorState: setUpdatePreviewErrorState } =
-    useLetterRenderError();
+  const { setLetterRenderErrorState } = useLetterRenderError();
 
   useEffect(() => {
-    setUpdatePreviewErrorState(state.errorState);
-  }, [state, setUpdatePreviewErrorState]);
+    setLetterRenderErrorState(state.errorState);
+  }, [state, setLetterRenderErrorState]);
 
   return (
     <div className={`nhsuk-grid-row ${styles.tabRow}`}>
