@@ -45,7 +45,7 @@ export class ContactDetailsRepository {
             SK: this.getContactDetailKey(details),
             ...dto,
             rawValue: details.rawValue,
-            otpHash: await this.hashOtp(otp),
+            otpHash: await this.hashOtp(dto, otp),
             ttl: this.getUnverifiedTtl(now),
             createdAt: now.toISOString(),
             createdBy: `INTERNAL_USER#${user.internalUserId}`,
@@ -113,9 +113,14 @@ export class ContactDetailsRepository {
     return secret;
   }
 
-  private async hashOtp(otp: string) {
+  private async hashOtp(details: ContactDetail, otp: string) {
     const secret = await this.getOtpSecret();
 
-    return createHmac('sha256', secret).update(otp).digest().toString('hex');
+    return createHmac('sha256', secret)
+      .update(details.id)
+      .update(details.value)
+      .update(otp)
+      .digest()
+      .toString('hex');
   }
 }

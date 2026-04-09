@@ -19,8 +19,6 @@ const USER: User = {
 };
 
 const OTP = '123456';
-const EXPECTED_OTP_HASH =
-  '292f143e47aa4516587e994b6ef3fe597c4720ba0b5564bc445b8c7aa9632739';
 
 const NOW = new Date('2026-04-07T11:07:08.490Z');
 const UNVERIFIED_TTL_SECONDS = 300;
@@ -70,18 +68,26 @@ describe('ContactDetailsRepository', () => {
   describe('putContactDetail', () => {
     it.each([
       {
-        type: 'EMAIL',
-        value: 'email@nhs.net',
-        rawValue: ' EMAIL@NET.NET ',
+        input: {
+          type: 'EMAIL',
+          value: 'email@nhs.net',
+          rawValue: ' EMAIL@NET.NET ',
+        },
+        expectedHash:
+          '2f4f72805b62fcff8fd9885327c0d085962300b69ca128dcc278692832541106',
       },
       {
-        type: 'SMS',
-        value: '+447812817307',
-        rawValue: '07812 817 307',
+        input: {
+          type: 'SMS',
+          value: '+447890123456',
+          rawValue: '07890 123 456',
+        },
+        expectedHash:
+          'acc22ae2e5d766231254b27fff85b9c9245e8c1673374587da3a5dd0512d70ef',
       },
-    ] as ContactDetailInputNormalized[])(
-      'saves the $type item in DynamoDB',
-      async (input) => {
+    ] as { input: ContactDetailInputNormalized; expectedHash: string }[])(
+      'saves the $input.type item in DynamoDB',
+      async ({ input, expectedHash }) => {
         const { repo, mocks } = setup();
 
         const result = await repo.putContactDetail(input, OTP, USER);
@@ -112,7 +118,7 @@ describe('ContactDetailsRepository', () => {
             createdBy: `INTERNAL_USER#${USER.internalUserId}`,
             clientId: USER.clientId,
             id: RANDOM_UUID,
-            otpHash: EXPECTED_OTP_HASH,
+            otpHash: expectedHash,
             rawValue: input.rawValue,
             status: 'PENDING_VERIFICATION',
             ttl: EXPECTED_TTL,
