@@ -311,7 +311,6 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                   </p>
                   <div
                     class="nhsuk-form-group"
-                    id="systemPersonalisationPackId"
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
@@ -461,7 +460,6 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                   </p>
                   <div
                     class="nhsuk-form-group"
-                    id="systemPersonalisationPackId"
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
@@ -870,7 +868,6 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                   </p>
                   <div
                     class="nhsuk-form-group"
-                    id="systemPersonalisationPackId"
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
@@ -1020,7 +1017,6 @@ exports[`authoring letter template with VALIDATION_FAILED status matches snapsho
                   </p>
                   <div
                     class="nhsuk-form-group"
-                    id="systemPersonalisationPackId"
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
@@ -1657,7 +1653,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   </p>
                   <div
                     class="nhsuk-form-group"
-                    id="systemPersonalisationPackId"
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"
@@ -1807,7 +1802,6 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   </p>
                   <div
                     class="nhsuk-form-group"
-                    id="systemPersonalisationPackId"
                   >
                     <label
                       class="nhsuk-label nhsuk-label--s"

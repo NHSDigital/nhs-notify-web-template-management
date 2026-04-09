@@ -20,9 +20,9 @@ import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
-import { LetterPreviewErrorProvider } from '@providers/letter-preview-error-provider';
+import { LetterRenderErrorProvider } from '@providers/letter-render-error-provider';
 import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
-import { LetterPreviewErrors } from '@molecules/LetterRender/LetterPreviewErrors';
+import { CombinedLetterErrorSummary } from '@molecules/LetterRender/CombinedLetterErrorSummary';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
@@ -106,7 +106,7 @@ export default async function PreviewLetterTemplatePage({
         serverAction={submitAuthoringLetterAction}
       >
         <LetterRenderPollingProvider>
-          <LetterPreviewErrorProvider>
+          <LetterRenderErrorProvider>
             <PollLetterRender
               template={validatedTemplate}
               mode='initialRender'
@@ -119,7 +119,7 @@ export default async function PreviewLetterTemplatePage({
               </NHSNotifyContainer>
               <NHSNotifyMain>
                 <NHSNotifyContainer>
-                  <LetterPreviewErrors />
+                  <CombinedLetterErrorSummary />
                   <div className='nhsuk-grid-row'>
                     <div className='nhsuk-grid-column-full'>
                       <PreviewTemplateDetailsAuthoringLetter
@@ -159,7 +159,7 @@ export default async function PreviewLetterTemplatePage({
                 </NHSNotifyContainer>
               </NHSNotifyMain>
             </PollLetterRender>
-          </LetterPreviewErrorProvider>
+          </LetterRenderErrorProvider>
         </LetterRenderPollingProvider>
       </NHSNotifyFormProvider>
     </NHSNotifyContainer>

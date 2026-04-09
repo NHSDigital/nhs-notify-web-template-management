@@ -19,7 +19,7 @@ import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import content from '@content/content';
 import { buildLetterRenderUrl } from '@utils/letter-render-url';
-import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
+import { useLetterRenderError } from '@providers/letter-render-error-provider';
 import { useEffect } from 'react';
 
 const { loadingText } = content.components.letterRender;
@@ -81,7 +81,8 @@ function LetterRenderTabContent({
   hideEditActions?: boolean;
 }) {
   const [state, _dispatch, isPending] = useNHSNotifyForm();
-  const { setUpdatePreviewErrorState } = useLetterPreviewError();
+  const { setLetterRenderErrorState: setUpdatePreviewErrorState } =
+    useLetterRenderError();
 
   useEffect(() => {
     setUpdatePreviewErrorState(state.errorState);

@@ -106,7 +106,6 @@ exports[`LetterRender matches snapshot 1`] = `
               </p>
               <div
                 class="nhsuk-form-group"
-                id="systemPersonalisationPackId"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"
@@ -299,7 +298,6 @@ exports[`LetterRender matches snapshot 1`] = `
               </p>
               <div
                 class="nhsuk-form-group"
-                id="systemPersonalisationPackId"
               >
                 <label
                   class="nhsuk-label nhsuk-label--s"

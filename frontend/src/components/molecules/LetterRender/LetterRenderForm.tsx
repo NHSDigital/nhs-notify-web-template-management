@@ -10,7 +10,7 @@ import {
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
-import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
+import { useLetterRenderError } from '@providers/letter-render-error-provider';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
@@ -23,7 +23,7 @@ type LetterRenderFormProps = {
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
   const { isAnyTabPolling } = useLetterRenderPolling();
-  const { setApproveErrorState } = useLetterPreviewError();
+  const { setParentErrorState: setApproveErrorState } = useLetterRenderError();
 
   const exampleRecipients =
     tab === 'shortFormRender'
@@ -38,10 +38,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup
-        id='systemPersonalisationPackId'
-        htmlFor='systemPersonalisationPackId'
-      >
+      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>

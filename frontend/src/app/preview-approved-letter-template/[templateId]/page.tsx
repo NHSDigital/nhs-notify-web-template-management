@@ -13,7 +13,7 @@ import { LetterRender } from '@molecules/LetterRender';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
-import { LetterPreviewErrorProvider } from '@providers/letter-preview-error-provider';
+import { LetterRenderErrorProvider } from '@providers/letter-render-error-provider';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -58,7 +58,7 @@ export default async function PreviewApprovedLetterTemplatePage({
   return (
     <NHSNotifyContainer fullWidth>
       <LetterRenderPollingProvider>
-        <LetterPreviewErrorProvider>
+        <LetterRenderErrorProvider>
           <NHSNotifyContainer>
             <NHSNotifyBackLink href={links.messageTemplates}>
               {backLinkText}
@@ -78,7 +78,7 @@ export default async function PreviewApprovedLetterTemplatePage({
             </NHSNotifyContainer>
             <LetterRender template={validatedTemplate} hideEditActions={true} />
           </NHSNotifyMain>
-        </LetterPreviewErrorProvider>
+        </LetterRenderErrorProvider>
       </LetterRenderPollingProvider>
     </NHSNotifyContainer>
   );

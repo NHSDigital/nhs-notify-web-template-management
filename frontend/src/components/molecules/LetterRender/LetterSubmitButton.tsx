@@ -3,11 +3,11 @@
 import type { PropsWithChildren } from 'react';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
-import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
+import { useLetterRenderError } from '@providers/letter-render-error-provider';
 
 export function LetterSubmitButton({ children }: PropsWithChildren) {
   const { isAnyTabPolling } = useLetterRenderPolling();
-  const { setUpdatePreviewErrorState } = useLetterPreviewError();
+  const { setLetterRenderErrorState } = useLetterRenderError();
 
   return (
     <NHSNotifyButton
@@ -15,7 +15,7 @@ export function LetterSubmitButton({ children }: PropsWithChildren) {
       data-testid='preview-letter-template-cta'
       id='preview-letter-template-cta'
       disabled={isAnyTabPolling}
-      onClick={() => setUpdatePreviewErrorState(undefined)}
+      onClick={() => setLetterRenderErrorState(undefined)}
     >
       {children}
     </NHSNotifyButton>

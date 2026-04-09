@@ -10,12 +10,12 @@ jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 jest.mock('@molecules/LetterRender/server-action');
 
-jest.mock('@providers/letter-preview-error-provider', () => ({
-  useLetterPreviewError: jest.fn(() => ({
-    approveErrorState: undefined,
-    setApproveErrorState: jest.fn(),
-    updatePreviewErrorState: undefined,
-    setUpdatePreviewErrorState: jest.fn(),
+jest.mock('@providers/letter-render-error-provider', () => ({
+  useLetterRenderError: jest.fn(() => ({
+    parentErrorState: undefined,
+    setParentErrorState: jest.fn(),
+    letterRenderErrorState: undefined,
+    setLetterRenderErrorState: jest.fn(),
   })),
 }));
 

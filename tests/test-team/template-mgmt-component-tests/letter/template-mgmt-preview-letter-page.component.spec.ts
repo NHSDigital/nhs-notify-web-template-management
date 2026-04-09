@@ -154,6 +154,28 @@ function createTemplates(
       {
         letterVariantId: variants.doubleSided.id,
         initialRender: { pageCount: 4 },
+        shortFormRender: {
+          fileName: 'short-personalised.pdf',
+          currentVersion: 'v1-short',
+          pageCount: 4,
+          systemPersonalisationPackId: 'short-1',
+          personalisationParameters: {
+            firstName: 'Jo',
+            lastName: 'Bloggs',
+            appointmentDate: '2025-03-15',
+          },
+        },
+        longFormRender: {
+          fileName: 'long-personalised.pdf',
+          currentVersion: 'v1-long',
+          pageCount: 4,
+          systemPersonalisationPackId: 'long-1',
+          personalisationParameters: {
+            firstName: 'Jo',
+            lastName: 'Bloggs',
+            appointmentDate: '2025-03-15',
+          },
+        },
       }
     ),
     authoringNoCampaign: TemplateFactory.createAuthoringLetterTemplate(
@@ -1720,7 +1742,7 @@ test.describe('Preview Letter template Page', () => {
         await expect(shortErrorLink).toBeHidden();
       });
 
-      test('does not show approve errors and redirects when both examples are generated', async ({
+      test('shows both short and long example errors when personalised renders have failed', async ({
         page,
       }) => {
         const previewPage = new TemplateMgmtPreviewLetterPage(

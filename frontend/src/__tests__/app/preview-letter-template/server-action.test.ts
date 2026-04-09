@@ -98,7 +98,7 @@ describe('submitAuthoringLetterAction', () => {
     expect(redirectMock).not.toHaveBeenCalled();
   });
 
-  it('should handle error when validating template', async () => {
+  it('should redirect to invalid-template page when template validation fails', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
     } as unknown as TemplateDto);

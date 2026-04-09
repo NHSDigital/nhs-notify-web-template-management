@@ -1,19 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
-import { useLetterPreviewError } from '@providers/letter-preview-error-provider';
+import { useLetterRenderError } from '@providers/letter-render-error-provider';
 
 jest.mock('@providers/letter-render-polling-provider');
-jest.mock('@providers/letter-preview-error-provider');
+jest.mock('@providers/letter-render-error-provider');
 
 describe('LetterSubmitButton', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    jest.mocked(useLetterPreviewError).mockReturnValue({
-      approveErrorState: undefined,
-      setApproveErrorState: jest.fn(),
-      updatePreviewErrorState: undefined,
-      setUpdatePreviewErrorState: jest.fn(),
+    jest.mocked(useLetterRenderError).mockReturnValue({
+      parentErrorState: undefined,
+      setParentErrorState: jest.fn(),
+      letterRenderErrorState: undefined,
+      setLetterRenderErrorState: jest.fn(),
     });
   });
 
