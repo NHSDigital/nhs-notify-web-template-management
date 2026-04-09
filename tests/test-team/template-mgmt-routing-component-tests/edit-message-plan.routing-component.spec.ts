@@ -348,8 +348,8 @@ test.describe('Routing - Edit Message Plan page', () => {
       messagePlans.valid.status.toLowerCase()
     );
 
-    const channelBlocks = await editMessagePlanPage.channelBlocks.all();
-    expect(channelBlocks.length).toBe(messagePlans.valid.cascade.length);
+    const channelBlocks = editMessagePlanPage.channelBlocks;
+    await expect(channelBlocks).toHaveCount(messagePlans.valid.cascade.length);
 
     await expect(editMessagePlanPage.moveToProductionButton).toHaveText(
       'Move to production'
@@ -667,7 +667,7 @@ test.describe('Routing - Edit Message Plan page', () => {
 
     await test.step('foreign language templates are displayed with names and change link', async () => {
       const templateNames = await otherLanguagesItem.templateNames.all();
-      expect(templateNames.length).toBe(2);
+      expect(templateNames).toHaveLength(2);
 
       await expect(templateNames[0]).toHaveText(templates.FRENCH_LETTER.name);
       await expect(templateNames[1]).toHaveText(templates.SPANISH_LETTER.name);
@@ -753,7 +753,7 @@ test.describe('Routing - Edit Message Plan page', () => {
       );
 
       const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks.length).toBe(4);
+      expect(errorLinks).toHaveLength(4);
 
       await expect(errorLinks[0]).toHaveText(
         'You have not chosen a template for your first message'
@@ -805,7 +805,7 @@ test.describe('Routing - Edit Message Plan page', () => {
       );
 
       const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks.length).toBe(2);
+      expect(errorLinks).toHaveLength(2);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
       await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
     });
@@ -833,7 +833,7 @@ test.describe('Routing - Edit Message Plan page', () => {
       await expect(editMessagePlanPage.errorSummaryHeading).toBeVisible();
 
       const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks.length).toBe(1);
+      expect(errorLinks).toHaveLength(1);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-EMAIL');
     });
 

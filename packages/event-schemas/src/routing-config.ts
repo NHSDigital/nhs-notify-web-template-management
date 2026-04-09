@@ -8,7 +8,7 @@ export const $RoutingConfigEventChannel = z.enum([
   'LETTER',
 ]);
 
-const accessibleFormats = ['x1'];
+const accessibleFormats = ['q1', 'q4', 'x1', 'x3'];
 
 export type RoutingConfigEventChannel = z.infer<
   typeof $RoutingConfigEventChannel
@@ -25,7 +25,8 @@ const $RoutingConfigEventConditionalTemplate = z
       description: 'Language override for the template',
     }),
     accessibleFormat: z.enum(accessibleFormats).optional().meta({
-      description: 'Communication preference override for the template',
+      description:
+        'Communication preference override for the template - q1:Braille, q4:British Sign Language, x1:Large Print, x3:Audio',
     }),
     supplierReferences: z.record(z.string(), z.string()).optional().meta({
       description: 'Supplier references that identify the template',
@@ -141,7 +142,7 @@ export const $BaseRoutingConfigEventData = z.object({
   }),
   cascadeGroupOverrides: z.array($CascadeGroupOverride).meta({
     description:
-      'Config defining non-default cascade groups and the conditons under which they will be used',
+      'Config defining non-default cascade groups and the conditions under which they will be used',
   }),
 });
 

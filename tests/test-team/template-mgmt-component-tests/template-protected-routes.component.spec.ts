@@ -38,6 +38,7 @@ import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
 import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-email-page';
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
+import { TemplateMgmtGetReadyToApproveLetterTemplatePage } from '../pages/letter/template-mgmt-get-ready-to-approve-letter-template-page';
 import { TemplateMgmtEditTemplateCampaignPage } from 'pages/letter/template-mgmt-edit-template-campaign-page';
 import { TemplateMgmtEditTemplateNamePage } from 'pages/letter/template-mgmt-edit-template-name-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
@@ -111,6 +112,7 @@ const protectedPages = [
   TemplateMgmtEditSmsPage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtInvalidTemplatePage,
   TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtMessageTemplatesPage,
@@ -165,7 +167,7 @@ test.describe('Protected Routes Tests', () => {
 
     expect(uncovered).toHaveLength(0);
 
-    expect(nonPublic.length).toBe(protectedPages.length);
+    expect(nonPublic).toHaveLength(protectedPages.length);
   });
 
   for (const PageModel of protectedPages)

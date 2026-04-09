@@ -323,11 +323,13 @@
         "letterType": {
           "type": "string",
           "enum": [
+            "q1",
             "q4",
             "x0",
-            "x1"
+            "x1",
+            "x3"
           ],
-          "description": "Letter type - q4:British Sign Language, x1:Large Print, x0:Standard"
+          "description": "Letter type - q1:Braille, q4:British Sign Language, x0:Standard, x1:Large Print, x3:Audio"
         },
         "personalisationParameters": {
           "type": "array",

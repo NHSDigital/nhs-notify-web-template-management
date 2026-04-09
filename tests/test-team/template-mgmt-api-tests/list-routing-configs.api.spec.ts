@@ -82,7 +82,7 @@ test.describe('GET /v1/routing-configurations', () => {
       ]),
     });
 
-    expect(body.data.length).toBe(2);
+    expect(body.data).toHaveLength(2);
   });
 
   test('does not return routing configs belonging to other clients besides the authenticated one', async ({
@@ -135,7 +135,7 @@ test.describe('GET /v1/routing-configurations', () => {
       ]),
     });
 
-    expect(body.data.length).toBe(2);
+    expect(body.data).toHaveLength(2);
   });
 
   test('can filter by DRAFT status', async ({ request }) => {
