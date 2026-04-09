@@ -1,10 +1,14 @@
 /**
  * @jest-environment node
  */
+import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { AUTHORING_LETTER_TEMPLATE } from '@testhelpers/helpers';
+import {
+  AUTHORING_LETTER_TEMPLATE,
+  getMockFormData,
+} from '@testhelpers/helpers';
 import content from '@content/content';
 
 jest.mock('next/navigation');
@@ -92,6 +96,21 @@ describe('submitAuthoringLetterAction', () => {
 
     expect(result).toHaveProperty('errorState');
     expect(redirectMock).not.toHaveBeenCalled();
+  });
+
+  it('should handle error when validating template', async () => {
+    getTemplateMock.mockResolvedValueOnce({
+      id: 'template-id',
+    } as unknown as TemplateDto);
+
+    const formData = getMockFormData({
+      templateId: '992fe769-f8b3-43a9-84f1-6e10d0480bb6',
+      lockNumber: '300',
+    });
+
+    await submitAuthoringLetterAction({}, formData);
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   it('should return error when short example has not been generated', async () => {
