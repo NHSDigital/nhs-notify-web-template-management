@@ -262,12 +262,12 @@ describe('LetterRenderForm', () => {
   });
 
   describe('error display', () => {
-    it('displays error message and applies error styling when systemPersonalisationPackId has validation error', () => {
+    it('displays error message and applies error styling when recipient has validation error (short tab)', () => {
       const initialState = createInitialFormState({
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Select an example recipient'],
+            systemPersonalisationPackId: ['Choose an example recipient'],
           },
         },
       });
@@ -278,11 +278,11 @@ describe('LetterRenderForm', () => {
       );
 
       expect(
-        screen.getByText('Select an example recipient')
+        screen.getByText('Choose an example recipient')
       ).toBeInTheDocument();
 
       const formGroup = screen
-        .getByText('Select an example recipient')
+        .getByText('Choose an example recipient')
         .closest('.nhsuk-form-group');
 
       expect(formGroup).toHaveClass('nhsuk-form-group--error');
@@ -292,6 +292,74 @@ describe('LetterRenderForm', () => {
       });
 
       expect(select).toHaveClass('nhsuk-select--error');
+    });
+
+    it('displays error message and applies error styling when recipient has validation error (long tab)', () => {
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            systemPersonalisationPackId: ['Choose an example recipient'],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='longFormRender' />,
+        initialState
+      );
+
+      expect(
+        screen.getByText('Choose an example recipient')
+      ).toBeInTheDocument();
+
+      const formGroup = screen
+        .getByText('Choose an example recipient')
+        .closest('.nhsuk-form-group');
+
+      expect(formGroup).toHaveClass('nhsuk-form-group--error');
+
+      const select = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+
+      expect(select).toHaveClass('nhsuk-select--error');
+    });
+
+    it('displays inline error and applies error styling when a custom personalisation field is empty', () => {
+      const templateWithCustom: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        customPersonalisation: ['appointmentDate'],
+      };
+
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            'custom-appointmentDate-shortFormRender': [
+              'Enter example data for appointmentDate',
+            ],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm
+          template={templateWithCustom}
+          tab='shortFormRender'
+        />,
+        initialState
+      );
+
+      expect(
+        screen.getByText('Enter example data for appointmentDate')
+      ).toBeInTheDocument();
+
+      const formGroup = screen
+        .getByText('Enter example data for appointmentDate')
+        .closest('.nhsuk-form-group');
+
+      expect(formGroup).toHaveClass('nhsuk-form-group--error');
     });
   });
 
@@ -335,7 +403,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Select an example recipient'],
+            systemPersonalisationPackId: ['Choose an example recipient'],
           },
         },
       });

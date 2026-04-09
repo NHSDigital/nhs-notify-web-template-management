@@ -36,7 +36,10 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
+      <NHSNotifyForm.FormGroup
+        id='systemPersonalisationPackId'
+        htmlFor='systemPersonalisationPackId'
+      >
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
@@ -64,10 +67,11 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
             const id = `custom-${field}-${tab}`;
 
             return (
-              <NHSNotifyForm.FormGroup key={field}>
+              <NHSNotifyForm.FormGroup key={field} htmlFor={id}>
                 <Label size='s' htmlFor={id}>
                   {field}
                 </Label>
+                <NHSNotifyForm.ErrorMessage htmlFor={id} />
                 <NHSNotifyForm.Input
                   type='text'
                   id={id}

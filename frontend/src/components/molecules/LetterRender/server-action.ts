@@ -14,8 +14,9 @@ import type { LetterProofRequest } from 'nhs-notify-web-template-management-type
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import { format as formatDate } from 'date-fns';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
+import { interpolate } from '@utils/interpolate';
 
-const { pdsSection } = copy.components.letterRender;
+const { pdsSection, customSection } = copy.components.letterRender;
 
 const $FormSchema = z.object({
   systemPersonalisationPackId: z.enum(EXAMPLE_RECIPIENT_IDS, {
@@ -34,9 +35,37 @@ export async function updateLetterPreview(
 
   const fields = formDataToFormStateFields(formData);
 
+  const personalisationFieldErrors: Record<string, string[]> = {};
+
+  for (const [key, value] of Object.entries(fields)) {
+    if (key.startsWith(PERSONALISATION_FORMDATA_PREFIX) && !value) {
+      const fieldName = key.slice(PERSONALISATION_FORMDATA_PREFIX.length);
+      personalisationFieldErrors[`custom-${fieldName}-${fields.tab}`] = [
+        interpolate(customSection.error.required, { field: fieldName }),
+      ];
+    }
+  }
+
   if (result.error) {
+    const baseError = z.flattenError(result.error);
+
     return {
-      errorState: z.flattenError(result.error),
+      errorState: {
+        ...baseError,
+        fieldErrors: {
+          ...baseError.fieldErrors,
+          ...personalisationFieldErrors,
+        },
+      },
+      fields,
+    };
+  }
+
+  if (Object.keys(personalisationFieldErrors).length > 0) {
+    return {
+      errorState: {
+        fieldErrors: personalisationFieldErrors,
+      },
       fields,
     };
   }

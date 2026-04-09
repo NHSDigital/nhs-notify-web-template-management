@@ -35,6 +35,7 @@ exports[`LetterRenderTab snapshots matches snapshot for long tab 1`] = `
         </p>
         <div
           class="nhsuk-form-group"
+          id="systemPersonalisationPackId"
         >
           <label
             class="nhsuk-label nhsuk-label--s"
@@ -206,6 +207,7 @@ exports[`LetterRenderTab snapshots matches snapshot for short tab 1`] = `
         </p>
         <div
           class="nhsuk-form-group"
+          id="systemPersonalisationPackId"
         >
           <label
             class="nhsuk-label nhsuk-label--s"

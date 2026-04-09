@@ -29,6 +29,7 @@ exports[`LetterRenderForm snapshots matches snapshot for long tab 1`] = `
     </p>
     <div
       class="nhsuk-form-group"
+      id="systemPersonalisationPackId"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
@@ -181,6 +182,7 @@ exports[`LetterRenderForm snapshots matches snapshot for short tab 1`] = `
     </p>
     <div
       class="nhsuk-form-group"
+      id="systemPersonalisationPackId"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
@@ -351,6 +353,7 @@ exports[`LetterRenderForm snapshots matches snapshot with validation error 1`] =
     </p>
     <div
       class="nhsuk-form-group nhsuk-form-group--error"
+      id="systemPersonalisationPackId"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
@@ -366,7 +369,7 @@ exports[`LetterRenderForm snapshots matches snapshot with validation error 1`] =
         >
           Error: 
         </span>
-        Select an example recipient
+        Choose an example recipient
       </span>
       <select
         class="nhsuk-select nhsuk-select--error recipientSelect"
@@ -490,6 +493,7 @@ exports[`LetterRenderForm snapshots matches snapshot without custom personalisat
     </p>
     <div
       class="nhsuk-form-group"
+      id="systemPersonalisationPackId"
     >
       <label
         class="nhsuk-label nhsuk-label--s"
