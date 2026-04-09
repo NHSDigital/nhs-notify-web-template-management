@@ -1,5 +1,5 @@
 module "lambda_copy_scanned_object_to_internal" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//terraform-lambda?ref=feature/CCM-16484_Improve_Lambda_Env_Vars_Output"
 
   project        = var.project
   environment    = var.environment
