@@ -271,7 +271,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Choose an example recipient'],
+            systemPersonalisationPackId: ['Choose example recipient'],
           },
         },
       });
@@ -282,11 +282,11 @@ describe('LetterRenderForm', () => {
       );
 
       expect(
-        screen.getByText('Choose an example recipient')
+        screen.getByText('Choose example recipient')
       ).toBeInTheDocument();
 
       const formGroup = screen
-        .getByText('Choose an example recipient')
+        .getByText('Choose example recipient')
         .closest('.nhsuk-form-group');
 
       expect(formGroup).toHaveClass('nhsuk-form-group--error');
@@ -303,7 +303,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Choose an example recipient'],
+            systemPersonalisationPackId: ['Choose example recipient'],
           },
         },
       });
@@ -314,11 +314,11 @@ describe('LetterRenderForm', () => {
       );
 
       expect(
-        screen.getByText('Choose an example recipient')
+        screen.getByText('Choose example recipient')
       ).toBeInTheDocument();
 
       const formGroup = screen
-        .getByText('Choose an example recipient')
+        .getByText('Choose example recipient')
         .closest('.nhsuk-form-group');
 
       expect(formGroup).toHaveClass('nhsuk-form-group--error');
@@ -407,7 +407,7 @@ describe('LetterRenderForm', () => {
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Choose an example recipient'],
+            systemPersonalisationPackId: ['Choose example recipient'],
           },
         },
       });

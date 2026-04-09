@@ -1482,11 +1482,11 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.errorSummary).toBeVisible();
         await expect(previewPage.errorSummary).toContainText(
-          'Choose an example recipient'
+          'Choose example recipient'
         );
 
         const summaryLink = previewPage.errorSummaryLinks.filter({
-          hasText: 'Choose an example recipient',
+          hasText: 'Choose example recipient',
         });
         await expect(summaryLink).toHaveAttribute(
           'href',
@@ -1502,7 +1502,7 @@ test.describe('Preview Letter template Page', () => {
           previewPage.shortTab.getInlineError(
             'system-personalisation-pack-id-shortFormRender'
           )
-        ).toContainText('Choose an example recipient');
+        ).toContainText('Choose example recipient');
       });
 
       test('shows error summary and inline error when Update preview is clicked with no recipient selected (long tab)', async ({
@@ -1522,11 +1522,11 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.errorSummary).toBeVisible();
         await expect(previewPage.errorSummary).toContainText(
-          'Choose an example recipient'
+          'Choose example recipient'
         );
 
         const summaryLink = previewPage.errorSummaryLinks.filter({
-          hasText: 'Choose an example recipient',
+          hasText: 'Choose example recipient',
         });
         await expect(summaryLink).toHaveAttribute(
           'href',
@@ -1542,7 +1542,7 @@ test.describe('Preview Letter template Page', () => {
           previewPage.longTab.getInlineError(
             'system-personalisation-pack-id-longFormRender'
           )
-        ).toContainText('Choose an example recipient');
+        ).toContainText('Choose example recipient');
       });
 
       test('shows error summary and inline error for each empty custom field when Update preview is clicked (short tab)', async ({

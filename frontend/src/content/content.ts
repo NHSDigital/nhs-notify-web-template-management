@@ -598,7 +598,7 @@ const letterRender = {
     recipientLabel: 'Example recipient',
     recipientPlaceholder: 'Select a recipient',
     error: {
-      invalid: 'Choose an example recipient',
+      invalid: 'Choose example recipient',
     },
   },
   customSection: {

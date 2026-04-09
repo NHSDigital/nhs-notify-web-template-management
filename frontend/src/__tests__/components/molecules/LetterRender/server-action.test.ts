@@ -150,7 +150,7 @@ describe('updateLetterPreview', () => {
     );
     expect(
       result.errorState?.fieldErrors?.systemPersonalisationPackId
-    ).toContain('Choose an example recipient');
+    ).toContain('Choose example recipient');
     expect(result.fields?.systemPersonalisationPackId).toBe('');
   });
 
