@@ -11,6 +11,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   );
 
   public readonly errorSummary: Locator;
+  public readonly errorSummaryLinks: Locator;
   public readonly continueButton: Locator;
   public readonly statusTag: Locator;
 
@@ -35,6 +36,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     super(page);
 
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
+    this.errorSummaryLinks = this.errorSummary.locator('a');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.statusTag = page.getByTestId('status-tag');
 
@@ -86,6 +88,13 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
       tabSpinner,
       getCustomFieldInput: (fieldName: string): Locator =>
         panel.locator(`input[id="custom-${fieldName}-${variant}"]`),
+      getInlineError: (fieldId: string): Locator =>
+        panel
+          .locator(`[id="${fieldId}"]`)
+          .locator('xpath=..')
+          .locator('.nhsuk-error-message'),
+      getFormGroupForField: (fieldId: string): Locator =>
+        panel.locator(`[id="${fieldId}"]`).locator('xpath=..'),
       getRecipientOptions: (): Locator => recipientSelect.locator('option'),
 
       async clickTab() {
