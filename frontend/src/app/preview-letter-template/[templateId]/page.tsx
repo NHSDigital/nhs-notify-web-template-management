@@ -24,6 +24,7 @@ import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 const {
   approveButtonText,
@@ -32,12 +33,22 @@ const {
   loadingText,
   pageTitle,
   validationErrorMessages,
+  virusScanErrorAction,
 } = content.pages.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: pageTitle,
   };
+}
+
+function isVirusScanFailed(template: AuthoringLetterTemplate): boolean {
+  return Boolean(
+    template.templateStatus === 'VALIDATION_FAILED' &&
+    template.validationErrors?.some(
+      (error) => error.name === 'VIRUS_SCAN_FAILED'
+    )
+  );
 }
 
 function getValidationErrors(template: AuthoringLetterTemplate): string[] {
@@ -144,12 +155,18 @@ export default async function PreviewLetterTemplatePage({
                   </NHSNotifyForm.Form>
                 )}
                 <p>
-                  <Link
-                    data-testid='back-link-bottom'
-                    href={links.messageTemplates}
-                  >
-                    {backLinkText}
-                  </Link>
+                  {isVirusScanFailed(validatedTemplate) ? (
+                    <NHSNotifyButton href={links.uploadDifferentTemplateFile}>
+                      {virusScanErrorAction}
+                    </NHSNotifyButton>
+                  ) : (
+                    <Link
+                      data-testid='back-link-bottom'
+                      href={links.messageTemplates}
+                    >
+                      {backLinkText}
+                    </Link>
+                  )}
                 </p>
               </NHSNotifyContainer>
             </NHSNotifyMain>

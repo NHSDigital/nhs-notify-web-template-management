@@ -516,8 +516,6 @@ test.describe('Preview Letter template Page', () => {
     test('when user visits page with failed virus scan, submit is unavailable and an error is displayed', async ({
       page,
     }) => {
-      const errorMessage = 'The file(s) you uploaded may contain a virus.';
-
       const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
         page
       ).setPathParam('templateId', templates.virus.id);
@@ -531,10 +529,20 @@ test.describe('Preview Letter template Page', () => {
       );
 
       await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
-      await expect(previewLetterTemplatePage.errorSummary).toContainText(
-        errorMessage
-      );
+
+      const errorMessageLines = [
+        'Your file may contain a virus and we could not open it',
+        'Upload a different letter template file',
+      ];
+      for (const errorMessage of errorMessageLines) {
+        await expect(previewLetterTemplatePage.errorSummary).toContainText(
+          errorMessage
+        );
+      }
       await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+      await expect(
+        previewLetterTemplatePage.uploadDifferentTemplateButton
+      ).toHaveAttribute('href', '/templates/choose-a-template-type');
     });
 
     test('when user visits page with failed validation, submit is unavailable and an error is displayed', async ({
@@ -1255,13 +1263,22 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.errorSummary).toBeVisible();
 
-        await expect(previewPage.errorSummary).toContainText(
-          'The file(s) you uploaded may contain a virus'
-        );
+        const errorMessageLines = [
+          'Your file may contain a virus and we could not open it',
+          'Upload a different letter template file',
+        ];
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
 
         await expect(previewPage.continueButton).toBeHidden();
 
         await expect(previewPage.editNameLink).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/choose-a-template-type'
+        );
       });
 
       test('displays missing address lines error when status is VALIDATION_FAILED with MISSING_ADDRESS_LINES', async ({

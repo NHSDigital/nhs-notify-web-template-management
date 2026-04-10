@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, getLetterVariantById } from '@utils/form-actions';
@@ -501,22 +501,23 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
     );
 
     expect(redirect).not.toHaveBeenCalled();
-    expect(
-      screen.getByRole('alert', { name: 'There is a problem' })
-    ).toBeInTheDocument();
+
+    const errorSummary = screen.getByRole('alert', {
+      name: 'There is a problem',
+    });
 
     expect(
-      screen.getByText('The file(s) you uploaded may contain a virus.')
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText(
-        'Create a new letter template to upload your file(s) again or upload different file(s).'
+      within(errorSummary).getByText(
+        'Your file may contain a virus and we could not open it'
       )
+    ).toBeInTheDocument();
+
+    expect(
+      within(errorSummary).getByText('Upload a different letter template file')
     ).toBeInTheDocument();
   });
 
-  it('does not display submit button when validation has failed', async () => {
+  it('display "upload different template" button instead of submit button when validation has failed', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
       templateStatus: 'VALIDATION_FAILED',
@@ -532,6 +533,12 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
     expect(
       screen.queryByRole('button', { name: 'Submit template' })
     ).not.toBeInTheDocument();
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Upload a different letter template file',
+      })
+    ).toHaveAttribute('href', '/templates/choose-a-template-type');
   });
 
   it('does not display error summary when validationErrors is undefined', async () => {

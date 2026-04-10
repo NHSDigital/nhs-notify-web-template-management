@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import type { PdfLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
@@ -100,7 +100,23 @@ describe('PreviewPdfLetterTemplate', () => {
 
     render(<PreviewPdfLetterTemplate template={template} />);
 
-    expect(screen.getByRole('alert')).toBeInTheDocument();
+    const errorSummary = screen.getByRole('alert');
+
+    expect(
+      within(errorSummary).getByText(
+        'Your file may contain a virus and we could not open it'
+      )
+    ).toBeInTheDocument();
+
+    expect(
+      within(errorSummary).getByText('Upload a different letter template file')
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Upload a different letter template file',
+      })
+    ).toHaveAttribute('href', '/templates/choose-a-template-type');
   });
 
   it('shows error summary for VALIDATION_FAILED status', () => {

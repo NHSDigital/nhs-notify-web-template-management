@@ -12,6 +12,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
+  public readonly uploadDifferentTemplateButton: Locator;
   public readonly statusTag: Locator;
 
   // PDF letter specific
@@ -37,6 +38,9 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.statusTag = page.getByTestId('status-tag');
+    this.uploadDifferentTemplateButton = page.getByRole('button', {
+      name: 'Upload a different letter template file',
+    });
 
     // PDF letter specific
     this.pdfLinks = page.locator('[data-testid^="proof-link"]');
