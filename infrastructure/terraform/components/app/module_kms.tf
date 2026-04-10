@@ -118,7 +118,7 @@ data "aws_iam_policy_document" "kms" {
 
     principals {
       type        = "AWS"
-      identifiers = data.aws_iam_roles.sso_readonly.arns[0]
+      identifiers = [one(data.aws_iam_roles.sso_readonly.arns)]
     }
 
     actions = [
