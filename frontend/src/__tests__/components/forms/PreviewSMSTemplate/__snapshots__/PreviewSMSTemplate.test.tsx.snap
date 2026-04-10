@@ -141,6 +141,22 @@ exports[`Review sms form renders Routing feature flag - Disabled Client-side val
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -394,6 +410,22 @@ exports[`Review sms form renders Routing feature flag - Disabled matches error s
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -627,6 +659,22 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -848,6 +896,22 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <a
           aria-disabled="false"
           class="nhsuk-button nhsuk-button--secondary"
@@ -987,6 +1051,22 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
         </div>
         <form
           action="/action"
@@ -1203,6 +1283,22 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
         </div>
         <a
           aria-disabled="false"

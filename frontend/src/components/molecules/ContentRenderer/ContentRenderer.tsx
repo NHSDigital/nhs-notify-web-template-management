@@ -92,3 +92,5 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
     </>
   );
 }
+
+export type { MarkdownToJSX } from 'markdown-to-jsx';
