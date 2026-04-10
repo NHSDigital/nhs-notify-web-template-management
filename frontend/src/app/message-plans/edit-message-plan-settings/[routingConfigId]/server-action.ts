@@ -2,7 +2,7 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
-import type { FormState } from 'nhs-notify-web-template-management-utils';
+import type { FormState } from '@utils/types';
 import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';

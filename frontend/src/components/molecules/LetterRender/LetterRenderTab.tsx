@@ -1,9 +1,6 @@
 'use client';
 
-import type {
-  AuthoringLetterTemplate,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import {
   NHSNotifyFormProvider,
   useNHSNotifyForm,
@@ -13,7 +10,7 @@ import { LetterRenderDetails } from './LetterRenderDetails';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
-import type { PersonalisedRenderKey } from '@utils/types';
+import type { FormState, PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';

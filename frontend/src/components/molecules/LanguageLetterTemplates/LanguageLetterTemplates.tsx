@@ -6,11 +6,11 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
-  ErrorState,
   templateTypeToUrlTextMappings,
   type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
+import { ErrorState } from '@utils/types';
 
 const { tableHintText, tableContent } =
   baseContent.components.chooseLanguageLetterTemplates;

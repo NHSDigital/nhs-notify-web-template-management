@@ -7,12 +7,12 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   templateTypeDisplayMappings,
-  ErrorState,
   templateTypeToUrlTextMappings,
   FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { interpolate } from '@utils/interpolate';
+import { ErrorState } from '@utils/types';
 
 const { tableHintText, tableContent } =
   baseContent.components.chooseChannelTemplate;

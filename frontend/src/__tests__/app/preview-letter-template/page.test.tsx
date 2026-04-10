@@ -17,6 +17,7 @@ import Page, {
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
 import { RENDER_TIMEOUT_MS } from '@molecules/PollLetterRender/PollLetterRender';
+import { ValidationErrorDetail } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -487,59 +488,122 @@ describe('when authoring letter template status is submitted', () => {
 });
 
 describe('authoring letter template with VALIDATION_FAILED status', () => {
-  it('displays error summary with correct error messages when validationErrors are present', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
-    });
+  const cases: {
+    validationError: ValidationErrorDetail;
+    expectedErrorMessageLines: string[];
+  }[] = [
+    {
+      validationError: { name: 'VIRUS_SCAN_FAILED' },
+      expectedErrorMessageLines: [
+        'Your file may contain a virus and we could not open it',
+        'Upload a different letter template file',
+      ],
+    },
+    {
+      validationError: { name: 'MISSING_ADDRESS_LINES' },
+      expectedErrorMessageLines: [
+        'Your template is missing address personalisation fields',
+        'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file',
+      ],
+    },
+    {
+      validationError: { name: 'UNEXPECTED_ADDRESS_LINES' },
+      expectedErrorMessageLines: [
+        'Your template has address personalisation fields we do not recognise',
+        'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file',
+      ],
+    },
+    {
+      validationError: {
+        name: 'INVALID_MARKERS',
+        issues: [
+          '{c.compliment}',
+          '{no.d}',
+          '{d.underscores_to_test_markdown_escapes}',
+        ],
+      },
+      expectedErrorMessageLines: [
+        'You used the following personalisation fields with incorrect formatting:',
+        '{c.compliment}',
+        '{no.d}',
+        '{d.underscores_to_test_markdown_escapes}',
+        'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
+        'They can only contain',
+        'letters (a to z, A to Z)',
+        'numbers (1 to 9)',
+        'dashes',
+        'underscores',
+        'Update your letter template file and upload it again',
+      ],
+    },
+  ];
 
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+  describe.each(cases)(
+    '$validationError.name',
+    ({ validationError, expectedErrorMessageLines }) => {
+      beforeEach(() => {
+        jest.mocked(getTemplate).mockResolvedValue({
+          ...AUTHORING_LETTER_TEMPLATE,
+          templateStatus: 'VALIDATION_FAILED',
+          validationErrors: [validationError],
+        });
+      });
 
-    expect(redirect).not.toHaveBeenCalled();
+      it('displays error summary with correct error messages when validationErrors are present', async () => {
+        render(
+          await Page({
+            params: Promise.resolve({
+              templateId: AUTHORING_LETTER_TEMPLATE.id,
+            }),
+          })
+        );
 
-    const errorSummary = screen.getByRole('alert', {
-      name: 'There is a problem',
-    });
+        expect(redirect).not.toHaveBeenCalled();
 
-    expect(
-      within(errorSummary).getByText(
-        'Your file may contain a virus and we could not open it'
-      )
-    ).toBeInTheDocument();
+        const errorSummary = screen.getByRole('alert', {
+          name: 'There is a problem',
+        });
 
-    expect(
-      within(errorSummary).getByText('Upload a different letter template file')
-    ).toBeInTheDocument();
-  });
+        for (const errorMessage of expectedErrorMessageLines) {
+          expect(
+            within(errorSummary).getByText(errorMessage)
+          ).toBeInTheDocument();
+        }
+      });
 
-  it('display "upload different template" button instead of submit button when validation has failed', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
-    });
+      it('display "upload different template" button instead of submit button when validation has failed', async () => {
+        render(
+          await Page({
+            params: Promise.resolve({
+              templateId: AUTHORING_LETTER_TEMPLATE.id,
+            }),
+          })
+        );
 
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+        expect(
+          screen.queryByRole('button', { name: 'Submit template' })
+        ).not.toBeInTheDocument();
 
-    expect(
-      screen.queryByRole('button', { name: 'Submit template' })
-    ).not.toBeInTheDocument();
+        expect(
+          screen.getByRole('button', {
+            name: 'Upload a different letter template file',
+          })
+        ).toHaveAttribute('href', '/templates/choose-a-template-type');
+      });
 
-    expect(
-      screen.getByRole('button', {
-        name: 'Upload a different letter template file',
-      })
-    ).toHaveAttribute('href', '/templates/choose-a-template-type');
-  });
+      it('matches snapshot', async () => {
+        const { asFragment } = render(
+          await Page({
+            params: Promise.resolve({
+              templateId: AUTHORING_LETTER_TEMPLATE.id,
+            }),
+          })
+        );
+
+        expect(asFragment()).toMatchSnapshot();
+      });
+    }
+  );
 
   it('does not display error summary when validationErrors is undefined', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
@@ -559,22 +623,6 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
     expect(
       screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
     ).toBeInTheDocument();
-  });
-
-  it('matches snapshot when validationErrors are present', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
-    });
-
-    const { asFragment } = render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
-
-    expect(asFragment()).toMatchSnapshot();
   });
 
   it('matches snapshot when validationErrors is undefined', async () => {

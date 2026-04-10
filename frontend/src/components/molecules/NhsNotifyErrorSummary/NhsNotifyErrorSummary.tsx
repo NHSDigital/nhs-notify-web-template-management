@@ -1,8 +1,9 @@
 import { ErrorSummary, HintText } from 'nhsuk-react-components';
-import { ErrorState } from 'nhs-notify-web-template-management-utils';
+import { ErrorState } from '@utils/types';
 import { FC, HTMLProps, useEffect, useRef } from 'react';
 import content from '@content/content';
 import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 const UnlinkedErrorSummaryItem: FC<HTMLProps<HTMLSpanElement>> = (props) => (
   <li>
@@ -62,7 +63,7 @@ export const NhsNotifyErrorSummary = ({
         {formErrors &&
           formErrors.map((error, id) => (
             <UnlinkedErrorSummaryItem key={`form-error-summary-${id}`}>
-              {error}
+              <ContentRenderer content={error} />
             </UnlinkedErrorSummaryItem>
           ))}
       </ErrorSummary.List>

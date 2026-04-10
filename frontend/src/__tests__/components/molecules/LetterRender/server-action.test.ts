@@ -1,5 +1,5 @@
 import { updateLetterPreview } from '@molecules/LetterRender/server-action';
-import type { FormState } from 'nhs-notify-web-template-management-utils';
+import type { FormState } from '@utils/types';
 import { generateLetterProof } from '@utils/form-actions';
 import { AUTHORING_LETTER_TEMPLATE } from '@testhelpers/helpers';
 

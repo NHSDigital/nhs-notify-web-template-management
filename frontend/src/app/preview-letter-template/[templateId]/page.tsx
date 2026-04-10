@@ -33,7 +33,6 @@ const {
   loadingText,
   pageTitle,
   validationErrorMessages,
-  virusScanErrorAction,
 } = content.pages.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,21 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function isVirusScanFailed(template: AuthoringLetterTemplate): boolean {
-  return Boolean(
-    template.templateStatus === 'VALIDATION_FAILED' &&
-    template.validationErrors?.some(
-      (error) => error.name === 'VIRUS_SCAN_FAILED'
-    )
-  );
-}
-
-function getValidationErrors(template: AuthoringLetterTemplate): string[] {
+function getValidationErrors(template: AuthoringLetterTemplate) {
   if (template.templateStatus !== 'VALIDATION_FAILED') return [];
 
   return (
-    template.validationErrors?.flatMap(
-      (error) => validationErrorMessages[error.name]
+    template.validationErrors?.map((error) =>
+      validationErrorMessages[error.name](error.issues)
     ) ?? []
   );
 }
@@ -103,13 +93,15 @@ export default async function PreviewLetterTemplatePage({
     );
   }
 
+  const validationErrors = getValidationErrors(validatedTemplate);
+
   return (
     <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
         key={validatedTemplate.templateStatus}
         initialState={{
           errorState: {
-            formErrors: getValidationErrors(validatedTemplate),
+            formErrors: validationErrors,
           },
         }}
         serverAction={submitAuthoringLetterAction}
@@ -155,9 +147,11 @@ export default async function PreviewLetterTemplatePage({
                   </NHSNotifyForm.Form>
                 )}
                 <p>
-                  {isVirusScanFailed(validatedTemplate) ? (
-                    <NHSNotifyButton href={links.uploadDifferentTemplateFile}>
-                      {virusScanErrorAction}
+                  {validationErrors.length > 0 ? (
+                    <NHSNotifyButton
+                      href={links.uploadDifferentTemplateFile.href}
+                    >
+                      {links.uploadDifferentTemplateFile.text}
                     </NHSNotifyButton>
                   ) : (
                     <Link

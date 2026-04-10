@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { interpolate } from '@utils/interpolate';
 import { useActionState, useState } from 'react';
-import { ErrorState } from 'nhs-notify-web-template-management-utils';
+import { ErrorState } from '@utils/types';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import {
   $ChooseChannelTemplate,

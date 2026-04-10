@@ -8,9 +8,13 @@ import type {
   FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 
-import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
+import type {
+  ContentBlock,
+  ContentItem,
+} from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
+import { escapeMarkdown } from '@utils/escape-markdown';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -539,18 +543,64 @@ const previewLetterTemplate = {
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your example personalisation file',
   validationErrorMessages: {
-    MISSING_ADDRESS_LINES: [
-      'The template file you uploaded does not contain the address fields.',
-      'Add the address fields to the template file and upload it.',
+    MISSING_ADDRESS_LINES: () => [
+      {
+        type: 'text',
+        text: 'Your template is missing address personalisation fields',
+      },
+      {
+        type: 'text',
+        text: String.raw`You must include all fields from {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file`,
+      },
     ],
-    VIRUS_SCAN_FAILED: [
-      'Your file may contain a virus and we could not open it',
-      'Upload a different letter template file',
+    VIRUS_SCAN_FAILED: () => [
+      {
+        type: 'text',
+        text: 'Your file may contain a virus and we could not open it',
+      },
+      { type: 'text', text: 'Upload a different letter template file' },
     ],
-    // not yet implemented, but required as placeholders
-    INVALID_MARKERS: [],
-    UNEXPECTED_ADDRESS_LINES: [],
-  } satisfies Record<string, string[]>,
+    INVALID_MARKERS: (issues = []) => [
+      {
+        type: 'text',
+        text: 'You used the following personalisation fields with incorrect formatting:',
+      },
+      ...issues.map(
+        (issue): ContentBlock => ({
+          type: 'text',
+          text: escapeMarkdown(issue),
+        })
+      ),
+      {
+        type: 'text',
+        text: 'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
+      },
+      { type: 'text', text: 'They can only contain' },
+      {
+        type: 'text',
+        text: markdownList('ul', [
+          'letters (a to z, A to Z)',
+          'numbers (1 to 9)',
+          'dashes',
+          'underscores',
+        ]),
+      },
+      {
+        type: 'text',
+        text: 'Update your letter template file and upload it again',
+      },
+    ],
+    UNEXPECTED_ADDRESS_LINES: () => [
+      {
+        type: 'text',
+        text: 'Your template has address personalisation fields we do not recognise',
+      },
+      {
+        type: 'text',
+        text: String.raw`You must only use {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file`,
+      },
+    ],
+  } satisfies Record<string, (issues?: string[]) => ContentItem[]>,
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {
     heading: 'Important',
@@ -565,7 +615,10 @@ const previewLetterTemplate = {
       '{{basePath}}/submit-letter-template/{{templateId}}?lockNumber={{lockNumber}}',
     requestProofOfTemplate:
       '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
-    uploadDifferentTemplateFile: '/templates/choose-a-template-type',
+    uploadDifferentTemplateFile: {
+      text: 'Upload a different letter template file',
+      href: '/templates/choose-a-template-type',
+    },
   },
 };
 

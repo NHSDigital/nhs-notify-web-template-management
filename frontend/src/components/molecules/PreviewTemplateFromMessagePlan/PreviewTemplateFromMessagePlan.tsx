@@ -7,12 +7,12 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
   templateTypeToUrlTextMappings,
-  PageComponentProps,
   isFrontendSupportedLetterType,
   FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
 import { interpolate } from '@utils/interpolate';
+import { PageComponentProps } from '@utils/types';
 
 export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
   PageComponentProps<T> & {

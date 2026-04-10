@@ -1,10 +1,8 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
-import {
-  NHSAppTemplate,
-  TemplateFormState,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
+import { TemplateFormState } from '@utils/types';
 
 const {
   components: {
