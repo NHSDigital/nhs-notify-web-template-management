@@ -113,6 +113,22 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
+    sid    = "AllowSsoReadonlyDecrypt"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = data.aws_iam_roles.sso_readonly.arns
+    }
+
+    actions = [
+      "kms:Decrypt",
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
     sid    = "AllowEventBridgeAccessToLetterValidationQueue"
     effect = "Allow"
 
