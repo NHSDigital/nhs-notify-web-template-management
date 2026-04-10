@@ -22,7 +22,12 @@ jest.mock('@providers/letter-render-polling-provider', () => {
 });
 
 jest.mock('@providers/letter-render-error-provider', () => ({
-  useLetterRenderError: jest.fn(),
+  useLetterRenderError: jest.fn().mockReturnValue({
+    parentErrorState: undefined,
+    setParentErrorState: jest.fn(),
+    letterRenderErrorState: undefined,
+    setLetterRenderErrorState: jest.fn(),
+  }),
 }));
 
 const baseTemplate: AuthoringLetterTemplate = {
@@ -84,12 +89,6 @@ function renderWithProvider(
 describe('LetterRenderForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.mocked(useLetterRenderError).mockReturnValue({
-      parentErrorState: undefined,
-      setParentErrorState: jest.fn(),
-      letterRenderErrorState: undefined,
-      setLetterRenderErrorState: jest.fn(),
-    });
   });
 
   describe('PDS personalisation section', () => {
