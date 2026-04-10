@@ -112,8 +112,8 @@ describe('ContactDetailsRepository', () => {
         expect(mocks.dynamodb).toHaveReceivedCommandWith(PutCommand, {
           TableName: TABLE_NAME,
           Item: {
-            PK: `CLIENT#${USER.clientId}`,
-            SK: `${input.type}#${input.value}`,
+            owner: `CLIENT#${USER.clientId}`,
+            contactDetailKey: `${input.type}#${input.value}`,
             createdAt: NOW.toISOString(),
             createdBy: `INTERNAL_USER#${USER.internalUserId}`,
             clientId: USER.clientId,
@@ -127,10 +127,10 @@ describe('ContactDetailsRepository', () => {
             updatedBy: `INTERNAL_USER#${USER.internalUserId}`,
             value: input.value,
           },
-          ExpressionAttributeNames: { '#pk': 'PK', '#status': 'status' },
+          ExpressionAttributeNames: { '#owner': 'owner', '#status': 'status' },
           ExpressionAttributeValues: { ':statusVerified': 'VERIFIED' },
           ConditionExpression:
-            'attribute_not_exists(#pk) OR #status <> :statusVerified',
+            'attribute_not_exists(#owner) OR #status <> :statusVerified',
         });
       }
     );

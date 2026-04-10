@@ -17,8 +17,6 @@ export class ContactDetailHelper {
     new DynamoDBClient({ region: 'eu-west-2' })
   );
 
-  private readonly startTime = Math.floor(Date.now() / 1000);
-
   private adHocKeys: ContactDetailKey[] = [];
   private seedData: ContactDetailKey[] = [];
   /**
@@ -44,8 +42,8 @@ export class ContactDetailHelper {
               [process.env.CONTACT_DETAILS_TABLE_NAME]: batch.map((item) => ({
                 PutRequest: {
                   Item: {
-                    PK: `CLIENT#${item.clientId}`,
-                    SK: `${item.type}#${item.value}`,
+                    owner: `CLIENT#${item.clientId}`,
+                    contactDetailKey: `${item.type}#${item.value}`,
                     ...item,
                   },
                 },
@@ -91,8 +89,8 @@ export class ContactDetailHelper {
               [process.env.CONTACT_DETAILS_TABLE_NAME]: batch.map((key) => ({
                 DeleteRequest: {
                   Key: {
-                    PK: `CLIENT#${key.clientId}`,
-                    SK: `${key.type}#${key.value}`,
+                    owner: `CLIENT#${key.clientId}`,
+                    contactDetailKey: `${key.type}#${key.value}`,
                   },
                 },
               })),

@@ -3,16 +3,16 @@ resource "aws_dynamodb_table" "client_contact_details" {
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key  = "PK"
-  range_key = "SK"
+  hash_key  = "owner"
+  range_key = "contactDetailKey"
 
   attribute {
-    name = "PK"
+    name = "owner"
     type = "S"
   }
 
   attribute {
-    name = "SK"
+    name = "contactDetailKey"
     type = "S"
   }
 

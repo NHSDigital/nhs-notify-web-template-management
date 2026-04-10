@@ -41,8 +41,8 @@ export class ContactDetailsRepository {
         new PutCommand({
           TableName: this.tableName,
           Item: {
-            PK: `CLIENT#${user.clientId}`,
-            SK: this.getContactDetailKey(details),
+            owner: `CLIENT#${user.clientId}`,
+            contactDetailKey: this.getContactDetailKey(details),
             ...dto,
             rawValue: details.rawValue,
             otpHash: await this.hashOtp(dto, otp),
@@ -53,14 +53,14 @@ export class ContactDetailsRepository {
             updatedBy: `INTERNAL_USER#${user.internalUserId}`,
           },
           ExpressionAttributeNames: {
-            '#pk': 'PK',
+            '#owner': 'owner',
             '#status': 'status',
           },
           ExpressionAttributeValues: {
             ':statusVerified': 'VERIFIED',
           },
           ConditionExpression:
-            'attribute_not_exists(#pk) OR #status <> :statusVerified',
+            'attribute_not_exists(#owner) OR #status <> :statusVerified',
         })
       );
 
