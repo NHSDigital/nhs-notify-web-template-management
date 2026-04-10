@@ -6,8 +6,7 @@ import { getTestContext } from 'helpers/context/context';
 import { ContactDetailHelper } from 'helpers/db/contact-details-helper';
 import { makeVerifiedContactDetail } from 'helpers/factories/contact-details-factory';
 
-const generateEmailAddress = () =>
-  faker.internet.email({ provider: 'nhs.net' }).toLowerCase();
+const generateEmailAddress = () => faker.internet.exampleEmail().toLowerCase();
 
 type Locale = 'GB' | 'GG' | 'IM' | 'JE';
 
@@ -137,9 +136,9 @@ test.describe('PUT /v1/contact-details', () => {
 
     for (const email of [
       '',
-      'email@subdomain.nhs.net',
+      'no-at.domain.com',
       `l${'o'.repeat(310)}ng@nhs.net`,
-      'email@notnhsdotnet.com',
+      'email@123.123.123.123',
       'notanemailaddress',
     ]) {
       test(`returns 400 if email address is invalid [${email || 'empty'}]`, async ({
