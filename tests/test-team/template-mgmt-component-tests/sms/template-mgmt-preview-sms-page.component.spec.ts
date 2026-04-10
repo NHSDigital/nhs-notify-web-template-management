@@ -6,6 +6,8 @@ import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertBackLinkBottom,
   assertAndClickBackLinkTop,
+  assertRequestProofBannerVisible,
+  assertTestMessageBannerVisible,
 } from '../../helpers/template-mgmt-common.steps';
 import {
   assertFooterLinks,
@@ -106,6 +108,8 @@ test.describe('Preview SMS message template Page', () => {
 
     await expect(previewPage.editRadioOption).toBeHidden();
     await expect(previewPage.submitRadioOption).toBeHidden();
+
+    await assertRequestProofBannerVisible(previewPage, templates.valid.id);
   });
 
   test.describe('Page functionality', () => {
@@ -216,6 +220,11 @@ test.describe('Preview SMS message template Page', () => {
 
       await expect(previewPage.sendTestMessageButton).toBeHidden();
       await expect(previewPage.testMessageBanner).toBeHidden();
+
+      await assertRequestProofBannerVisible(
+        previewPage,
+        templates.routingDisabled.id
+      );
     });
 
     test.describe('Page functionality', () => {
@@ -304,7 +313,6 @@ test.describe('Preview SMS message template Page', () => {
     test('when digitalProofingSms is enabled, then banner and button are visible and both navigate correctly', async ({
       page,
       baseURL,
-      context,
     }) => {
       await loginAsUser(digitalProofingUser, page);
 
@@ -328,25 +336,20 @@ test.describe('Preview SMS message template Page', () => {
       await expect(previewPage.editRadioOption).toBeHidden();
       await expect(previewPage.submitRadioOption).toBeHidden();
       await expect(previewPage.continueButton).toBeHidden();
+      await expect(previewPage.requestProofMessageBanner).toBeHidden();
 
-      // Test banner link (opens in new tab)
-      const newPagePromise = context.waitForEvent('page');
-      await previewPage.testMessageBannerLink.click();
-      const newPage = await newPagePromise;
-      await newPage.waitForLoadState();
+      const expectedUrl = `/templates/send-test-text-message/${templates.digitalProofing.id}`;
 
-      await expect(newPage).toHaveURL(
-        `${baseURL}/templates/send-test-text-message/${templates.digitalProofing.id}`
+      await assertTestMessageBannerVisible(
+        previewPage,
+        'Send a test text message',
+        expectedUrl
       );
-
-      await newPage.close();
 
       // Test button (same page navigation)
       await previewPage.sendTestMessageButton.click();
 
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/send-test-text-message/${templates.digitalProofing.id}`
-      );
+      await expect(previewPage.page).toHaveURL(`${baseURL}${expectedUrl}`);
     });
   });
 });
