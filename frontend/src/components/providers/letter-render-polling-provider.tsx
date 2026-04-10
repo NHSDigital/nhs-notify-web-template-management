@@ -43,10 +43,7 @@ export function LetterRenderPollingProvider({ children }: PropsWithChildren) {
 
   return (
     <LetterRenderPollingContext.Provider
-      value={{
-        isAnyTabPolling,
-        registerPolling,
-      }}
+      value={{ isAnyTabPolling, registerPolling }}
     >
       {children}
     </LetterRenderPollingContext.Provider>
