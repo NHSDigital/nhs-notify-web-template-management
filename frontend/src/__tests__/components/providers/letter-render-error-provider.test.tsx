@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {
   LetterRenderErrorProvider,
   useLetterRenderError,
@@ -6,7 +6,7 @@ import {
 
 function TestConsumer() {
   useLetterRenderError();
-  return null;
+  return <div>child content</div>;
 }
 
 describe('useLetterRenderError', () => {
@@ -18,13 +18,13 @@ describe('useLetterRenderError', () => {
 });
 
 describe('LetterRenderErrorProvider', () => {
-  it('renders children without error', () => {
-    expect(() =>
-      render(
-        <LetterRenderErrorProvider>
-          <TestConsumer />
-        </LetterRenderErrorProvider>
-      )
-    ).not.toThrow();
+  it('renders children', () => {
+    render(
+      <LetterRenderErrorProvider>
+        <TestConsumer />
+      </LetterRenderErrorProvider>
+    );
+
+    expect(screen.getByText('child content')).toBeInTheDocument();
   });
 });

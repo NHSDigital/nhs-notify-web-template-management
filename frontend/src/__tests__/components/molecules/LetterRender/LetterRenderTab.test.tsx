@@ -27,14 +27,14 @@ jest.mock('@utils/get-base-path', () => ({
 
 const mockUpdateLetterPreview = jest.mocked(updateLetterPreview);
 
-const mockSetUpdatePreviewErrorState = jest.fn();
+const mockSetLetterRenderErrorState = jest.fn();
 
 beforeEach(() => {
   jest.mocked(useLetterRenderError).mockReturnValue({
     parentErrorState: undefined,
     setParentErrorState: jest.fn(),
     letterRenderErrorState: undefined,
-    setLetterRenderErrorState: mockSetUpdatePreviewErrorState,
+    setLetterRenderErrorState: mockSetLetterRenderErrorState,
   });
 });
 
@@ -88,7 +88,7 @@ describe('LetterRenderTab', () => {
     mockUpdateLetterPreview.mockResolvedValue(createMockState());
   });
 
-  describe('buildPdfUrl', () => {
+  describe('derivePdfUrl', () => {
     it('builds URL from initialRender when no variant render exists', () => {
       render(
         <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
@@ -264,7 +264,7 @@ describe('LetterRenderTab', () => {
     });
   });
 
-  describe('getInitialState', () => {
+  describe('deriveFormState', () => {
     it('uses initial empty state when no variant render exists', () => {
       render(
         <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
@@ -565,6 +565,32 @@ describe('LetterRenderTab', () => {
         await screen.findByText('Select an example recipient')
       ).toBeInTheDocument();
     });
+
+    it('forwards error state to LetterRenderErrorProvider after submission', async () => {
+      const errorState = {
+        formErrors: [],
+        fieldErrors: {
+          'system-personalisation-pack-id-shortFormRender': [
+            'Select an example recipient',
+          ],
+        },
+      };
+
+      mockUpdateLetterPreview.mockResolvedValue(
+        createMockState({ errorState })
+      );
+
+      render(
+        <LetterRenderTab template={baseTemplate} tab='shortFormRender' />,
+        { wrapper: Provider }
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: 'Update preview' }));
+
+      await waitFor(() => {
+        expect(mockSetLetterRenderErrorState).toHaveBeenCalledWith(errorState);
+      });
+    });
   });
 
   describe('snapshots', () => {
@@ -584,6 +610,63 @@ describe('LetterRenderTab', () => {
       );
 
       expect(asFragment()).toMatchSnapshot();
+    });
+  });
+
+  describe('hideEditActions', () => {
+    it('renders details panel instead of form', () => {
+      render(
+        <LetterRenderTab
+          template={baseTemplate}
+          tab='shortFormRender'
+          hideEditActions
+        />,
+        { wrapper: Provider }
+      );
+
+      expect(
+        screen.getByTitle('Letter preview - short examples')
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('PDS personalisation fields')
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('combobox', { name: 'Example recipient' })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Update preview' })
+      ).not.toBeInTheDocument();
+    });
+
+    it('renders iframe with correct URL', () => {
+      render(
+        <LetterRenderTab
+          template={baseTemplate}
+          tab='shortFormRender'
+          hideEditActions
+        />,
+        { wrapper: Provider }
+      );
+
+      expect(
+        screen.getByTitle('Letter preview - short examples')
+      ).toHaveAttribute(
+        'src',
+        '/templates/files/client-456/renders/template-123/initial.pdf'
+      );
+    });
+
+    it('does not call useLetterRenderError', () => {
+      render(
+        <LetterRenderTab
+          template={baseTemplate}
+          tab='shortFormRender'
+          hideEditActions
+        />,
+        { wrapper: Provider }
+      );
+
+      expect(useLetterRenderError).not.toHaveBeenCalled();
     });
   });
 });

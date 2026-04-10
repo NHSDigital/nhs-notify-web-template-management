@@ -20,7 +20,7 @@ import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import content from '@content/content';
 import { buildLetterRenderUrl } from '@utils/letter-render-url';
 import { useLetterRenderError } from '@providers/letter-render-error-provider';
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 
 const { loadingText } = content.components.letterRender;
 
@@ -69,16 +69,31 @@ function deriveFormState(
   };
 }
 
-function LetterRenderTabContent({
+function LetterRenderTabLayout({
+  leftColumn,
+  rightColumn,
+}: {
+  leftColumn: ReactNode;
+  rightColumn: ReactNode;
+}) {
+  return (
+    <div className={`nhsuk-grid-row ${styles.tabRow}`}>
+      <div className='nhsuk-grid-column-one-third'>{leftColumn}</div>
+      <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
+        {rightColumn}
+      </div>
+    </div>
+  );
+}
+
+function LetterRenderTabFormInner({
   template,
   tab,
   pdfUrl,
-  hideEditActions,
 }: {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
   pdfUrl: string | null;
-  hideEditActions?: boolean;
 }) {
   const [state, _dispatch, isPending] = useNHSNotifyForm();
   const { setLetterRenderErrorState } = useLetterRenderError();
@@ -88,40 +103,30 @@ function LetterRenderTabContent({
   }, [state, setLetterRenderErrorState]);
 
   return (
-    <div className={`nhsuk-grid-row ${styles.tabRow}`}>
-      <div className='nhsuk-grid-column-one-third'>
-        {hideEditActions ? (
-          <LetterRenderDetails template={template} tab={tab} />
-        ) : (
-          <LetterRenderForm template={template} tab={tab} />
-        )}
-      </div>
-
-      <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
-        {hideEditActions ? (
+    <LetterRenderTabLayout
+      leftColumn={<LetterRenderForm template={template} tab={tab} />}
+      rightColumn={
+        <PollLetterRender
+          template={template}
+          mode={tab}
+          loadingElement={<p>{loadingText}</p>}
+          forcePolling={isPending}
+        >
           <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
-        ) : (
-          <PollLetterRender
-            template={template}
-            mode={tab}
-            loadingElement={<p>{loadingText}</p>}
-            forcePolling={isPending}
-          >
-            <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
-          </PollLetterRender>
-        )}
-      </div>
-    </div>
+        </PollLetterRender>
+      }
+    />
   );
 }
 
-export function LetterRenderTab({
+function LetterRenderTabForm({
   template,
   tab,
-  hideEditActions,
-}: LetterRenderTabProps) {
+}: {
+  template: AuthoringLetterTemplate;
+  tab: PersonalisedRenderKey;
+}) {
   const personalisedRender = template.files[tab];
-
   const formState = deriveFormState(template, personalisedRender);
   const pdfUrl = derivePdfUrl(template, personalisedRender);
 
@@ -130,12 +135,36 @@ export function LetterRenderTab({
       initialState={formState}
       serverAction={updateLetterPreview}
     >
-      <LetterRenderTabContent
-        template={template}
-        tab={tab}
-        pdfUrl={pdfUrl}
-        hideEditActions={hideEditActions}
-      />
+      <LetterRenderTabFormInner template={template} tab={tab} pdfUrl={pdfUrl} />
     </NHSNotifyFormProvider>
   );
+}
+
+function LetterRenderTabReadOnly({
+  template,
+  tab,
+}: {
+  template: AuthoringLetterTemplate;
+  tab: PersonalisedRenderKey;
+}) {
+  const pdfUrl = derivePdfUrl(template, template.files[tab]);
+
+  return (
+    <LetterRenderTabLayout
+      leftColumn={<LetterRenderDetails template={template} tab={tab} />}
+      rightColumn={<LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />}
+    />
+  );
+}
+
+export function LetterRenderTab({
+  template,
+  tab,
+  hideEditActions,
+}: LetterRenderTabProps) {
+  if (hideEditActions) {
+    return <LetterRenderTabReadOnly template={template} tab={tab} />;
+  }
+
+  return <LetterRenderTabForm template={template} tab={tab} />;
 }
