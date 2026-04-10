@@ -72,6 +72,8 @@ describe('parseEmailAddress', () => {
       'incorrect-punycode@xn--🌈.com',
       'incorrect-punycode@xn---something.com',
       `email-too-l${'o'.repeat(296)}ng@example.com`,
+      `email@${'a'.repeat(64)}.com`,
+      `email@subdomain..example.com`,
     ])('invalid email address %s', (emailAddress: string) => {
       expect(parseEmailAddress(emailAddress)).toEqual(null);
     });
