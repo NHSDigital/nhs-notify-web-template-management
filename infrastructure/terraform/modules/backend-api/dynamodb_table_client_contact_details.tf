@@ -16,6 +16,27 @@ resource "aws_dynamodb_table" "client_contact_details" {
     type = "S"
   }
 
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name = "ById"
+
+    key_schema {
+      key_type       = "HASH"
+      attribute_name = "id"
+    }
+
+    key_schema {
+      key_type       = "RANGE"
+      attribute_name = "owner"
+    }
+
+    projection_type = "ALL"
+  }
+
   ttl {
     attribute_name = "ttl"
     enabled        = true
