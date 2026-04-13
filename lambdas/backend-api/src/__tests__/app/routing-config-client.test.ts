@@ -771,7 +771,6 @@ describe('RoutingConfigClient', () => {
       const { client, mocks } = setup();
 
       const update: UpdateRoutingConfig = {
-        campaignId: routingConfig.campaignId,
         cascade: [
           ...routingConfig.cascade,
           {
@@ -835,7 +834,6 @@ describe('RoutingConfigClient', () => {
       });
 
       const update: UpdateRoutingConfig = {
-        campaignId: routingConfig.campaignId,
         cascade: {} as CascadeItem[],
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
@@ -873,7 +871,6 @@ describe('RoutingConfigClient', () => {
       const { client, mocks } = setup();
 
       const update: UpdateRoutingConfig = {
-        campaignId: routingConfig.campaignId,
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: 'new name',
@@ -914,7 +911,6 @@ describe('RoutingConfigClient', () => {
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
-        campaignId: 'this campaign',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -943,20 +939,20 @@ describe('RoutingConfigClient', () => {
       });
     });
 
-    test('returns failure if campaignId is not allowed for the client', async () => {
+    test('rejects campaignId in update payload', async () => {
       const { client, mocks } = setup();
 
-      const update: UpdateRoutingConfig = {
+      const update = {
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
         campaignId: 'this campaign',
-      };
+      } as unknown as UpdateRoutingConfig;
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
           features: { routing: true },
-          campaignIds: ['another campaign'],
+          campaignIds: [routingConfig.campaignId],
         },
       });
 
@@ -971,55 +967,18 @@ describe('RoutingConfigClient', () => {
 
       expect(result).toEqual({
         error: {
+          actualError: {
+            fieldErrors: {},
+            formErrors: ['Unrecognized key: "campaignId"'],
+          },
           errorMeta: {
             code: 400,
-            description: 'Invalid campaign ID in request',
+            description: 'Request failed validation',
+            details: {
+              $root: 'Unrecognized key: "campaignId"',
+            },
           },
         },
-      });
-    });
-
-    test('allows payloads with no campaign id', async () => {
-      const { client, mocks } = setup();
-
-      const update: UpdateRoutingConfig = {
-        cascade: routingConfig.cascade,
-        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
-        name: routingConfig.name,
-      };
-
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: {
-          features: { routing: true },
-          campaignIds: ['another campaign'],
-        },
-      });
-
-      const updated: RoutingConfig = {
-        ...routingConfig,
-        ...update,
-      };
-
-      mocks.routingConfigRepository.update.mockResolvedValueOnce({
-        data: updated,
-      });
-
-      const result = await client.updateRoutingConfig(
-        routingConfig.id,
-        update,
-        user,
-        '42'
-      );
-
-      expect(mocks.routingConfigRepository.update).toHaveBeenCalledWith(
-        routingConfig.id,
-        update,
-        user,
-        42
-      );
-
-      expect(result).toEqual({
-        data: updated,
       });
     });
 
@@ -1027,7 +986,6 @@ describe('RoutingConfigClient', () => {
       const { client, mocks } = setup();
 
       const update: UpdateRoutingConfig = {
-        campaignId: routingConfig.campaignId,
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: 'new name',

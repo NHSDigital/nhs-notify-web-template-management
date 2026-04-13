@@ -6,9 +6,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
-import { getCampaignIds } from '@utils/client-config';
 import { getRoutingConfig } from '@utils/message-plans';
-import { fetchClient } from '@utils/server-features';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { editMessagePlanSettingsServerAction } from './server-action';
 
@@ -23,19 +21,10 @@ export default async function EditMessagePlanSettingsPage({
 }: MessagePlanPageProps) {
   const { routingConfigId } = await params;
 
-  const [routingConfig, clientConfig] = await Promise.all([
-    getRoutingConfig(routingConfigId),
-    fetchClient(),
-  ]);
+  const routingConfig = await getRoutingConfig(routingConfigId);
 
   if (!routingConfig) {
     redirect('/message-plans/invalid', RedirectType.replace);
-  }
-
-  const campaignIds = getCampaignIds(clientConfig);
-
-  if (campaignIds.length === 0) {
-    redirect('/message-plans/campaign-id-required', RedirectType.replace);
   }
 
   return (
@@ -50,7 +39,6 @@ export default async function EditMessagePlanSettingsPage({
               <h1 className='nhsuk-heading-xl'>{pageContent.pageHeading}</h1>
               <MessagePlanForm
                 backLink={pageContent.backLink(routingConfigId)}
-                campaignIds={campaignIds}
                 initialState={routingConfig}
               >
                 <input

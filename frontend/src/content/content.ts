@@ -1511,8 +1511,8 @@ const editMessagePlan = {
   pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
   changeNameLink: {
-    href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
-    text: 'Edit settings',
+    href: '/message-plans/rename-message-plan/{{routingConfigId}}',
+    text: 'Rename message plan',
   },
   rowHeadings: {
     routingPlanId: 'Routing Plan ID',
@@ -1807,8 +1807,8 @@ const createMessagePlan = {
 };
 
 const editMessagePlanSettings = {
-  pageTitle: generatePageTitle('Edit message plan settings'),
-  pageHeading: 'Edit message plan settings',
+  pageTitle: generatePageTitle('Rename message plan'),
+  pageHeading: 'Rename message plan',
   backLink: (id: string) => ({
     href: `/message-plans/edit-message-plan/${id}`,
     text: 'Go back',

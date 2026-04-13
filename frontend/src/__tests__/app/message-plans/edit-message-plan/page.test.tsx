@@ -199,7 +199,7 @@ describe('EditMessagePlanPage', () => {
     expect(buttons[1].textContent).toBe('Save and close');
   });
 
-  it('should render an "edit settings" link', async () => {
+  it('should render a "rename message plan" link', async () => {
     const page = await EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId }),
     });
@@ -207,9 +207,9 @@ describe('EditMessagePlanPage', () => {
     render(page);
 
     const link = screen.getByTestId('edit-settings-link');
-    expect(link.textContent).toBe('Edit settings');
+    expect(link.textContent).toBe('Rename message plan');
     expect(link.getAttribute('href')).toBe(
-      `/message-plans/edit-message-plan-settings/${routingConfigId}`
+      `/message-plans/rename-message-plan/${routingConfigId}`
     );
   });
 

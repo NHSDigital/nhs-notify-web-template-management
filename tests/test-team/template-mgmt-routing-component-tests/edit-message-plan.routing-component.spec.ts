@@ -327,11 +327,11 @@ test.describe('Routing - Edit Message Plan page', () => {
     );
 
     await expect(editMessagePlanPage.editSettingsLink).toHaveText(
-      'Edit settings'
+      'Rename message plan'
     );
     await expect(editMessagePlanPage.editSettingsLink).toHaveAttribute(
       'href',
-      `/templates/message-plans/edit-message-plan-settings/${messagePlans.valid.id}`
+      `/templates/message-plans/rename-message-plan/${messagePlans.valid.id}`
     );
 
     await expect(editMessagePlanPage.routingConfigId).toHaveText(
