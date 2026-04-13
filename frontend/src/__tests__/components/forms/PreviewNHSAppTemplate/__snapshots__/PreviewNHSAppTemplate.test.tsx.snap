@@ -141,6 +141,22 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled Client-sid
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -395,6 +411,22 @@ exports[`Preview nhs app form renders Routing feature flag - Disabled matches er
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -629,6 +661,22 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <form
           action="/action"
         >
@@ -851,6 +899,22 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             </div>
           </dl>
         </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
+        </div>
         <a
           aria-disabled="false"
           class="nhsuk-button nhsuk-button--secondary"
@@ -991,6 +1055,22 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
         </div>
         <form
           action="/action"
@@ -1208,6 +1288,22 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
               </dd>
             </div>
           </dl>
+        </div>
+        <div
+          class="nhsuk-summary-list message-banner"
+        >
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+            data-testid="request-proof-message-banner"
+          >
+            This is only a basic preview. 
+            <a
+              href="/templates/request-a-proof/template-id"
+            >
+              Request a proof
+            </a>
+             to preview this template properly.
+          </div>
         </div>
         <a
           aria-disabled="false"

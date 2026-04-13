@@ -138,10 +138,6 @@ describe('PreviewDigitalTemplate', () => {
       ).not.toBeInTheDocument();
 
       expect(
-        screen.queryByTestId('test-message-banner')
-      ).not.toBeInTheDocument();
-
-      expect(
         screen.queryByRole('button', { name: 'Send a test message' })
       ).not.toBeInTheDocument();
     });
@@ -210,21 +206,6 @@ describe('PreviewDigitalTemplate', () => {
           .mockReturnValue({ routing: true, digitalProofingNhsApp: true });
       });
 
-      it('displays banner for draft NHS_APP template with correct link', () => {
-        renderPreviewTemplate('NHS_APP', {
-          id: 'template-123',
-          templateStatus: 'NOT_YET_SUBMITTED',
-        });
-
-        expect(screen.getByTestId('test-message-banner')).toBeVisible();
-        expect(
-          screen.getByRole('link', { name: 'Send a test NHS App message' })
-        ).toHaveAttribute(
-          'href',
-          '/templates/send-test-nhs-app-message/template-123'
-        );
-      });
-
       it('displays "Send test message" button for draft NHS_APP template', () => {
         renderPreviewTemplate('NHS_APP', {
           id: 'template-123',
@@ -251,7 +232,7 @@ describe('PreviewDigitalTemplate', () => {
       });
 
       it.each<[string]>([['EMAIL'], ['SMS']])(
-        'does not display test message banner or button for draft %s template',
+        'does not display "Send test message" button for draft %s template',
         (templateType) => {
           renderPreviewTemplate(templateType as 'EMAIL' | 'SMS', {
             id: 'template-123',
@@ -259,23 +240,17 @@ describe('PreviewDigitalTemplate', () => {
           });
 
           expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
-          expect(
             screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();
         }
       );
 
-      it('does not display test message banner or button for submitted NHS_APP template', () => {
+      it('does not display "Send test message" button for submitted NHS_APP template', () => {
         renderPreviewTemplate('NHS_APP', {
           id: 'template-123',
           templateStatus: 'SUBMITTED',
         });
 
-        expect(
-          screen.queryByTestId('test-message-banner')
-        ).not.toBeInTheDocument();
         expect(
           screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
@@ -287,18 +262,6 @@ describe('PreviewDigitalTemplate', () => {
         jest
           .mocked(useFeatureFlags)
           .mockReturnValue({ routing: true, digitalProofingEmail: true });
-      });
-
-      it('displays banner for draft EMAIL template with correct link', () => {
-        renderPreviewTemplate('EMAIL', {
-          id: 'template-456',
-          templateStatus: 'NOT_YET_SUBMITTED',
-        });
-
-        expect(screen.getByTestId('test-message-banner')).toBeVisible();
-        expect(
-          screen.getByRole('link', { name: 'Send a test email' })
-        ).toHaveAttribute('href', '/templates/send-test-email/template-456');
       });
 
       it('displays "Send test message" button for draft EMAIL template', () => {
@@ -327,7 +290,7 @@ describe('PreviewDigitalTemplate', () => {
       });
 
       it.each<[string]>([['NHS_APP'], ['SMS']])(
-        'does not display test message banner or button for draft %s template',
+        'does not display "Send test message" button for draft %s template',
         (templateType) => {
           renderPreviewTemplate(templateType as 'NHS_APP' | 'SMS', {
             id: 'template-456',
@@ -335,23 +298,17 @@ describe('PreviewDigitalTemplate', () => {
           });
 
           expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
-          expect(
             screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();
         }
       );
 
-      it('does not display test message banner or button for submitted EMAIL template', () => {
+      it('does not display "Send test message" button for submitted EMAIL template', () => {
         renderPreviewTemplate('EMAIL', {
           id: 'template-456',
           templateStatus: 'SUBMITTED',
         });
 
-        expect(
-          screen.queryByTestId('test-message-banner')
-        ).not.toBeInTheDocument();
         expect(
           screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
@@ -363,21 +320,6 @@ describe('PreviewDigitalTemplate', () => {
         jest
           .mocked(useFeatureFlags)
           .mockReturnValue({ routing: true, digitalProofingSms: true });
-      });
-
-      it('displays banner for draft SMS template with correct link', () => {
-        renderPreviewTemplate('SMS', {
-          id: 'template-789',
-          templateStatus: 'NOT_YET_SUBMITTED',
-        });
-
-        expect(screen.getByTestId('test-message-banner')).toBeVisible();
-        expect(
-          screen.getByRole('link', { name: 'Send a test text message' })
-        ).toHaveAttribute(
-          'href',
-          '/templates/send-test-text-message/template-789'
-        );
       });
 
       it('displays "Send test message" button for draft SMS template', () => {
@@ -406,7 +348,7 @@ describe('PreviewDigitalTemplate', () => {
       });
 
       it.each<[string]>([['NHS_APP'], ['EMAIL']])(
-        'does not display test message banner or button for draft %s template',
+        'does not display "Send test message" button for draft %s template',
         (templateType) => {
           renderPreviewTemplate(templateType as 'NHS_APP' | 'EMAIL', {
             id: 'template-789',
@@ -414,23 +356,17 @@ describe('PreviewDigitalTemplate', () => {
           });
 
           expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
-          expect(
             screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();
         }
       );
 
-      it('does not display test message banner or button for submitted SMS template', () => {
+      it('does not display "Send test message" button for submitted SMS template', () => {
         renderPreviewTemplate('SMS', {
           id: 'template-789',
           templateStatus: 'SUBMITTED',
         });
 
-        expect(
-          screen.queryByTestId('test-message-banner')
-        ).not.toBeInTheDocument();
         expect(
           screen.queryByRole('button', { name: 'Send a test message' })
         ).not.toBeInTheDocument();
@@ -443,16 +379,13 @@ describe('PreviewDigitalTemplate', () => {
       });
 
       it.each<[string]>([['NHS_APP'], ['EMAIL'], ['SMS']])(
-        'does not display test message banner or button for draft %s template',
+        'does not display "Send test message" button for draft %s template',
         (templateType) => {
           renderPreviewTemplate(templateType as 'NHS_APP' | 'EMAIL' | 'SMS', {
             id: 'template-000',
             templateStatus: 'NOT_YET_SUBMITTED',
           });
 
-          expect(
-            screen.queryByTestId('test-message-banner')
-          ).not.toBeInTheDocument();
           expect(
             screen.queryByRole('button', { name: 'Send a test message' })
           ).not.toBeInTheDocument();

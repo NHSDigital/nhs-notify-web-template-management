@@ -90,6 +90,31 @@ describe('PreviewTemplateDetailsNhsApp', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it.each([
+    ['request-proof-message-banner', false],
+    ['test-message-banner', true],
+  ])(
+    'renders "%s" when digitalProofingNhsApp is "%s"',
+    async (testId, digitalProofingNhsApp) => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ digitalProofingNhsApp });
+
+      const container = render(
+        <PreviewTemplateDetailsNhsApp
+          template={{
+            ...baseTemplate,
+            name: 'Example template',
+            message: 'app content',
+            templateStatus: 'NOT_YET_SUBMITTED',
+            templateType: 'NHS_APP',
+          }}
+        />
+      );
+
+      expect(screen.getByTestId(testId)).toBeInTheDocument();
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
 });
 
 describe('PreviewTemplateDetailsEmail', () => {
@@ -109,6 +134,32 @@ describe('PreviewTemplateDetailsEmail', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it.each([
+    ['request-proof-message-banner', false],
+    ['test-message-banner', true],
+  ])(
+    'renders "%s" when digitalProofingEmail is "%s"',
+    async (testId, digitalProofingEmail) => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ digitalProofingEmail });
+
+      const container = render(
+        <PreviewTemplateDetailsEmail
+          template={{
+            ...baseTemplate,
+            name: 'Example Email template',
+            message: 'email content',
+            subject: 'email subject',
+            templateStatus: 'SUBMITTED',
+            templateType: 'EMAIL',
+          }}
+        />
+      );
+
+      expect(screen.getByTestId(testId)).toBeInTheDocument();
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
 });
 
 describe('PreviewTemplateDetailsSms', () => {
@@ -127,6 +178,31 @@ describe('PreviewTemplateDetailsSms', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it.each([
+    ['request-proof-message-banner', false],
+    ['test-message-banner', true],
+  ])(
+    'renders "%s" when digitalProofingSms is "%s"',
+    async (testId, digitalProofingSms) => {
+      jest.mocked(useFeatureFlags).mockReturnValue({ digitalProofingSms });
+
+      const container = render(
+        <PreviewTemplateDetailsSms
+          template={{
+            ...baseTemplate,
+            name: 'SMS template',
+            message: 'SMS content',
+            templateStatus: 'SUBMITTED',
+            templateType: 'SMS',
+          }}
+        />
+      );
+
+      expect(screen.getByTestId(testId)).toBeInTheDocument();
+      expect(container.asFragment()).toMatchSnapshot();
+    }
+  );
 });
 
 describe('PreviewTemplateDetailsPdfLetter', () => {

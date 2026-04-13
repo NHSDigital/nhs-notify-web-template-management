@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RequestADigitalProofPage matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/preview-nhs-app-template/app-template-id"
+    >
+      Back to template
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-two-thirds"
+        >
+          <h1
+            id="request-a-proof"
+          >
+            Request a proof
+          </h1>
+          <p>
+            You must request and approve proofs of your templates before you add them to a message plan.
+          </p>
+          <p>
+            This ensures we send your messages exactly as you expect your recipients to get them.
+          </p>
+          <h2
+            class="nhsuk-heading-m"
+            id="before-you-start"
+          >
+            Before you start
+          </h2>
+          <p>
+            Only request proofs once your templates are final.
+          </p>
+          <p>
+            You can request proofs for one template or a group of templates in a campaign.
+          </p>
+          <p>
+            Find out more about how to 
+            <a
+              href="https://notify.nhs.uk/using-nhs-notify/approve-your-messages"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              approve your messages (opens in a new tab)
+            </a>
+            .
+          </p>
+          <p
+            class="nhsuk-inset-text"
+          >
+            This process is for NHS App messages, emails and text messages only. Find out 
+            <a
+              href="https://notify.nhs.uk/using-nhs-notify/approve-your-messages#requesting-letter-proofs"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              how to approve letter templates (opens in a new tab)
+            </a>
+            .
+          </p>
+          <h2
+            class="nhsuk-heading-m"
+            id="how-to-request-a-proof"
+          >
+            How to request a proof
+          </h2>
+          <p>
+            You'll need:
+          </p>
+          <ul>
+            <li>
+              the template ID or IDs
+            </li>
+            <li>
+              the email address you want the proofs sent to
+            </li>
+            <li>
+              your service name
+            </li>
+            <li>
+              the campaign name, if you have one
+            </li>
+          </ul>
+          <p>
+            <a
+              href="https://nhsdigitallive.service-now.com/csm"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Request a proof using ServiceNow (opens in a new tab)
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;
