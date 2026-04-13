@@ -71,7 +71,7 @@ describe('ContactDetailsRepository', () => {
         input: {
           type: 'EMAIL',
           value: 'email@nhs.net',
-          rawValue: ' EMAIL@NET.NET ',
+          rawValue: ' EMAIL@NHS.NET ',
         },
         expectedHash:
           '2f4f72805b62fcff8fd9885327c0d085962300b69ca128dcc278692832541106',
