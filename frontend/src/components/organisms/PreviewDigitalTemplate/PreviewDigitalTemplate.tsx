@@ -11,15 +11,9 @@ import {
   DigitalTemplateType,
   sendDigitalTemplateTestMessageUrl,
 } from 'nhs-notify-web-template-management-utils';
-import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
-import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
-import classNames from 'classnames';
-import styles from './PreviewDigitalTemplate.module.scss';
 
 const { editButton, sendTestMessageButton } =
   content.components.previewDigitalTemplate;
-
-const { testMessageBanner } = content.components.previewDigitalTemplate;
 
 export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
   const features = useFeatureFlags();
@@ -46,26 +40,6 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
       {features.routing ? (
         <>
           {props.previewDetailsComponent}
-
-          {isDigitalProofingEnabledForType && (
-            <div
-              className={classNames(
-                'nhsuk-summary-list',
-                styles['test-message-banner']
-              )}
-            >
-              <NHSNotifyWarningCallout
-                data-testid='test-message-banner'
-                className={styles['test-message-banner__callout']}
-              >
-                <MarkdownContent
-                  content={testMessageBanner[template.templateType]}
-                  variables={{ templateId: template.id }}
-                  mode='inline'
-                />
-              </NHSNotifyWarningCallout>
-            </div>
-          )}
 
           <Link href={editPath} passHref legacyBehavior>
             <Button secondary data-testid='edit-template-button'>
