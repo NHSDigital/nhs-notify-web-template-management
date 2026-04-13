@@ -259,26 +259,22 @@
         "files": {
           "type": "object",
           "properties": {
-            "proofs": {
+            "docxTemplate": {
               "type": "object",
-              "propertyNames": {
-                "type": "string"
+              "properties": {
+                "url": {
+                  "type": "string"
+                }
               },
-              "additionalProperties": {
-                "type": "object",
-                "properties": {
-                  "supplier": {
-                    "type": "string",
-                    "maxLength": 1000
-                  }
-                },
-                "required": [
-                  "supplier"
-                ]
-              }
+              "required": [
+                "url"
+              ]
             }
           },
-          "description": "Object containing information about proofs attached to the template"
+          "required": [
+            "docxTemplate"
+          ],
+          "description": "Object containing information about the location of the template file"
         },
         "templateType": {
           "type": "string",
@@ -339,14 +335,9 @@
           },
           "description": "List of personalisation parameters used in the template"
         },
-        "supplierReferences": {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "type": "string"
-          }
+        "letterVariantId": {
+          "type": "string",
+          "description": "Letter variant ID"
         }
       },
       "required": [
@@ -359,7 +350,8 @@
         "templateType",
         "language",
         "letterType",
-        "personalisationParameters"
+        "personalisationParameters",
+        "letterVariantId"
       ]
     },
     "SmsTemplateEventData": {
