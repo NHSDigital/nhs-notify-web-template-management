@@ -34,4 +34,7 @@ module "backend_api" {
   sns_topic_arn = module.eventpub.sns_topic.arn
 
   access_logging_bucket = local.acct.s3_buckets["access_logs"]["id"]
+
+  shared_files_bucket_name = local.acct.s3_buckets["shared_files"]["id"]
+  shared_files_bucket_arn  = local.acct.s3_buckets["shared_files"]["arn"]
 }

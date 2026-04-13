@@ -81,7 +81,7 @@ const publishableTemplateEventRecord = (
       },
       files: {
         M: {
-          pdfTemplate: {
+          docxTemplate: {
             M: {
               currentVersion: {
                 S: 'current-version',
@@ -94,24 +94,10 @@ const publishableTemplateEventRecord = (
               },
             },
           },
-          proofs: {
-            M: {
-              proof1: {
-                M: {
-                  supplier: {
-                    S: 'WTMMOCK',
-                  },
-                  fileName: {
-                    S: 'file-name',
-                  },
-                  virusScanStatus: {
-                    S: 'PASSED',
-                  },
-                },
-              },
-            },
-          },
         },
+      },
+      letterVariantId: {
+        S: 'letter-variant-id',
       },
       personalisationParameters: {
         L: [
@@ -163,7 +149,7 @@ const publishableTemplateEventRecord = (
       },
       files: {
         M: {
-          pdfTemplate: {
+          docxTemplate: {
             M: {
               currentVersion: {
                 S: 'current-version',
@@ -176,24 +162,10 @@ const publishableTemplateEventRecord = (
               },
             },
           },
-          proofs: {
-            M: {
-              proof1: {
-                M: {
-                  supplier: {
-                    S: 'WTMMOCK',
-                  },
-                  fileName: {
-                    S: 'file-name',
-                  },
-                  virusScanStatus: {
-                    S: 'PASSED',
-                  },
-                },
-              },
-            },
-          },
         },
+      },
+      letterVariantId: {
+        S: 'letter-variant-id',
       },
       personalisationParameters: {
         L: [
@@ -209,36 +181,41 @@ const publishableTemplateEventRecord = (
 });
 
 const expectedTemplateEvent = (type: string, dataschema: string) => ({
-  id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
-  datacontenttype: 'application/json',
-  time: '2022-01-01T09:00:00.000Z',
-  source: 'event-source',
-  type,
-  specversion: '1.0',
-  dataschema,
-  dataschemaversion: VERSION,
-  plane: 'control',
-  subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
-  data: {
-    owner: 'owner',
-    id: '92b676e9-470f-4d04-ab14-965ef145e15d',
-    clientId: 'client-id',
-    createdAt: '2022-01-01T09:00:00.000Z',
-    createdBy: 'created-by',
-    updatedAt: '2022-01-01T09:00:01.000Z',
-    updatedBy: 'updated-by',
-    personalisationParameters: ['test'],
-    templateType: 'LETTER',
-    name: 'name',
-    letterType: 'x0',
-    language: 'fr',
-    files: {
-      proofs: {
-        proof1: {
-          supplier: 'WTMMOCK',
+  event: {
+    id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
+    datacontenttype: 'application/json',
+    time: '2022-01-01T09:00:00.000Z',
+    source: 'event-source',
+    type,
+    specversion: '1.0',
+    dataschema,
+    dataschemaversion: VERSION,
+    plane: 'control',
+    subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
+    data: {
+      owner: 'owner',
+      id: '92b676e9-470f-4d04-ab14-965ef145e15d',
+      clientId: 'client-id',
+      createdAt: '2022-01-01T09:00:00.000Z',
+      createdBy: 'created-by',
+      updatedAt: '2022-01-01T09:00:01.000Z',
+      updatedBy: 'updated-by',
+      personalisationParameters: ['test'],
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'fr',
+      letterVariantId: 'letter-variant-id',
+      files: {
+        docxTemplate: {
+          url: 'client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
         },
       },
     },
+  },
+  sharedFiles: {
+    'docx-template/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/current-version.docx':
+      'client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
   },
 });
 
@@ -328,55 +305,57 @@ const expectedRoutingConfigEvent = (
   dataschema: string,
   nullTemplateIds = false
 ) => ({
-  id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
-  datacontenttype: 'application/json',
-  time: '2022-01-01T09:00:00.000Z',
-  source: 'event-source',
-  type,
-  specversion: '1.0',
-  dataschema,
-  dataschemaversion: VERSION,
-  plane: 'control',
-  subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
-  data: {
-    id: '92b676e9-470f-4d04-ab14-965ef145e15d',
-    clientId: 'client-id',
-    campaignId: 'campaign-id',
-    createdAt: '2022-01-01T09:00:00.000Z',
-    name: 'routing-config-name',
-    defaultCascadeGroup: 'standard',
-    cascade: [
-      {
-        channel: 'EMAIL',
-        channelType: 'primary',
-        cascadeGroups: ['standard'],
-        defaultTemplateId: nullTemplateIds
-          ? null
-          : 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
-      },
-      {
-        channel: 'LETTER',
-        channelType: 'primary',
-        cascadeGroups: ['standard'],
-        defaultTemplateId: nullTemplateIds
-          ? null
-          : 'd290f1ee-6c54-4b01-90e6-d701748f0851',
-      },
-      {
-        channel: 'LETTER',
-        channelType: 'primary',
-        cascadeGroups: ['translations'],
-        defaultTemplateId: nullTemplateIds
-          ? null
-          : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      },
-    ],
-    cascadeGroupOverrides: [
-      {
-        name: 'translations',
-        language: ['fr'],
-      },
-    ],
+  event: {
+    id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
+    datacontenttype: 'application/json',
+    time: '2022-01-01T09:00:00.000Z',
+    source: 'event-source',
+    type,
+    specversion: '1.0',
+    dataschema,
+    dataschemaversion: VERSION,
+    plane: 'control',
+    subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
+    data: {
+      id: '92b676e9-470f-4d04-ab14-965ef145e15d',
+      clientId: 'client-id',
+      campaignId: 'campaign-id',
+      createdAt: '2022-01-01T09:00:00.000Z',
+      name: 'routing-config-name',
+      defaultCascadeGroup: 'standard',
+      cascade: [
+        {
+          channel: 'EMAIL',
+          channelType: 'primary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: nullTemplateIds
+            ? null
+            : 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
+        },
+        {
+          channel: 'LETTER',
+          channelType: 'primary',
+          cascadeGroups: ['standard'],
+          defaultTemplateId: nullTemplateIds
+            ? null
+            : 'd290f1ee-6c54-4b01-90e6-d701748f0851',
+        },
+        {
+          channel: 'LETTER',
+          channelType: 'primary',
+          cascadeGroups: ['translations'],
+          defaultTemplateId: nullTemplateIds
+            ? null
+            : '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        },
+      ],
+      cascadeGroupOverrides: [
+        {
+          name: 'translations',
+          language: ['fr'],
+        },
+      ],
+    },
   },
 });
 
@@ -417,26 +396,28 @@ const publishableProofRequestEventRecord = (): PublishableEventRecord => ({
 });
 
 const expectedProofRequestedEvent = () => ({
-  id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
-  datacontenttype: 'application/json',
-  time: '2022-01-01T09:00:00.000Z',
-  source: 'event-source',
-  type: 'uk.nhs.notify.template-management.ProofRequested.v1',
-  specversion: '1.0',
-  dataschema: 'https://notify.nhs.uk/events/schemas/ProofRequested/v1.json',
-  dataschemaversion: VERSION,
-  plane: 'data',
-  subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
-  data: {
-    id: '92b676e9-470f-4d04-ab14-965ef145e15d',
-    templateId: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
-    templateType: 'SMS',
-    testPatientNhsNumber: '9000000009',
-    contactDetails: {
-      sms: '07700900000',
-    },
-    personalisation: {
-      firstName: 'Jane',
+  event: {
+    id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
+    datacontenttype: 'application/json',
+    time: '2022-01-01T09:00:00.000Z',
+    source: 'event-source',
+    type: 'uk.nhs.notify.template-management.ProofRequested.v1',
+    specversion: '1.0',
+    dataschema: 'https://notify.nhs.uk/events/schemas/ProofRequested/v1.json',
+    dataschemaversion: VERSION,
+    plane: 'data',
+    subject: '92b676e9-470f-4d04-ab14-965ef145e15d',
+    data: {
+      id: '92b676e9-470f-4d04-ab14-965ef145e15d',
+      templateId: 'bed3398c-bbe3-435d-80c1-58154d4bf7dd',
+      templateType: 'SMS',
+      testPatientNhsNumber: '9000000009',
+      contactDetails: {
+        sms: '07700900000',
+      },
+      personalisation: {
+        firstName: 'Jane',
+      },
     },
   },
 });
@@ -570,6 +551,29 @@ describe('template events', () => {
     );
 
     expect(event).toEqual(undefined);
+  });
+
+  test('errors when docxTemplate is missing', () => {
+    const valid = publishableTemplateEventRecord('SUBMITTED');
+
+    const missingDocxTemplate = {
+      ...valid,
+      dynamodb: {
+        ...valid.dynamodb,
+        NewImage: {
+          ...valid.dynamodb.NewImage,
+          files: {
+            M: {},
+          },
+        },
+      },
+    };
+
+    expect(() =>
+      eventBuilder.buildEvent(
+        missingDocxTemplate as unknown as PublishableEventRecord
+      )
+    ).toThrow('Unexpected missing DOCX template');
   });
 });
 

@@ -157,3 +157,13 @@ variable "access_logging_bucket" {
   description = "Name of S3 bucket to use for access logging"
   default     = ""
 }
+
+variable "shared_files_bucket_name" {
+  type        = string
+  description = "Name of S3 bucket to use for shared files"
+}
+
+variable "shared_files_bucket_arn" {
+  type        = string
+  description = "ARN of S3 bucket to use for shared files"
+}

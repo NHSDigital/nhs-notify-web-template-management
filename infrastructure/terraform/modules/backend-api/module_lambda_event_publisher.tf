@@ -25,11 +25,14 @@ module "lambda_event_publisher" {
   }
 
   lambda_env_vars = {
-    EVENT_SOURCE              = "//notify.nhs.uk/${var.component}/${var.group}/${var.environment}"
-    PROOF_REQUESTS_TABLE_NAME = aws_dynamodb_table.proof_requests.name
-    ROUTING_CONFIG_TABLE_NAME = aws_dynamodb_table.routing_configuration.name
-    SNS_TOPIC_ARN             = coalesce(var.sns_topic_arn, aws_sns_topic.main.arn)
-    TEMPLATES_TABLE_NAME      = aws_dynamodb_table.templates.name
+    EVENT_SOURCE               = "//notify.nhs.uk/${var.component}/${var.group}/${var.environment}"
+    PROOF_REQUESTS_TABLE_NAME  = aws_dynamodb_table.proof_requests.name
+    ROUTING_CONFIG_TABLE_NAME  = aws_dynamodb_table.routing_configuration.name
+    SNS_TOPIC_ARN              = coalesce(var.sns_topic_arn, aws_sns_topic.main.arn)
+    TEMPLATES_TABLE_NAME       = aws_dynamodb_table.templates.name
+    INTERNAL_BUCKET_NAME       = module.s3bucket_internal.id
+    SHARED_FILES_BUCKET_NAME   = var.shared_files_bucket_name
+    SHARED_FILES_BUCKET_PREFIX = "template-mgmt/${var.csi}"
   }
 
   function_s3_bucket      = var.function_s3_bucket
@@ -95,6 +98,23 @@ data "aws_iam_policy_document" "event_publisher" {
 
     resources = [
       module.sqs_template_mgmt_events.sqs_queue_arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowS3"
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectTagging",
+      "s3:PutObject",
+      "s3:PutObjectTagging"
+    ]
+
+    resources = [
+      "${var.shared_files_bucket_arn}/*",
+      "${module.s3bucket_internal.arn}/*"
     ]
   }
 

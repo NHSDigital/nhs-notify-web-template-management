@@ -38,9 +38,22 @@ export const $DynamoDBStreamRecord = z.object({
 export const $DynamoDBTemplate = schemaFor<Partial<DatabaseTemplate>>()(
   z.object({
     id: z.string(),
+    clientId: z.string(),
     templateType: z.enum(TEMPLATE_TYPE_LIST),
     templateStatus: z.enum(TEMPLATE_STATUS_LIST),
     proofingEnabled: z.boolean().optional(),
+    files: z
+      .object({
+        docxTemplate: z
+          .object({
+            currentVersion: z.string(),
+            fileName: z.string(),
+            virusScanStatus: z.literal('PASSED'),
+          })
+          .optional(),
+      })
+      .optional(),
+    letterVersion: z.enum(['PDF', 'AUTHORING']).optional(),
   })
 );
 export type DynamoDBTemplate = z.infer<typeof $DynamoDBTemplate>;
