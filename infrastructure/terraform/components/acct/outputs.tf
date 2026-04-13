@@ -37,6 +37,11 @@ output "s3_buckets" {
       bucket = module.s3bucket_backup_reports.bucket
       id     = module.s3bucket_backup_reports.id
     }
+    shared_files = {
+      arn    = module.s3bucket_shared_files.arn
+      bucket = module.s3bucket_shared_files.bucket
+      id     = module.s3bucket_shared_files.id
+    }
   }
 }
 

@@ -169,7 +169,16 @@ export class TemplateStorageHelper {
   }
 
   private async delete(keys: { id: string; owner: string }[]) {
-    const dbChunks = chunk(keys);
+    const uniqueKeys = keys.filter(({ id, owner }, index) => {
+      const firstIndex = keys.findIndex(
+        ({ id: otherId, owner: otherOwner }) =>
+          id === otherId && owner === otherOwner
+      );
+
+      return firstIndex === index;
+    });
+
+    const dbChunks = chunk(uniqueKeys);
 
     await Promise.all(
       dbChunks.map((batch) =>

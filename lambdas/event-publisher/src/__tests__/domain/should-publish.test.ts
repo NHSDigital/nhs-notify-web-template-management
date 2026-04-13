@@ -12,11 +12,13 @@ describe('shouldPublish', () => {
         {
           templateType: type,
           id: 'id',
+          clientId: 'client-id',
           templateStatus: 'NOT_YET_SUBMITTED',
         },
         {
           templateType: type,
           id: 'id',
+          clientId: 'client-id',
           templateStatus: 'SUBMITTED',
         }
       );
@@ -26,17 +28,19 @@ describe('shouldPublish', () => {
   );
 
   test.each([false, undefined])(
-    'templateType LETTER should return false when proofingEnabled is %p',
+    'templateType LETTER should return false when letterVersion is not AUTHORING',
     (proofingEnabled) => {
       const publish = shouldPublish(
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus: 'PROOF_AVAILABLE',
           proofingEnabled,
         },
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus: 'SUBMITTED',
           proofingEnabled,
@@ -51,15 +55,15 @@ describe('shouldPublish', () => {
 
   const letterPublishCases: Record<LetterStatus, boolean> = {
     DELETED: true,
-    PENDING_PROOF_REQUEST: true,
+    PENDING_PROOF_REQUEST: false,
     PENDING_UPLOAD: false,
     PENDING_VALIDATION: false,
     PROOF_APPROVED: true,
-    PROOF_AVAILABLE: true,
+    PROOF_AVAILABLE: false,
     SUBMITTED: true,
     VALIDATION_FAILED: false,
     VIRUS_SCAN_FAILED: false,
-    WAITING_FOR_PROOF: true,
+    WAITING_FOR_PROOF: false,
   };
 
   // not all of these transitions are expected in real usage
@@ -69,15 +73,19 @@ describe('shouldPublish', () => {
       const publish = shouldPublish(
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
-          templateStatus: 'PENDING_PROOF_REQUEST',
+          templateStatus: 'SUBMITTED',
           proofingEnabled: true,
+          letterVersion: 'AUTHORING',
         },
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus,
           proofingEnabled: true,
+          letterVersion: 'AUTHORING',
         }
       );
 
@@ -92,15 +100,19 @@ describe('shouldPublish', () => {
       const publish = shouldPublish(
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus,
           proofingEnabled: true,
+          letterVersion: 'AUTHORING',
         },
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus: 'DELETED',
           proofingEnabled: true,
+          letterVersion: 'AUTHORING',
         }
       );
 
@@ -112,9 +124,11 @@ describe('shouldPublish', () => {
     expect(
       shouldPublish(undefined, {
         id: 'id',
+        clientId: 'client-id',
         templateType: 'LETTER',
         templateStatus: 'DELETED',
         proofingEnabled: true,
+        letterVersion: 'AUTHORING',
       })
     ).toEqual(false);
   });
