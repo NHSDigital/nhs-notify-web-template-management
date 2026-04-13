@@ -232,6 +232,17 @@ function createTemplates(
         initialRender: { status: 'FAILED' },
       }
     ),
+    authoringUnknownValidationFailed:
+      TemplateFactory.createAuthoringLetterTemplate(
+        'F9B3B6BB-4BE9-44DE-98E3-BDF492805DC3',
+        user,
+        'authoring-invalid-markers',
+        'VALIDATION_FAILED',
+        {
+          letterVariantId: 'variant-address',
+          initialRender: { status: 'FAILED' },
+        }
+      ),
     authoringWithCustomFields: TemplateFactory.createAuthoringLetterTemplate(
       'A7B8C9D0-E1F2-3456-ABCD-789012345678',
       user,
@@ -1332,7 +1343,7 @@ test.describe('Preview Letter template Page', () => {
         );
       });
 
-      test('displays missing address lines error when status is VALIDATION_FAILED with UNEXPECTED_ADDRESS_LINES', async ({
+      test('displays unexpected address lines error when status is VALIDATION_FAILED with UNEXPECTED_ADDRESS_LINES', async ({
         page,
       }) => {
         const previewPage = new TemplateMgmtPreviewLetterPage(
@@ -1363,7 +1374,7 @@ test.describe('Preview Letter template Page', () => {
         );
       });
 
-      test('displays missing address lines error when status is VALIDATION_FAILED with INVALID_MARKERS', async ({
+      test('displays dynamic invalid markers error when status is VALIDATION_FAILED with INVALID_MARKERS', async ({
         page,
       }) => {
         const previewPage = new TemplateMgmtPreviewLetterPage(
@@ -1385,6 +1396,37 @@ test.describe('Preview Letter template Page', () => {
           'dashes',
           'underscores',
           'Update your letter template file and upload it again',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/choose-a-template-type'
+        );
+      });
+
+      test('displays fallback error when status is VALIDATION_FAILED with no validation error', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringUnknownValidationFailed.id
+        );
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const errorMessageLines = [
+          'We could not open your file. This may be a technical problem or an issue with your file',
+          'Upload a different letter template file',
         ];
 
         for (const errorMessage of errorMessageLines) {

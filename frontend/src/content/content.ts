@@ -598,6 +598,13 @@ const previewLetterTemplate = {
       },
     ],
   } satisfies Record<string, (issues: string[]) => ContentBlock[]>,
+  defaultValidationErrorMessage: [
+    {
+      type: 'text',
+      text: 'We could not open your file. This may be a technical problem or an issue with your file',
+    },
+    { type: 'text', text: 'Upload a different letter template file' },
+  ] satisfies ContentBlock[],
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {
     heading: 'Important',

@@ -33,6 +33,7 @@ const {
   loadingText,
   pageTitle,
   validationErrorMessages,
+  defaultValidationErrorMessage,
 } = content.pages.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,11 +45,13 @@ export async function generateMetadata(): Promise<Metadata> {
 function getValidationErrors(template: AuthoringLetterTemplate) {
   if (template.templateStatus !== 'VALIDATION_FAILED') return [];
 
-  return (
-    template.validationErrors?.map((error) =>
+  if (template.validationErrors && template.validationErrors.length > 0) {
+    return template.validationErrors.map((error) =>
       validationErrorMessages[error.name](error.issues ?? [])
-    ) ?? []
-  );
+    );
+  }
+
+  return [defaultValidationErrorMessage];
 }
 
 export default async function PreviewLetterTemplatePage({

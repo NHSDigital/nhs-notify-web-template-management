@@ -489,10 +489,12 @@ describe('when authoring letter template status is submitted', () => {
 
 describe('authoring letter template with VALIDATION_FAILED status', () => {
   const cases: {
-    validationError: ValidationErrorDetail;
+    name: string;
+    validationError?: ValidationErrorDetail;
     expectedErrorMessageLines: string[];
   }[] = [
     {
+      name: 'VIRUS_SCAN_FAILED',
       validationError: { name: 'VIRUS_SCAN_FAILED' },
       expectedErrorMessageLines: [
         'Your file may contain a virus and we could not open it',
@@ -500,6 +502,7 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
       ],
     },
     {
+      name: 'MISSING_ADDRESS_LINES',
       validationError: { name: 'MISSING_ADDRESS_LINES' },
       expectedErrorMessageLines: [
         'Your template is missing address personalisation fields',
@@ -507,6 +510,7 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
       ],
     },
     {
+      name: 'UNEXPECTED_ADDRESS_LINES',
       validationError: { name: 'UNEXPECTED_ADDRESS_LINES' },
       expectedErrorMessageLines: [
         'Your template has address personalisation fields we do not recognise',
@@ -514,6 +518,7 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
       ],
     },
     {
+      name: 'INVALID_MARKERS',
       validationError: {
         name: 'INVALID_MARKERS',
         issues: [
@@ -536,16 +541,24 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
         'Update your letter template file and upload it again',
       ],
     },
+    {
+      name: 'undefined',
+      validationError: undefined,
+      expectedErrorMessageLines: [
+        'We could not open your file. This may be a technical problem or an issue with your file',
+        'Upload a different letter template file',
+      ],
+    },
   ];
 
   describe.each(cases)(
-    '$validationError.name',
+    '$name',
     ({ validationError, expectedErrorMessageLines }) => {
       beforeEach(() => {
         jest.mocked(getTemplate).mockResolvedValue({
           ...AUTHORING_LETTER_TEMPLATE,
           templateStatus: 'VALIDATION_FAILED',
-          validationErrors: [validationError],
+          validationErrors: validationError && [validationError],
         });
       });
 
@@ -604,40 +617,4 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
       });
     }
   );
-
-  it('does not display error summary when validationErrors is undefined', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: undefined,
-    });
-
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
-
-    expect(redirect).not.toHaveBeenCalled();
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-    ).toBeInTheDocument();
-  });
-
-  it('matches snapshot when validationErrors is undefined', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: undefined,
-    });
-
-    const { asFragment } = render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
-
-    expect(asFragment()).toMatchSnapshot();
-  });
 });
