@@ -532,8 +532,9 @@ const previewLetterTemplate = {
   approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,
-  virusScanError: 'Your file may contain a virus and we could not open it',
-  virusScanErrorAction: 'Upload a different letter template file',
+  virusScanError: 'The file(s) you uploaded may contain a virus.',
+  virusScanErrorAction:
+    'Create a new letter template to upload your file(s) again or upload different file(s).',
   validationError:
     'The personalisation fields in your files are missing or do not match.',
   validationErrorAction:

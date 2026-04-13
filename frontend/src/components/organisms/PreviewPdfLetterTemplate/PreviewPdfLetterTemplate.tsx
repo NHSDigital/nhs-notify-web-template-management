@@ -169,13 +169,7 @@ export function PreviewPdfLetterTemplate({
               </NHSNotifyButton>
             )}
             <p>
-              {template.templateStatus === 'VIRUS_SCAN_FAILED' ? (
-                <NHSNotifyButton href={links.uploadDifferentTemplateFile}>
-                  {virusScanErrorAction}
-                </NHSNotifyButton>
-              ) : (
-                <Link href={links.messageTemplates}>{backLinkText}</Link>
-              )}
+              <Link href={links.messageTemplates}>{backLinkText}</Link>
             </p>
           </div>
         </div>
