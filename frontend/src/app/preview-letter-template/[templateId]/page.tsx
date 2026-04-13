@@ -46,7 +46,7 @@ function getValidationErrors(template: AuthoringLetterTemplate) {
 
   return (
     template.validationErrors?.map((error) =>
-      validationErrorMessages[error.name](error.issues)
+      validationErrorMessages[error.name](error.issues ?? [])
     ) ?? []
   );
 }

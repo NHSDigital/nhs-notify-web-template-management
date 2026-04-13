@@ -557,7 +557,7 @@ const previewLetterTemplate = {
       },
       { type: 'text', text: 'Upload a different letter template file' },
     ],
-    INVALID_MARKERS: (issues = []) => [
+    INVALID_MARKERS: (issues) => [
       {
         type: 'text',
         text: 'You used the following personalisation fields with incorrect formatting:',
@@ -597,7 +597,7 @@ const previewLetterTemplate = {
         text: String.raw`You must only use {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file`,
       },
     ],
-  } satisfies Record<string, (issues?: string[]) => ContentBlock[]>,
+  } satisfies Record<string, (issues: string[]) => ContentBlock[]>,
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {
     heading: 'Important',

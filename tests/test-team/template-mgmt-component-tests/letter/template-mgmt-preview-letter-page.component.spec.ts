@@ -201,6 +201,37 @@ function createTemplates(
         initialRender: { status: 'FAILED' },
       }
     ),
+    authoringUnexpectedAddressLines:
+      TemplateFactory.createAuthoringLetterTemplate(
+        '68316E60-AC8C-43DC-BC94-934FC96172FA',
+        user,
+        'authoring-unexpected-address-lines',
+        'VALIDATION_FAILED',
+        {
+          letterVariantId: 'variant-address',
+          validationErrors: [{ name: 'UNEXPECTED_ADDRESS_LINES' }],
+          initialRender: { status: 'FAILED' },
+        }
+      ),
+    authoringInvalidMarkers: TemplateFactory.createAuthoringLetterTemplate(
+      'F9B3B6BB-4BE9-44DE-98E3-BDF492805DC3',
+      user,
+      'authoring-invalid-markers',
+      'VALIDATION_FAILED',
+      {
+        letterVariantId: 'variant-address',
+        validationErrors: [
+          {
+            name: 'INVALID_MARKERS',
+            issues: [
+              '{c.compliment}',
+              '{d.underscores_to_test_markdown_escapes}',
+            ],
+          },
+        ],
+        initialRender: { status: 'FAILED' },
+      }
+    ),
     authoringWithCustomFields: TemplateFactory.createAuthoringLetterTemplate(
       'A7B8C9D0-E1F2-3456-ABCD-789012345678',
       user,
@@ -1284,11 +1315,88 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.errorSummary).toBeVisible();
 
-        await expect(previewPage.errorSummary).toContainText(
-          'The template file you uploaded does not contain the address fields'
-        );
+        const errorMessageLines = [
+          'Your template is missing address personalisation fields',
+          'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
 
         await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/choose-a-template-type'
+        );
+      });
+
+      test('displays missing address lines error when status is VALIDATION_FAILED with UNEXPECTED_ADDRESS_LINES', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringUnexpectedAddressLines.id
+        );
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const errorMessageLines = [
+          'Your template has address personalisation fields we do not recognise',
+          'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/choose-a-template-type'
+        );
+      });
+
+      test('displays missing address lines error when status is VALIDATION_FAILED with INVALID_MARKERS', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringInvalidMarkers.id);
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const errorMessageLines = [
+          'You used the following personalisation fields with incorrect formatting:',
+          '{c.compliment}',
+          '{d.underscores_to_test_markdown_escapes}',
+          'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
+          'They can only contain',
+          'letters (a to z, A to Z)',
+          'numbers (1 to 9)',
+          'dashes',
+          'underscores',
+          'Update your letter template file and upload it again',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/choose-a-template-type'
+        );
       });
 
       test('hides letter preview section when VALIDATION_FAILED with no initialRender', async ({
