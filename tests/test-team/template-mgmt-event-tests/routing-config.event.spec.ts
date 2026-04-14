@@ -40,7 +40,7 @@ function createTemplates(user: TestUser) {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
-      },
+      }
     ),
   };
 }
