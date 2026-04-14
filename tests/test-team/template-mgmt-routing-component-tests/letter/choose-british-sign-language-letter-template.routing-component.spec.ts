@@ -32,6 +32,7 @@ const templateIds = {
   BSL_LETTER_NOT_SUBMITTED: randomUUID(),
   STANDARD_LETTER: randomUUID(),
   LARGE_PRINT_LETTER: randomUUID(),
+  DIFFERENT_CAMPAIGN_LETTER: randomUUID(),
   APP: randomUUID(),
 };
 
@@ -47,6 +48,7 @@ const routingConfigIds = {
 function getTemplates(
   user: TestUser
 ): Record<keyof typeof templateIds, Template> {
+  const campaignId = user.campaignIds?.[0] ?? 'campaign';
   return {
     BSL_LETTER1: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.BSL_LETTER1,
@@ -54,6 +56,7 @@ function getTemplates(
       'BSL letter template 1',
       'SUBMITTED',
       {
+        campaignId,
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -65,6 +68,7 @@ function getTemplates(
       'BSL letter template 2',
       'SUBMITTED',
       {
+        campaignId,
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -76,6 +80,7 @@ function getTemplates(
       'BSL letter template 3 - proof approved',
       'PROOF_APPROVED',
       {
+        campaignId,
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -86,7 +91,7 @@ function getTemplates(
       user,
       'Proof available BSL letter',
       'NOT_YET_SUBMITTED',
-      { letterType: 'q4' }
+      { campaignId, letterType: 'q4' }
     ),
     STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.STANDARD_LETTER,
@@ -94,6 +99,7 @@ function getTemplates(
       'Standard letter template',
       'SUBMITTED',
       {
+        campaignId,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -104,7 +110,20 @@ function getTemplates(
       'Large print letter template',
       'SUBMITTED',
       {
+        campaignId,
         letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.DIFFERENT_CAMPAIGN_LETTER,
+      user,
+      'Different campaign BSL letter',
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -226,6 +245,10 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
       'Choose a British Sign Language letter template'
     );
 
+    await expect(chooseBSLLetterTemplatePage.tableHintText).toHaveText(
+      'Choose one option. You can only choose templates linked to the same campaign as your message plan.'
+    );
+
     const table = chooseBSLLetterTemplatePage.templatesTable;
 
     for (const template of [
@@ -251,6 +274,9 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
 
     await expect(
       table.getByText(templates.BSL_LETTER_NOT_SUBMITTED.name)
+    ).toBeHidden();
+    await expect(
+      table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
     ).toBeHidden();
     await expect(table.getByText(templates.STANDARD_LETTER.name)).toBeHidden();
     await expect(

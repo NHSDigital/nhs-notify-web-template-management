@@ -35,13 +35,7 @@ export default async function ChooseOtherLanguageLetterTemplate(
     );
   }
 
-  const [messagePlan, foreignLanguageTemplates] = await Promise.all([
-    getRoutingConfig(routingConfigId),
-    getForeignLanguageLetterTemplates({
-      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
-      letterVersion: 'AUTHORING',
-    }),
-  ]);
+  const messagePlan = await getRoutingConfig(routingConfigId);
 
   if (!messagePlan) {
     return redirect('/message-plans/invalid', RedirectType.replace);
@@ -55,12 +49,18 @@ export default async function ChooseOtherLanguageLetterTemplate(
     return redirect('/message-plans/invalid', RedirectType.replace);
   }
 
+  const filteredTemplates = await getForeignLanguageLetterTemplates({
+    templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+    letterVersion: 'AUTHORING',
+    campaignId: messagePlan.campaignId,
+  });
+
   return (
     <NHSNotifyContainer>
       <ChooseLanguageLetterTemplates
         messagePlan={messagePlan}
         pageHeading={pageHeading}
-        templateList={foreignLanguageTemplates}
+        templateList={filteredTemplates}
         cascadeIndex={cascadeIndex}
         lockNumber={lockNumberResult.data}
       />

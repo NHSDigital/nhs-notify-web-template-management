@@ -1578,13 +1578,15 @@ const chooseTextMessageTemplate = {
 const chooseStandardEnglishLetterTemplate = {
   pageTitle: generatePageTitle('Choose a letter template'),
   pageHeading: 'Choose a letter template',
-  noTemplatesText: 'You do not have any standard letter templates yet.',
+  noTemplatesText:
+    'You do not have any standard English letter templates linked to the campaign you chose for this message plan.',
 };
 
 const chooseLargePrintLetterTemplate = {
   pageTitle: generatePageTitle('Choose a large print letter template'),
   pageHeading: 'Choose a large print letter template',
-  noTemplatesText: 'You do not have any large print letter templates yet.',
+  noTemplatesText:
+    'You do not have any large print letter templates linked to the campaign you chose for this message plan.',
 };
 
 const chooseBritishSignLanguageLetterTemplate = {
@@ -1593,7 +1595,7 @@ const chooseBritishSignLanguageLetterTemplate = {
   ),
   pageHeading: 'Choose a British Sign Language letter template',
   noTemplatesText:
-    'You do not have any British Sign Language letter templates yet.',
+    'You do not have any British Sign Language letter templates linked to the campaign you chose for this message plan.',
 };
 
 const previewStandardEnglishLetterTemplate = {
@@ -1621,6 +1623,10 @@ const chooseChannelTemplate = {
   errorHintText: 'You have not chosen a template',
   previousSelectionLabel: 'Previously selected template',
   tableHintText: 'Choose one option',
+  campaignFilteredHintText:
+    'Choose one option. You can only choose templates linked to the same campaign as your message plan.',
+  campaignFilteredNoTemplatesText:
+    'You do not have any templates linked to the campaign you chose for this message plan.',
   tableContent: {
     selectHeading: 'Select',
     nameHeading: 'Name',
@@ -1661,9 +1667,10 @@ const chooseLanguageLetterTemplates = {
     },
   },
   previousSelectionLabel: 'Previously selected templates',
-  noTemplatesText: 'You do not have any other language letter templates yet.',
+  noTemplatesText:
+    'You do not have any other language letter templates linked to the campaign you chose for this message plan.',
   tableHintText:
-    'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.',
+    'Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.',
   tableContent: chooseChannelTemplate.tableContent,
   actions: chooseChannelTemplate.actions,
 };

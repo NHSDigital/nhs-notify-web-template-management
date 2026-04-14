@@ -55,6 +55,7 @@ export default async function ChooseStandardEnglishLetterTemplate(
     letterType: 'x0',
     templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     letterVersion: 'AUTHORING',
+    campaignId: messagePlan.campaignId,
   });
 
   return (
@@ -63,6 +64,7 @@ export default async function ChooseStandardEnglishLetterTemplate(
         messagePlan={messagePlan}
         pageHeading={pageHeading}
         noTemplatesText={noTemplatesText}
+        isCampaignFiltered
         templateList={availableTemplateList}
         cascadeIndex={cascadeIndex}
         lockNumber={lockNumberResult.data}

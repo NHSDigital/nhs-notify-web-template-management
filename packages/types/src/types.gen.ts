@@ -1206,6 +1206,10 @@ export type GetV1TemplatesData = {
      * Filter by a single letter version
      */
     letterVersion?: LetterVersion;
+    /**
+     * Filter by a single campaign ID
+     */
+    campaignId?: string;
   };
   url: '/v1/templates';
 };
