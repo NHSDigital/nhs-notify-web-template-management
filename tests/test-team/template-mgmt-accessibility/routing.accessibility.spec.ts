@@ -124,6 +124,7 @@ test.describe('Routing', () => {
         {
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -135,6 +136,7 @@ test.describe('Routing', () => {
           letterType: 'x1',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -146,6 +148,7 @@ test.describe('Routing', () => {
           letterType: 'q4',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -157,6 +160,7 @@ test.describe('Routing', () => {
           language: 'fr',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       ),
     ]);

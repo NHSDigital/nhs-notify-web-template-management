@@ -106,6 +106,7 @@ data "aws_iam_policy_document" "event_publisher" {
     effect = "Allow"
 
     actions = [
+      "s3:ListBucket",
       "s3:GetObject",
       "s3:GetObjectTagging",
       "s3:PutObject",
@@ -113,7 +114,9 @@ data "aws_iam_policy_document" "event_publisher" {
     ]
 
     resources = [
+      var.shared_files_bucket_arn,
       "${var.shared_files_bucket_arn}/*",
+      module.s3bucket_internal.arn,
       "${module.s3bucket_internal.arn}/*"
     ]
   }
