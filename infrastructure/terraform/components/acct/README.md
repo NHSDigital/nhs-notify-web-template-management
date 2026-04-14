@@ -30,6 +30,7 @@
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_root_domain_name"></a> [root\_domain\_name](#input\_root\_domain\_name) | The service's root DNS root nameespace, like nonprod.nhsnotify.national.nhs.uk | `string` | `"nonprod.nhsnotify.national.nhs.uk"` | no |
+| <a name="input_shared_files_bucket_allowlist"></a> [shared\_files\_bucket\_allowlist](#input\_shared\_files\_bucket\_allowlist) | List of ARNs allowed to access the shared files bucket | `list(string)` | `[]` | no |
 | <a name="input_support_sandbox_environments"></a> [support\_sandbox\_environments](#input\_support\_sandbox\_environments) | Does this account support dev sandbox environments? | `bool` | `false` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | n/a | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_vpc_subnet_cidr_bits"></a> [vpc\_subnet\_cidr\_bits](#input\_vpc\_subnet\_cidr\_bits) | Number of additional bits to use for subnetting the VPC CIDR block. The bits are evently distributed | <pre>object({<br/>    public  = number<br/>    private = number<br/>  })</pre> | <pre>{<br/>  "private": 3,<br/>  "public": 12<br/>}</pre> | no |

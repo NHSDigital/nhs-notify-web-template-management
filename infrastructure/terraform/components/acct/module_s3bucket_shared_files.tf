@@ -9,7 +9,35 @@ module "s3bucket_shared_files" {
   environment    = var.environment
   component      = var.component
 
+  policy_documents = [
+    data.aws_iam_policy_document.shared_files_bucket_policy.json
+  ]
+
   bucket_logging_target = {
     bucket = module.s3bucket_access_logs.id
+  }
+}
+
+data "aws_iam_policy_document" "shared_files_bucket_policy" {
+
+  statement {
+    sid    = "AllowCoreAccount"
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      "module.s3bucket_shared_files.arn",
+      "${module.s3bucket_shared_files.arn}/*",
+    ]
+
+    principals {
+      type = "AWS"
+
+      identifiers = var.shared_files_bucket_allowlist
+    }
   }
 }
