@@ -390,6 +390,38 @@ test('errors on unrecognised event table source', () => {
 });
 
 describe('template events', () => {
+  test('errors on input schema validation failure', () => {
+    const valid = publishableTemplateEventRecord('SUBMITTED', 'LETTER');
+
+    const invalidDomainEventRecord = {
+      ...valid,
+      dynamodb: {
+        ...valid.dynamodb,
+        NewImage: {
+          ...valid.dynamodb.NewImage,
+          clientId: { N: 53 },
+        },
+      },
+    };
+
+    expect(() =>
+      eventBuilder.buildEvent(
+        invalidDomainEventRecord as unknown as PublishableEventRecord
+      )
+    ).toThrow(
+      expect.objectContaining({
+        name: 'ZodError',
+        issues: [
+          expect.objectContaining({
+            expected: 'string',
+            code: 'invalid_type',
+            message: 'Invalid input: expected string, received number',
+            path: ['clientId'],
+          }),
+        ],
+      })
+    );
+  });
   test('errors on output schema validation failure', () => {
     const valid = publishableTemplateEventRecord('SUBMITTED', 'LETTER');
 

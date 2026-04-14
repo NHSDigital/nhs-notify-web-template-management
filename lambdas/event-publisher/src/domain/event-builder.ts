@@ -159,7 +159,22 @@ export class EventBuilder {
       ? unmarshall(publishableEventRecord.dynamodb.OldImage)
       : undefined;
 
-    const databaseTemplateNew = $DynamoDBTemplate.parse(dynamoRecordNew);
+    const safeParsedDynamoRecordNew =
+      $DynamoDBTemplate.safeParse(dynamoRecordNew);
+
+    if (!safeParsedDynamoRecordNew.success) {
+      const error = safeParsedDynamoRecordNew.error;
+      this.logger
+        .child({
+          description: 'Failed to parse dynamo record',
+          publishableEventRecord,
+        })
+        .error(error);
+
+      throw error;
+    }
+
+    const databaseTemplateNew = safeParsedDynamoRecordNew.data;
     const databaseTemplateOld = $DynamoDBTemplateOldImage
       .optional()
       .parse(dynamoRecordOld);
