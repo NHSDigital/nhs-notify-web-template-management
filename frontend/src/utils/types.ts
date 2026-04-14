@@ -1,4 +1,4 @@
-import { ContentItem } from '@molecules/ContentRenderer/ContentRenderer';
+import { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import type {
   AuthoringLetterFiles,
   CreateUpdateTemplate,
@@ -10,7 +10,7 @@ export type RenderKey = keyof Omit<AuthoringLetterFiles, 'docxTemplate'>;
 export type PersonalisedRenderKey = Exclude<RenderKey, 'initialRender'>;
 
 export type ErrorState = {
-  formErrors?: (ContentItem[] | string)[];
+  formErrors?: (ContentBlock[] | string)[];
   fieldErrors?: Record<string, string[]>;
 };
 

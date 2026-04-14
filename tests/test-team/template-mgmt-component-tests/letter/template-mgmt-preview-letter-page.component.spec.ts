@@ -234,9 +234,9 @@ function createTemplates(
     ),
     authoringUnknownValidationFailed:
       TemplateFactory.createAuthoringLetterTemplate(
-        'F9B3B6BB-4BE9-44DE-98E3-BDF492805DC3',
+        '5D81C70C-D8B0-4AF1-A483-E988B6EEEC13',
         user,
-        'authoring-invalid-markers',
+        'authoring-unknown-validation-error',
         'VALIDATION_FAILED',
         {
           letterVariantId: 'variant-address',

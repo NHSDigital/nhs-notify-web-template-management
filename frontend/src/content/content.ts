@@ -555,7 +555,10 @@ const previewLetterTemplate = {
         type: 'text',
         text: 'Your file may contain a virus and we could not open it',
       },
-      { type: 'text', text: 'Upload a different letter template file' },
+      {
+        type: 'text',
+        text: 'Upload a different letter template file',
+      },
     ],
     INVALID_MARKERS: (issues) => [
       {
@@ -566,13 +569,19 @@ const previewLetterTemplate = {
         (issue): ContentBlock => ({
           type: 'text',
           text: escapeMarkdown(issue),
+          overrides: {
+            p: { props: { className: 'nhsuk-error-message' } },
+          },
         })
       ),
       {
         type: 'text',
         text: 'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
       },
-      { type: 'text', text: 'They can only contain' },
+      {
+        type: 'text',
+        text: 'They can only contain',
+      },
       {
         type: 'text',
         text: markdownList('ul', [
@@ -603,7 +612,10 @@ const previewLetterTemplate = {
       type: 'text',
       text: 'We could not open your file. This may be a technical problem or an issue with your file',
     },
-    { type: 'text', text: 'Upload a different letter template file' },
+    {
+      type: 'text',
+      text: 'Upload a different letter template file',
+    },
   ] satisfies ContentBlock[],
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {

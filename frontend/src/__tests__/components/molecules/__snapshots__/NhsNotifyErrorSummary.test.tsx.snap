@@ -138,26 +138,26 @@ exports[`renders correctly with markdown formatted formErrors 1`] = `
       class="nhsuk-list nhsuk-error-summary__list"
     >
       <li>
-        <span
+        <p
           class="nhsuk-error-message"
         >
-          <p>
-            There is a 
-            <strong>
-              problem
-            </strong>
-          </p>
-          <p>
-            <a
-              href="https://example.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Click here
-            </a>
-             to fix it
-          </p>
-        </span>
+          There is a 
+          <strong>
+            problem
+          </strong>
+        </p>
+        <p
+          class="nhsuk-error-message"
+        >
+          <a
+            href="https://example.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Click here
+          </a>
+           to fix it
+        </p>
       </li>
     </ul>
   </div>

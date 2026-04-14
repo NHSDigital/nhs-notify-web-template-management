@@ -41,45 +41,55 @@ exports[`authoring letter template with VALIDATION_FAILED status INVALID_MARKERS
             class="nhsuk-list nhsuk-error-summary__list"
           >
             <li>
-              <span
+              <p
                 class="nhsuk-error-message"
               >
-                <p>
-                  You used the following personalisation fields with incorrect formatting:
-                </p>
-                <p>
-                  {c.compliment}
-                </p>
-                <p>
-                  {no.d}
-                </p>
-                <p>
-                  {d.underscores_to_test_markdown_escapes}
-                </p>
-                <p>
-                  Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}
-                </p>
-                <p>
-                  They can only contain
-                </p>
-                <ul>
-                  <li>
-                    letters (a to z, A to Z)
-                  </li>
-                  <li>
-                    numbers (1 to 9)
-                  </li>
-                  <li>
-                    dashes
-                  </li>
-                  <li>
-                    underscores
-                  </li>
-                </ul>
-                <p>
-                  Update your letter template file and upload it again
-                </p>
-              </span>
+                You used the following personalisation fields with incorrect formatting:
+              </p>
+              <p
+                class="nhsuk-error-message nhsuk-error-message"
+              >
+                {c.compliment}
+              </p>
+              <p
+                class="nhsuk-error-message nhsuk-error-message"
+              >
+                {no.d}
+              </p>
+              <p
+                class="nhsuk-error-message nhsuk-error-message"
+              >
+                {d.underscores_to_test_markdown_escapes}
+              </p>
+              <p
+                class="nhsuk-error-message"
+              >
+                Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}
+              </p>
+              <p
+                class="nhsuk-error-message"
+              >
+                They can only contain
+              </p>
+              <ul>
+                <li>
+                  letters (a to z, A to Z)
+                </li>
+                <li>
+                  numbers (1 to 9)
+                </li>
+                <li>
+                  dashes
+                </li>
+                <li>
+                  underscores
+                </li>
+              </ul>
+              <p
+                class="nhsuk-error-message"
+              >
+                Update your letter template file and upload it again
+              </p>
             </li>
           </ul>
         </div>
@@ -660,16 +670,16 @@ exports[`authoring letter template with VALIDATION_FAILED status MISSING_ADDRESS
             class="nhsuk-list nhsuk-error-summary__list"
           >
             <li>
-              <span
+              <p
                 class="nhsuk-error-message"
               >
-                <p>
-                  Your template is missing address personalisation fields
-                </p>
-                <p>
-                  You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file
-                </p>
-              </span>
+                Your template is missing address personalisation fields
+              </p>
+              <p
+                class="nhsuk-error-message"
+              >
+                You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file
+              </p>
             </li>
           </ul>
         </div>
@@ -1250,16 +1260,16 @@ exports[`authoring letter template with VALIDATION_FAILED status UNEXPECTED_ADDR
             class="nhsuk-list nhsuk-error-summary__list"
           >
             <li>
-              <span
+              <p
                 class="nhsuk-error-message"
               >
-                <p>
-                  Your template has address personalisation fields we do not recognise
-                </p>
-                <p>
-                  You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file
-                </p>
-              </span>
+                Your template has address personalisation fields we do not recognise
+              </p>
+              <p
+                class="nhsuk-error-message"
+              >
+                You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file
+              </p>
             </li>
           </ul>
         </div>
@@ -1840,16 +1850,16 @@ exports[`authoring letter template with VALIDATION_FAILED status VIRUS_SCAN_FAIL
             class="nhsuk-list nhsuk-error-summary__list"
           >
             <li>
-              <span
+              <p
                 class="nhsuk-error-message"
               >
-                <p>
-                  Your file may contain a virus and we could not open it
-                </p>
-                <p>
-                  Upload a different letter template file
-                </p>
-              </span>
+                Your file may contain a virus and we could not open it
+              </p>
+              <p
+                class="nhsuk-error-message"
+              >
+                Upload a different letter template file
+              </p>
             </li>
           </ul>
         </div>
@@ -2430,16 +2440,16 @@ exports[`authoring letter template with VALIDATION_FAILED status undefined match
             class="nhsuk-list nhsuk-error-summary__list"
           >
             <li>
-              <span
+              <p
                 class="nhsuk-error-message"
               >
-                <p>
-                  We could not open your file. This may be a technical problem or an issue with your file
-                </p>
-                <p>
-                  Upload a different letter template file
-                </p>
-              </span>
+                We could not open your file. This may be a technical problem or an issue with your file
+              </p>
+              <p
+                class="nhsuk-error-message"
+              >
+                Upload a different letter template file
+              </p>
             </li>
           </ul>
         </div>
