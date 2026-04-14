@@ -61,7 +61,7 @@ exports[`ChooseBritishSignLanguageLetterTemplate page renders British Sign Langu
                   class="nhsuk-hint nhsuk-u-reading-width"
                   data-testid="table-hint"
                 >
-                  Choose one option
+                  Choose one option. You can only choose templates linked to the same campaign as your message plan.
                 </div>
                 <div
                   class="nhsuk-form-group"

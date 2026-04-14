@@ -35,10 +35,6 @@ const POLISH_LETTER_TEMPLATE = {
 describe('ChooseOtherLanguageLetterTemplate page', () => {
   it('should redirect to invalid page for invalid routing config id', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(undefined);
-    getForeignLanguageLetterTemplatesMock.mockResolvedValueOnce([
-      FRENCH_LETTER_TEMPLATE,
-      POLISH_LETTER_TEMPLATE,
-    ]);
 
     await ChooseOtherLanguageLetterTemplate({
       params: Promise.resolve({
@@ -50,7 +46,6 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith('invalid-id');
-    expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalled();
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/message-plans/invalid',
@@ -65,10 +60,6 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
         (item) => item.channel !== 'LETTER'
       ),
     });
-    getForeignLanguageLetterTemplatesMock.mockResolvedValueOnce([
-      FRENCH_LETTER_TEMPLATE,
-      POLISH_LETTER_TEMPLATE,
-    ]);
 
     await ChooseOtherLanguageLetterTemplate({
       params: Promise.resolve({
@@ -87,7 +78,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     );
   });
 
-  it('fetches routing config and templates in parallel', async () => {
+  it('calls getForeignLanguageLetterTemplates with correct filters', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
     getForeignLanguageLetterTemplatesMock.mockResolvedValueOnce([
       FRENCH_LETTER_TEMPLATE,
@@ -107,6 +98,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
   });
 
@@ -132,6 +124,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
 
     expect(await generateMetadata()).toEqual({

@@ -7,9 +7,10 @@ import { FrontendSupportedAccessibleFormats } from 'nhs-notify-web-template-mana
 export type ChooseChannelTemplateProps = {
   messagePlan: RoutingConfig;
   pageHeading: string;
-  noTemplatesText: string;
   templateList: TemplateDto[];
   cascadeIndex: number;
   accessibleFormat?: FrontendSupportedAccessibleFormats;
   lockNumber: number;
+  noTemplatesText: string;
+  isCampaignFiltered?: boolean;
 };

@@ -18,7 +18,6 @@ const redirectMock = jest.mocked(redirect);
 describe('ChooseBritishSignLanguageLetterTemplate page', () => {
   it('should redirect to invalid page for invalid routing config id', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(undefined);
-    getTemplatesMock.mockResolvedValueOnce([BSL_LETTER_TEMPLATE]);
 
     await ChooseBritishSignLanguageLetterTemplate({
       params: Promise.resolve({
@@ -30,13 +29,6 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith('invalid-id');
-    expect(getTemplatesMock).toHaveBeenCalledWith({
-      templateType: 'LETTER',
-      language: 'en',
-      letterType: 'q4',
-      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
-      letterVersion: 'AUTHORING',
-    });
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/message-plans/invalid',
@@ -51,7 +43,6 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
         (item) => item.channel !== 'LETTER'
       ),
     });
-    getTemplatesMock.mockResolvedValueOnce([BSL_LETTER_TEMPLATE]);
 
     await ChooseBritishSignLanguageLetterTemplate({
       params: Promise.resolve({
@@ -70,7 +61,7 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
     );
   });
 
-  it('fetches routing config and templates in parallel', async () => {
+  it('calls getTemplates with correct filters', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
     getTemplatesMock.mockResolvedValueOnce([BSL_LETTER_TEMPLATE]);
 
@@ -90,6 +81,7 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
       letterType: 'q4',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
   });
 
@@ -115,6 +107,7 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
       letterType: 'q4',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
 
     expect(await generateMetadata()).toEqual({

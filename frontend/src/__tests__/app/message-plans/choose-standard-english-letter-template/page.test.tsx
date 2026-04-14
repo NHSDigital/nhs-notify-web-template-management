@@ -88,6 +88,7 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
       letterType: 'x0',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
 
     expect(await generateMetadata()).toEqual({

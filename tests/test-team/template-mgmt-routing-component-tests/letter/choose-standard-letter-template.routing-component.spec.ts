@@ -40,6 +40,7 @@ function createMessagePlans(user: TestUser) {
 }
 
 function createTemplates(user: TestUser) {
+  const campaignId = user.campaignIds?.[0] ?? 'campaign';
   return {
     LETTER1: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
@@ -47,6 +48,7 @@ function createTemplates(user: TestUser) {
       'Submitted letter template 1',
       'SUBMITTED',
       {
+        campaignId,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
@@ -58,6 +60,7 @@ function createTemplates(user: TestUser) {
       'Submitted letter template 2',
       'SUBMITTED',
       {
+        campaignId,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
@@ -69,6 +72,7 @@ function createTemplates(user: TestUser) {
       'Submitted letter template - proof approved',
       'PROOF_APPROVED',
       {
+        campaignId,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
@@ -78,7 +82,8 @@ function createTemplates(user: TestUser) {
       randomUUID(),
       user,
       'Proof available letter template',
-      'NOT_YET_SUBMITTED'
+      'NOT_YET_SUBMITTED',
+      { campaignId }
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
@@ -86,6 +91,7 @@ function createTemplates(user: TestUser) {
       'French letter template',
       'SUBMITTED',
       {
+        campaignId,
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -98,10 +104,22 @@ function createTemplates(user: TestUser) {
       'Accessible letter template',
       'SUBMITTED',
       {
+        campaignId,
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
+      }
+    ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user,
+      'Different campaign letter template',
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
     APP: TemplateFactory.createNhsAppTemplate(
@@ -217,7 +235,14 @@ test.describe('Routing - Choose letter template page', () => {
         );
       }
 
+      await expect(chooseLetterTemplatePage.tableHintText).toHaveText(
+        'Choose one option. You can only choose templates linked to the same campaign as your message plan.'
+      );
+
       // template filtering checks
+      await expect(
+        table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
+      ).toBeHidden();
       await expect(table.getByText(templates.FRENCH_LETTER.name)).toBeHidden();
       await expect(
         table.getByText(templates.ACCESSIBLE_LETTER.name)

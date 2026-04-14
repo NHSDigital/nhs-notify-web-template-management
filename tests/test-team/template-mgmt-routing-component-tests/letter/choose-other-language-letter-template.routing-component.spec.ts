@@ -42,6 +42,7 @@ const templateIds = {
   NHSAPP: randomUUID(),
   LETTER: randomUUID(),
   LARGE_PRINT_LETTER: randomUUID(),
+  DIFFERENT_CAMPAIGN_LETTER: randomUUID(),
   ...languageTemplates,
 };
 
@@ -59,6 +60,7 @@ const routingConfigIds = {
 function getTemplates(
   user: TestUser
 ): Record<keyof typeof templateIds, Template> {
+  const campaignId = user.campaignIds?.[0] ?? 'campaign';
   return {
     NHSAPP: TemplateFactory.createNhsAppTemplate(
       templateIds.NHSAPP,
@@ -71,6 +73,7 @@ function getTemplates(
       `Test Letter template - ${templateIds.LETTER}`,
       'SUBMITTED',
       {
+        campaignId,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
@@ -82,6 +85,7 @@ function getTemplates(
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
       {
+        campaignId,
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -94,6 +98,7 @@ function getTemplates(
       `Test French Letter template - ${templateIds.FRENCH_LETTER}`,
       'SUBMITTED',
       {
+        campaignId,
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -106,6 +111,7 @@ function getTemplates(
       `Test Duplicate French Letter template - ${templateIds.FRENCH_LETTER_APPROVED}`,
       'PROOF_APPROVED',
       {
+        campaignId,
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -117,7 +123,7 @@ function getTemplates(
       user,
       `Proof available French letter - ${templateIds.FRENCH_LETTER_NOT_SUBMITTED}`,
       'NOT_YET_SUBMITTED',
-      { language: 'fr' }
+      { campaignId, language: 'fr' }
     ),
     SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
@@ -125,6 +131,7 @@ function getTemplates(
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'SUBMITTED',
       {
+        campaignId,
         language: 'es',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -137,10 +144,23 @@ function getTemplates(
       `Test Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'SUBMITTED',
       {
+        campaignId,
         language: 'pl',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
+      }
+    ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.DIFFERENT_CAMPAIGN_LETTER,
+      user,
+      `Test Different Campaign Letter template - ${templateIds.DIFFERENT_CAMPAIGN_LETTER}`,
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
       }
     ),
   };
@@ -299,7 +319,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await expect(
       chooseOtherLanguageLetterTemplatePage.tableHintText
     ).toHaveText(
-      'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.'
+      'Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.'
     );
 
     const table = chooseOtherLanguageLetterTemplatePage.templatesTable;
@@ -339,6 +359,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await expect(table.getByText(templates.LETTER.name)).toBeHidden();
     await expect(
       table.getByText(templates.LARGE_PRINT_LETTER.name)
+    ).toBeHidden();
+    await expect(
+      table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
     ).toBeHidden();
 
     await expect(
@@ -384,7 +407,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
       await expect(
         chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
-      ).toHaveText('You do not have any other language letter templates yet.');
+      ).toHaveText(
+        'You do not have any templates linked to the campaign you chose for this message plan.'
+      );
 
       await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
 

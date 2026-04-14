@@ -27,19 +27,21 @@ export function ChannelTemplates({
   templateList,
   errorState,
   selectedTemplate,
+  hintText,
   lockNumber,
 }: {
   routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
+  hintText?: string;
   lockNumber: number;
 }) {
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
         <HintText className='nhsuk-u-reading-width' data-testid='table-hint'>
-          {tableHintText}
+          {hintText ?? tableHintText}
         </HintText>
         <Radios
           id='channelTemplate'
