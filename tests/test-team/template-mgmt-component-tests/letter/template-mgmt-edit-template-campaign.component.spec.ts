@@ -260,6 +260,7 @@ test.describe('Edit Template Campaign page', () => {
         {
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 

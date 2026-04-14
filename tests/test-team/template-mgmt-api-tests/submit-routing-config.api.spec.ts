@@ -430,6 +430,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
           language: 'fr',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 
@@ -442,6 +443,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
           language: 'ar',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 
