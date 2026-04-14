@@ -14,7 +14,7 @@ const $RenameMessagePlanFormData = $MessagePlanFormData
     lockNumber: $LockNumber,
   });
 
-export async function editMessagePlanSettingsServerAction(
+export async function renameMessagePlanServerAction(
   state: FormState,
   formData: FormData
 ): Promise<FormState> {

@@ -8,16 +8,16 @@ import { NHSNotifyContainer } from '@layouts/container/container';
 import { MessagePlanForm } from '@forms/MessagePlanForm/MessagePlanForm';
 import { getRoutingConfig } from '@utils/message-plans';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
-import { editMessagePlanSettingsServerAction } from './server-action';
+import { renameMessagePlanServerAction } from './server-action';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 
-const pageContent = content.pages.editMessagePlanSettings;
+const pageContent = content.pages.renameMessagePlan;
 
 export const metadata: Metadata = {
   title: pageContent.pageTitle,
 };
 
-export default async function EditMessagePlanSettingsPage(
+export default async function RenameMessagePlanPage(
   props: MessagePlanPageProps
 ) {
   const { routingConfigId } = await props.params;
@@ -42,9 +42,7 @@ export default async function EditMessagePlanSettingsPage(
   return (
     <NHSNotifyContainer>
       <NHSNotifyMain>
-        <NHSNotifyFormProvider
-          serverAction={editMessagePlanSettingsServerAction}
-        >
+        <NHSNotifyFormProvider serverAction={renameMessagePlanServerAction}>
           <NHSNotifyFormErrorSummary />
           <div className='nhsuk-grid-row'>
             <div className='nhsuk-grid-column-two-thirds'>

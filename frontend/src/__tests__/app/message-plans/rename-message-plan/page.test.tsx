@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
-import EditMessagePlanPage, {
+import RenameMessagePlanPage, {
   metadata,
 } from '@app/message-plans/rename-message-plan/[routingConfigId]/page';
 import { RoutingConfigFactory } from '@testhelpers/routing-config-factory';
@@ -51,7 +51,7 @@ test("it redirects if the routing config isn't found", async () => {
   jest.mocked(getRoutingConfig).mockResolvedValueOnce(undefined);
 
   await expect(
-    EditMessagePlanPage({
+    RenameMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
       searchParams: Promise.resolve({
         lockNumber: String(routingConfig.lockNumber),
@@ -69,7 +69,7 @@ test("it redirects if the routing config isn't found", async () => {
 
 it('redirects to the edit message plan page when lockNumber is missing', async () => {
   await expect(
-    EditMessagePlanPage({
+    RenameMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
     })
   ).rejects.toThrow(NextRedirectError);
@@ -84,7 +84,7 @@ it('redirects to the edit message plan page when lockNumber is missing', async (
 
 it('redirects to the edit message plan page when lockNumber is invalid', async () => {
   await expect(
-    EditMessagePlanPage({
+    RenameMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
       searchParams: Promise.resolve({ lockNumber: 'not-a-number' }),
     })
@@ -99,7 +99,7 @@ it('redirects to the edit message plan page when lockNumber is invalid', async (
 });
 
 it('matches snapshot', async () => {
-  const page = await EditMessagePlanPage({
+  const page = await RenameMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
     searchParams: Promise.resolve({
       lockNumber: String(routingConfig.lockNumber),
@@ -112,7 +112,7 @@ it('matches snapshot', async () => {
 });
 
 it('loads form with saved data filled in', async () => {
-  const page = await EditMessagePlanPage({
+  const page = await RenameMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
     searchParams: Promise.resolve({
       lockNumber: String(routingConfig.lockNumber),
@@ -127,7 +127,7 @@ it('loads form with saved data filled in', async () => {
 });
 
 it('should not display campaign id field', async () => {
-  const page = await EditMessagePlanPage({
+  const page = await RenameMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
     searchParams: Promise.resolve({
       lockNumber: String(routingConfig.lockNumber),
@@ -143,7 +143,7 @@ it('should not display campaign id field', async () => {
 it('renders errors when form is submitted in invalid state', async () => {
   const user = await userEvent.setup();
 
-  const page = await EditMessagePlanPage({
+  const page = await RenameMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
     searchParams: Promise.resolve({
       lockNumber: String(routingConfig.lockNumber),
@@ -171,7 +171,7 @@ it('renders errors when form is submitted in invalid state', async () => {
 it('updates the message plan name and redirects to the edit message plan page', async () => {
   const user = userEvent.setup();
 
-  const page = await EditMessagePlanPage({
+  const page = await RenameMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
     searchParams: Promise.resolve({
       lockNumber: String(routingConfig.lockNumber),

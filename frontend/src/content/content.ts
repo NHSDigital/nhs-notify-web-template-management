@@ -1806,7 +1806,7 @@ const createMessagePlan = {
   backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
 };
 
-const editMessagePlanSettings = {
+const renameMessagePlan = {
   pageTitle: generatePageTitle('Rename message plan'),
   pageHeading: 'Rename message plan',
   backLink: (id: string) => ({
@@ -2178,7 +2178,6 @@ const content = {
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlan,
-    editMessagePlanSettings,
     editTemplateCampaignPage,
     editTemplateNamePage,
     error404,
@@ -2197,6 +2196,7 @@ const content = {
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
+    renameMessagePlan,
     reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
