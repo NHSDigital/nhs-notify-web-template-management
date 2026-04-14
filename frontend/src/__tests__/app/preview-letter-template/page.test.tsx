@@ -350,6 +350,19 @@ describe('valid authoring letter template', () => {
       screen.getByRole('tab', { name: 'Long examples' })
     ).toBeInTheDocument();
   });
+
+  it('displays the template saved banner when navigated to from the upload page', async () => {
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        searchParams: Promise.resolve({ from: 'upload' }),
+      })
+    );
+
+    expect(screen.getByRole('status')).toHaveTextContent('Template saved');
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
 
 describe('authoring letter template with no letter variant set', () => {

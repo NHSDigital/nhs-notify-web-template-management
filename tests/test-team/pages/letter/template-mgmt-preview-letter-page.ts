@@ -34,6 +34,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   public readonly serviceNowLink: Locator;
 
+  public readonly uploadSuccessBanner: Locator;
+
   constructor(page: Page) {
     super(page);
 
@@ -61,7 +63,13 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.shortTab = this.getTab('shortFormRender');
     this.longTab = this.getTab('longFormRender');
 
-    this.pageSpinner = page.getByRole('status');
+    this.pageSpinner = page
+      .getByRole('status')
+      .getByRole('heading', { name: 'Uploading letter template' });
+
+    this.uploadSuccessBanner = page
+      .getByRole('status')
+      .and(page.getByText('Template saved'));
 
     this.serviceNowLink = page.getByRole('link', {
       name: /raise a Service Now request/,

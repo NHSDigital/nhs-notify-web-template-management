@@ -32,6 +32,7 @@ const {
   links,
   loadingText,
   pageTitle,
+  uploadSuccessBanner,
   validationErrorMessages,
   defaultValidationErrorMessage,
 } = content.pages.previewLetterTemplate;
@@ -56,6 +57,7 @@ function getValidationErrors(template: AuthoringLetterTemplate) {
 
 export default async function PreviewLetterTemplatePage({
   params,
+  searchParams,
 }: TemplatePageProps) {
   const { templateId } = await params;
 
@@ -98,6 +100,10 @@ export default async function PreviewLetterTemplatePage({
 
   const validationErrors = getValidationErrors(validatedTemplate);
 
+  const search = await searchParams;
+
+  const isFromUploadPage = search?.from === 'upload';
+
   return (
     <NHSNotifyContainer fullWidth={showRenderer}>
       <NHSNotifyFormProvider
@@ -125,6 +131,16 @@ export default async function PreviewLetterTemplatePage({
                 <NHSNotifyForm.ErrorSummary />
                 <div className='nhsuk-grid-row'>
                   <div className='nhsuk-grid-column-full'>
+                    {isFromUploadPage &&
+                      validatedTemplate.templateStatus ===
+                        'NOT_YET_SUBMITTED' && (
+                        <section
+                          className='notify-confirmation-panel nhsuk-heading-l'
+                          role='status'
+                        >
+                          {uploadSuccessBanner}
+                        </section>
+                      )}
                     <PreviewTemplateDetailsAuthoringLetter
                       template={validatedTemplate}
                       letterVariant={letterVariant}

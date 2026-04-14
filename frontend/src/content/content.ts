@@ -532,6 +532,7 @@ const previewLetterTemplate = {
   approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,
+  uploadSuccessBanner: 'Template saved',
   virusScanError: 'The file(s) you uploaded may contain a virus.',
   virusScanErrorAction:
     'Create a new letter template to upload your file(s) again or upload different file(s).',

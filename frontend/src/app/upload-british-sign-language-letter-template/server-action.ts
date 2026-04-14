@@ -52,7 +52,7 @@ export async function uploadBSLLetterTemplate(
   const savedTemplate = await uploadDocxTemplate(template, file);
 
   return redirect(
-    `/preview-letter-template/${savedTemplate.id}`,
+    `/preview-letter-template/${savedTemplate.id}?from=upload`,
     RedirectType.push
   );
 }

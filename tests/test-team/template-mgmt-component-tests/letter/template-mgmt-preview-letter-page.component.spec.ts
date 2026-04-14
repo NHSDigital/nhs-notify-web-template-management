@@ -667,6 +667,25 @@ test.describe('Preview Letter template Page', () => {
 
       await expect(previewPage.sheetsAction).toBeVisible();
       await expect(previewPage.statusAction).toBeVisible();
+
+      await expect(previewPage.uploadSuccessBanner).toBeHidden();
+    });
+
+    test('when user visits page from upload page, the success banner is shown', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page)
+        .setPathParam('templateId', templates.authoringValid.id)
+        .setSearchParam('from', 'upload');
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-letter-template/${templates.authoringValid.id}?from=upload`
+      );
+
+      await expect(previewPage.uploadSuccessBanner).toBeVisible();
     });
 
     test('when initial render is recently requested (in PENDING status), the spinner is shown', async ({
