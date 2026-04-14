@@ -32,15 +32,14 @@ test('common page tests', async ({ page, baseURL }) => {
 
   await storageHelper.seed([plan.dbEntry]);
 
-  const renamePage = new RoutingRenameMessagePlanPage(page).setPathParam(
-    'messagePlanId',
-    plan.dbEntry.id
-  );
+  const renamePage = new RoutingRenameMessagePlanPage(page)
+    .setPathParam('messagePlanId', plan.dbEntry.id)
+    .setSearchParam('lockNumber', String(plan.dbEntry.lockNumber));
 
   await renamePage.loadPage();
 
   await expect(page).toHaveURL(
-    `${baseURL}/templates/message-plans/rename-message-plan/${plan.dbEntry.id}`
+    `${baseURL}/templates/message-plans/rename-message-plan/${plan.dbEntry.id}?lockNumber=${plan.dbEntry.lockNumber}`
   );
 
   await expect(renamePage.pageHeading).toHaveText('Rename message plan');
@@ -60,14 +59,33 @@ test('common page tests', async ({ page, baseURL }) => {
 });
 
 test("message plan doesn't exist", async ({ page, baseURL }) => {
-  const renamePage = new RoutingRenameMessagePlanPage(page).setPathParam(
-    'messagePlanId',
-    randomUUID()
-  );
+  const renamePage = new RoutingRenameMessagePlanPage(page)
+    .setPathParam('messagePlanId', randomUUID())
+    .setSearchParam('lockNumber', '0');
 
   await renamePage.loadPage();
 
   await expect(page).toHaveURL(`${baseURL}/templates/message-plans/invalid`);
+});
+
+test('redirects to the edit message plan page when no lockNumber in url', async ({
+  page,
+  baseURL,
+}) => {
+  const plan = RoutingConfigFactory.create(user);
+
+  await storageHelper.seed([plan.dbEntry]);
+
+  const renamePage = new RoutingRenameMessagePlanPage(page).setPathParam(
+    'messagePlanId',
+    plan.dbEntry.id
+  );
+
+  await renamePage.loadPage();
+
+  await expect(page).toHaveURL(
+    `${baseURL}/templates/message-plans/edit-message-plan/${plan.dbEntry.id}`
+  );
 });
 
 test('updates a message plan name and redirects to the template selection page for the message plan', async ({
@@ -78,10 +96,9 @@ test('updates a message plan name and redirects to the template selection page f
 
   await storageHelper.seed([plan.dbEntry]);
 
-  const renamePage = new RoutingRenameMessagePlanPage(page).setPathParam(
-    'messagePlanId',
-    plan.dbEntry.id
-  );
+  const renamePage = new RoutingRenameMessagePlanPage(page)
+    .setPathParam('messagePlanId', plan.dbEntry.id)
+    .setSearchParam('lockNumber', String(plan.dbEntry.lockNumber));
 
   await renamePage.loadPage();
 
@@ -105,10 +122,9 @@ test('displays error if name is empty', async ({ page }) => {
 
   await storageHelper.seed([plan.dbEntry]);
 
-  const renamePage = new RoutingRenameMessagePlanPage(page).setPathParam(
-    'messagePlanId',
-    plan.dbEntry.id
-  );
+  const renamePage = new RoutingRenameMessagePlanPage(page)
+    .setPathParam('messagePlanId', plan.dbEntry.id)
+    .setSearchParam('lockNumber', String(plan.dbEntry.lockNumber));
 
   await renamePage.loadPage();
 
@@ -126,10 +142,9 @@ test('displays error if name is too long', async ({ page }) => {
 
   await storageHelper.seed([plan.dbEntry]);
 
-  const renamePage = new RoutingRenameMessagePlanPage(page).setPathParam(
-    'messagePlanId',
-    plan.dbEntry.id
-  );
+  const renamePage = new RoutingRenameMessagePlanPage(page)
+    .setPathParam('messagePlanId', plan.dbEntry.id)
+    .setSearchParam('lockNumber', String(plan.dbEntry.lockNumber));
 
   await renamePage.loadPage();
 

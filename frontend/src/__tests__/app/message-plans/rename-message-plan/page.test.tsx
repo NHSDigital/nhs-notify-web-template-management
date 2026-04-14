@@ -53,6 +53,9 @@ test("it redirects if the routing config isn't found", async () => {
   await expect(
     EditMessagePlanPage({
       params: Promise.resolve({ routingConfigId: routingConfig.id }),
+      searchParams: Promise.resolve({
+        lockNumber: String(routingConfig.lockNumber),
+      }),
     })
   ).rejects.toThrow(NextRedirectError);
 
@@ -64,9 +67,43 @@ test("it redirects if the routing config isn't found", async () => {
   );
 });
 
+it('redirects to the edit message plan page when lockNumber is missing', async () => {
+  await expect(
+    EditMessagePlanPage({
+      params: Promise.resolve({ routingConfigId: routingConfig.id }),
+    })
+  ).rejects.toThrow(NextRedirectError);
+
+  expect(getRoutingConfig).not.toHaveBeenCalled();
+
+  expect(redirect).toHaveBeenCalledWith(
+    `/message-plans/edit-message-plan/${routingConfig.id}`,
+    RedirectType.replace
+  );
+});
+
+it('redirects to the edit message plan page when lockNumber is invalid', async () => {
+  await expect(
+    EditMessagePlanPage({
+      params: Promise.resolve({ routingConfigId: routingConfig.id }),
+      searchParams: Promise.resolve({ lockNumber: 'not-a-number' }),
+    })
+  ).rejects.toThrow(NextRedirectError);
+
+  expect(getRoutingConfig).not.toHaveBeenCalled();
+
+  expect(redirect).toHaveBeenCalledWith(
+    `/message-plans/edit-message-plan/${routingConfig.id}`,
+    RedirectType.replace
+  );
+});
+
 it('matches snapshot', async () => {
   const page = await EditMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
+    searchParams: Promise.resolve({
+      lockNumber: String(routingConfig.lockNumber),
+    }),
   });
 
   const container = render(page);
@@ -77,6 +114,9 @@ it('matches snapshot', async () => {
 it('loads form with saved data filled in', async () => {
   const page = await EditMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
+    searchParams: Promise.resolve({
+      lockNumber: String(routingConfig.lockNumber),
+    }),
   });
 
   render(page);
@@ -84,6 +124,17 @@ it('loads form with saved data filled in', async () => {
   expect(await screen.findByTestId('name-field')).toHaveValue(
     routingConfig.name
   );
+});
+
+it('should not display campaign id field', async () => {
+  const page = await EditMessagePlanPage({
+    params: Promise.resolve({ routingConfigId: routingConfig.id }),
+    searchParams: Promise.resolve({
+      lockNumber: String(routingConfig.lockNumber),
+    }),
+  });
+
+  render(page);
 
   expect(screen.queryByTestId('single-campaign-id')).not.toBeInTheDocument();
   expect(screen.queryByTestId('campaign-id-field')).not.toBeInTheDocument();
@@ -94,6 +145,9 @@ it('renders errors when form is submitted in invalid state', async () => {
 
   const page = await EditMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
+    searchParams: Promise.resolve({
+      lockNumber: String(routingConfig.lockNumber),
+    }),
   });
 
   const container = render(page);
@@ -119,6 +173,9 @@ it('updates the message plan name and redirects to the edit message plan page', 
 
   const page = await EditMessagePlanPage({
     params: Promise.resolve({ routingConfigId: routingConfig.id }),
+    searchParams: Promise.resolve({
+      lockNumber: String(routingConfig.lockNumber),
+    }),
   });
 
   render(<NextRedirectBoundary>{page}</NextRedirectBoundary>);

@@ -328,18 +328,16 @@ test.describe('Routing', () => {
 
   test('Rename message plan', async ({ page, analyze }) =>
     analyze(
-      new RoutingRenameMessagePlanPage(page).setPathParam(
-        'messagePlanId',
-        draftRoutingConfigId
-      )
+      new RoutingRenameMessagePlanPage(page)
+        .setPathParam('messagePlanId', draftRoutingConfigId)
+        .setSearchParam('lockNumber', '0')
     ));
 
   test('Rename message plan - error', async ({ page, analyze }) =>
     analyze(
-      new RoutingRenameMessagePlanPage(page).setPathParam(
-        'messagePlanId',
-        draftRoutingConfigId
-      ),
+      new RoutingRenameMessagePlanPage(page)
+        .setPathParam('messagePlanId', draftRoutingConfigId)
+        .setSearchParam('lockNumber', '0'),
       {
         beforeAnalyze: async (p) => {
           await p.nameField.fill('');

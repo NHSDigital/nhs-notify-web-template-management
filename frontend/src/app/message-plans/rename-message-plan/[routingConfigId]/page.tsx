@@ -5,10 +5,11 @@ import { NHSNotifyFormErrorSummary } from '@atoms/NHSNotifyForm/ErrorSummary';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
-import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { MessagePlanForm } from '@forms/MessagePlanForm/MessagePlanForm';
 import { getRoutingConfig } from '@utils/message-plans';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { editMessagePlanSettingsServerAction } from './server-action';
+import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 
 const pageContent = content.pages.editMessagePlanSettings;
 
@@ -16,10 +17,21 @@ export const metadata: Metadata = {
   title: pageContent.pageTitle,
 };
 
-export default async function EditMessagePlanSettingsPage({
-  params,
-}: MessagePlanPageProps) {
-  const { routingConfigId } = await params;
+export default async function EditMessagePlanSettingsPage(
+  props: MessagePlanPageProps
+) {
+  const { routingConfigId } = await props.params;
+
+  const searchParams = await props.searchParams;
+
+  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
+
+  if (!lockNumberResult.success) {
+    return redirect(
+      `/message-plans/edit-message-plan/${routingConfigId}`,
+      RedirectType.replace
+    );
+  }
 
   const routingConfig = await getRoutingConfig(routingConfigId);
 
@@ -50,7 +62,7 @@ export default async function EditMessagePlanSettingsPage({
                 <input
                   type='hidden'
                   name='lockNumber'
-                  value={routingConfig.lockNumber}
+                  value={lockNumberResult.data}
                   readOnly
                 />
               </MessagePlanForm>

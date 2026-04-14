@@ -5,7 +5,7 @@ import { z } from 'zod/v4';
 import type { FormState } from 'nhs-notify-web-template-management-utils';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
+import { $MessagePlanFormData } from '@forms/MessagePlanForm/schema';
 
 const $RenameMessagePlanFormData = $MessagePlanFormData
   .omit({ campaignId: true })
