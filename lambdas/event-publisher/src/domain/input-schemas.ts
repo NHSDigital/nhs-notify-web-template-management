@@ -7,7 +7,6 @@ import {
   ROUTING_CONFIG_STATUS_LIST,
 } from 'nhs-notify-backend-client/schemas';
 import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
-import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 const $AttributeValue: z.ZodType<AttributeValue> = z.lazy(() =>
   z.union([
@@ -35,28 +34,29 @@ export const $DynamoDBStreamRecord = z.object({
 });
 
 // We need a subset of the database fields so we can apply filtering rules
-export const $DynamoDBTemplate = schemaFor<Partial<DatabaseTemplate>>()(
-  z.object({
-    id: z.string(),
-    clientId: z.string(),
-    templateType: z.enum(TEMPLATE_TYPE_LIST),
-    templateStatus: z.enum(TEMPLATE_STATUS_LIST),
-    proofingEnabled: z.boolean().optional(),
-    files: z
-      .object({
-        docxTemplate: z
-          .object({
-            currentVersion: z.string(),
-            fileName: z.string(),
-            virusScanStatus: z.literal('PASSED'),
-          })
-          .optional(),
-      })
-      .optional(),
-    letterVersion: z.enum(['PDF', 'AUTHORING']).optional(),
-  })
-);
+export const $DynamoDBTemplate = z.object({
+  id: z.string(),
+  clientId: z.string(),
+  templateType: z.enum(TEMPLATE_TYPE_LIST),
+  templateStatus: z.enum(TEMPLATE_STATUS_LIST),
+  files: z
+    .object({
+      docxTemplate: z
+        .object({
+          currentVersion: z.string(),
+        })
+        .optional(),
+    })
+    .optional(),
+  letterVersion: z.enum(['PDF', 'AUTHORING']).optional(),
+  customPersonalisation: z.array(z.string()).optional(),
+});
 export type DynamoDBTemplate = z.infer<typeof $DynamoDBTemplate>;
+
+export const $DynamoDBTemplateOldImage = z.object({
+  templateStatus: z.enum(TEMPLATE_STATUS_LIST),
+});
+export type DynamoDBTemplateOldImage = z.infer<typeof $DynamoDBTemplateOldImage>;
 
 export const $DynamoDBRoutingConfig = schemaFor<Partial<RoutingConfig>>()(
   z.object({

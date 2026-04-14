@@ -1,11 +1,11 @@
-import type { DynamoDBTemplate } from './input-schemas';
+import type { DynamoDBTemplate, DynamoDBTemplateOldImage } from './input-schemas';
 
 const publishableAuthoringLetterStatuses = new Set<
   DynamoDBTemplate['templateStatus']
 >(['DELETED', 'SUBMITTED', 'PROOF_APPROVED']);
 
 function shouldPublishLetter(
-  previous: DynamoDBTemplate | undefined,
+  previous: DynamoDBTemplateOldImage | undefined,
   current: DynamoDBTemplate
 ): boolean {
   if (current.letterVersion !== 'AUTHORING') {
@@ -23,7 +23,7 @@ function shouldPublishLetter(
 }
 
 export function shouldPublish(
-  previous: DynamoDBTemplate | undefined,
+  previous: DynamoDBTemplateOldImage | undefined,
   current: DynamoDBTemplate
 ) {
   if (current.templateType === 'LETTER') {
