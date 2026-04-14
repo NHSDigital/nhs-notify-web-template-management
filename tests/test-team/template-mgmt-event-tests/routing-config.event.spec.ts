@@ -10,6 +10,9 @@ import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { eventWithId, eventWithIdIn } from '../helpers/events/matchers';
+import { docxFixtures } from '../fixtures/letters';
+
+const templateVersionId = randomUUID();
 
 function createTemplates(user: TestUser) {
   const templateIds = {
@@ -37,6 +40,9 @@ function createTemplates(user: TestUser) {
       `Event Letter Template - ${templateIds.LETTER}`,
       'PROOF_APPROVED',
       {
+        docxTemplate: {
+          currentVersion: templateVersionId,
+        },
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
@@ -53,7 +59,9 @@ test.describe('Event publishing - Routing Config', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await context.auth.getTestUser(testUsers.User1.userId);
+    user = await context.auth.getTestUser(
+      testUsers.UserLetterAuthoringEnabled.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -231,6 +239,16 @@ test.describe('Event publishing - Routing Config', () => {
   }) => {
     const templates = createTemplates(user);
     const seedStart = new Date();
+
+    await templateStorageHelper.putScannedDocxTemplateFile(
+      {
+        clientId: user.clientId,
+        templateId: templates.LETTER.id,
+      },
+      templateVersionId,
+      docxFixtures.standard.open()
+    );
+
     await templateStorageHelper.seedTemplateData(Object.values(templates));
 
     // Wait for seeding events to arrive before proceeding
