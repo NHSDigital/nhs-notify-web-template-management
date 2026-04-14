@@ -8,6 +8,7 @@ import {
   $DynamoDBProofRequest,
   $DynamoDBRoutingConfig,
   $DynamoDBTemplate,
+  $DynamoDBTemplateOldImage,
   DynamoDBTemplate,
   PublishableEventRecord,
 } from './input-schemas';
@@ -82,12 +83,15 @@ export class EventBuilder {
     };
   }
 
-  private getInternalFilePathForTemplateEvent({
-    clientId,
-    id,
-    files,
-  }: DynamoDBTemplate) {
+  private getInternalFilePathForTemplateEvent(
+    databaseTemplate: DynamoDBTemplate
+  ) {
+    const { clientId, id, files } = databaseTemplate;
     if (!files || !files.docxTemplate) {
+      this.logger.error({
+        description: 'Unexpected missing docx template',
+        databaseTemplate,
+      });
       throw new Error('Unexpected missing DOCX template');
     }
 
@@ -122,7 +126,7 @@ export class EventBuilder {
       : undefined;
 
     const databaseTemplateNew = $DynamoDBTemplate.parse(dynamoRecordNew);
-    const databaseTemplateOld = $DynamoDBTemplate
+    const databaseTemplateOld = $DynamoDBTemplateOldImage
       .optional()
       .parse(dynamoRecordOld);
 
@@ -157,6 +161,7 @@ export class EventBuilder {
                 url: sharedFilePath,
               },
             },
+            personalisationParameters: dynamoRecordNew.customPersonalisation,
           },
         }),
         sharedFiles: {
