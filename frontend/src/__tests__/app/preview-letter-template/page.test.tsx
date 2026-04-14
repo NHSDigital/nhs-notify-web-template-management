@@ -373,6 +373,7 @@ describe('authoring letter initial render states', () => {
   it('displays the loading spinner and hides page content when initialRender is freshly PENDING', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'PENDING_VALIDATION',
       files: {
         ...AUTHORING_LETTER_TEMPLATE.files,
         initialRender: {
@@ -398,6 +399,7 @@ describe('authoring letter initial render states', () => {
   it('shows page content and hides spinner and renderer when initialRender is PENDING, but render request is stale', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'PENDING_VALIDATION',
       files: {
         ...AUTHORING_LETTER_TEMPLATE.files,
         initialRender: {
@@ -409,7 +411,7 @@ describe('authoring letter initial render states', () => {
       },
     });
 
-    render(
+    const { asFragment } = render(
       await Page({
         params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
       })
@@ -430,11 +432,14 @@ describe('authoring letter initial render states', () => {
     expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
       AUTHORING_LETTER_TEMPLATE.id
     );
+
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('shows page content without letter renderer when initialRender is FAILED', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
       files: {
         ...AUTHORING_LETTER_TEMPLATE.files,
         initialRender: {

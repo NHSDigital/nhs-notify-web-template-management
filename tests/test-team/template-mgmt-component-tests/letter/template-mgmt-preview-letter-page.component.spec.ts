@@ -711,6 +711,53 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.statusTag).toBeHidden();
     });
 
+    test('when initial render request is stale the regular page is shown with a service now link', async ({
+      page,
+      baseURL,
+    }) => {
+      const user = await getTestContext().auth.getTestUser(
+        testUsers.User1.userId
+      );
+
+      // seed the template here to reduce the chance that render timeout expires during the test
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        'f5414ae6-2a7a-4de3-a5dd-4b1994bf8ed8',
+        user,
+        'authoring-pending-stale',
+        'PENDING_VALIDATION',
+        {
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: new Date(Date.now() - 25_000).toISOString(),
+          },
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        template.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-letter-template/${template.id}`
+      );
+
+      await expect(previewPage.pageSpinner).toBeHidden();
+
+      await expect(previewPage.letterRender).toBeHidden();
+
+      await expect(previewPage.statusTag).toBeVisible();
+      await expect(previewPage.statusTag).toHaveText('Checking files');
+      await expect(previewPage.serviceNowLink).toHaveAttribute(
+        'href',
+        'https://nhsdigitallive.service-now.com/csm'
+      );
+    });
+
     test('when user visits page with missing data, then an invalid template error is displayed', async ({
       baseURL,
       page,

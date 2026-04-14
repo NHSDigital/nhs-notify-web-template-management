@@ -32,6 +32,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   public readonly pageSpinner: Locator;
 
+  public readonly serviceNowLink: Locator;
+
   constructor(page: Page) {
     super(page);
 
@@ -60,6 +62,10 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.longTab = this.getTab('longFormRender');
 
     this.pageSpinner = page.getByRole('status');
+
+    this.serviceNowLink = page.getByRole('link', {
+      name: /raise a Service Now request/,
+    });
   }
 
   public getTab(variant: TabVariant) {

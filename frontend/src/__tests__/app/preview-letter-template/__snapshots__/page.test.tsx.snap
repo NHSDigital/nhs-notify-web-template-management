@@ -1,5 +1,161 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`authoring letter initial render states shows page content and hides spinner and renderer when initialRender is PENDING, but render request is stale 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <div
+      class="nhsuk-width-container"
+    >
+      <a
+        class="nhsuk-back-link"
+        data-testid="back-link-top"
+        href="/message-templates"
+      >
+        Back to all templates
+      </a>
+    </div>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-width-container"
+      >
+        <div
+          class="nhsuk-grid-row"
+        >
+          <div
+            class="nhsuk-grid-column-full"
+          >
+            <div
+              class="nhsuk-u-reading-width"
+            >
+              <span
+                class="nhsuk-caption-l"
+              >
+                Template
+              </span>
+              <h1
+                data-testid="preview-message__heading"
+              >
+                authoring letter template name
+              </h1>
+            </div>
+            <div
+              class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+            >
+              <dl
+                class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+              >
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template ID
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value monospace-font"
+                    data-testid="preview-template-id"
+                  >
+                    authoring-letter-template-id
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Template type
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    Standard letter
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions"
+                  />
+                </div>
+                <div
+                  class="nhsuk-summary-list__row"
+                >
+                  <dt
+                    class="nhsuk-summary-list__key"
+                  >
+                    Status
+                  </dt>
+                  <dd
+                    class="nhsuk-summary-list__value"
+                  >
+                    <strong
+                      class="nhsuk-tag nhsuk-tag--blue"
+                      data-status="pending-validation"
+                      data-testid="status-tag"
+                    >
+                      Checking files
+                    </strong>
+                    <p
+                      class="nhsuk-u-padding-top-3 nhsuk-u-padding-right-9 nhsuk-u-margin-right-6"
+                    >
+                      Refresh the page to update the status. If your file is taking to long to upload, 
+                      <a
+                        href="https://nhsdigitallive.service-now.com/csm"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        raise a Service Now request (opens in a new tab)
+                      </a>
+                    </p>
+                  </dd>
+                  <dd
+                    class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
+                  >
+                    <a
+                      data-testid="status-action"
+                      href="https://notify.nhs.uk/templates/what-template-statuses-mean"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                      <span
+                        class="nhsuk-u-visually-hidden"
+                      >
+                         about status
+                      </span>
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="nhsuk-width-container"
+      >
+        <p>
+          <a
+            data-testid="back-link-bottom"
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`authoring letter template with VALIDATION_FAILED status INVALID_MARKERS matches snapshot 1`] = `
 <DocumentFragment>
   <div

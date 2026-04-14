@@ -766,6 +766,10 @@ const previewTemplateDetails = {
   },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',
+  checkingFilesMessage: {
+    type: 'text',
+    text: 'Refresh the page to update the status. If your file is taking to long to upload, [raise a Service Now request (opens in a new tab)](https://nhsdigitallive.service-now.com/csm)',
+  } satisfies ContentBlock,
 };
 
 const error404 = {
