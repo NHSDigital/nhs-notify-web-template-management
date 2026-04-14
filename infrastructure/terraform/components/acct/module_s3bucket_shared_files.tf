@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "shared_files_bucket_policy" {
     ]
 
     resources = [
-      "module.s3bucket_shared_files.arn",
+      module.s3bucket_shared_files.arn,
       "${module.s3bucket_shared_files.arn}/*",
     ]
 
