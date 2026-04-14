@@ -57,6 +57,7 @@ function getTemplates(
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     BSL_LETTER2: TemplateFactory.createAuthoringLetterTemplate(
@@ -68,6 +69,7 @@ function getTemplates(
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     BSL_LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
@@ -79,6 +81,7 @@ function getTemplates(
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     BSL_LETTER_NOT_SUBMITTED: TemplateFactory.createAuthoringLetterTemplate(
@@ -96,6 +99,7 @@ function getTemplates(
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
