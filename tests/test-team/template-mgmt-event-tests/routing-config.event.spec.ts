@@ -238,9 +238,9 @@ test.describe('Event publishing - Routing Config', () => {
       const seedEvents = await eventSubscriber.receive({
         since: seedStart,
         // Authoring letters don't produce events yet
-        match: eventWithIdIn([templates.NHSAPP.id, templates.EMAIL.id]),
+        match: eventWithIdIn([templates.NHSAPP.id, templates.EMAIL.id, templates.LETTER.id]),
       });
-      expect(seedEvents).toHaveLength(2);
+      expect(seedEvents).toHaveLength(3);
     }).toPass({ timeout: 60_000 });
 
     const start = new Date();
@@ -312,7 +312,7 @@ test.describe('Event publishing - Routing Config', () => {
         ]),
       });
 
-      expect(events).toHaveLength(3);
+      expect(events).toHaveLength(4);
 
       expect(events).toContainEqual(
         expect.objectContaining({
@@ -359,8 +359,7 @@ test.describe('Event publishing - Routing Config', () => {
         })
       );
 
-      // AUTHORING letters don't produce events yet
-      expect(events).not.toContainEqual(
+      expect(events).toContainEqual(
         expect.objectContaining({
           record: expect.objectContaining({
             type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',

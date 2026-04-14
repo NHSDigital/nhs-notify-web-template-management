@@ -107,6 +107,7 @@ function getTemplates(
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     APP: TemplateFactory.createNhsAppTemplate(
