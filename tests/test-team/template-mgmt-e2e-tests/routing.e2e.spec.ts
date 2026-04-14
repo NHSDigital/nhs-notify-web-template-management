@@ -67,7 +67,7 @@ function createTemplates(user: TestUser) {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        leterVariantId: 'letter-variant-id',
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -79,7 +79,7 @@ function createTemplates(user: TestUser) {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        leterVariantId: 'letter-variant-id',
+        letterVariantId: 'letter-variant-id',
       }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(

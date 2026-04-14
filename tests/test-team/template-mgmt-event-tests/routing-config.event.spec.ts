@@ -238,7 +238,11 @@ test.describe('Event publishing - Routing Config', () => {
       const seedEvents = await eventSubscriber.receive({
         since: seedStart,
         // Authoring letters don't produce events yet
-        match: eventWithIdIn([templates.NHSAPP.id, templates.EMAIL.id, templates.LETTER.id]),
+        match: eventWithIdIn([
+          templates.NHSAPP.id,
+          templates.EMAIL.id,
+          templates.LETTER.id,
+        ]),
       });
       expect(seedEvents).toHaveLength(3);
     }).toPass({ timeout: 60_000 });
