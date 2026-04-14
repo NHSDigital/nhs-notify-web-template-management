@@ -99,7 +99,7 @@ const publishableTemplateEventRecord = (
       letterVariantId: {
         S: 'letter-variant-id',
       },
-      personalisationParameters: {
+      customPersonalisation: {
         L: [
           {
             S: 'test',
@@ -167,7 +167,7 @@ const publishableTemplateEventRecord = (
       letterVariantId: {
         S: 'letter-variant-id',
       },
-      personalisationParameters: {
+      customPersonalisation: {
         L: [
           {
             S: 'test',
