@@ -99,7 +99,7 @@ const $LetterTemplateEventV1Data = $TemplateEventV1BaseData
     }),
     personalisationParameters: z.array(z.string().max(1000)).meta({
       description: 'List of personalisation parameters used in the template',
-    }),
+    }).optional(),
     letterVariantId: z.string().meta({
       description: 'Letter variant ID',
     }),

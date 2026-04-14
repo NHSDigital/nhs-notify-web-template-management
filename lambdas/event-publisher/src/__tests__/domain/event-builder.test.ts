@@ -35,7 +35,8 @@ const eventBuilder = new EventBuilder(
 );
 
 const publishableTemplateEventRecord = (
-  newStatus: string
+  newStatus: string,
+  templateType: string
 ): PublishableEventRecord => ({
   dynamodb: {
     SequenceNumber: '4',
@@ -67,112 +68,54 @@ const publishableTemplateEventRecord = (
       updatedBy: {
         S: 'updated-by',
       },
-      templateType: {
-        S: 'LETTER',
-      },
-      language: {
-        S: 'fr',
-      },
-      letterType: {
-        S: 'x0',
-      },
-      proofingEnabled: {
-        BOOL: true,
-      },
-      files: {
-        M: {
-          docxTemplate: {
-            M: {
-              currentVersion: {
-                S: 'current-version',
-              },
-              fileName: {
-                S: 'file-name',
-              },
-              virusScanStatus: {
-                S: 'PASSED',
+      ...(templateType === 'LETTER'
+        ? {
+            language: {
+              S: 'fr',
+            },
+            letterType: {
+              S: 'x0',
+            },
+            files: {
+              M: {
+                docxTemplate: {
+                  M: {
+                    currentVersion: {
+                      S: 'current-version',
+                    },
+                    fileName: {
+                      S: 'file-name',
+                    },
+                    virusScanStatus: {
+                      S: 'PASSED',
+                    },
+                  },
+                },
               },
             },
-          },
-        },
-      },
-      letterVariantId: {
-        S: 'letter-variant-id',
-      },
-      customPersonalisation: {
-        L: [
-          {
-            S: 'test',
-          },
-        ],
+            letterVariantId: {
+              S: 'letter-variant-id',
+            },
+            customPersonalisation: {
+              L: [
+                {
+                  S: 'test',
+                },
+              ],
+            },
+          }
+        : {
+            message: {
+              S: 'template-message',
+            },
+          }),
+      templateType: {
+        S: templateType,
       },
     },
     OldImage: {
-      owner: {
-        S: 'owner',
-      },
-      id: {
-        S: 'id',
-      },
-      clientId: {
-        S: 'client-id',
-      },
-      createdAt: {
-        S: '2022-01-01T09:00:00.000Z',
-      },
-      createdBy: {
-        S: 'created-by',
-      },
-      name: {
-        S: 'name',
-      },
       templateStatus: {
         S: 'PENDING_PROOF_REQUEST',
-      },
-      updatedAt: {
-        S: '2022-01-01T09:00:01.000Z',
-      },
-      updatedBy: {
-        S: 'updated-by',
-      },
-      templateType: {
-        S: 'LETTER',
-      },
-      language: {
-        S: 'fr',
-      },
-      letterType: {
-        S: 'x0',
-      },
-      proofingEnabled: {
-        BOOL: true,
-      },
-      files: {
-        M: {
-          docxTemplate: {
-            M: {
-              currentVersion: {
-                S: 'current-version',
-              },
-              fileName: {
-                S: 'file-name',
-              },
-              virusScanStatus: {
-                S: 'PASSED',
-              },
-            },
-          },
-        },
-      },
-      letterVariantId: {
-        S: 'letter-variant-id',
-      },
-      customPersonalisation: {
-        L: [
-          {
-            S: 'test',
-          },
-        ],
       },
     },
   },
@@ -180,7 +123,11 @@ const publishableTemplateEventRecord = (
   tableName: tables.templates,
 });
 
-const expectedTemplateEvent = (type: string, dataschema: string) => ({
+const expectedTemplateEvent = (
+  type: string,
+  dataschema: string,
+  templateType: string
+) => ({
   event: {
     id: '7f2ae4b0-82c2-4911-9b84-8997d7f3f40d',
     datacontenttype: 'application/json',
@@ -200,23 +147,32 @@ const expectedTemplateEvent = (type: string, dataschema: string) => ({
       createdBy: 'created-by',
       updatedAt: '2022-01-01T09:00:01.000Z',
       updatedBy: 'updated-by',
-      personalisationParameters: ['test'],
-      templateType: 'LETTER',
+      templateType,
       name: 'name',
-      letterType: 'x0',
-      language: 'fr',
-      letterVariantId: 'letter-variant-id',
-      files: {
-        docxTemplate: {
-          url: 'client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
-        },
-      },
+      ...(templateType === 'LETTER'
+        ? {
+            letterType: 'x0',
+            language: 'fr',
+            letterVariantId: 'letter-variant-id',
+            personalisationParameters: ['test'],
+            files: {
+              docxTemplate: {
+                url: 'client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
+              },
+            },
+          }
+        : {
+            message: 'template-message',
+          }),
     },
   },
-  sharedFiles: {
-    'docx-template/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/current-version.docx':
-      'client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
-  },
+  sharedFiles:
+    templateType === 'LETTER'
+      ? {
+          'docx-template/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/current-version.docx':
+            'client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
+        }
+      : {},
 });
 
 const publishableRoutingConfigEventRecord = (
@@ -424,7 +380,7 @@ const expectedProofRequestedEvent = () => ({
 
 test('errors on unrecognised event table source', () => {
   const invalidpublishableTemplateEventRecord = {
-    ...publishableTemplateEventRecord('SUBMITTED'),
+    ...publishableTemplateEventRecord('SUBMITTED', 'LETTER'),
     tableName: 'unknown-table-name',
   };
 
@@ -435,7 +391,7 @@ test('errors on unrecognised event table source', () => {
 
 describe('template events', () => {
   test('errors on output schema validation failure', () => {
-    const valid = publishableTemplateEventRecord('SUBMITTED');
+    const valid = publishableTemplateEventRecord('SUBMITTED', 'LETTER');
 
     const invalidDomainEventRecord = {
       ...valid,
@@ -467,33 +423,35 @@ describe('template events', () => {
 
   test('builds template completed event', () => {
     const event = eventBuilder.buildEvent(
-      publishableTemplateEventRecord('SUBMITTED')
+      publishableTemplateEventRecord('SUBMITTED', 'LETTER')
     );
 
     expect(event).toEqual(
       expectedTemplateEvent(
         'uk.nhs.notify.template-management.TemplateCompleted.v1',
-        'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
+        'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json',
+        'LETTER'
       )
     );
   });
 
   test('builds template drafted event', () => {
     const event = eventBuilder.buildEvent(
-      publishableTemplateEventRecord('PROOF_AVAILABLE')
+      publishableTemplateEventRecord('PROOF_AVAILABLE', 'NHS_APP')
     );
 
     expect(event).toEqual(
       expectedTemplateEvent(
         'uk.nhs.notify.template-management.TemplateDrafted.v1',
-        'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
+        'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json',
+        'NHS_APP'
       )
     );
   });
 
   test('builds event when no old image is available', () => {
     // although not required by this lambda, an old image would be expected here in real usage
-    const mockEvent = publishableTemplateEventRecord('SUBMITTED');
+    const mockEvent = publishableTemplateEventRecord('SUBMITTED', 'LETTER');
 
     const noOldImage = {
       ...mockEvent,
@@ -508,20 +466,22 @@ describe('template events', () => {
     expect(event).toEqual(
       expectedTemplateEvent(
         'uk.nhs.notify.template-management.TemplateCompleted.v1',
-        'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
+        'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json',
+        'LETTER'
       )
     );
   });
 
   test('builds template deleted event', () => {
     const event = eventBuilder.buildEvent(
-      publishableTemplateEventRecord('DELETED')
+      publishableTemplateEventRecord('DELETED', 'LETTER')
     );
 
     expect(event).toEqual(
       expectedTemplateEvent(
         'uk.nhs.notify.template-management.TemplateDeleted.v1',
-        'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json'
+        'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json',
+        'LETTER'
       )
     );
   });
@@ -531,7 +491,7 @@ describe('template events', () => {
     shouldPublishMock.mockReturnValueOnce(false);
 
     const event = eventBuilder.buildEvent(
-      publishableTemplateEventRecord('PROOF_AVAILABLE')
+      publishableTemplateEventRecord('PROOF_AVAILABLE', 'LETTER')
     );
 
     expect(event).toEqual(undefined);
@@ -539,7 +499,7 @@ describe('template events', () => {
 
   test('does not build template event on hard delete', () => {
     const hardDeletePublishableTemplateEventRecord = {
-      ...publishableTemplateEventRecord('SUBMITTED'),
+      ...publishableTemplateEventRecord('SUBMITTED', 'LETTER'),
       dynamodb: {
         SequenceNumber: '4',
         NewImage: undefined,
@@ -554,7 +514,7 @@ describe('template events', () => {
   });
 
   test('errors when docxTemplate is missing', () => {
-    const valid = publishableTemplateEventRecord('SUBMITTED');
+    const valid = publishableTemplateEventRecord('SUBMITTED', 'LETTER');
 
     const missingDocxTemplate = {
       ...valid,
