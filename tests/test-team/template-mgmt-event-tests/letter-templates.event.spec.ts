@@ -49,6 +49,7 @@ test.describe('Event publishing - Letters', () => {
         longFormRender: {
           status: 'RENDERED',
         },
+        letterVariantId: 'letter-variant-id',
       }
     );
 
@@ -104,6 +105,7 @@ test.describe('Event publishing - Letters', () => {
         longFormRender: {
           status: 'RENDERED',
         },
+        letterVariantId: 'letter-variant-id',
       }
     );
 
@@ -160,6 +162,7 @@ test.describe('Event publishing - Letters', () => {
         longFormRender: {
           status: 'RENDERED',
         },
+        letterVariantId: 'letter-variant-id',
       }
     );
 
