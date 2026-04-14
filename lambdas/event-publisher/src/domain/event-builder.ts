@@ -105,6 +105,40 @@ export class EventBuilder {
     return `${clientId}/${id}/${Date.now()}.docx`;
   }
 
+  private getNonDatabaseFieldsForTemplateEvent(
+    databaseTemplate: DynamoDBTemplate
+  ) {
+    if (databaseTemplate.templateType !== 'LETTER') {
+      return {};
+    }
+
+    return {
+      files: {
+        docxTemplate: {
+          url: this.getSharedFilePathForTemplateEvent(databaseTemplate),
+        },
+      },
+      personalisationParameters: databaseTemplate.customPersonalisation,
+    };
+  }
+
+  private getSharedFileMappingsForTemplateEvent(
+    databaseTemplate: DynamoDBTemplate
+  ) {
+    if (databaseTemplate.templateType !== 'LETTER') {
+      return {};
+    }
+
+    const internalFilePath =
+      this.getInternalFilePathForTemplateEvent(databaseTemplate);
+    const sharedFilePath =
+      this.getSharedFilePathForTemplateEvent(databaseTemplate);
+
+    return {
+      [internalFilePath]: sharedFilePath,
+    };
+  }
+
   private buildTemplateDatabaseEvent(
     publishableEventRecord: PublishableEventRecord
   ): EventBuilderOutput {
@@ -139,11 +173,6 @@ export class EventBuilder {
       return undefined;
     }
 
-    const internalFilePath =
-      this.getInternalFilePathForTemplateEvent(databaseTemplateNew);
-    const sharedFilePath =
-      this.getSharedFilePathForTemplateEvent(databaseTemplateNew);
-
     try {
       return {
         event: $Event.parse({
@@ -156,17 +185,11 @@ export class EventBuilder {
           ),
           data: {
             ...dynamoRecordNew,
-            files: {
-              docxTemplate: {
-                url: sharedFilePath,
-              },
-            },
-            personalisationParameters: dynamoRecordNew.customPersonalisation,
+            ...this.getNonDatabaseFieldsForTemplateEvent(databaseTemplateNew),
           },
         }),
-        sharedFiles: {
-          [internalFilePath]: sharedFilePath,
-        },
+        sharedFiles:
+          this.getSharedFileMappingsForTemplateEvent(databaseTemplateNew),
       };
     } catch (error) {
       this.logger

@@ -350,7 +350,6 @@
         "templateType",
         "language",
         "letterType",
-        "personalisationParameters",
         "letterVariantId"
       ]
     },
