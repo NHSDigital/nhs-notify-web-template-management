@@ -56,7 +56,9 @@ export type DynamoDBTemplate = z.infer<typeof $DynamoDBTemplate>;
 export const $DynamoDBTemplateOldImage = z.object({
   templateStatus: z.enum(TEMPLATE_STATUS_LIST),
 });
-export type DynamoDBTemplateOldImage = z.infer<typeof $DynamoDBTemplateOldImage>;
+export type DynamoDBTemplateOldImage = z.infer<
+  typeof $DynamoDBTemplateOldImage
+>;
 
 export const $DynamoDBRoutingConfig = schemaFor<Partial<RoutingConfig>>()(
   z.object({

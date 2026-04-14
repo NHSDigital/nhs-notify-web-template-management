@@ -10,9 +10,6 @@ describe('shouldPublish', () => {
     (type) => {
       const publish = shouldPublish(
         {
-          templateType: type,
-          id: 'id',
-          clientId: 'client-id',
           templateStatus: 'NOT_YET_SUBMITTED',
         },
         {
@@ -27,29 +24,21 @@ describe('shouldPublish', () => {
     }
   );
 
-  test.each([false, undefined])(
-    'templateType LETTER should return false when letterVersion is not AUTHORING',
-    (proofingEnabled) => {
-      const publish = shouldPublish(
-        {
-          id: 'id',
-          clientId: 'client-id',
-          templateType: 'LETTER',
-          templateStatus: 'PROOF_AVAILABLE',
-          proofingEnabled,
-        },
-        {
-          id: 'id',
-          clientId: 'client-id',
-          templateType: 'LETTER',
-          templateStatus: 'SUBMITTED',
-          proofingEnabled,
-        }
-      );
+  test('templateType LETTER should return false when letterVersion is not AUTHORING', () => {
+    const publish = shouldPublish(
+      {
+        templateStatus: 'PROOF_AVAILABLE',
+      },
+      {
+        id: 'id',
+        clientId: 'client-id',
+        templateType: 'LETTER',
+        templateStatus: 'SUBMITTED',
+      }
+    );
 
-      expect(publish).toEqual(false);
-    }
-  );
+    expect(publish).toEqual(false);
+  });
 
   type LetterStatus = Exclude<TemplateStatus, 'NOT_YET_SUBMITTED'>;
 
@@ -72,19 +61,13 @@ describe('shouldPublish', () => {
     (templateStatus, publishable) => {
       const publish = shouldPublish(
         {
-          id: 'id',
-          clientId: 'client-id',
-          templateType: 'LETTER',
           templateStatus: 'SUBMITTED',
-          proofingEnabled: true,
-          letterVersion: 'AUTHORING',
         },
         {
           id: 'id',
           clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus,
-          proofingEnabled: true,
           letterVersion: 'AUTHORING',
         }
       );
@@ -99,19 +82,13 @@ describe('shouldPublish', () => {
     (templateStatus, publishable) => {
       const publish = shouldPublish(
         {
-          id: 'id',
-          clientId: 'client-id',
-          templateType: 'LETTER',
           templateStatus,
-          proofingEnabled: true,
-          letterVersion: 'AUTHORING',
         },
         {
           id: 'id',
           clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus: 'DELETED',
-          proofingEnabled: true,
           letterVersion: 'AUTHORING',
         }
       );
@@ -127,7 +104,6 @@ describe('shouldPublish', () => {
         clientId: 'client-id',
         templateType: 'LETTER',
         templateStatus: 'DELETED',
-        proofingEnabled: true,
         letterVersion: 'AUTHORING',
       })
     ).toEqual(false);

@@ -1,4 +1,7 @@
-import type { DynamoDBTemplate, DynamoDBTemplateOldImage } from './input-schemas';
+import type {
+  DynamoDBTemplate,
+  DynamoDBTemplateOldImage,
+} from './input-schemas';
 
 const publishableAuthoringLetterStatuses = new Set<
   DynamoDBTemplate['templateStatus']
