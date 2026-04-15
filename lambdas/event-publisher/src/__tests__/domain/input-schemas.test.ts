@@ -9,7 +9,9 @@ describe('Input Schemas', () => {
     it('should validate minimal valid record', () => {
       const minimalRecord = {
         eventID: 'test-event-id',
-        dynamodb: {},
+        dynamodb: {
+          SequenceNumber: '12345678901234567890',
+        },
         tableName: 'test-table',
       };
 

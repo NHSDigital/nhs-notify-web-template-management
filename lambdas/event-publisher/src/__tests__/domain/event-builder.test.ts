@@ -159,7 +159,7 @@ const expectedTemplateEvent = (
             personalisationParameters: ['test'],
             files: {
               docxTemplate: {
-                url: 'shared-files-bucket/shared-files-prefix/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
+                url: 'shared-files-bucket/shared-files-prefix/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/4.docx',
               },
             },
           }
@@ -172,7 +172,7 @@ const expectedTemplateEvent = (
     templateType === 'LETTER'
       ? {
           'docx-template/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/current-version.docx':
-            'shared-files-prefix/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/1641027600000.docx',
+            'shared-files-prefix/client-id/92b676e9-470f-4d04-ab14-965ef145e15d/4.docx',
         }
       : {},
 });
