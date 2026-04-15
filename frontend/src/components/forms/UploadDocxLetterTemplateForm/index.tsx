@@ -8,7 +8,6 @@ import {
   isRightToLeft,
   languageMapping,
 } from 'nhs-notify-web-template-management-utils';
-import { FileUploadInput } from '@atoms/FileUpload/FileUpload';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
@@ -85,7 +84,7 @@ export function FileField() {
         <ContentRenderer content={content.fields.file.hint} />
       </HintText>
       <NHSNotifyForm.ErrorMessage htmlFor='file' />
-      <FileUploadInput
+      <NHSNotifyForm.FileUploadInput
         id='file'
         name='file'
         accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'

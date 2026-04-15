@@ -603,7 +603,7 @@ const letterRender = {
   customSection: {
     heading: 'Custom personalisation fields',
     error: {
-      required: `Enter example data for {{field}}`,
+      required: 'Enter example data for {{field}}',
     },
   },
   updatePreviewButton: 'Update preview',
