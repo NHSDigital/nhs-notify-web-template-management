@@ -198,7 +198,6 @@ function createTemplates(
       {
         letterVariantId: 'variant-address',
         validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
-        initialRender: { status: 'FAILED' },
       }
     ),
     authoringUnexpectedAddressLines:
@@ -210,7 +209,6 @@ function createTemplates(
         {
           letterVariantId: 'variant-address',
           validationErrors: [{ name: 'UNEXPECTED_ADDRESS_LINES' }],
-          initialRender: { status: 'FAILED' },
         }
       ),
     authoringInvalidMarkers: TemplateFactory.createAuthoringLetterTemplate(
@@ -229,7 +227,6 @@ function createTemplates(
             ],
           },
         ],
-        initialRender: { status: 'FAILED' },
       }
     ),
     authoringUnknownValidationFailed:
@@ -324,17 +321,7 @@ function createTemplates(
           },
         }
       ),
-    authoringValidationFailedWithRender:
-      TemplateFactory.createAuthoringLetterTemplate(
-        'B8C9D0E1-F2A3-4567-BCDE-890123456789',
-        user,
-        'authoring-validation-failed-with-render',
-        'VALIDATION_FAILED',
-        {
-          letterVariantId: 'variant-fail-render',
-          validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
-        }
-      ),
+
     authoringWithFailedInitialRender:
       TemplateFactory.createAuthoringLetterTemplate(
         'F1E2D3C4-B5A6-7890-FEDC-BA9876543210',
@@ -725,7 +712,7 @@ test.describe('Preview Letter template Page', () => {
 
       await expect(previewPage.pageSpinner).toBeVisible();
 
-      await expect(previewPage.letterRender).toBeHidden();
+      await expect(previewPage.tabbedRenderSection).toBeHidden();
 
       await expect(previewPage.statusTag).toBeHidden();
     });
@@ -767,7 +754,7 @@ test.describe('Preview Letter template Page', () => {
 
       await expect(previewPage.pageSpinner).toBeHidden();
 
-      await expect(previewPage.letterRender).toBeHidden();
+      await expect(previewPage.tabbedRenderSection).toBeHidden();
 
       await expect(previewPage.statusTag).toBeVisible();
       await expect(previewPage.statusTag).toHaveText('Checking files');
@@ -846,7 +833,7 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        await expect(previewPage.letterRender).toBeVisible();
+        await expect(previewPage.tabbedRenderSection).toBeVisible();
 
         await expect(previewPage.shortTab.tab).toBeVisible();
         await expect(previewPage.longTab.tab).toBeVisible();
@@ -874,7 +861,7 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        await expect(previewPage.letterRender).toBeHidden();
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
       });
 
       test('can switch between short and long example tabs', async ({
@@ -1371,6 +1358,9 @@ test.describe('Preview Letter template Page', () => {
           await expect(previewPage.errorSummary).toContainText(errorMessage);
         }
 
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+        await expect(previewPage.initialRenderIframe).toBeHidden();
+
         await expect(previewPage.continueButton).toBeHidden();
 
         await expect(previewPage.editNameLink).toBeHidden();
@@ -1384,9 +1374,11 @@ test.describe('Preview Letter template Page', () => {
       test('displays missing address lines error when status is VALIDATION_FAILED with MISSING_ADDRESS_LINES', async ({
         page,
       }) => {
+        const { clientId, files, id } = templates.authoringMissingAddressLines;
+
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
-        ).setPathParam('templateId', templates.authoringMissingAddressLines.id);
+        ).setPathParam('templateId', id);
 
         await previewPage.loadPage();
 
@@ -1401,6 +1393,14 @@ test.describe('Preview Letter template Page', () => {
           await expect(previewPage.errorSummary).toContainText(errorMessage);
         }
 
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+
+        await expect(previewPage.initialRenderIframe).toBeVisible();
+        await expect(previewPage.initialRenderIframe).toHaveAttribute(
+          'src',
+          `/templates/files/${clientId}/renders/${id}/${files!.initialRender!.fileName}`
+        );
+
         await expect(previewPage.continueButton).toBeHidden();
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
@@ -1412,12 +1412,12 @@ test.describe('Preview Letter template Page', () => {
       test('displays unexpected address lines error when status is VALIDATION_FAILED with UNEXPECTED_ADDRESS_LINES', async ({
         page,
       }) => {
+        const { clientId, files, id } =
+          templates.authoringUnexpectedAddressLines;
+
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
-        ).setPathParam(
-          'templateId',
-          templates.authoringUnexpectedAddressLines.id
-        );
+        ).setPathParam('templateId', id);
 
         await previewPage.loadPage();
 
@@ -1432,6 +1432,14 @@ test.describe('Preview Letter template Page', () => {
           await expect(previewPage.errorSummary).toContainText(errorMessage);
         }
 
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+
+        await expect(previewPage.initialRenderIframe).toBeVisible();
+        await expect(previewPage.initialRenderIframe).toHaveAttribute(
+          'src',
+          `/templates/files/${clientId}/renders/${id}/${files!.initialRender!.fileName}`
+        );
+
         await expect(previewPage.continueButton).toBeHidden();
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
@@ -1443,9 +1451,11 @@ test.describe('Preview Letter template Page', () => {
       test('displays dynamic invalid markers error when status is VALIDATION_FAILED with INVALID_MARKERS', async ({
         page,
       }) => {
+        const { clientId, files, id } = templates.authoringInvalidMarkers;
+
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
-        ).setPathParam('templateId', templates.authoringInvalidMarkers.id);
+        ).setPathParam('templateId', id);
 
         await previewPage.loadPage();
 
@@ -1467,6 +1477,14 @@ test.describe('Preview Letter template Page', () => {
         for (const errorMessage of errorMessageLines) {
           await expect(previewPage.errorSummary).toContainText(errorMessage);
         }
+
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+
+        await expect(previewPage.initialRenderIframe).toBeVisible();
+        await expect(previewPage.initialRenderIframe).toHaveAttribute(
+          'src',
+          `/templates/files/${clientId}/renders/${id}/${files!.initialRender!.fileName}`
+        );
 
         await expect(previewPage.continueButton).toBeHidden();
 
@@ -1499,41 +1517,15 @@ test.describe('Preview Letter template Page', () => {
           await expect(previewPage.errorSummary).toContainText(errorMessage);
         }
 
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+        await expect(previewPage.initialRenderIframe).toBeHidden();
+
         await expect(previewPage.continueButton).toBeHidden();
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
           'href',
           '/templates/choose-a-template-type'
         );
-      });
-
-      test('hides letter preview section when VALIDATION_FAILED with no initialRender', async ({
-        page,
-      }) => {
-        const previewPage = new TemplateMgmtPreviewLetterPage(
-          page
-        ).setPathParam('templateId', templates.authoringVirusScanFailed.id);
-
-        await previewPage.loadPage();
-
-        await expect(previewPage.letterRender).toBeHidden();
-      });
-
-      test('shows letter preview section when VALIDATION_FAILED but has initialRender', async ({
-        page,
-      }) => {
-        const previewPage = new TemplateMgmtPreviewLetterPage(
-          page
-        ).setPathParam(
-          'templateId',
-          templates.authoringValidationFailedWithRender.id
-        );
-
-        await previewPage.loadPage();
-
-        await expect(previewPage.errorSummary).toBeVisible();
-
-        await expect(previewPage.letterRender).toBeVisible();
       });
 
       test('hides campaign and postage rows when VALIDATION_FAILED', async ({

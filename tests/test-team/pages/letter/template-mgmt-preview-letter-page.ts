@@ -25,7 +25,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly campaignAction: Locator;
   public readonly printingAndPostage: Locator;
 
-  public readonly letterRender: Locator;
+  public readonly tabbedRenderSection: Locator;
 
   public readonly shortTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
   public readonly longTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
@@ -35,6 +35,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly serviceNowLink: Locator;
 
   public readonly uploadSuccessBanner: Locator;
+
+  public readonly initialRenderIframe: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -56,7 +58,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.campaignAction = page.getByTestId('campaign-action');
     this.printingAndPostage = page.locator('[id="printing-and-postage"]');
 
-    this.letterRender = page.locator('section').filter({
+    this.tabbedRenderSection = page.locator('section').filter({
       has: page.getByRole('heading', { name: 'Letter preview' }),
     });
 
@@ -74,6 +76,10 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.serviceNowLink = page.getByRole('link', {
       name: /raise a Service Now request/,
     });
+
+    this.initialRenderIframe = page
+      .getByTitle('Letter preview')
+      .and(page.locator('iframe'));
   }
 
   public getTab(variant: TabVariant) {

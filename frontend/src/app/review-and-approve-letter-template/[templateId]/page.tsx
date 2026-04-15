@@ -32,6 +32,7 @@ const {
   submitText,
   pageHeading,
   headerCaption,
+  iframe,
 } = content.pages.reviewAndApproveLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -101,11 +102,12 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               styles.iframe,
               'nhsuk-u-margin-bottom-6'
             )}
-            tab='shortFormRender'
-            pdfUrl={buildLetterRenderUrl(
+            src={buildLetterRenderUrl(
               validatedTemplate,
               shortFormRender.fileName
             )}
+            title={interpolate(iframe.title, { tab: 'short' })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: 'short' })}
           />
           <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
           <LetterRenderIframe
@@ -113,11 +115,12 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               styles.iframe,
               'nhsuk-u-margin-bottom-6'
             )}
-            tab='longFormRender'
-            pdfUrl={buildLetterRenderUrl(
+            src={buildLetterRenderUrl(
               validatedTemplate,
               longFormRender.fileName
             )}
+            title={interpolate(iframe.title, { tab: 'long' })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: 'long' })}
           />
           <NHSNotifyForm.Form formId='review-and-approve-letter'>
             <input

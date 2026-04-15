@@ -16,8 +16,9 @@ import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import content from '@content/content';
 import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import { interpolate } from '@utils/interpolate';
 
-const { loadingText } = content.components.letterRender;
+const { loadingText, iframe } = content.components.letterRender;
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -28,7 +29,7 @@ type LetterRenderTabProps = {
 function derivePdfUrl(
   template: AuthoringLetterTemplate,
   personalisedRender: RenderDetails | undefined
-): string | null {
+): string | undefined {
   const initialRender = template.files.initialRender;
 
   const render =
@@ -36,9 +37,9 @@ function derivePdfUrl(
       ? personalisedRender
       : initialRender;
 
-  return render?.status === 'RENDERED'
-    ? buildLetterRenderUrl(template, render.fileName)
-    : null;
+  if (render?.status !== 'RENDERED') return;
+
+  return buildLetterRenderUrl(template, render.fileName);
 }
 
 function deriveFormState(
@@ -72,10 +73,12 @@ function LetterRenderTabContent({
 }: {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
-  pdfUrl: string | null;
+  pdfUrl?: string;
   hideEditActions?: boolean;
 }) {
   const [_state, _dispatch, isPending] = useNHSNotifyForm();
+
+  const tabDescription = tab === 'longFormRender' ? 'long' : 'short';
 
   return (
     <div className={`nhsuk-grid-row ${styles.tabRow}`}>
@@ -89,7 +92,11 @@ function LetterRenderTabContent({
 
       <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
         {hideEditActions ? (
-          <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
+          <LetterRenderIframe
+            src={pdfUrl}
+            title={interpolate(iframe.title, { tab: tabDescription })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: tabDescription })}
+          />
         ) : (
           <PollLetterRender
             template={template}
@@ -97,7 +104,13 @@ function LetterRenderTabContent({
             loadingElement={<p>{loadingText}</p>}
             forcePolling={isPending}
           >
-            <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
+            <LetterRenderIframe
+              src={pdfUrl}
+              title={interpolate(iframe.title, { tab: tabDescription })}
+              aria-label={interpolate(iframe.ariaLabel, {
+                tab: tabDescription,
+              })}
+            />
           </PollLetterRender>
         )}
       </div>

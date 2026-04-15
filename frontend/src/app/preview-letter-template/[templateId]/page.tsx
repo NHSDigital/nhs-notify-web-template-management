@@ -25,6 +25,10 @@ import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
+import styles from './page.module.scss';
+import concatClassNames from '@utils/concat-class-names';
+import { buildLetterRenderUrl } from '@utils/letter-render-url';
 
 const {
   approveButtonText,
@@ -35,6 +39,7 @@ const {
   uploadSuccessBanner,
   validationErrorMessages,
   defaultValidationErrorMessage,
+  validationFailedIframe,
 } = content.pages.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -53,6 +58,20 @@ function getValidationErrors(template: AuthoringLetterTemplate) {
   }
 
   return [defaultValidationErrorMessage];
+}
+
+function getInitialRenderDetails(template: AuthoringLetterTemplate): {
+  rendered: boolean;
+  src?: string;
+} {
+  if (template.files.initialRender.status !== 'RENDERED') {
+    return { rendered: false };
+  }
+
+  return {
+    rendered: true,
+    src: buildLetterRenderUrl(template, template.files.initialRender.fileName),
+  };
 }
 
 export default async function PreviewLetterTemplatePage({
@@ -84,8 +103,10 @@ export default async function PreviewLetterTemplatePage({
     return redirect(getPreviewURL(validatedTemplate), RedirectType.replace);
   }
 
-  const showRenderer =
-    validatedTemplate.files.initialRender.status === 'RENDERED';
+  const initialRender = getInitialRenderDetails(validatedTemplate);
+  const showRenderer = initialRender.rendered;
+  const showTabbedRenderer =
+    showRenderer && validatedTemplate.templateStatus !== 'VALIDATION_FAILED';
 
   const showSubmitForm =
     validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED';
@@ -105,7 +126,7 @@ export default async function PreviewLetterTemplatePage({
   const isFromUploadPage = search?.from === 'upload';
 
   return (
-    <NHSNotifyContainer fullWidth={showRenderer}>
+    <NHSNotifyContainer fullWidth={showTabbedRenderer}>
       <NHSNotifyFormProvider
         key={validatedTemplate.templateStatus}
         initialState={{
@@ -148,8 +169,21 @@ export default async function PreviewLetterTemplatePage({
                   </div>
                 </div>
               </NHSNotifyContainer>
-              {showRenderer && <LetterRender template={validatedTemplate} />}
-              <NHSNotifyContainer fullWidth={showRenderer}>
+              {showRenderer &&
+                (showTabbedRenderer ? (
+                  <LetterRender template={validatedTemplate} />
+                ) : (
+                  <LetterRenderIframe
+                    className={concatClassNames(
+                      styles.iframe,
+                      'nhsuk-u-margin-bottom-6'
+                    )}
+                    src={initialRender.src}
+                    title={validationFailedIframe.title}
+                    aria-label={validationFailedIframe.ariaLabel}
+                  />
+                ))}
+              <NHSNotifyContainer fullWidth={showTabbedRenderer}>
                 {showSubmitForm && (
                   <NHSNotifyForm.Form formId='preview-letter-template'>
                     <input

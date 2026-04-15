@@ -17,7 +17,11 @@ import Page, {
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
 import { RENDER_TIMEOUT_MS } from '@molecules/PollLetterRender/PollLetterRender';
-import { ValidationErrorDetail } from 'nhs-notify-web-template-management-types';
+import {
+  AuthoringLetterFiles,
+  RenderDetailsRendered,
+  ValidationErrorDetail,
+} from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -510,6 +514,7 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
     name: string;
     validationError?: ValidationErrorDetail;
     expectedErrorMessageLines: string[];
+    files: AuthoringLetterFiles;
   }[] = [
     {
       name: 'VIRUS_SCAN_FAILED',
@@ -518,6 +523,17 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
         'Your file may contain a virus and we could not open it',
         'Upload a different letter template file',
       ],
+      files: {
+        docxTemplate: {
+          currentVersion: '4b3a9d7e-b050-4c43-9889-98ff0d5d6c39',
+          fileName: 'eicar-threat-test.docx',
+          virusScanStatus: 'FAILED',
+        },
+        initialRender: {
+          requestedAt: '2026-04-15T11:17:03.849Z',
+          status: 'PENDING',
+        },
+      },
     },
     {
       name: 'MISSING_ADDRESS_LINES',
@@ -526,6 +542,19 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
         'Your template is missing address personalisation fields',
         'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file',
       ],
+      files: {
+        docxTemplate: {
+          currentVersion: '7549a403-dcb2-4f29-97a7-f9e85350c82a',
+          fileName: 'missing-address-line.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          currentVersion: '280c795d-9e86-42b9-a3d5-77d23ebe28a0',
+          fileName: '280c795d-9e86-42b9-a3d5-77d23ebe28a0.pdf',
+          pageCount: 2,
+          status: 'RENDERED',
+        },
+      },
     },
     {
       name: 'UNEXPECTED_ADDRESS_LINES',
@@ -534,6 +563,19 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
         'Your template has address personalisation fields we do not recognise',
         'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file',
       ],
+      files: {
+        docxTemplate: {
+          currentVersion: '64bc9454-30cf-4eb0-aaf2-9f0dc1d17ef7',
+          fileName: 'unexpected-address-lines.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          currentVersion: '7114fecd-e1fc-4766-a9a9-cc54bb7eb29f',
+          fileName: '7114fecd-e1fc-4766-a9a9-cc54bb7eb29f.pdf',
+          pageCount: 2,
+          status: 'RENDERED',
+        },
+      },
     },
     {
       name: 'INVALID_MARKERS',
@@ -558,6 +600,19 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
         'underscores',
         'Update your letter template file and upload it again',
       ],
+      files: {
+        docxTemplate: {
+          currentVersion: 'd17cb7dc-e676-40e9-bdae-daa93f869617',
+          fileName: 'invalid-markers.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          currentVersion: '1a6d0abf-718f-4ec2-9716-6344b611b995',
+          fileName: '1a6d0abf-718f-4ec2-9716-6344b611b995.pdf',
+          pageCount: 2,
+          status: 'RENDERED',
+        },
+      },
     },
     {
       name: 'undefined',
@@ -566,17 +621,28 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
         'We could not open your file. This may be a technical problem or an issue with your file',
         'Upload a different letter template file',
       ],
+      files: {
+        docxTemplate: {
+          currentVersion: 'c4c16eed-9e53-4278-9b57-cc7ec53767b0',
+          fileName: 'random-bytes-zipped.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          status: 'FAILED',
+        },
+      },
     },
   ];
 
   describe.each(cases)(
     '$name',
-    ({ validationError, expectedErrorMessageLines }) => {
+    ({ validationError, expectedErrorMessageLines, files }) => {
       beforeEach(() => {
         jest.mocked(getTemplate).mockResolvedValue({
           ...AUTHORING_LETTER_TEMPLATE,
           templateStatus: 'VALIDATION_FAILED',
           validationErrors: validationError && [validationError],
+          files,
         });
       });
 
@@ -602,7 +668,52 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
         }
       });
 
-      it('display "upload different template" button instead of submit button when validation has failed', async () => {
+      it('does not display tabbed renderer', async () => {
+        render(
+          await Page({
+            params: Promise.resolve({
+              templateId: AUTHORING_LETTER_TEMPLATE.id,
+            }),
+          })
+        );
+
+        expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+      });
+
+      if (files.initialRender.status === 'RENDERED') {
+        it('displays initial render iframe when render is available', async () => {
+          const { id, clientId } = AUTHORING_LETTER_TEMPLATE;
+          render(
+            await Page({
+              params: Promise.resolve({
+                templateId: AUTHORING_LETTER_TEMPLATE.id,
+              }),
+            })
+          );
+
+          const iframe = screen.queryByTitle('Letter preview');
+
+          expect(iframe).toBeVisible();
+          expect(iframe).toHaveAttribute(
+            'src',
+            `/templates/files/${clientId}/renders/${id}/${(files.initialRender as RenderDetailsRendered).fileName}`
+          );
+        });
+      } else {
+        it('does not display initial render iframe when render is not available', async () => {
+          render(
+            await Page({
+              params: Promise.resolve({
+                templateId: AUTHORING_LETTER_TEMPLATE.id,
+              }),
+            })
+          );
+
+          expect(screen.queryByTitle('Letter preview')).not.toBeInTheDocument();
+        });
+      }
+
+      it('displays "upload different template" button instead of submit button when validation has failed', async () => {
         render(
           await Page({
             params: Promise.resolve({

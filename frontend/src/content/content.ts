@@ -639,6 +639,10 @@ const previewLetterTemplate = {
       href: '/templates/choose-a-template-type',
     },
   },
+  validationFailedIframe: {
+    title: 'Letter preview',
+    ariaLabel: 'PDF preview of letter template',
+  },
 };
 
 const previewSubmittedLetterTemplate = {
@@ -671,6 +675,15 @@ const letterRender = {
     heading: 'Custom personalisation fields',
   },
   updatePreviewButton: 'Update preview',
+  iframe: {
+    title: 'Letter preview - {{tab}} examples',
+    ariaLabel:
+      'PDF preview of letter template with {{tab}} example personalisation data',
+  },
+};
+
+const letterRenderIframe = {
+  noPreviewAvailable: 'No preview available',
 };
 
 const previewNHSAppTemplate = {
@@ -2109,6 +2122,11 @@ const reviewAndApproveLetterTemplate = {
   submitText: 'Approve letter template',
   pageHeading: `Review and approve '{{templateName}}'`,
   headerCaption: 'Step 2 of 2',
+  iframe: {
+    title: 'Letter preview - {{tab}} examples',
+    ariaLabel:
+      'PDF preview of letter template with {{tab}} example personalisation data',
+  },
 };
 
 const editTemplateNamePage = {
@@ -2215,6 +2233,7 @@ const content = {
     header,
     howToRequestADigitalProof,
     letterRender,
+    letterRenderIframe,
     lockedTemplateWarning,
     logoutWarning,
     messageFormatting,
