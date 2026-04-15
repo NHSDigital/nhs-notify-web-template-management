@@ -486,10 +486,7 @@
                 "type": "string"
               },
               "status": {
-                "enum": [
-                  "PENDING_VERIFICATION"
-                ],
-                "type": "string"
+                "$ref": "#/components/schemas/ContactDetailStatus"
               }
             },
             "required": [
@@ -504,11 +501,7 @@
       "ContactDetailInput": {
         "properties": {
           "type": {
-            "enum": [
-              "EMAIL",
-              "SMS"
-            ],
-            "type": "string"
+            "$ref": "#/components/schemas/ContactDetailType"
           },
           "value": {
             "type": "string"
@@ -538,6 +531,13 @@
           }
         ]
       },
+      "ContactDetailStatus": {
+        "enum": [
+          "PENDING_VERIFICATION",
+          "VERIFIED"
+        ],
+        "type": "string"
+      },
       "ContactDetailSuccess": {
         "properties": {
           "data": {
@@ -552,6 +552,13 @@
           "statusCode"
         ],
         "type": "object"
+      },
+      "ContactDetailType": {
+        "enum": [
+          "EMAIL",
+          "SMS"
+        ],
+        "type": "string"
       },
       "CountSuccess": {
         "properties": {

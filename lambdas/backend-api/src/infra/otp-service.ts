@@ -1,9 +1,12 @@
 import { randomInt } from 'node:crypto';
-import { failure, success, type ApplicationResult } from '@backend-api/utils';
-import type { ContactDetail } from 'nhs-notify-web-template-management-types';
 import { ErrorCase } from 'nhs-notify-backend-client/types';
+import type { ContactDetail } from 'nhs-notify-web-template-management-types';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import { failure, success, type ApplicationResult } from '@backend-api/utils';
 
 export class OtpService {
+  constructor(private logger: Logger) {}
+
   async generate(): Promise<ApplicationResult<string>> {
     try {
       const otp = randomInt(0, 1_000_000).toString().padStart(6, '0');
@@ -14,10 +17,10 @@ export class OtpService {
   }
 
   async send(
-    details: ContactDetail,
+    { value, ...details }: ContactDetail,
     _otp: string
   ): Promise<ApplicationResult<void>> {
-    console.log({ id: details.id });
+    this.logger.info({ description: 'Fake sending OTP', details });
 
     return { data: undefined };
   }

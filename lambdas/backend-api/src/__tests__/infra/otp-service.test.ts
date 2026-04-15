@@ -1,7 +1,14 @@
 import crypto from 'node:crypto';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { OtpService } from '@backend-api/infra/otp-service';
 
-const service = new OtpService();
+jest.mock('nhs-notify-web-template-management-utils/logger');
+
+const service = new OtpService(jest.mocked(logger));
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('OtpService', () => {
   describe('generate', () => {
@@ -39,13 +46,7 @@ describe('OtpService', () => {
   });
 
   describe('send', () => {
-    afterEach(() => {
-      jest.restoreAllMocks();
-    });
-
-    it('stub implementation - logs the contact detail id', async () => {
-      jest.spyOn(console, 'log');
-
+    it('stub implementation - logs the contact detail', async () => {
       const result = await service.send(
         {
           id: 'contact-details-id',
@@ -60,8 +61,14 @@ describe('OtpService', () => {
       expect(result.data).toBeUndefined();
       expect(result.error).toBeUndefined();
 
-      expect(console.log).toHaveBeenCalledWith({
-        id: 'contact-details-id',
+      expect(logger.info).toHaveBeenCalledWith({
+        description: 'Fake sending OTP',
+        details: {
+          id: 'contact-details-id',
+          clientId: 'client-id',
+          status: 'PENDING_VERIFICATION',
+          type: 'EMAIL',
+        },
       });
     });
   });

@@ -6,6 +6,7 @@ import { ErrorCase } from 'nhs-notify-backend-client/types';
 import type {
   ContactDetail,
   ContactDetailInputNormalized,
+  ContactDetailStatus,
 } from 'nhs-notify-web-template-management-types';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { failure, success, type ApplicationResult } from '@backend-api/utils';
@@ -57,7 +58,7 @@ export class ContactDetailsRepository {
             '#status': 'status',
           },
           ExpressionAttributeValues: {
-            ':statusVerified': 'VERIFIED',
+            ':statusVerified': 'VERIFIED' satisfies ContactDetailStatus,
           },
           ConditionExpression:
             'attribute_not_exists(#owner) OR #status <> :statusVerified',

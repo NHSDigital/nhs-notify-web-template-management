@@ -136,11 +136,11 @@ export type ConditionalTemplateLanguage = {
 export type ContactDetail = ContactDetailInput & {
   clientId: string;
   id: string;
-  status: 'PENDING_VERIFICATION';
+  status: ContactDetailStatus;
 };
 
 export type ContactDetailInput = {
-  type: 'EMAIL' | 'SMS';
+  type: ContactDetailType;
   value: string;
 };
 
@@ -148,10 +148,14 @@ export type ContactDetailInputNormalized = ContactDetailInput & {
   rawValue: string;
 };
 
+export type ContactDetailStatus = 'PENDING_VERIFICATION' | 'VERIFIED';
+
 export type ContactDetailSuccess = {
   data: ContactDetail;
   statusCode: number;
 };
+
+export type ContactDetailType = 'EMAIL' | 'SMS';
 
 export type CountSuccess = {
   data: {

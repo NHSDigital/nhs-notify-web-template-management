@@ -1,6 +1,7 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { SSMClient } from '@aws-sdk/client-ssm';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { ContactDetailsClient } from '@backend-api/app/contact-details-client';
 import { clientConfigContainer } from '@backend-api/container/client-config';
 import { loadConfig } from '@backend-api/infra/config';
@@ -24,7 +25,7 @@ export function contactDetailsContainer() {
     config.contactDetailsOtpSecretPath
   );
 
-  const otpService = new OtpService();
+  const otpService = new OtpService(logger);
 
   const { clientConfigRepo } = clientConfigContainer(config);
 
