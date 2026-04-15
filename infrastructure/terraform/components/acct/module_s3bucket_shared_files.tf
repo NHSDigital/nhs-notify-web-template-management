@@ -28,6 +28,7 @@ data "aws_iam_policy_document" "shared_files_bucket_policy" {
 
     actions = [
       "s3:GetObject",
+      "s3:GetObjectTagging",
       "s3:ListBucket",
     ]
 
