@@ -10,8 +10,7 @@ test('calls AWS SDK to copy object between buckets', async () => {
   const sharedFileRepository = new SharedFileRepository(
     mockS3Client,
     'internal-bucket',
-    'shared-file-bucket',
-    'namespace'
+    'shared-file-bucket'
   );
 
   await sharedFileRepository.upload('source/key.pdf', 'destination/key.pdf');
@@ -21,7 +20,7 @@ test('calls AWS SDK to copy object between buckets', async () => {
       input: expect.objectContaining({
         CopySource: 'internal-bucket/source/key.pdf',
         Bucket: 'shared-file-bucket',
-        Key: 'namespace/destination/key.pdf',
+        Key: 'destination/key.pdf',
       }),
     })
   );

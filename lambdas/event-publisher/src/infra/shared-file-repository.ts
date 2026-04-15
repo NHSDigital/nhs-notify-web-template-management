@@ -4,8 +4,7 @@ export class SharedFileRepository {
   constructor(
     private readonly client: S3Client,
     private readonly internalBucket: string,
-    private readonly sharedFileBucket: string,
-    private readonly sharedFileNamespace: string
+    private readonly sharedFileBucket: string
   ) {}
 
   async upload(sourceKey: string, destinationKey: string) {
@@ -13,7 +12,7 @@ export class SharedFileRepository {
       new CopyObjectCommand({
         CopySource: `${this.internalBucket}/${sourceKey}`,
         Bucket: this.sharedFileBucket,
-        Key: `${this.sharedFileNamespace}/${destinationKey}`,
+        Key: destinationKey,
       })
     );
   }

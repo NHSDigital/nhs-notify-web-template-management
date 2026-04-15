@@ -30,14 +30,14 @@ export const createContainer = () => {
     PROOF_REQUESTS_TABLE_NAME,
     EVENT_SOURCE,
     SHARED_FILES_BUCKET_NAME,
+    SHARED_FILES_BUCKET_PREFIX,
     logger
   );
 
   const sharedFileRepository = new SharedFileRepository(
     s3Client,
     INTERNAL_BUCKET_NAME,
-    SHARED_FILES_BUCKET_NAME,
-    SHARED_FILES_BUCKET_PREFIX
+    SHARED_FILES_BUCKET_NAME
   );
 
   const app = new App(

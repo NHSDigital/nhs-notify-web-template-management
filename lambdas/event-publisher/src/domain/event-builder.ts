@@ -28,7 +28,8 @@ export class EventBuilder {
     private readonly routingConfigTableName: string,
     private readonly proofRequestsTableName: string,
     private readonly eventSource: string,
-    private readonly sharedFileBucket: string,
+    private readonly sharedFilesBucket: string,
+    private readonly sharedFilesPrefix: string,
     private readonly logger: Logger
   ) {}
 
@@ -103,7 +104,7 @@ export class EventBuilder {
     clientId,
     id,
   }: DynamoDBTemplate) {
-    return `${clientId}/${id}/${Date.now()}.docx`;
+    return `${this.sharedFilesPrefix}/${clientId}/${id}/${Date.now()}.docx`;
   }
 
   private getNonDatabaseFieldsForTemplateEvent(
@@ -116,7 +117,7 @@ export class EventBuilder {
     return {
       files: {
         docxTemplate: {
-          url: `${this.sharedFileBucket}/${this.getSharedFilePathForTemplateEvent(databaseTemplate)}`,
+          url: `${this.sharedFilesBucket}/${this.getSharedFilePathForTemplateEvent(databaseTemplate)}`,
         },
       },
       personalisationParameters: databaseTemplate.customPersonalisation,
