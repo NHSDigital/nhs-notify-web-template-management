@@ -203,17 +203,17 @@ exports[`authoring letter template with VALIDATION_FAILED status INVALID_MARKERS
                 You used the following personalisation fields with incorrect formatting:
               </p>
               <p
-                class="nhsuk-error-message nhsuk-error-message"
+                class="nhsuk-error-message"
               >
                 {c.compliment}
               </p>
               <p
-                class="nhsuk-error-message nhsuk-error-message"
+                class="nhsuk-error-message"
               >
                 {no.d}
               </p>
               <p
-                class="nhsuk-error-message nhsuk-error-message"
+                class="nhsuk-error-message"
               >
                 {d.underscores_to_test_markdown_escapes}
               </p>
@@ -227,7 +227,9 @@ exports[`authoring letter template with VALIDATION_FAILED status INVALID_MARKERS
               >
                 They can only contain
               </p>
-              <ul>
+              <ul
+                class="nhsuk-error-message nhsuk-u-margin-bottom-3"
+              >
                 <li>
                   letters (a to z, A to Z)
                 </li>

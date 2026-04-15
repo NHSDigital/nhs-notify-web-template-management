@@ -570,9 +570,6 @@ const previewLetterTemplate = {
         (issue): ContentBlock => ({
           type: 'text',
           text: escapeMarkdown(issue),
-          overrides: {
-            p: { props: { className: 'nhsuk-error-message' } },
-          },
         })
       ),
       {
@@ -591,6 +588,11 @@ const previewLetterTemplate = {
           'dashes',
           'underscores',
         ]),
+        overrides: {
+          ul: {
+            props: { className: 'nhsuk-error-message nhsuk-u-margin-bottom-3' },
+          },
+        },
       },
       {
         type: 'text',
