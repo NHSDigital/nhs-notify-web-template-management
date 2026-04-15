@@ -206,10 +206,10 @@ describe('EditMessagePlanPage', () => {
 
     render(page);
 
-    const link = screen.getByTestId('edit-settings-link');
+    const link = screen.getByTestId('rename-link');
     expect(link.textContent).toBe('Rename message plan');
     expect(link.getAttribute('href')).toBe(
-      `/message-plans/rename-message-plan/${routingConfigId}`
+      `/message-plans/rename-message-plan/${routingConfigId}?lockNumber=0`
     );
   });
 

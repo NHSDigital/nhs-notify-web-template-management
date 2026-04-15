@@ -1510,8 +1510,8 @@ const messagePlanCascadePreview = {
 const editMessagePlan = {
   pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
-  changeNameLink: {
-    href: '/message-plans/rename-message-plan/{{routingConfigId}}',
+  renameLink: {
+    href: '/message-plans/rename-message-plan/{{routingConfigId}}?lockNumber={{lockNumber}}',
     text: 'Rename message plan',
   },
   rowHeadings: {
