@@ -16,6 +16,8 @@ module "s3bucket_shared_files" {
   bucket_logging_target = {
     bucket = module.s3bucket_access_logs.id
   }
+
+  kms_key_arn = module.kms.key_arn
 }
 
 data "aws_iam_policy_document" "shared_files_bucket_policy" {

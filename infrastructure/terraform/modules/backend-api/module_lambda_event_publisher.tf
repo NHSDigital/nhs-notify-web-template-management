@@ -135,6 +135,7 @@ data "aws_iam_policy_document" "event_publisher" {
 
     resources = [
       var.kms_key_arn,
+      var.acct_kms_key_arn
     ]
   }
 }

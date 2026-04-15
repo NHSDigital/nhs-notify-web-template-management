@@ -41,4 +41,5 @@ module "backend_api" {
 
   shared_files_bucket_name = local.acct.s3_buckets["shared_files"]["id"]
   shared_files_bucket_arn  = local.acct.s3_buckets["shared_files"]["arn"]
+  acct_kms_key_arn         = local.acct.kms_key_arn
 }

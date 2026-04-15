@@ -38,6 +38,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_kms"></a> [kms](#module\_kms) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.8/terraform-kms.zip | n/a |
 | <a name="module_kms_ecr"></a> [kms\_ecr](#module\_kms\_ecr) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_kms_sandbox"></a> [kms\_sandbox](#module\_kms\_sandbox) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_obs_datasource"></a> [obs\_datasource](#module\_obs\_datasource) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-obs-datasource.zip | n/a |
@@ -57,6 +58,7 @@
 |------|-------------|
 | <a name="output_dns_zone"></a> [dns\_zone](#output\_dns\_zone) | n/a |
 | <a name="output_github_pat_ssm_param_name"></a> [github\_pat\_ssm\_param\_name](#output\_github\_pat\_ssm\_param\_name) | n/a |
+| <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | n/a |
 | <a name="output_log_subscription_role_arn"></a> [log\_subscription\_role\_arn](#output\_log\_subscription\_role\_arn) | n/a |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | n/a |
 | <a name="output_ses_testing_config"></a> [ses\_testing\_config](#output\_ses\_testing\_config) | n/a |

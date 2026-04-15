@@ -76,6 +76,11 @@ variable "kms_key_arn" {
   description = "KMS Key ARN"
 }
 
+variable "acct_kms_key_arn" {
+  type        = string
+  description = "account-level KMS Key ARN"
+}
+
 variable "letter_suppliers" {
   type = map(object({
     email_addresses  = list(string)

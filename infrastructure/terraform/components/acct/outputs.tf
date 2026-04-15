@@ -67,3 +67,7 @@ output "ses_testing_config" {
     rule_set_name = module.ses_testing.0.rule_set_name
   }, null)
 }
+
+output "kms_key_arn" {
+  value = module.kms.key_arn
+}
