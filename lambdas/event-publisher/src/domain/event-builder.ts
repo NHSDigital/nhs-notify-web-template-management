@@ -100,15 +100,16 @@ export class EventBuilder {
     return `docx-template/${clientId}/${id}/${files.docxTemplate.currentVersion}.docx`;
   }
 
-  private getSharedFilePathForTemplateEvent({
-    clientId,
-    id,
-  }: DynamoDBTemplate) {
-    return `${this.sharedFilesPrefix}/${clientId}/${id}/${Date.now()}.docx`;
+  private getSharedFilePathForTemplateEvent(
+    { clientId, id }: DynamoDBTemplate,
+    sequenceNumber: string
+  ) {
+    return `${this.sharedFilesPrefix}/${clientId}/${id}/${sequenceNumber}.docx`;
   }
 
   private getNonDatabaseFieldsForTemplateEvent(
-    databaseTemplate: DynamoDBTemplate
+    databaseTemplate: DynamoDBTemplate,
+    sequenceNumber: string
   ) {
     if (databaseTemplate.templateType !== 'LETTER') {
       return {};
@@ -117,7 +118,7 @@ export class EventBuilder {
     return {
       files: {
         docxTemplate: {
-          url: `${this.sharedFilesBucket}/${this.getSharedFilePathForTemplateEvent(databaseTemplate)}`,
+          url: `${this.sharedFilesBucket}/${this.getSharedFilePathForTemplateEvent(databaseTemplate, sequenceNumber)}`,
         },
       },
       personalisationParameters: databaseTemplate.customPersonalisation,
@@ -125,7 +126,8 @@ export class EventBuilder {
   }
 
   private getSharedFileMappingsForTemplateEvent(
-    databaseTemplate: DynamoDBTemplate
+    databaseTemplate: DynamoDBTemplate,
+    sequenceNumber: string
   ) {
     if (databaseTemplate.templateType !== 'LETTER') {
       return {};
@@ -133,8 +135,10 @@ export class EventBuilder {
 
     const internalFilePath =
       this.getInternalFilePathForTemplateEvent(databaseTemplate);
-    const sharedFilePath =
-      this.getSharedFilePathForTemplateEvent(databaseTemplate);
+    const sharedFilePath = this.getSharedFilePathForTemplateEvent(
+      databaseTemplate,
+      sequenceNumber
+    );
 
     return {
       [internalFilePath]: sharedFilePath,
@@ -202,11 +206,16 @@ export class EventBuilder {
           ),
           data: {
             ...dynamoRecordNew,
-            ...this.getNonDatabaseFieldsForTemplateEvent(databaseTemplateNew),
+            ...this.getNonDatabaseFieldsForTemplateEvent(
+              databaseTemplateNew,
+              publishableEventRecord.dynamodb.SequenceNumber
+            ),
           },
         }),
-        sharedFiles:
-          this.getSharedFileMappingsForTemplateEvent(databaseTemplateNew),
+        sharedFiles: this.getSharedFileMappingsForTemplateEvent(
+          databaseTemplateNew,
+          publishableEventRecord.dynamodb.SequenceNumber
+        ),
       };
     } catch (error) {
       this.logger
