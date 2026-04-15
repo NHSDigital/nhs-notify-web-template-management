@@ -28,6 +28,7 @@ export class EventBuilder {
     private readonly routingConfigTableName: string,
     private readonly proofRequestsTableName: string,
     private readonly eventSource: string,
+    private readonly sharedFileBucket: string,
     private readonly logger: Logger
   ) {}
 
@@ -115,7 +116,7 @@ export class EventBuilder {
     return {
       files: {
         docxTemplate: {
-          url: this.getSharedFilePathForTemplateEvent(databaseTemplate),
+          url: `${this.sharedFileBucket}/${this.getSharedFilePathForTemplateEvent(databaseTemplate)}`,
         },
       },
       personalisationParameters: databaseTemplate.customPersonalisation,
