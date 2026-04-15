@@ -146,7 +146,14 @@ export class RoutingConfigRepository {
                   id: templateId,
                   owner: this.clientOwnerKey(user.clientId),
                 },
-                ConditionExpression: 'attribute_exists(id)',
+                ConditionExpression:
+                  'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+                ExpressionAttributeValues: {
+                  ':expectedCampaignId': expectedCampaignId,
+                  ':letter': 'LETTER',
+                },
+                ReturnValuesOnConditionCheckFailure:
+                  ReturnValuesOnConditionCheckFailure.ALL_OLD,
               },
             })),
           ],
@@ -347,7 +354,7 @@ export class RoutingConfigRepository {
     }
   }
 
-  private async getTemplates(
+  async getTemplates(
     templateIds: string[],
     clientId: string
   ): Promise<ApplicationResult<TemplateDto[]>> {
@@ -466,7 +473,11 @@ export class RoutingConfigRepository {
     );
   }
 
-  private handleUpdateError(err: unknown, expectedLockNumber: number) {
+  private handleUpdateError(
+    err: unknown,
+    expectedLockNumber: number,
+    expectedCampaignId?: string
+  ) {
     if (err instanceof ConditionalCheckFailedException) {
       const item = unmarshall(err.Item ?? {});
 
@@ -488,6 +499,14 @@ export class RoutingConfigRepository {
         return failure(
           ErrorCase.CONFLICT,
           'Lock number mismatch - Routing configuration has been modified since last read',
+          err
+        );
+      }
+
+      if (item.campaignId !== expectedCampaignId) {
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Campaign ID mismatch - Routing configuration campaign ID does not match expected campaign ID',
           err
         );
       }
@@ -537,7 +556,8 @@ export class RoutingConfigRepository {
   private handleUpdateTransactionError(
     err: unknown,
     lockNumber: number,
-    templateIds: string[]
+    templateIds: string[],
+    expectedCampaignId?: string
   ): ApplicationResult<RoutingConfig> {
     if (!(err instanceof TransactionCanceledException)) {
       return this.handleUpdateError(err, lockNumber);
@@ -564,14 +584,14 @@ export class RoutingConfigRepository {
 
     if (templatesMissing) {
       return failure(
-        ErrorCase.ROUTING_CONFIG_TEMPLATES_NOT_FOUND,
+        ErrorCase.TEMPLATES_REJECTED,
         'Some templates not found',
         err,
         { templateIds: templateIds.join(',') }
       );
     }
 
-    return this.handleUpdateError(err, lockNumber);
+    return this.handleUpdateError(err, lockNumber, expectedCampaignId);
   }
 
   private clientOwnerKey(clientId: string) {

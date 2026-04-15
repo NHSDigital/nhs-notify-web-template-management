@@ -15,13 +15,11 @@ import { validate } from '@backend-api/utils/validate';
 import type { RoutingConfigRepository } from '../infra/routing-config-repository';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { ClientConfigRepository } from '../infra/client-config-repository';
-import { TemplateClient } from './template-client';
 
 export class RoutingConfigClient {
   constructor(
     private readonly routingConfigRepository: RoutingConfigRepository,
-    private readonly clientConfigRepository: ClientConfigRepository,
-    private readonly templateClient: TemplateClient
+    private readonly clientConfigRepository: ClientConfigRepository
   ) {}
 
   async createRoutingConfig(
@@ -95,45 +93,16 @@ export class RoutingConfigClient {
 
     const validated = validationResult.data;
 
-    // get the letter templateIds from the validated and make sure they are the same type
-    const templateIds =
-      validated.cascade
-        ?.map((c) => c.conditionalTemplates?.map((t) => t.templateId))
-        ?.flat() ?? []; // extract templateIds from validated
+    // Fetch routing config
+    const routingConfig = await this.getRoutingConfig(routingConfigId, user);
 
-    // fetch all the templates of these templateIds
-    const templates = await Promise.all(
-      templateIds.map((templateId) =>
-        this.templateClient.getTemplate(templateId as string, user)
-      )
-    );
+    if (routingConfig.error) return routingConfig;
 
-    // check all the templates have campaignIds if they don't have campaignIds, reject the request
-    if (templates.some((template) => !template.data?.campaignId)) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'One or more templates do not have a campaign ID'
-      );
-    }
-
-    // if they do check that those campaignIds are the same if not reject the request
-    const uniqueCampaignIds = [
-      ...new Set(templates.map((t) => t.data?.campaignId)),
-    ];
-    if (uniqueCampaignIds.length > 1) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'All templates must have the same campaign ID'
-      );
-    }
-
-    // if the payload (validateResult) has a campaignId, check it matches with the template campaignId
-    // set expectedCampaignId=(if it exist on payload if not, then get from template - must all be the same)
+    // expectedCampaignId = validated.campaignId || get from existing routing config (if exist)
     const expectedCampaignId =
-      validated.campaignId === templates[0]?.data?.campaignId
-        ? validated.campaignId
-        : templates[0]?.data?.campaignId;
+      validated.campaignId || routingConfig.data?.campaignId;
 
+    // check to make sure if there is coverage for if there is no cascade.
     if (
       validated.campaignId &&
       !clientConfiguration?.campaignIds?.includes(validated.campaignId)

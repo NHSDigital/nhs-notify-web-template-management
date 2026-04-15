@@ -10,7 +10,6 @@ import type {
   UpdateRoutingConfig,
 } from 'nhs-notify-web-template-management-types';
 import { ClientConfigRepository } from '../../infra/client-config-repository';
-import { TemplateClient } from '@backend-api/app/template-client';
 
 const user = { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' };
 
@@ -19,18 +18,14 @@ function setup() {
 
   const clientConfigRepository = mock<ClientConfigRepository>();
 
-  const templateClient = mock<TemplateClient>();
-
   const mocks = {
     routingConfigRepository,
     clientConfigRepository,
-    templateClient,
   };
 
   const client = new RoutingConfigClient(
     routingConfigRepository,
-    clientConfigRepository,
-    templateClient
+    clientConfigRepository
   );
 
   return { client, mocks };
@@ -775,6 +770,8 @@ describe('RoutingConfigClient', () => {
     test('returns updated routing config', async () => {
       const { client, mocks } = setup();
 
+      const campaignId = 'campaign-1';
+
       const update: UpdateRoutingConfig = {
         campaignId: routingConfig.campaignId,
         cascade: [
@@ -807,6 +804,10 @@ describe('RoutingConfigClient', () => {
         },
       });
 
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        data: routingConfig,
+      });
+
       mocks.routingConfigRepository.update.mockResolvedValueOnce({
         data: updated,
       });
@@ -822,7 +823,8 @@ describe('RoutingConfigClient', () => {
         routingConfig.id,
         update,
         user,
-        42
+        42,
+        campaignId
       );
 
       expect(result).toEqual({
