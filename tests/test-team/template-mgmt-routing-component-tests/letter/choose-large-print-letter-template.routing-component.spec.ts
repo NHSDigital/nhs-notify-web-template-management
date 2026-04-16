@@ -57,6 +57,7 @@ function getTemplates(
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER2: TemplateFactory.createAuthoringLetterTemplate(
@@ -68,6 +69,7 @@ function getTemplates(
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
@@ -79,6 +81,7 @@ function getTemplates(
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER_NOT_SUBMITTED:
@@ -97,6 +100,7 @@ function getTemplates(
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -108,6 +112,7 @@ function getTemplates(
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     APP: TemplateFactory.createNhsAppTemplate(

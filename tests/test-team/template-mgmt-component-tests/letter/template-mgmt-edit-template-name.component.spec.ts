@@ -224,6 +224,7 @@ test.describe('Edit Template Name page', () => {
         {
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 

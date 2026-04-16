@@ -9,7 +9,9 @@ describe('Input Schemas', () => {
     it('should validate minimal valid record', () => {
       const minimalRecord = {
         eventID: 'test-event-id',
-        dynamodb: {},
+        dynamodb: {
+          SequenceNumber: '12345678901234567890',
+        },
         tableName: 'test-table',
       };
 
@@ -54,6 +56,7 @@ describe('Input Schemas', () => {
     it('should validate minimal template', () => {
       const minimalTemplate = {
         id: 'template-123',
+        clientId: 'client-123',
         templateType: 'EMAIL',
         templateStatus: 'SUBMITTED',
       };
@@ -64,6 +67,7 @@ describe('Input Schemas', () => {
     it('should validate template with optional fields', () => {
       const templateWithProofing = {
         id: 'template-456',
+        clientId: 'client-456',
         templateType: 'EMAIL',
         templateStatus: 'SUBMITTED',
         proofingEnabled: true,
