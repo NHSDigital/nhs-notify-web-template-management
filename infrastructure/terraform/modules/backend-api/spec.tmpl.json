@@ -411,10 +411,10 @@
           "digitalProofingSms": {
             "type": "boolean"
           },
-          "letterAuthoring": {
+          "legacyLetters": {
             "type": "boolean"
           },
-          "legacyLetters": {
+          "letterAuthoring": {
             "type": "boolean"
           },
           "proofing": {
@@ -1334,9 +1334,6 @@
           }
         ],
         "properties": {
-          "campaignId": {
-            "type": "string"
-          },
           "cascade": {
             "items": {
               "$ref": "#/components/schemas/CascadeItem"

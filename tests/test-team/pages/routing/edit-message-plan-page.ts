@@ -5,7 +5,7 @@ export class RoutingEditMessagePlanPage extends TemplateMgmtBasePage {
   static readonly pathTemplate =
     '/message-plans/edit-message-plan/:messagePlanId';
 
-  public readonly editSettingsLink: Locator;
+  public readonly renameLink: Locator;
 
   public readonly routingConfigId: Locator;
 
@@ -25,7 +25,7 @@ export class RoutingEditMessagePlanPage extends TemplateMgmtBasePage {
 
   constructor(page: Page) {
     super(page);
-    this.editSettingsLink = page.getByTestId('edit-settings-link');
+    this.renameLink = page.getByTestId('rename-link');
     this.errorLinks = page.getByRole('link', {
       name: /You have not chosen a template/,
     });
@@ -113,6 +113,10 @@ export class RoutingEditMessagePlanPage extends TemplateMgmtBasePage {
       britishSignLanguage: this.messagePlanItem('q4'),
       otherLanguages: this.messagePlanItem('foreign-language'),
     };
+  }
+
+  async clickRenameLink() {
+    await this.renameLink.click();
   }
 
   async clickMoveToProduction() {

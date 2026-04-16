@@ -5,7 +5,7 @@ import { MESSAGE_ORDER_OPTIONS_LIST } from 'nhs-notify-web-template-management-u
 import { NHSNotifyFormErrorSummary } from '@atoms/NHSNotifyForm/ErrorSummary';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import { MessagePlanForm } from '@forms/MessagePlan/MessagePlan';
+import { MessagePlanForm } from '@forms/MessagePlanForm/MessagePlanForm';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { getCampaignIds } from '@utils/client-config';
 import { fetchClient } from '@utils/server-features';
