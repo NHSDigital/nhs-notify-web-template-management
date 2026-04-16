@@ -15,10 +15,9 @@ import {
   RoutingChooseNhsAppTemplatePage,
   RoutingChooseOtherLanguageLetterTemplatePage,
   RoutingChooseStandardLetterTemplatePage,
-  RoutingEditMessagePlanPage,
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
+  RoutingEditMessagePlanPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
@@ -31,6 +30,7 @@ import {
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
 } from 'pages/routing';
 import { getTestContext } from 'helpers/context/context';
@@ -326,20 +326,18 @@ test.describe('Routing', () => {
       )
     ));
 
-  test('Edit message plan settings', async ({ page, analyze }) =>
+  test('Rename message plan', async ({ page, analyze }) =>
     analyze(
-      new RoutingEditMessagePlanSettingsPage(page).setPathParam(
-        'messagePlanId',
-        draftRoutingConfigId
-      )
+      new RoutingRenameMessagePlanPage(page)
+        .setPathParam('messagePlanId', draftRoutingConfigId)
+        .setSearchParam('lockNumber', '0')
     ));
 
-  test('Edit message plan settings - error', async ({ page, analyze }) =>
+  test('Rename message plan - error', async ({ page, analyze }) =>
     analyze(
-      new RoutingEditMessagePlanSettingsPage(page).setPathParam(
-        'messagePlanId',
-        draftRoutingConfigId
-      ),
+      new RoutingRenameMessagePlanPage(page)
+        .setPathParam('messagePlanId', draftRoutingConfigId)
+        .setSearchParam('lockNumber', '0'),
       {
         beforeAnalyze: async (p) => {
           await p.nameField.fill('');

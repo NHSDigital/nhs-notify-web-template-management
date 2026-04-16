@@ -414,7 +414,6 @@ export type TemplateSuccessList = {
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
 export type UpdateRoutingConfig = unknown & {
-  campaignId?: string;
   cascade?: Array<CascadeItem>;
   cascadeGroupOverrides?: Array<CascadeGroup>;
   name?: string;

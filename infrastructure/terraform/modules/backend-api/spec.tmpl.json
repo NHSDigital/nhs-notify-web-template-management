@@ -1422,9 +1422,6 @@
           }
         ],
         "properties": {
-          "campaignId": {
-            "type": "string"
-          },
           "cascade": {
             "items": {
               "$ref": "#/components/schemas/CascadeItem"
