@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { randomUUID } from 'node:crypto';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { makeLetterVariant } from '../../helpers/factories/letter-variant-factory';
@@ -153,6 +154,28 @@ function createTemplates(
       {
         letterVariantId: variants.doubleSided.id,
         initialRender: { pageCount: 4 },
+        shortFormRender: {
+          fileName: 'short-personalised.pdf',
+          currentVersion: 'v1-short',
+          pageCount: 4,
+          systemPersonalisationPackId: 'short-1',
+          personalisationParameters: {
+            firstName: 'Jo',
+            lastName: 'Bloggs',
+            appointmentDate: '2025-03-15',
+          },
+        },
+        longFormRender: {
+          fileName: 'long-personalised.pdf',
+          currentVersion: 'v1-long',
+          pageCount: 4,
+          systemPersonalisationPackId: 'long-1',
+          personalisationParameters: {
+            firstName: 'Jo',
+            lastName: 'Bloggs',
+            appointmentDate: '2025-03-15',
+          },
+        },
       }
     ),
     authoringNoCampaign: TemplateFactory.createAuthoringLetterTemplate(
@@ -303,6 +326,78 @@ function createTemplates(
           letterVariantId: 'variant-failed-init',
           initialRender: {
             status: 'FAILED',
+          },
+        }
+      ),
+    authoringForUpdatePreviewErrors:
+      TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user,
+        'authoring-update-preview-errors',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: variants.doubleSided.id,
+          customPersonalisation: ['appointmentDate', 'clinicName'],
+          initialRender: {
+            fileName: 'initial-render.pdf',
+            currentVersion: 'v1-initial',
+            pageCount: 4,
+          },
+        }
+      ),
+    authoringNoExamplesGenerated: TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user,
+      'authoring-no-examples-generated',
+      'NOT_YET_SUBMITTED',
+      {
+        letterVariantId: variants.doubleSided.id,
+        initialRender: {
+          fileName: 'initial-render.pdf',
+          currentVersion: 'v1-initial',
+          pageCount: 4,
+        },
+      }
+    ),
+    authoringOnlyShortExampleGenerated:
+      TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user,
+        'authoring-only-short-example',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: variants.doubleSided.id,
+          initialRender: {
+            fileName: 'initial-render.pdf',
+            currentVersion: 'v1-initial',
+            pageCount: 4,
+          },
+          shortFormRender: {
+            fileName: 'short-render.pdf',
+            currentVersion: 'v1-short',
+            pageCount: 4,
+            systemPersonalisationPackId: 'short-1',
+          },
+        }
+      ),
+    authoringOnlyLongExampleGenerated:
+      TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user,
+        'authoring-only-long-example',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: variants.doubleSided.id,
+          initialRender: {
+            fileName: 'initial-render.pdf',
+            currentVersion: 'v1-initial',
+            pageCount: 4,
+          },
+          longFormRender: {
+            fileName: 'long-render.pdf',
+            currentVersion: 'v1-long',
+            pageCount: 4,
+            systemPersonalisationPackId: 'long-1',
           },
         }
       ),
@@ -1390,6 +1485,289 @@ test.describe('Preview Letter template Page', () => {
 
       await expect(previewPage.summaryRowValue('Total pages')).toHaveText('4');
       await expect(previewPage.summaryRowValue('Sheets')).toHaveText('4');
+    });
+
+    test.describe('Update preview validation errors', () => {
+      test('shows error summary and inline error when Update preview is clicked with no recipient selected (short tab)', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringForUpdatePreviewErrors.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.shortTab.clickUpdatePreview();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummary).toContainText(
+          'Choose example recipient'
+        );
+
+        const summaryLink = previewPage.errorSummaryLinks.filter({
+          hasText: 'Choose example recipient',
+        });
+        await expect(summaryLink).toHaveAttribute(
+          'href',
+          '#system-personalisation-pack-id-shortFormRender'
+        );
+
+        await expect(
+          previewPage.shortTab.getInlineError(
+            'system-personalisation-pack-id-shortFormRender'
+          )
+        ).toBeVisible();
+        await expect(
+          previewPage.shortTab.getInlineError(
+            'system-personalisation-pack-id-shortFormRender'
+          )
+        ).toContainText('Choose example recipient');
+      });
+
+      test('shows error summary and inline error when Update preview is clicked with no recipient selected (long tab)', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringForUpdatePreviewErrors.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.longTab.clickTab();
+        await previewPage.longTab.clickUpdatePreview();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummary).toContainText(
+          'Choose example recipient'
+        );
+
+        const summaryLink = previewPage.errorSummaryLinks.filter({
+          hasText: 'Choose example recipient',
+        });
+        await expect(summaryLink).toHaveAttribute(
+          'href',
+          '#system-personalisation-pack-id-longFormRender'
+        );
+
+        await expect(
+          previewPage.longTab.getInlineError(
+            'system-personalisation-pack-id-longFormRender'
+          )
+        ).toBeVisible();
+        await expect(
+          previewPage.longTab.getInlineError(
+            'system-personalisation-pack-id-longFormRender'
+          )
+        ).toContainText('Choose example recipient');
+      });
+
+      test('shows error summary and inline error for each empty custom field when Update preview is clicked (short tab)', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringForUpdatePreviewErrors.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.shortTab.selectRecipient({ index: 1 });
+        // leave both custom fields empty
+        await previewPage.shortTab.clickUpdatePreview();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummary).toContainText(
+          'Enter example data for appointmentDate'
+        );
+        await expect(previewPage.errorSummary).toContainText(
+          'Enter example data for clinicName'
+        );
+
+        await expect(
+          previewPage.shortTab.getInlineError(
+            'custom-appointmentDate-shortFormRender'
+          )
+        ).toBeVisible();
+        await expect(
+          previewPage.shortTab.getInlineError(
+            'custom-clinicName-shortFormRender'
+          )
+        ).toBeVisible();
+      });
+
+      test('shows error summary and inline error for empty custom field when Update preview is clicked (long tab)', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringForUpdatePreviewErrors.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.longTab.clickTab();
+        await previewPage.longTab.selectRecipient({ index: 1 });
+        // leave custom fields empty
+        await previewPage.longTab.clickUpdatePreview();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummary).toContainText(
+          'Enter example data for appointmentDate'
+        );
+
+        await expect(
+          previewPage.longTab.getInlineError(
+            'custom-appointmentDate-longFormRender'
+          )
+        ).toBeVisible();
+      });
+
+      test('errors from one tab do not appear on the other tab', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringForUpdatePreviewErrors.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.shortTab.clickUpdatePreview();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        // switch tab - errors should not be present in long tab
+        await previewPage.longTab.clickTab();
+
+        await expect(
+          previewPage.longTab.getInlineError(
+            'system-personalisation-pack-id-longFormRender'
+          )
+        ).toBeHidden();
+      });
+    });
+
+    test.describe('Approve template validation errors', () => {
+      test('shows error in summary for both missing examples when Approve template is clicked', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringNoExamplesGenerated.id);
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const shortErrorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Enter short example data/,
+        });
+        await expect(shortErrorLink).toBeVisible();
+        await expect(shortErrorLink).toHaveAttribute('href', '#tab-short');
+
+        const longErrorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Enter long example data/,
+        });
+        await expect(longErrorLink).toBeVisible();
+        await expect(longErrorLink).toHaveAttribute('href', '#tab-long');
+      });
+
+      test('shows only the short example error when long example is already generated', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringOnlyLongExampleGenerated.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const shortErrorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Enter short example data/,
+        });
+        await expect(shortErrorLink).toBeVisible();
+        await expect(shortErrorLink).toHaveAttribute('href', '#tab-short');
+
+        const longErrorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Enter long example data/,
+        });
+        await expect(longErrorLink).toBeHidden();
+      });
+
+      test('shows only the long example error when short example is already generated', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringOnlyShortExampleGenerated.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const longErrorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Enter long example data/,
+        });
+        await expect(longErrorLink).toBeVisible();
+        await expect(longErrorLink).toHaveAttribute('href', '#tab-long');
+
+        const shortErrorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Enter short example data/,
+        });
+        await expect(shortErrorLink).toBeHidden();
+      });
+
+      test('shows both short and long example errors when personalised renders have failed', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringWithFailedPersonalisedRenders.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(
+          previewPage.errorSummaryLinks.filter({
+            hasText: /Enter short example data/,
+          })
+        ).toBeVisible();
+        await expect(
+          previewPage.errorSummaryLinks.filter({
+            hasText: /Enter long example data/,
+          })
+        ).toBeVisible();
+      });
     });
   });
 });

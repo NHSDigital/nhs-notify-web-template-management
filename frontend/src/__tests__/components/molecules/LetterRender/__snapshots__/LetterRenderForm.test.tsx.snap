@@ -366,7 +366,7 @@ exports[`LetterRenderForm snapshots matches snapshot with validation error 1`] =
         >
           Error: 
         </span>
-        Select an example recipient
+        Choose example recipient
       </span>
       <select
         class="nhsuk-select nhsuk-select--error recipientSelect"

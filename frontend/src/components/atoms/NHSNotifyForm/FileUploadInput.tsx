@@ -1,32 +1,29 @@
 'use client';
 
-import type { HTMLProps } from 'react';
 import classNames from 'classnames';
+import React, { HTMLProps } from 'react';
+import styles from './FileUploadInput.module.scss';
 import { useNHSNotifyForm } from '@providers/form-provider';
 
-export function NHSNotifyFormInput({
+export function NHSNotifyFormFileUploadInput({
   className,
   id,
-  name,
   ...props
-}: Omit<HTMLProps<HTMLInputElement>, 'defaultValue'> & {
-  id: string;
-  name: string;
-}) {
+}: Omit<HTMLProps<HTMLInputElement>, 'type'> & { id: string }) {
   const [state] = useNHSNotifyForm();
 
   const error = Boolean(state.errorState?.fieldErrors?.[id]?.length);
 
   return (
     <input
-      id={id}
-      name={name}
       className={classNames(
+        styles['file-upload'],
         'nhsuk-input',
         { 'nhsuk-input--error': error },
         className
       )}
-      defaultValue={state.fields?.[name]}
+      id={id}
+      type='file'
       {...props}
     />
   );

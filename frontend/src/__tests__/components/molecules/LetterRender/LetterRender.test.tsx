@@ -10,6 +10,15 @@ jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
 
 jest.mock('@molecules/LetterRender/server-action');
 
+jest.mock('@providers/letter-render-error-provider', () => ({
+  useLetterRenderError: jest.fn(() => ({
+    parentErrorState: undefined,
+    setParentErrorState: jest.fn(),
+    letterRenderErrorState: undefined,
+    setLetterRenderErrorState: jest.fn(),
+  })),
+}));
+
 jest.mock('next/navigation');
 
 jest.mock('@utils/get-base-path', () => ({
