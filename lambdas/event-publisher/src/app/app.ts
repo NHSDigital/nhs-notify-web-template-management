@@ -1,5 +1,5 @@
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { SharedFileRepository } from 'src/infra/shared-file-repository';
+import { SharedFileRepository } from '../infra/shared-file-repository';
 import { EventBuilder } from '../domain/event-builder';
 import { SNSRepository } from '../infra/sns-repository';
 import { PublishableEventRecord } from '../domain/input-schemas';

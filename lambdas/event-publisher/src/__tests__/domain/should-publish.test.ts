@@ -24,6 +24,22 @@ describe('shouldPublish', () => {
     }
   );
 
+  test('templateType LETTER should return false when letterVersion is not present', () => {
+    const publish = shouldPublish(
+      {
+        templateStatus: 'PROOF_AVAILABLE',
+      },
+      {
+        id: 'id',
+        clientId: 'client-id',
+        templateType: 'LETTER',
+        templateStatus: 'SUBMITTED',
+      }
+    );
+
+    expect(publish).toEqual(false);
+  });
+
   test('templateType LETTER should return false when letterVersion is not AUTHORING', () => {
     const publish = shouldPublish(
       {
@@ -34,6 +50,7 @@ describe('shouldPublish', () => {
         clientId: 'client-id',
         templateType: 'LETTER',
         templateStatus: 'SUBMITTED',
+        letterVersion: 'PDF',
       }
     );
 
