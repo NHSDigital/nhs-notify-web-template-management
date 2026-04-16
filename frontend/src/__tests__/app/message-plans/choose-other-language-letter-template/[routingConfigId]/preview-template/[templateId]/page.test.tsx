@@ -4,13 +4,15 @@
 import PreviewOtherLanguageLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-other-language-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
+import { PreviewLetterFromChooseLetter } from '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter';
 import { validateForeignLanguageLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@molecules/SummaryChooseLetter/SummaryChooseLetter');
+jest.mock(
+  '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter'
+);
 
 describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryChooseLetter with validateForeignLanguageLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
+  it('should render PreviewLetterFromChooseLetter with validateForeignLanguageLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -22,7 +24,7 @@ describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
     const page = await PreviewOtherLanguageLetterTemplateFromMessagePlan(props);
 
     expect(page).toEqual(
-      <SummaryChooseLetter
+      <PreviewLetterFromChooseLetter
         {...props}
         validateTemplate={validateForeignLanguageLetterTemplate}
         redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'

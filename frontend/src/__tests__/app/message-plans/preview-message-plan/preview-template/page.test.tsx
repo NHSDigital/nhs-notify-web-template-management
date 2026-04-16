@@ -4,14 +4,14 @@
 import PreviewLetterTemplateFromPreviewMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/preview-message-plan/[routingConfigId]/preview-template/[templateId]/page';
-import { SummaryLetterFromMessagePlan } from '@molecules/SummaryLetterFromMessagePlan/SummaryLetterFromMessagePlan';
+import { PreviewLetterFromMessagePlan } from '@molecules/PreviewLetterFromMessagePlan/PreviewLetterFromMessagePlan';
 
 jest.mock(
-  '@molecules/SummaryLetterFromMessagePlan/SummaryLetterFromMessagePlan'
+  '@molecules/PreviewLetterFromMessagePlan/PreviewLetterFromMessagePlan'
 );
 
 describe('PreviewLetterTemplateFromPreviewMessagePlan page', () => {
-  it('should render SummaryLetterFromMessagePlan with authoring letter validator', async () => {
+  it('should render PreviewLetterFromMessagePlan with authoring letter validator', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -21,7 +21,7 @@ describe('PreviewLetterTemplateFromPreviewMessagePlan page', () => {
 
     const page = await PreviewLetterTemplateFromPreviewMessagePlan(props);
 
-    expect(page).toEqual(<SummaryLetterFromMessagePlan {...props} />);
+    expect(page).toEqual(<PreviewLetterFromMessagePlan {...props} />);
   });
 
   it('should have the correct page title', async () => {

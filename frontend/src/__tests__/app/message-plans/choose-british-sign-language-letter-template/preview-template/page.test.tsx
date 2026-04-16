@@ -4,13 +4,15 @@
 import PreviewBritishSignLanguageLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-british-sign-language-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { SummaryChooseLetter } from '@molecules/SummaryChooseLetter/SummaryChooseLetter';
+import { PreviewLetterFromChooseLetter } from '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter';
 import { validateBritishSignLanguageLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@molecules/SummaryChooseLetter/SummaryChooseLetter');
+jest.mock(
+  '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter'
+);
 
 describe('PreviewBritishSignLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should render SummaryChooseLetter with validateBritishSignLanguageLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
+  it('should render PreviewLetterFromChooseLetter with validateBritishSignLanguageLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -23,7 +25,7 @@ describe('PreviewBritishSignLanguageLetterTemplateFromMessagePlan page', () => {
       await PreviewBritishSignLanguageLetterTemplateFromMessagePlan(props);
 
     expect(page).toEqual(
-      <SummaryChooseLetter
+      <PreviewLetterFromChooseLetter
         {...props}
         validateTemplate={validateBritishSignLanguageLetterTemplate}
         redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'
