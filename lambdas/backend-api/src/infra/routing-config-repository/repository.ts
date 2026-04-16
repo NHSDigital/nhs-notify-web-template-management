@@ -99,7 +99,7 @@ export class RoutingConfigRepository {
     user: User,
     lockNumber: number
   ): Promise<ApplicationResult<RoutingConfig>> {
-    const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
+    const { cascade, cascadeGroupOverrides, name } = updateData;
 
     const update = new RoutingConfigUpdateBuilder(
       this.tableName,
@@ -110,10 +110,6 @@ export class RoutingConfigRepository {
 
     if (name) {
       update.setName(name);
-    }
-
-    if (campaignId) {
-      update.setCampaignId(campaignId);
     }
 
     if (cascade && cascadeGroupOverrides) {

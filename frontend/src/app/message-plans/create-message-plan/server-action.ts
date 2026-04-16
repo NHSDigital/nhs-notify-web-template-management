@@ -12,7 +12,7 @@ import {
   type MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
 import { createRoutingConfig } from '@utils/message-plans';
-import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
+import { $MessagePlanFormData } from '@forms/MessagePlanForm/schema';
 
 const $CreateMessagePlanFormData = $MessagePlanFormData.extend({
   messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST, {

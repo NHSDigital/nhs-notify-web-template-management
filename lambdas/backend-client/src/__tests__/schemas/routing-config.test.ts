@@ -14,7 +14,7 @@ const cascadeItemDefault = {
   defaultTemplateId: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
 };
 
-const baseInput = {
+const baseCreate = {
   campaignId: 'campaign-1',
   cascade: [cascadeItemDefault],
   cascadeGroupOverrides: [
@@ -24,6 +24,8 @@ const baseInput = {
   ],
   name: 'Test config',
 };
+
+const { campaignId, ...baseUpdate } = baseCreate;
 
 const cascadeCondLang = {
   cascadeGroups: ['translations'],
@@ -47,7 +49,7 @@ const cascadeCondAcc = {
 };
 
 const baseCreated = {
-  ...baseInput,
+  ...baseCreate,
   clientId: 'client-1',
   id: 'b9b6d56b-421e-462f-9ce5-3012e3fdb27f',
   owner: 'CLIENT#client-1',
@@ -60,9 +62,9 @@ const baseCreated = {
 };
 
 describe.each([
-  ['CreateRoutingConfig', $CreateRoutingConfig],
-  ['UpdateRoutingConfig', $UpdateRoutingConfig],
-])('Create/Update - %s schema', (_, $Schema) => {
+  ['CreateRoutingConfig', $CreateRoutingConfig, baseCreate],
+  ['UpdateRoutingConfig', $UpdateRoutingConfig, baseUpdate],
+])('Create/Update - %s schema', (_, $Schema, baseInput) => {
   test('valid minimal with defaultTemplateId cascade item', () => {
     const res = $Schema.safeParse(baseInput);
     expect(res.success).toBe(true);
@@ -348,23 +350,26 @@ describe('ListRoutingConfigFilters', () => {
 
 describe('UpdateRoutingConfig', () => {
   test('accepts payload without a name', () => {
-    const { name, ...rest } = baseInput;
+    const { name, ...rest } = baseUpdate;
 
     const res = $UpdateRoutingConfig.safeParse(rest);
 
     expect(res.success).toBe(true);
   });
 
-  test('accepts payload without a campaignId', () => {
-    const { campaignId, ...rest } = baseInput;
+  test('Does not accept payload with a campaignId', () => {
+    const res = $UpdateRoutingConfig.safeParse({
+      ...baseUpdate,
+      campaignId: 'campaign-1',
+    });
 
-    const res = $UpdateRoutingConfig.safeParse(rest);
+    expect(res.success).toBe(false);
 
-    expect(res.success).toBe(true);
+    expect(res.error).toMatchSnapshot();
   });
 
   test('accepts payload without a cascade and cascadeGroupOverrides', () => {
-    const { cascade, cascadeGroupOverrides, ...rest } = baseInput;
+    const { cascade, cascadeGroupOverrides, ...rest } = baseUpdate;
 
     const res = $UpdateRoutingConfig.safeParse(rest);
 
@@ -372,7 +377,7 @@ describe('UpdateRoutingConfig', () => {
   });
 
   test('invalid with cascadeGroupOverrides and without cascade', () => {
-    const { cascade, ...rest } = baseInput;
+    const { cascade, ...rest } = baseUpdate;
 
     const res = $UpdateRoutingConfig.safeParse(rest);
 
@@ -382,7 +387,7 @@ describe('UpdateRoutingConfig', () => {
   });
 
   test('invalid with cascade but without cascadeGroupOverrides', () => {
-    const { cascadeGroupOverrides, ...rest } = baseInput;
+    const { cascadeGroupOverrides, ...rest } = baseUpdate;
 
     const res = $UpdateRoutingConfig.safeParse(rest);
 
