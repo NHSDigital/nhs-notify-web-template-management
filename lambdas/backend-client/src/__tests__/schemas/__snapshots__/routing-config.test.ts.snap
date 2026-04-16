@@ -136,6 +136,19 @@ exports[`RoutingConfig schema snapshot full error 1`] = `
 ]]
 `;
 
+exports[`UpdateRoutingConfig Does not accept payload with a campaignId 1`] = `
+[ZodError: [
+  {
+    "code": "unrecognized_keys",
+    "keys": [
+      "campaignId"
+    ],
+    "path": [],
+    "message": "Unrecognized key: \\"campaignId\\""
+  }
+]]
+`;
+
 exports[`UpdateRoutingConfig invalid with cascade but without cascadeGroupOverrides 1`] = `
 [ZodError: [
   {

@@ -10,7 +10,6 @@ import { RoutingChooseStandardLetterTemplatePage } from 'pages/routing/letter/ch
 import { RoutingChooseTextMessageTemplatePage } from 'pages/routing/sms/choose-sms-template-page';
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingEditMessagePlanPage } from 'pages/routing/edit-message-plan-page';
-import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 import { RoutingInvalidMessagePlanPage } from 'pages/routing/invalid-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
@@ -23,6 +22,7 @@ import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
 import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
+import { RoutingRenameMessagePlanPage } from 'pages/routing/rename-message-plan-page';
 import { RoutingReviewAndMoveToProductionPreviewLetterTemplatePage } from 'pages/routing/review-and-move-to-production-letter-template-page';
 import {
   RoutingChooseBritishSignLanguageLetterTemplatePage,
@@ -54,6 +54,7 @@ import { TemplateMgmtPreviewSubmittedLetterPage } from '../pages/letter/template
 import { TemplateMgmtPreviewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
 import { TemplateMgmtPreviewSubmittedSmsPage } from '../pages/sms/template-mgmt-preview-submitted-sms-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
+import { TemplateMgmtRequestADigitalProofPage } from 'pages/template-mgmt-request-a-digital-proof-page';
 import { TemplateMgmtReviewAndApproveLetterTemplatePage } from 'pages/letter/template-mgmt-review-and-approve-letter-template-page';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
@@ -87,7 +88,6 @@ const protectedPages = [
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
@@ -101,6 +101,7 @@ const protectedPages = [
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
   RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
   TemplateMgmtChoosePage,
@@ -129,6 +130,7 @@ const protectedPages = [
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtPreviewSubmittedNhsAppPage,
   TemplateMgmtPreviewSubmittedSmsPage,
+  TemplateMgmtRequestADigitalProofPage,
   TemplateMgmtRequestProofPage,
   TemplateMgmtReviewAndApproveLetterTemplatePage,
   TemplateMgmtSubmitEmailPage,

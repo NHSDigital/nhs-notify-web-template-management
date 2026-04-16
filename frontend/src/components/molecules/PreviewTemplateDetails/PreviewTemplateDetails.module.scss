@@ -27,3 +27,16 @@
   flex-direction: column;
   gap: 8px;
 }
+
+.message-banner {
+  margin-top: -40px;
+
+  &:global(.nhsuk-summary-list) {
+    border-top: 0;
+  }
+}
+
+.message-banner__callout {
+  margin: 1rem !important;
+  max-width: initial;
+}

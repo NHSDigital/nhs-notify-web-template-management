@@ -6,6 +6,7 @@
 *.code-workspace            @NHSDigital/nhs-notify-web-template-management-admins
 /docs/                      @NHSDigital/nhs-notify-web-template-management
 /infrastructure/terraform/  @NHSDigital/nhs-notify-platform
+/infrastructure/terraform/modules/backend-api/spec.tmpl.json @NHSDigital/nhs-notify-web-template-management
 
 # Root level AGENTS.md owned by platform.
 AGENTS.md                   @NHSDigital/nhs-notify-platform

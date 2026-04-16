@@ -8,7 +8,6 @@ import type {
   DigitalTemplateType,
   FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
-
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
@@ -1360,16 +1359,107 @@ const requestProof = {
   },
 };
 
+const howToRequestADigitalProof: {
+  pageTitle: string;
+  backLink: { text: string };
+  content: ContentBlock[];
+} = {
+  pageTitle: generatePageTitle('Request a proof'),
+  backLink: {
+    text: 'Back to template',
+  },
+  content: [
+    {
+      type: 'text',
+      text: '# Request a proof',
+    },
+    {
+      type: 'text',
+      text: 'You must request and approve proofs of your templates before you add them to a message plan.',
+    },
+    {
+      type: 'text',
+      text: 'This ensures we send your messages exactly as you expect your recipients to get them.',
+    },
+    {
+      type: 'text',
+      text: '## Before you start',
+      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+    },
+    {
+      type: 'text',
+      text: 'Only request proofs once your templates are final.',
+    },
+    {
+      type: 'text',
+      text: 'You can request proofs for one template or a group of templates in a campaign.',
+    },
+    {
+      type: 'text',
+      text: 'Find out more about how to [approve your messages (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/approve-your-messages).',
+    },
+    {
+      type: 'text',
+      text: 'This process is for NHS App messages, emails and text messages only. Find out [how to approve letter templates (opens in a new tab)](https://notify.nhs.uk/using-nhs-notify/approve-your-messages#requesting-letter-proofs).',
+      overrides: {
+        p: { props: { className: 'nhsuk-inset-text' } },
+      },
+    },
+    {
+      type: 'text',
+      text: '## How to request a proof',
+      overrides: { h2: { props: { className: 'nhsuk-heading-m' } } },
+    },
+    {
+      type: 'text',
+      text: "You'll need:",
+    },
+    {
+      type: 'text',
+      text: markdownList('ul', [
+        'the template ID or IDs',
+        'the email address you want the proofs sent to',
+        'your service name',
+        'the campaign name, if you have one',
+      ]),
+    },
+    {
+      type: 'text',
+      text: '[Request a proof using ServiceNow (opens in a new tab)](https://nhsdigitallive.service-now.com/csm).',
+    },
+  ],
+};
+
+type PreviewDigitalContent = {
+  content: string;
+  'data-testid': string;
+};
+
 const previewDigitalTemplate = {
   editButton: 'Edit template',
   sendTestMessageButton: 'Send a test message',
   testMessageBanner: {
-    NHS_APP:
-      'This is only a basic preview. [Send a test NHS App message](/templates/send-test-nhs-app-message/{{templateId}}) to preview this message properly.',
-    SMS: 'This is only a basic preview. [Send a test text message](/templates/send-test-text-message/{{templateId}}) to preview this message properly.',
-    EMAIL:
-      'This is only a basic preview. [Send a test email](/templates/send-test-email/{{templateId}}) to preview this message properly.',
-  } as Record<DigitalTemplateType, string>,
+    NHS_APP: {
+      content:
+        'This is only a basic preview. [Send a test NHS App message](/templates/send-test-nhs-app-message/{{templateId}}) to preview this message properly.',
+      'data-testid': 'test-message-banner',
+    },
+    SMS: {
+      content:
+        'This is only a basic preview. [Send a test text message](/templates/send-test-text-message/{{templateId}}) to preview this message properly.',
+      'data-testid': 'test-message-banner',
+    },
+    EMAIL: {
+      content:
+        'This is only a basic preview. [Send a test email](/templates/send-test-email/{{templateId}}) to preview this message properly.',
+      'data-testid': 'test-message-banner',
+    },
+  } as Record<DigitalTemplateType, PreviewDigitalContent>,
+  requestProofBanner: {
+    'data-testid': 'request-proof-message-banner',
+    content:
+      'This is only a basic preview. [Request a proof](/templates/request-a-proof/{{templateId}}) to preview this template properly.',
+  } satisfies PreviewDigitalContent,
 };
 
 const messagePlanFallbackConditions: Record<
@@ -1445,9 +1535,9 @@ const messagePlanCascadePreview = {
 const editMessagePlan = {
   pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
-  changeNameLink: {
-    href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
-    text: 'Edit settings',
+  renameLink: {
+    href: '/message-plans/rename-message-plan/{{routingConfigId}}?lockNumber={{lockNumber}}',
+    text: 'Rename message plan',
   },
   rowHeadings: {
     routingPlanId: 'Routing Plan ID',
@@ -1741,9 +1831,9 @@ const createMessagePlan = {
   backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
 };
 
-const editMessagePlanSettings = {
-  pageTitle: generatePageTitle('Edit message plan settings'),
-  pageHeading: 'Edit message plan settings',
+const renameMessagePlan = {
+  pageTitle: generatePageTitle('Rename message plan'),
+  pageHeading: 'Rename message plan',
   backLink: (id: string) => ({
     href: `/message-plans/edit-message-plan/${id}`,
     text: 'Go back',
@@ -2071,6 +2161,7 @@ const content = {
     errorSummary,
     footer,
     header,
+    howToRequestADigitalProof,
     letterRender,
     lockedTemplateWarning,
     logoutWarning,
@@ -2112,7 +2203,6 @@ const content = {
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlan,
-    editMessagePlanSettings,
     editTemplateCampaignPage,
     editTemplateNamePage,
     error404,
@@ -2132,6 +2222,7 @@ const content = {
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
+    renameMessagePlan,
     reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
     reviewAndMoveToProductionPreviewLetter,

@@ -15,6 +15,7 @@ import { Container } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import { renderEmailMarkdown } from '@utils/markdownit';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { PreviewTemplateDetailsBanner } from './PreviewTemplateDetailsBanner';
 
 export default function PreviewTemplateDetailsEmail({
   template,
@@ -56,6 +57,10 @@ export default function PreviewTemplateDetailsEmail({
           />
         </DetailSection>
       </Container>
+      <PreviewTemplateDetailsBanner
+        digitalProofingEnabled={!!features.digitalProofingEmail}
+        template={template}
+      />
     </>
   );
 }
