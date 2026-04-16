@@ -78,7 +78,6 @@ import {
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
@@ -91,6 +90,7 @@ import {
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
 } from 'pages/routing';
 
@@ -167,7 +167,6 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
@@ -180,6 +179,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
 ];
 

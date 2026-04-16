@@ -156,7 +156,6 @@ export const $CreateRoutingConfig = schemaFor<CreateRoutingConfig>()(
 export const $UpdateRoutingConfig = schemaFor<UpdateRoutingConfig>()(
   z
     .object({
-      campaignId: z.string().optional(),
       cascade: z.array($CascadeItem).nonempty().optional(),
       cascadeGroupOverrides: z.array($CascadeGroup).optional(),
       name: z.string().optional(),

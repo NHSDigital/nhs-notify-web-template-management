@@ -90,12 +90,13 @@ export default async function EditMessagePlanPage(props: MessagePlanPageProps) {
               </h1>
               <p className='nhsuk-body-s'>
                 <Link
-                  data-testid='edit-settings-link'
-                  href={interpolate(content.changeNameLink.href, {
+                  data-testid='rename-link'
+                  href={interpolate(content.renameLink.href, {
                     routingConfigId: messagePlan.id,
+                    lockNumber: messagePlan.lockNumber,
                   })}
                 >
-                  {content.changeNameLink.text}
+                  {content.renameLink.text}
                 </Link>
               </p>
 

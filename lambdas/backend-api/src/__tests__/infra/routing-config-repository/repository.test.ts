@@ -1476,7 +1476,6 @@ describe('RoutingConfigRepository', () => {
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
-        campaignId: 'new_campaign',
       };
 
       const updated: RoutingConfig = {
@@ -1498,7 +1497,6 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
               ExpressionAttributeNames: {
-                '#campaignId': 'campaignId',
                 '#cascade': 'cascade',
                 '#cascadeGroupOverrides': 'cascadeGroupOverrides',
                 '#lockNumber': 'lockNumber',
@@ -1508,7 +1506,6 @@ describe('RoutingConfigRepository', () => {
                 '#updatedBy': 'updatedBy',
               },
               ExpressionAttributeValues: {
-                ':campaignId': update.campaignId,
                 ':cascade': update.cascade,
                 ':cascadeGroupOverrides': update.cascadeGroupOverrides,
                 ':condition_1_status': 'DRAFT',
@@ -1527,7 +1524,7 @@ describe('RoutingConfigRepository', () => {
                 ReturnValuesOnConditionCheckFailure.ALL_OLD,
               TableName: TABLE_NAME,
               UpdateExpression:
-                'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+                'SET #name = :name, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
             },
           },
           {
@@ -1602,70 +1599,6 @@ describe('RoutingConfigRepository', () => {
               TableName: TABLE_NAME,
               UpdateExpression:
                 'SET #name = :name, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
-            },
-          },
-        ],
-      });
-
-      expect(mocks.dynamo).toHaveReceivedCommandWith(GetCommand, {
-        TableName: TABLE_NAME,
-        Key: {
-          id: routingConfig.id,
-          owner: clientOwnerKey,
-        },
-      });
-    });
-
-    test('partial update - campaignId only', async () => {
-      const { repo, mocks } = setup();
-
-      const update: UpdateRoutingConfig = {
-        campaignId: 'new_campaign',
-      };
-
-      const updated: RoutingConfig = {
-        ...routingConfig,
-        ...update,
-      };
-
-      mocks.dynamo.on(TransactWriteCommand).resolves({});
-      mocks.dynamo.on(GetCommand).resolves({ Item: updated });
-
-      const result = await repo.update(routingConfig.id, update, user, 2);
-
-      expect(result).toEqual({ data: updated });
-
-      expect(mocks.dynamo).toHaveReceivedCommandWith(TransactWriteCommand, {
-        TransactItems: [
-          {
-            Update: {
-              ConditionExpression:
-                '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
-              ExpressionAttributeNames: {
-                '#lockNumber': 'lockNumber',
-                '#campaignId': 'campaignId',
-                '#status': 'status',
-                '#updatedAt': 'updatedAt',
-                '#updatedBy': 'updatedBy',
-              },
-              ExpressionAttributeValues: {
-                ':condition_1_status': 'DRAFT',
-                ':condition_2_lockNumber': 2,
-                ':lockNumber': 1,
-                ':campaignId': update.campaignId,
-                ':updatedAt': date.toISOString(),
-                ':updatedBy': `INTERNAL_USER#${user.internalUserId}`,
-              },
-              Key: {
-                id: routingConfig.id,
-                owner: clientOwnerKey,
-              },
-              ReturnValues: 'ALL_NEW',
-              ReturnValuesOnConditionCheckFailure:
-                ReturnValuesOnConditionCheckFailure.ALL_OLD,
-              TableName: TABLE_NAME,
-              UpdateExpression:
-                'SET #campaignId = :campaignId, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
             },
           },
         ],
@@ -2047,7 +1980,6 @@ describe('RoutingConfigRepository', () => {
         cascade: routingConfig.cascade,
         cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
         name: routingConfig.name,
-        campaignId: routingConfig.campaignId,
         status: 'DELETED',
       } as UpdateRoutingConfig;
 
@@ -2065,7 +1997,6 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 '#status = :condition_1_status AND #lockNumber = :condition_2_lockNumber',
               ExpressionAttributeNames: {
-                '#campaignId': 'campaignId',
                 '#cascade': 'cascade',
                 '#cascadeGroupOverrides': 'cascadeGroupOverrides',
                 '#lockNumber': 'lockNumber',
@@ -2075,7 +2006,6 @@ describe('RoutingConfigRepository', () => {
                 '#updatedBy': 'updatedBy',
               },
               ExpressionAttributeValues: {
-                ':campaignId': update.campaignId,
                 ':cascade': update.cascade,
                 ':cascadeGroupOverrides': update.cascadeGroupOverrides,
                 ':condition_1_status': 'DRAFT',
@@ -2094,7 +2024,7 @@ describe('RoutingConfigRepository', () => {
                 ReturnValuesOnConditionCheckFailure.ALL_OLD,
               TableName: TABLE_NAME,
               UpdateExpression:
-                'SET #name = :name, #campaignId = :campaignId, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
+                'SET #name = :name, #cascade = :cascade, #cascadeGroupOverrides = :cascadeGroupOverrides, #updatedAt = :updatedAt, #updatedBy = :updatedBy ADD #lockNumber :lockNumber',
             },
           },
           {
@@ -2132,7 +2062,6 @@ describe('RoutingConfigRepository', () => {
           cascade: routingConfig.cascade,
           cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
           name: routingConfig.name,
-          campaignId: routingConfig.campaignId,
         },
         user,
         2
@@ -2166,7 +2095,6 @@ describe('RoutingConfigRepository', () => {
           cascade: routingConfig.cascade,
           cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
           name: routingConfig.name,
-          campaignId: routingConfig.campaignId,
         },
         user,
         2

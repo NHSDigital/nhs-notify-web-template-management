@@ -26,7 +26,7 @@ export function MessagePlanForm({
   children,
   initialState = { campaignId: '', name: '' },
 }: PropsWithChildren<{
-  campaignIds: string[];
+  campaignIds?: string[];
   backLink: { href: string; text: string };
   initialState?: Pick<RoutingConfig, 'campaignId' | 'name'>;
 }>) {
@@ -72,42 +72,44 @@ export function MessagePlanForm({
           data-testid='name-field'
         />
       </div>
-      <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
-        {campaignIds.length === 1 ? (
-          <>
-            <Label htmlFor='campaignId' size='s'>
-              {formContent.fields.campaignId.label}
-            </Label>
-            <HintText>{formContent.fields.campaignId.hintSingle}</HintText>
-            <input
-              type='hidden'
+      {campaignIds && (
+        <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
+          {campaignIds.length === 1 ? (
+            <>
+              <Label htmlFor='campaignId' size='s'>
+                {formContent.fields.campaignId.label}
+              </Label>
+              <HintText>{formContent.fields.campaignId.hintSingle}</HintText>
+              <input
+                type='hidden'
+                name='campaignId'
+                value={campaignIds[0]}
+                readOnly
+              />
+              <p data-testid='single-campaign-id'>{campaignIds[0]}</p>
+            </>
+          ) : (
+            <Select
+              id='campaignId'
               name='campaignId'
-              value={campaignIds[0]}
-              readOnly
-            />
-            <p data-testid='single-campaign-id'>{campaignIds[0]}</p>
-          </>
-        ) : (
-          <Select
-            id='campaignId'
-            name='campaignId'
-            label={formContent.fields.campaignId.label}
-            labelProps={{ size: 's' }}
-            hint={formContent.fields.campaignId.hintMulti}
-            defaultValue={campaignId}
-            onChange={handleCampaignIdChange}
-            error={campaignIdError}
-            data-testid='campaign-id-field'
-          >
-            <Select.Option />
-            {campaignIds.map((id) => (
-              <Select.Option key={id} value={id}>
-                {id}
-              </Select.Option>
-            ))}
-          </Select>
-        )}
-      </div>
+              label={formContent.fields.campaignId.label}
+              labelProps={{ size: 's' }}
+              hint={formContent.fields.campaignId.hintMulti}
+              defaultValue={campaignId}
+              onChange={handleCampaignIdChange}
+              error={campaignIdError}
+              data-testid='campaign-id-field'
+            >
+              <Select.Option />
+              {campaignIds.map((id) => (
+                <Select.Option key={id} value={id}>
+                  {id}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </div>
+      )}
       <div className='nhsuk-form-group'>
         <NHSNotifyButton data-testid='submit-button'>
           {formContent.submitButton}

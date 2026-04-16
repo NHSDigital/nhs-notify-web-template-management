@@ -31,10 +31,10 @@ exports[`EditMessagePlanPage renders correctly for a message plan with multiple 
             class="nhsuk-body-s"
           >
             <a
-              data-testid="edit-settings-link"
-              href="/message-plans/edit-message-plan-settings/fbb81055-79b9-4759-ac07-d191ae57be34"
+              data-testid="rename-link"
+              href="/message-plans/rename-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
             >
-              Edit settings
+              Rename message plan
             </a>
           </p>
           <dl
@@ -1092,10 +1092,10 @@ exports[`EditMessagePlanPage validation should match snapshot when displaying va
             class="nhsuk-body-s"
           >
             <a
-              data-testid="edit-settings-link"
-              href="/message-plans/edit-message-plan-settings/fbb81055-79b9-4759-ac07-d191ae57be34"
+              data-testid="rename-link"
+              href="/message-plans/rename-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=0"
             >
-              Edit settings
+              Rename message plan
             </a>
           </p>
           <dl

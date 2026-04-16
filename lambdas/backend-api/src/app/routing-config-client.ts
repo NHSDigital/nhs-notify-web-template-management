@@ -91,21 +91,9 @@ export class RoutingConfigClient {
 
     if (validationResult.error) return validationResult;
 
-    const validated = validationResult.data;
-
-    if (
-      validated.campaignId &&
-      !clientConfiguration?.campaignIds?.includes(validated.campaignId)
-    ) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid campaign ID in request'
-      );
-    }
-
     return this.routingConfigRepository.update(
       routingConfigId,
-      validated,
+      validationResult.data,
       user,
       lockNumberValidation.data
     );

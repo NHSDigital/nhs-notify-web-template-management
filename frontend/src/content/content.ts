@@ -1510,9 +1510,9 @@ const messagePlanCascadePreview = {
 const editMessagePlan = {
   pageTitle: generatePageTitle('Choose templates for your message plan'),
   headerCaption: 'Message plan',
-  changeNameLink: {
-    href: '/message-plans/edit-message-plan-settings/{{routingConfigId}}',
-    text: 'Edit settings',
+  renameLink: {
+    href: '/message-plans/rename-message-plan/{{routingConfigId}}?lockNumber={{lockNumber}}',
+    text: 'Rename message plan',
   },
   rowHeadings: {
     routingPlanId: 'Routing Plan ID',
@@ -1806,9 +1806,9 @@ const createMessagePlan = {
   backLink: { href: '/message-plans/choose-message-order', text: 'Go back' },
 };
 
-const editMessagePlanSettings = {
-  pageTitle: generatePageTitle('Edit message plan settings'),
-  pageHeading: 'Edit message plan settings',
+const renameMessagePlan = {
+  pageTitle: generatePageTitle('Rename message plan'),
+  pageHeading: 'Rename message plan',
   backLink: (id: string) => ({
     href: `/message-plans/edit-message-plan/${id}`,
     text: 'Go back',
@@ -2178,7 +2178,6 @@ const content = {
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlan,
-    editMessagePlanSettings,
     editTemplateCampaignPage,
     editTemplateNamePage,
     error404,
@@ -2197,6 +2196,7 @@ const content = {
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
+    renameMessagePlan,
     reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
     submitLetterTemplate: submitLetterTemplatePage,
