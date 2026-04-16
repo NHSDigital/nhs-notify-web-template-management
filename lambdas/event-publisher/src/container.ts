@@ -49,5 +49,6 @@ export const createContainer = () => {
 
   return {
     app,
+    logger,
   };
 };
