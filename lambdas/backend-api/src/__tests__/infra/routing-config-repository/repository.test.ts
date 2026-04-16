@@ -1585,7 +1585,7 @@ describe('RoutingConfigRepository', () => {
         update,
         user,
         2,
-        update.campaignId as string
+        routingConfig.campaignId as string
       );
 
       expect(result).toEqual({ data: updated });
@@ -1633,7 +1633,7 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
               ExpressionAttributeValues: {
-                ':expectedCampaignId': update.campaignId,
+                ':expectedCampaignId': routingConfig.campaignId,
                 ':letter': 'LETTER',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -1750,7 +1750,7 @@ describe('RoutingConfigRepository', () => {
         update,
         user,
         2,
-        update.campaignId as string
+        routingConfig.campaignId as string
       );
 
       expect(result).toEqual({ data: updated });
@@ -1800,7 +1800,7 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
               ExpressionAttributeValues: {
-                ':expectedCampaignId': update.campaignId,
+                ':expectedCampaignId': routingConfig.campaignId,
                 ':letter': 'LETTER',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -1862,7 +1862,7 @@ describe('RoutingConfigRepository', () => {
         update,
         user,
         2,
-        update.campaignId as string
+        routingConfig.campaignId as string
       );
 
       expect(result).toEqual({ data: updated });
@@ -1912,7 +1912,7 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
               ExpressionAttributeValues: {
-                ':expectedCampaignId': update.campaignId,
+                ':expectedCampaignId': routingConfig.campaignId,
                 ':letter': 'LETTER',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -1929,7 +1929,7 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
               ExpressionAttributeValues: {
-                ':expectedCampaignId': update.campaignId,
+                ':expectedCampaignId': routingConfig.campaignId,
                 ':letter': 'LETTER',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -1946,7 +1946,7 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
               ExpressionAttributeValues: {
-                ':expectedCampaignId': update.campaignId,
+                ':expectedCampaignId': routingConfig.campaignId,
                 ':letter': 'LETTER',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -1963,7 +1963,7 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
               ExpressionAttributeValues: {
-                ':expectedCampaignId': update.campaignId,
+                ':expectedCampaignId': routingConfig.campaignId,
                 ':letter': 'LETTER',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -2010,7 +2010,7 @@ describe('RoutingConfigRepository', () => {
         update,
         user,
         2,
-        update.campaignId as string
+        routingConfig.campaignId as string
       );
 
       expect(result).toEqual({ data: updated });
@@ -2058,7 +2058,7 @@ describe('RoutingConfigRepository', () => {
               ConditionExpression:
                 'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
               ExpressionAttributeValues: {
-                ':expectedCampaignId': update.campaignId,
+                ':expectedCampaignId': routingConfig.campaignId,
                 ':letter': 'LETTER',
               },
               ReturnValuesOnConditionCheckFailure:
@@ -2098,7 +2098,7 @@ describe('RoutingConfigRepository', () => {
         update,
         user,
         2,
-        update.campaignId as string
+        routingConfig.campaignId as string
       );
 
       expect(result).toEqual({ data: updated });

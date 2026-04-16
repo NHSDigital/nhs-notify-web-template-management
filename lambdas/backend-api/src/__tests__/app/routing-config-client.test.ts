@@ -967,6 +967,10 @@ describe('RoutingConfigClient', () => {
         },
       });
 
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        data: routingConfig,
+      });
+
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
@@ -1002,6 +1006,10 @@ describe('RoutingConfigClient', () => {
         },
       });
 
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        data: routingConfig,
+      });
+
       const updated: RoutingConfig = {
         ...routingConfig,
         ...update,
@@ -1022,7 +1030,8 @@ describe('RoutingConfigClient', () => {
         routingConfig.id,
         update,
         user,
-        42
+        42,
+        updated.campaignId
       );
 
       expect(result).toEqual({
