@@ -10,8 +10,8 @@ import {
   MESSAGE_ORDER_OPTIONS_LIST,
   type MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
+import { $MessagePlanFormData } from '@forms/MessagePlanForm/schema';
 import { createRoutingConfig } from '@utils/message-plans';
-import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
 import { FormState } from '@utils/types';
 
 const $CreateMessagePlanFormData = $MessagePlanFormData.extend({

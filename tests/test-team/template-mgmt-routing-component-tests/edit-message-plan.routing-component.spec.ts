@@ -326,12 +326,12 @@ test.describe('Routing - Edit Message Plan page', () => {
       messagePlans.valid.name
     );
 
-    await expect(editMessagePlanPage.editSettingsLink).toHaveText(
-      'Edit settings'
+    await expect(editMessagePlanPage.renameLink).toHaveText(
+      'Rename message plan'
     );
-    await expect(editMessagePlanPage.editSettingsLink).toHaveAttribute(
+    await expect(editMessagePlanPage.renameLink).toHaveAttribute(
       'href',
-      `/templates/message-plans/edit-message-plan-settings/${messagePlans.valid.id}`
+      `/templates/message-plans/rename-message-plan/${messagePlans.valid.id}?lockNumber=${messagePlans.valid.lockNumber}`
     );
 
     await expect(editMessagePlanPage.routingConfigId).toHaveText(
@@ -424,6 +424,20 @@ test.describe('Routing - Edit Message Plan page', () => {
     );
 
     // TODO: CCM-11537 Choose template then return and assert updated
+  });
+
+  test('user can navigate to the rename page', async ({ page, baseURL }) => {
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
+      page
+    ).setPathParam('messagePlanId', routingConfigIds.valid);
+
+    await editMessagePlanPage.loadPage();
+
+    await editMessagePlanPage.clickRenameLink();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/rename-message-plan/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
+    );
   });
 
   test('user can change templates on their existing message plan', async ({

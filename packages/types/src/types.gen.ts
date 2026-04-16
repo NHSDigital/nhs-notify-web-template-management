@@ -111,8 +111,8 @@ export type ClientFeatures = {
   digitalProofingEmail?: boolean;
   digitalProofingNhsApp?: boolean;
   digitalProofingSms?: boolean;
-  letterAuthoring?: boolean;
   legacyLetters?: boolean;
+  letterAuthoring?: boolean;
   proofing?: boolean;
   routing?: boolean;
 };
@@ -390,7 +390,6 @@ export type TemplateSuccessList = {
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
 export type UpdateRoutingConfig = unknown & {
-  campaignId?: string;
   cascade?: Array<CascadeItem>;
   cascadeGroupOverrides?: Array<CascadeGroup>;
   name?: string;

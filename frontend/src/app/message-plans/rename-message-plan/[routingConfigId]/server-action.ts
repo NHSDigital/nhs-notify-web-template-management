@@ -2,21 +2,23 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
-import type { FormState } from '@utils/types';
-import { $MessagePlanFormData } from '@forms/MessagePlan/schema';
-import { updateRoutingConfig } from '@utils/message-plans';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
+import { $MessagePlanFormData } from '@forms/MessagePlanForm/schema';
+import { updateRoutingConfig } from '@utils/message-plans';
+import type { FormState } from '@utils/types';
 
-const $UpdateMessagePlanFormData = $MessagePlanFormData.extend({
-  routingConfigId: z.string({ error: 'Invalid message plan id' }),
-  lockNumber: $LockNumber,
-});
+const $RenameMessagePlanFormData = $MessagePlanFormData
+  .omit({ campaignId: true })
+  .extend({
+    routingConfigId: z.string({ error: 'Invalid message plan id' }),
+    lockNumber: $LockNumber,
+  });
 
-export async function editMessagePlanSettingsServerAction(
+export async function renameMessagePlanServerAction(
   state: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const parsed = $UpdateMessagePlanFormData.safeParse(
+  const parsed = $RenameMessagePlanFormData.safeParse(
     Object.fromEntries(formData.entries())
   );
 
@@ -33,7 +35,6 @@ export async function editMessagePlanSettingsServerAction(
     parsed.data.routingConfigId,
     {
       name: parsed.data.name,
-      campaignId: parsed.data.campaignId,
     },
     parsed.data.lockNumber
   );

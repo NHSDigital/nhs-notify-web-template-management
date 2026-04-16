@@ -144,7 +144,6 @@ describe('Update Routing Config Handler', () => {
         },
       ],
       cascadeGroupOverrides: [],
-      campaignId: 'campaign',
       name: 'new name',
     };
 
@@ -205,7 +204,6 @@ describe('Update Routing Config Handler', () => {
         },
       ],
       cascadeGroupOverrides: [],
-      campaignId: 'campaign',
       name: 'new name',
     };
 
