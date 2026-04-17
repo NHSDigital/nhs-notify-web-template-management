@@ -4,14 +4,14 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export const PreviewLetterFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  const { templateId, routingConfigId } = await props.params;
+  const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
 
@@ -27,13 +27,19 @@ export const PreviewLetterFromMessagePlan = async (
 
   return (
     <NHSNotifyContainer>
-      <PreviewTemplateFromMessagePlan
-        initialState={validatedTemplate}
-        previewComponent={PreviewTemplateDetailsLetter}
-        routingConfigId={routingConfigId}
-        letterVariant={letterVariant}
-        hideBackLinks
-      />
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-full'>
+            <PreviewTemplateDetailsLetter
+              template={validatedTemplate}
+              letterVariant={letterVariant}
+              hideStatus
+              hideEditActions
+              hideLearnMore
+            />
+          </div>
+        </div>
+      </NHSNotifyMain>
     </NHSNotifyContainer>
   );
 };

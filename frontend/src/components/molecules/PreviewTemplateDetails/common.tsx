@@ -7,10 +7,7 @@ import {
 import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
 import content from '@content/content';
-import type {
-  LetterVariant,
-  TemplateDto,
-} from 'nhs-notify-web-template-management-types';
+import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
 import { useFeatureFlags } from '@providers/client-config-provider';
@@ -18,18 +15,9 @@ import Link from 'next/link';
 import { interpolate } from '@utils/interpolate';
 import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
 
-export type PreviewTemplateComponent<T extends TemplateDto> = ({
-  template,
-  hideStatus,
-  hideEditActions,
-  hideLearnMore,
-  letterVariant,
-}: {
+export type PreviewTemplateComponent<T extends TemplateDto> = (props: {
   template: T;
   hideStatus?: boolean;
-  hideEditActions?: boolean;
-  hideLearnMore?: boolean;
-  letterVariant?: LetterVariant;
 }) => JSX.Element;
 
 type ContentPreviewField = {

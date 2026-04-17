@@ -1,14 +1,21 @@
 import {
   LetterTemplate,
   MessagePlanAndTemplatePageProps,
+  templateTypeToUrlTextMappings,
+  isFrontendSupportedLetterType,
+  FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import Link from 'next/link';
+import baseContent from '@content/content';
+import { interpolate } from '@utils/interpolate';
 
 type PreviewLetterFromChooseLetterProps = MessagePlanAndTemplatePageProps & {
   validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
@@ -46,15 +53,52 @@ export const PreviewLetterFromChooseLetter = async (
     validatedTemplate.letterVariantId
   );
 
+  const content = baseContent.components.previewTemplateFromMessagePlan;
+
+  let letterType: FrontendSupportedLetterType | undefined;
+  const isForeignLanguage =
+    validatedTemplate.language && validatedTemplate.language !== 'en';
+  if (isForeignLanguage) {
+    letterType = 'language';
+  } else if (isFrontendSupportedLetterType(validatedTemplate.letterType)) {
+    letterType = validatedTemplate.letterType;
+  }
+
+  const backLinkHref = interpolate(content.backLink.href, {
+    templateType: templateTypeToUrlTextMappings(
+      validatedTemplate.templateType,
+      letterType
+    ),
+    routingConfigId,
+    lockNumber,
+  });
+
   return (
     <NHSNotifyContainer>
-      <PreviewTemplateFromMessagePlan
-        initialState={validatedTemplate}
-        previewComponent={PreviewTemplateDetailsLetter}
-        routingConfigId={routingConfigId}
-        lockNumber={lockNumber}
-        letterVariant={letterVariant}
-      />
+      <NHSNotifyBackLink href={backLinkHref}>
+        {content.backLink.text}
+      </NHSNotifyBackLink>
+
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-full'>
+            <PreviewTemplateDetailsLetter
+              template={validatedTemplate}
+              letterVariant={letterVariant}
+              hideStatus
+              hideEditActions
+              hideLearnMore
+            />
+            <Link
+              className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
+              href={backLinkHref}
+              data-testid='back-link-bottom'
+            >
+              {content.backLink.text}
+            </Link>
+          </div>
+        </div>
+      </NHSNotifyMain>
     </NHSNotifyContainer>
   );
 };

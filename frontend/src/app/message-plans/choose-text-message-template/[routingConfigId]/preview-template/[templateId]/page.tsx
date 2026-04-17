@@ -8,7 +8,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { PreviewTemplateFromMessagePlan } from '@molecules/PreviewTemplateFromMessagePlan/PreviewTemplateFromMessagePlan';
+import { PreviewDigitalTemplateFromMessagePlan } from '@molecules/PreviewDigitalTemplateFromMessagePlan/PreviewDigitalTemplateFromMessagePlan';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
@@ -46,7 +46,7 @@ const PreviewTextMessageTemplateFromMessagePlan = async (
 
   return (
     <NHSNotifyContainer>
-      <PreviewTemplateFromMessagePlan
+      <PreviewDigitalTemplateFromMessagePlan
         initialState={validatedTemplate}
         previewComponent={PreviewTemplateDetailsSms}
         routingConfigId={routingConfigId}
