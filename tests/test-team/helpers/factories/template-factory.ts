@@ -40,7 +40,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -59,7 +58,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -77,7 +75,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -147,6 +144,7 @@ export const TemplateFactory = {
       validationErrors?: Array<{ name: string; issues?: string[] }>;
     }
   ): Template => {
+
     const files: Record<string, unknown> = {};
 
     if (options?.docxTemplate !== false) {
