@@ -91,7 +91,9 @@ export const PreviewLetterFromChooseTemplate = async (
               hideEditActions
               hideLearnMore
             />
-            <h2 className='nhsuk-heading-m'>Example preview</h2>
+            <h2 className='nhsuk-heading-m'>
+              {baseContent.components.letterRender.examplePreviewHeading}
+            </h2>
             <LetterRenderIframe
               renderType={'initialRender'}
               pdfUrl={

@@ -41,7 +41,7 @@ const pageContent = content.components.messagePlanCascadePreview;
 
 function getLetterTemplatePreviewHref(
   template: TemplateDto,
-  letterPreviewHrefBase?: string
+  letterPreviewHrefBase: string
 ): string {
   return `${letterPreviewHrefBase}/preview-template/${template.id}`;
 }
@@ -170,7 +170,7 @@ export function MessagePlanCascadePreview({
                           )}
                           data-testid='channel-card'
                         >
-                          <>
+                          <Fragment key={template.id}>
                             <p data-testid='template-name'>{template.name}</p>
                             <Link
                               href={getLetterTemplatePreviewHref(
@@ -182,7 +182,7 @@ export function MessagePlanCascadePreview({
                             >
                               {pageContent.letterTemplateLinkText}
                             </Link>
-                          </>
+                          </Fragment>
                         </MessagePlanChannelCard>
                       </MessagePlanConditionalTemplatesListItem>
                     ))}
@@ -194,7 +194,7 @@ export function MessagePlanCascadePreview({
                           data-testid='channel-card'
                         >
                           {languageTemplates.map((template) => (
-                            <>
+                            <Fragment key={template.id}>
                               <p data-testid='template-name'>{template.name}</p>
                               <Link
                                 href={getLetterTemplatePreviewHref(
@@ -207,7 +207,7 @@ export function MessagePlanCascadePreview({
                               >
                                 {pageContent.letterTemplateLinkText}
                               </Link>
-                            </>
+                            </Fragment>
                           ))}
                         </MessagePlanChannelCard>
                       </MessagePlanConditionalTemplatesListItem>

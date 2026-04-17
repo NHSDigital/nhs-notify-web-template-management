@@ -9,6 +9,7 @@ import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
 import { buildLetterRenderUrl } from '@utils/letter-render-url';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import content from '@content/content';
 
 export const PreviewLetterFromMessagePlanPreview = async (
   props: MessagePlanAndTemplatePageProps
@@ -46,7 +47,9 @@ export const PreviewLetterFromMessagePlanPreview = async (
               hideEditActions
               hideLearnMore
             />
-            <h2 className='nhsuk-heading-m'>Example preview</h2>
+            <h2 className='nhsuk-heading-m'>
+              {content.components.letterRender.examplePreviewHeading}
+            </h2>
             <LetterRenderIframe
               renderType={'initialRender'}
               pdfUrl={pdfUrl}

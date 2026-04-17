@@ -593,6 +593,7 @@ const letterRender = {
     short: 'Short examples',
     long: 'Long examples',
   },
+  examplePreviewHeading: 'Example preview',
   loadingText: 'Loading letter preview',
   iframe: {
     noPreview: 'No preview available',
@@ -1524,10 +1525,6 @@ const messagePlanCascadePreview = {
   previewTemplateSummary: {
     prefix: 'Preview',
     suffix: 'template',
-  },
-  letterTemplateLinks: {
-    previewSubmitted: '/preview-submitted-letter-template/{{id}}',
-    preview: '/preview-letter-template/{{id}}',
   },
   letterTemplateLinkText: 'Preview template (opens in a new tab)',
 };
