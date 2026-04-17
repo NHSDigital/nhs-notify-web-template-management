@@ -1,5 +1,3 @@
-'use server';
-
 import {
   TemplatePageProps,
   validateSubmittedEmailTemplate,
@@ -8,7 +6,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -33,9 +31,9 @@ const PreviewSubmittedEmailTemplatePage = async (props: TemplatePageProps) => {
 
   return (
     <NHSNotifyContainer>
-      <PreviewSubmittedTemplate
-        initialState={validatedTemplate}
-        previewComponent={PreviewTemplateDetailsEmail}
+      <PreviewSubmittedDigitalTemplate
+        template={validatedTemplate}
+        DetailComponent={PreviewTemplateDetailsEmail}
       />
     </NHSNotifyContainer>
   );

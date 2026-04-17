@@ -17,7 +17,7 @@ import {
 } from '@testhelpers/helpers';
 import content from '@content/content';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
 const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
@@ -70,9 +70,9 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     });
     expect(page).toEqual(
       <NHSNotifyContainer>
-        <PreviewSubmittedTemplate
-          initialState={submittedLetterTemplate}
-          previewComponent={PreviewTemplateDetailsPdfLetter}
+        <PreviewSubmittedDigitalTemplate
+          template={submittedLetterTemplate}
+          DetailComponent={PreviewTemplateDetailsPdfLetter}
         />
       </NHSNotifyContainer>
     );

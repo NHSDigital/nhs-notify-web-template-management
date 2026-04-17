@@ -8,7 +8,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -33,9 +33,9 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
 
   return (
     <NHSNotifyContainer>
-      <PreviewSubmittedTemplate
-        initialState={validatedTemplate}
-        previewComponent={PreviewTemplateDetailsPdfLetter}
+      <PreviewSubmittedDigitalTemplate
+        template={validatedTemplate}
+        DetailComponent={PreviewTemplateDetailsPdfLetter}
       />
     </NHSNotifyContainer>
   );

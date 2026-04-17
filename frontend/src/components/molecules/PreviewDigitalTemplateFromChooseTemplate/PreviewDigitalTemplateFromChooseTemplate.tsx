@@ -20,9 +20,9 @@ type PreviewDigitalTemplateFromChooseTemplateProps<T extends TemplateDto> =
     DetailComponent: ComponentType<{ template: T; hideStatus?: boolean }>;
   };
 
-export async function PreviewDigitalTemplateFromChooseTemplate<T extends TemplateDto>(
-  props: PreviewDigitalTemplateFromChooseTemplateProps<T>
-) {
+export async function PreviewDigitalTemplateFromChooseTemplate<
+  T extends TemplateDto,
+>(props: PreviewDigitalTemplateFromChooseTemplateProps<T>) {
   const { templateId, routingConfigId } = await props.params;
 
   const searchParams = await props.searchParams;

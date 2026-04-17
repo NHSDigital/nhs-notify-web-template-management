@@ -1,23 +1,22 @@
 'use client';
 
-import { PageComponentProps } from 'nhs-notify-web-template-management-utils';
 import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
-import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { ComponentType } from 'react';
 
-export type PreviewSubmittedTemplateProps<T extends TemplateDto> =
-  PageComponentProps<T> & {
-    previewComponent: PreviewTemplateComponent<T>;
-  };
+export type PreviewSubmittedDigitalTemplateProps<T extends TemplateDto> = {
+  template: T;
+  DetailComponent: ComponentType<{ template: T; hideStatus?: boolean }>;
+};
 
-export function PreviewSubmittedTemplate<T extends TemplateDto>({
-  initialState,
-  previewComponent,
-}: Readonly<PreviewSubmittedTemplateProps<T>>) {
+export function PreviewSubmittedDigitalTemplate<T extends TemplateDto>({
+  template,
+  DetailComponent,
+}: Readonly<PreviewSubmittedDigitalTemplateProps<T>>) {
   const content = baseContent.components.viewSubmittedTemplate;
 
   const { routing } = useFeatureFlags();
@@ -31,15 +30,11 @@ export function PreviewSubmittedTemplate<T extends TemplateDto>({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            {previewComponent({
-              template: initialState,
-            })}
+            <DetailComponent template={template} />
 
             {!routing && (
               <>
-                {initialState.templateType !== 'LETTER' && (
-                  <p>{content.cannotEdit}</p>
-                )}
+                <p>{content.cannotEdit}</p>
                 <p>{content.createNewTemplate}</p>
               </>
             )}
