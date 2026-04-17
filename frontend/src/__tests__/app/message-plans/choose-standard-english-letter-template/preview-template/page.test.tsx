@@ -4,15 +4,15 @@
 import PreviewStandardEnglishLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-standard-english-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { PreviewLetterFromChooseLetter } from '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter';
+import { PreviewLetterFromChooseTemplate } from '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate';
 import { validateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock(
-  '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter'
+  '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate'
 );
 
 describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
-  it('should render PreviewLetterFromChooseLetter with validateLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
+  it('should render PreviewLetterFromChooseTemplate with validateLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -25,7 +25,7 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
       await PreviewStandardEnglishLetterTemplateFromMessagePlan(props);
 
     expect(page).toEqual(
-      <PreviewLetterFromChooseLetter
+      <PreviewLetterFromChooseTemplate
         {...props}
         validateTemplate={validateLetterTemplate}
         redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'

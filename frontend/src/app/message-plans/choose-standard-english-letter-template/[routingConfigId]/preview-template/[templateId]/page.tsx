@@ -4,7 +4,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { PreviewLetterFromChooseLetter } from '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter';
+import { PreviewLetterFromChooseTemplate } from '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate';
 
 const { pageTitle } = content.pages.previewStandardEnglishLetterTemplate;
 
@@ -19,7 +19,7 @@ const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
 ) => {
   const { routingConfigId } = await props.params;
   return (
-    <PreviewLetterFromChooseLetter
+    <PreviewLetterFromChooseTemplate
       {...props}
       validateTemplate={validateLetterTemplate}
       redirectUrlOnLockNumberFailure={`/message-plans/edit-message-plan/${routingConfigId}`}

@@ -1,93 +1,41 @@
+/**
+ * @jest-environment node
+ */
 import PreviewTextMessageTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-text-message-template/[routingConfigId]/preview-template/[templateId]/page';
-import { ROUTING_CONFIG, SMS_TEMPLATE } from '@testhelpers/helpers';
-import { render } from '@testing-library/react';
-import { getTemplate } from '@utils/form-actions';
-import { redirect } from 'next/navigation';
+import { PreviewDigitalTemplateFromChooseTemplate } from '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate';
+import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
+import { validateSMSTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@utils/form-actions');
-jest.mock('next/navigation');
-
-const getTemplateMock = jest.mocked(getTemplate);
-const redirectMock = jest.mocked(redirect);
+jest.mock(
+  '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate'
+);
 
 describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
-  beforeEach(jest.resetAllMocks);
-
-  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
-    await PreviewTextMessageTemplateFromMessagePlan({
+  it('should render PreviewDigitalTemplateFromChooseTemplate with validateSMSTemplate and PreviewTemplateDetailsSms', async () => {
+    const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
         templateId: 'template-id',
       }),
-      searchParams: Promise.resolve({
-        lockNumber: 'invalid',
-      }),
-    });
+      searchParams: Promise.resolve({ lockNumber: '5' }),
+    };
 
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
+    const page = await PreviewTextMessageTemplateFromMessagePlan(props);
+
+    expect(page).toEqual(
+      <PreviewDigitalTemplateFromChooseTemplate
+        {...props}
+        validateTemplate={validateSMSTemplate}
+        DetailComponent={PreviewTemplateDetailsSms}
+      />
     );
   });
 
-  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
-    await PreviewTextMessageTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
-      }),
-      searchParams: Promise.resolve({}),
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
-    );
-  });
-
-  it('should redirect to invalid page with invalid template id', async () => {
-    getTemplateMock.mockResolvedValueOnce(undefined);
-
-    await PreviewTextMessageTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'invalid-template-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '0',
-      }),
-    });
-
-    expect(getTemplateMock).toHaveBeenCalledWith('invalid-template-id');
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
-  });
-
-  it('renders SMS template preview', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      ...SMS_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-    });
-
-    const page = await PreviewTextMessageTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: SMS_TEMPLATE.id,
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '5',
-      }),
-    });
-
-    const container = render(page);
-
-    expect(getTemplateMock).toHaveBeenCalledWith(SMS_TEMPLATE.id);
-
+  it('should have the correct page title', async () => {
     expect(await generateMetadata()).toEqual({
       title: 'Preview text message template - NHS Notify',
     });
-    expect(container.asFragment()).toMatchSnapshot();
   });
 });

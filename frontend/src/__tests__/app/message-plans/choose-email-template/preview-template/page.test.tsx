@@ -1,91 +1,41 @@
+/**
+ * @jest-environment node
+ */
 import PreviewEmailTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-email-template/[routingConfigId]/preview-template/[templateId]/page';
-import { EMAIL_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
-import { render } from '@testing-library/react';
-import { getTemplate } from '@utils/form-actions';
-import { redirect } from 'next/navigation';
+import { PreviewDigitalTemplateFromChooseTemplate } from '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate';
+import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
+import { validateEmailTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@utils/form-actions');
-jest.mock('next/navigation');
-
-const getTemplateMock = jest.mocked(getTemplate);
-const redirectMock = jest.mocked(redirect);
+jest.mock(
+  '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate'
+);
 
 describe('PreviewEmailTemplateFromMessagePlan page', () => {
-  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
-    await PreviewEmailTemplateFromMessagePlan({
+  it('should render PreviewDigitalTemplateFromChooseTemplate with validateEmailTemplate and PreviewTemplateDetailsEmail', async () => {
+    const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
         templateId: 'template-id',
       }),
-      searchParams: Promise.resolve({
-        lockNumber: 'invalid',
-      }),
-    });
+      searchParams: Promise.resolve({ lockNumber: '5' }),
+    };
 
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
+    const page = await PreviewEmailTemplateFromMessagePlan(props);
+
+    expect(page).toEqual(
+      <PreviewDigitalTemplateFromChooseTemplate
+        {...props}
+        validateTemplate={validateEmailTemplate}
+        DetailComponent={PreviewTemplateDetailsEmail}
+      />
     );
   });
 
-  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
-    await PreviewEmailTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
-      }),
-      searchParams: Promise.resolve({}),
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
-    );
-  });
-
-  it('should redirect to invalid page with invalid template id', async () => {
-    getTemplateMock.mockResolvedValueOnce(undefined);
-
-    await PreviewEmailTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'invalid-template-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '0',
-      }),
-    });
-
-    expect(getTemplateMock).toHaveBeenCalledWith('invalid-template-id');
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
-  });
-
-  it('renders Email template preview', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      ...EMAIL_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-    });
-
-    const page = await PreviewEmailTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: EMAIL_TEMPLATE.id,
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '5',
-      }),
-    });
-
-    const container = render(page);
-
-    expect(getTemplateMock).toHaveBeenCalledWith(EMAIL_TEMPLATE.id);
-
+  it('should have the correct page title', async () => {
     expect(await generateMetadata()).toEqual({
       title: 'Preview email template - NHS Notify',
     });
-    expect(container.asFragment()).toMatchSnapshot();
   });
 });

@@ -4,15 +4,15 @@
 import PreviewLargePrintLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-large-print-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { PreviewLetterFromChooseLetter } from '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter';
+import { PreviewLetterFromChooseTemplate } from '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate';
 import { validateLargePrintLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock(
-  '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter'
+  '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate'
 );
 
 describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
-  it('should render PreviewLetterFromChooseLetter with validateLargePrintLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
+  it('should render PreviewLetterFromChooseTemplate with validateLargePrintLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -24,7 +24,7 @@ describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
     const page = await PreviewLargePrintLetterTemplateFromMessagePlan(props);
 
     expect(page).toEqual(
-      <PreviewLetterFromChooseLetter
+      <PreviewLetterFromChooseTemplate
         {...props}
         validateTemplate={validateLargePrintLetterTemplate}
         redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'

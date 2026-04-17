@@ -1,4 +1,4 @@
-import { PreviewLetterFromChooseLetter } from '@molecules/PreviewLetterFromChooseLetter/PreviewLetterFromChooseLetter';
+import { PreviewLetterFromChooseTemplate } from '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate';
 import {
   AUTHORING_LETTER_TEMPLATE,
   makeLetterVariant,
@@ -29,13 +29,13 @@ const defaultProps = {
   redirectUrlOnLockNumberFailure: defaultRedirectUrl,
 };
 
-describe('PreviewLetterFromChooseLetter', () => {
+describe('PreviewLetterFromChooseTemplate', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
   it('should redirect when lockNumber is invalid', async () => {
-    await PreviewLetterFromChooseLetter({
+    await PreviewLetterFromChooseTemplate({
       ...defaultProps,
       searchParams: Promise.resolve({ lockNumber: 'invalid' }),
       redirectUrlOnLockNumberFailure: '/custom-redirect',
@@ -45,7 +45,7 @@ describe('PreviewLetterFromChooseLetter', () => {
   });
 
   it('should redirect when lockNumber is missing', async () => {
-    await PreviewLetterFromChooseLetter({
+    await PreviewLetterFromChooseTemplate({
       ...defaultProps,
       searchParams: Promise.resolve({}),
     });
@@ -56,7 +56,7 @@ describe('PreviewLetterFromChooseLetter', () => {
   it('should redirect to invalid-template when template is not found', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
-    await PreviewLetterFromChooseLetter({
+    await PreviewLetterFromChooseTemplate({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -74,7 +74,7 @@ describe('PreviewLetterFromChooseLetter', () => {
       templateType: 'EMAIL',
     } as unknown as TemplateDto);
 
-    await PreviewLetterFromChooseLetter(defaultProps);
+    await PreviewLetterFromChooseTemplate(defaultProps);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -86,7 +86,7 @@ describe('PreviewLetterFromChooseLetter', () => {
       letterVariantId: undefined,
     });
 
-    await PreviewLetterFromChooseLetter(defaultProps);
+    await PreviewLetterFromChooseTemplate(defaultProps);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     expect(getLetterVariantByIdMock).not.toHaveBeenCalled();
@@ -101,7 +101,7 @@ describe('PreviewLetterFromChooseLetter', () => {
     });
     getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 
-    const page = await PreviewLetterFromChooseLetter({
+    const page = await PreviewLetterFromChooseTemplate({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,

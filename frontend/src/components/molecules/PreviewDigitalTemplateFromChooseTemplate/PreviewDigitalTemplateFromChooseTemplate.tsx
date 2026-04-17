@@ -1,14 +1,10 @@
 import {
-  LetterTemplate,
   MessagePlanAndTemplatePageProps,
   templateTypeToUrlTextMappings,
-  isFrontendSupportedLetterType,
-  FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
-import { getLetterVariantById, getTemplate } from '@utils/form-actions';
+import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -16,23 +12,27 @@ import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import Link from 'next/link';
 import baseContent from '@content/content';
 import { interpolate } from '@utils/interpolate';
+import { ComponentType } from 'react';
 
-type PreviewLetterFromChooseLetterProps = MessagePlanAndTemplatePageProps & {
-  validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
-  redirectUrlOnLockNumberFailure: string;
-};
+type PreviewDigitalTemplateFromChooseTemplateProps<T extends TemplateDto> =
+  MessagePlanAndTemplatePageProps & {
+    validateTemplate: (template?: TemplateDto) => T | undefined;
+    DetailComponent: ComponentType<{ template: T; hideStatus?: boolean }>;
+  };
 
-export const PreviewLetterFromChooseLetter = async (
-  props: PreviewLetterFromChooseLetterProps
-) => {
+export async function PreviewDigitalTemplateFromChooseTemplate<T extends TemplateDto>(
+  props: PreviewDigitalTemplateFromChooseTemplateProps<T>
+) {
   const { templateId, routingConfigId } = await props.params;
-  const { redirectUrlOnLockNumberFailure } = props;
 
   const searchParams = await props.searchParams;
   const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
   if (!lockNumberResult.success) {
-    return redirect(redirectUrlOnLockNumberFailure, RedirectType.replace);
+    return redirect(
+      `/message-plans/edit-message-plan/${routingConfigId}`,
+      RedirectType.replace
+    );
   }
 
   const lockNumber = lockNumberResult.data;
@@ -41,37 +41,19 @@ export const PreviewLetterFromChooseLetter = async (
 
   const validatedTemplate = props.validateTemplate(template);
 
-  if (
-    !validatedTemplate ||
-    !('letterVariantId' in validatedTemplate) ||
-    !validatedTemplate.letterVariantId
-  ) {
+  if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const letterVariant = await getLetterVariantById(
-    validatedTemplate.letterVariantId
-  );
-
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
-  let letterType: FrontendSupportedLetterType | undefined;
-  const isForeignLanguage =
-    validatedTemplate.language && validatedTemplate.language !== 'en';
-  if (isForeignLanguage) {
-    letterType = 'language';
-  } else if (isFrontendSupportedLetterType(validatedTemplate.letterType)) {
-    letterType = validatedTemplate.letterType;
-  }
-
   const backLinkHref = interpolate(content.backLink.href, {
-    templateType: templateTypeToUrlTextMappings(
-      validatedTemplate.templateType,
-      letterType
-    ),
+    templateType: templateTypeToUrlTextMappings(validatedTemplate.templateType),
     routingConfigId,
     lockNumber,
   });
+
+  const { DetailComponent } = props;
 
   return (
     <NHSNotifyContainer>
@@ -82,13 +64,7 @@ export const PreviewLetterFromChooseLetter = async (
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplateDetailsLetter
-              template={validatedTemplate}
-              letterVariant={letterVariant}
-              hideStatus
-              hideEditActions
-              hideLearnMore
-            />
+            <DetailComponent template={validatedTemplate} hideStatus />
             <Link
               className='nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block'
               href={backLinkHref}
@@ -101,4 +77,4 @@ export const PreviewLetterFromChooseLetter = async (
       </NHSNotifyMain>
     </NHSNotifyContainer>
   );
-};
+}
