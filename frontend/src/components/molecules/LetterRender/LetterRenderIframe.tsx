@@ -11,12 +11,13 @@ export function LetterRenderIframe({
   pdfUrl,
   ...rest
 }: LetterRenderIframeProps) {
-  if (!pdfUrl)
+  if (!pdfUrl) {
     return (
       <p className='nhsuk-body'>
         {content.components.letterRender.iframe.noPreview}
       </p>
     );
+  }
 
   const { title, ariaLabel } = content.components.letterRender.iframe;
 
