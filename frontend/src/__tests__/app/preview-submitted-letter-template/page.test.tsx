@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import PreviewSubmittedLetterTemplatePage, {
+import PreviewSubmittedPdfLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-letter-template/[templateId]/page';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
@@ -31,7 +31,7 @@ jest.mock('next/navigation');
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
-describe('PreviewSubmittedLetterTemplatePage', () => {
+describe('PreviewSubmittedPdfLetterTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page with PDF letter template', async () => {
@@ -62,7 +62,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
-    const page = await PreviewSubmittedLetterTemplatePage({
+    const page = await PreviewSubmittedPdfLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -97,7 +97,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
-    await PreviewSubmittedLetterTemplatePage({
+    await PreviewSubmittedPdfLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -134,7 +134,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
-      await PreviewSubmittedLetterTemplatePage({
+      await PreviewSubmittedPdfLetterTemplatePage({
         params: Promise.resolve({
           templateId: 'template-id',
         }),

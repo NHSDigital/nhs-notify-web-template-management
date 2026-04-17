@@ -21,7 +21,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
+const PreviewSubmittedPdfLetterTemplatePage = async (
+  props: TemplatePageProps
+) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
@@ -55,4 +57,4 @@ const PreviewSubmittedLetterTemplatePage = async (props: TemplatePageProps) => {
   );
 };
 
-export default PreviewSubmittedLetterTemplatePage;
+export default PreviewSubmittedPdfLetterTemplatePage;
