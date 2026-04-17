@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import type { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
+import { TemplateMgmtPreviewBasePage } from 'pages/template-mgmt-preview-base-page';
 
 type CommonStepsProps = {
   page: TemplateMgmtBasePage;
@@ -308,3 +309,34 @@ export function assertFooterLinks(props: CommonStepsProps) {
     await Promise.all(promises);
   });
 }
+
+export const assertRequestProofBannerVisible = async (
+  previewPage: TemplateMgmtPreviewBasePage,
+  templateId: string
+) =>
+  test.step('should display "Request a proof" banner with correct link', async () => {
+    await expect(previewPage.requestProofMessageBanner).toBeVisible();
+    await expect(previewPage.requestProofMessageBannerLink).toContainText(
+      'Request a proof'
+    );
+    await expect(previewPage.requestProofMessageBannerLink).toHaveAttribute(
+      'href',
+      `/templates/request-a-proof/${templateId}`
+    );
+  });
+
+export const assertTestMessageBannerVisible = async (
+  previewPage: TemplateMgmtPreviewBasePage,
+  expectedLinkText: string,
+  expectedLink: string
+) =>
+  test.step('should display "Send a test message" banner with correct link', async () => {
+    await expect(previewPage.testMessageBanner).toBeVisible();
+    await expect(previewPage.testMessageBannerLink).toContainText(
+      expectedLinkText
+    );
+    await expect(previewPage.testMessageBannerLink).toHaveAttribute(
+      'href',
+      expectedLink
+    );
+  });

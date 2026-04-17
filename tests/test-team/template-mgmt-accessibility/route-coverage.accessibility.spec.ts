@@ -12,6 +12,7 @@ import { TemplateMgmtCopyPage } from 'pages/template-mgmt-copy-page';
 import { TemplateMgmtDeletePage } from 'pages/template-mgmt-delete-page';
 import { TemplateMgmtDeleteErrorPage } from 'pages/template-mgmt-delete-error-page';
 import { TemplateMgmtInvalidTemplatePage } from 'pages/template-mgmt-invalid-tempate-page';
+import { TemplateMgmtRequestADigitalProofPage } from 'pages/template-mgmt-request-a-digital-proof-page';
 
 // Email template pages
 import {
@@ -48,6 +49,7 @@ import {
   TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
@@ -76,7 +78,6 @@ import {
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
@@ -89,6 +90,7 @@ import {
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
 } from 'pages/routing';
 
@@ -106,6 +108,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtDeleteErrorPage,
   TemplateMgmtDeletePage,
   TemplateMgmtInvalidTemplatePage,
+  TemplateMgmtRequestADigitalProofPage,
   TemplateMgmtMessageTemplatesPage,
   TemplateMgmtStartPage,
 
@@ -138,6 +141,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewSubmittedLetterPage,
@@ -163,7 +167,6 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
@@ -176,6 +179,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
 ];
 

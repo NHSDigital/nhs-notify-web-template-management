@@ -10,7 +10,6 @@ import { RoutingChooseStandardLetterTemplatePage } from 'pages/routing/letter/ch
 import { RoutingChooseTextMessageTemplatePage } from 'pages/routing/sms/choose-sms-template-page';
 import { RoutingCreateMessagePlanPage } from '../pages/routing/create-message-plan-page';
 import { RoutingEditMessagePlanPage } from 'pages/routing/edit-message-plan-page';
-import { RoutingEditMessagePlanSettingsPage } from 'pages/routing/edit-message-plan-settings-page';
 import { RoutingGetReadyToMovePage } from 'pages/routing/get-ready-to-move-page';
 import { RoutingInvalidMessagePlanPage } from 'pages/routing/invalid-message-plan-page';
 import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campaign-id-required-page';
@@ -22,6 +21,7 @@ import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
 import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
+import { RoutingRenameMessagePlanPage } from 'pages/routing/rename-message-plan-page';
 import {
   RoutingChooseBritishSignLanguageLetterTemplatePage,
   RoutingPreviewBritishSignLanguageLetterTemplatePage,
@@ -38,6 +38,7 @@ import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
 import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-email-page';
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
+import { TemplateMgmtGetReadyToApproveLetterTemplatePage } from '../pages/letter/template-mgmt-get-ready-to-approve-letter-template-page';
 import { TemplateMgmtEditTemplateCampaignPage } from 'pages/letter/template-mgmt-edit-template-campaign-page';
 import { TemplateMgmtEditTemplateNamePage } from 'pages/letter/template-mgmt-edit-template-name-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
@@ -51,6 +52,7 @@ import { TemplateMgmtPreviewSubmittedLetterPage } from '../pages/letter/template
 import { TemplateMgmtPreviewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
 import { TemplateMgmtPreviewSubmittedSmsPage } from '../pages/sms/template-mgmt-preview-submitted-sms-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
+import { TemplateMgmtRequestADigitalProofPage } from 'pages/template-mgmt-request-a-digital-proof-page';
 import { TemplateMgmtReviewAndApproveLetterTemplatePage } from 'pages/letter/template-mgmt-review-and-approve-letter-template-page';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
@@ -84,7 +86,6 @@ const protectedPages = [
   RoutingChooseTextMessageTemplatePage,
   RoutingCreateMessagePlanPage,
   RoutingEditMessagePlanPage,
-  RoutingEditMessagePlanSettingsPage,
   RoutingGetReadyToMovePage,
   RoutingInvalidMessagePlanPage,
   RoutingMessagePlanCampaignIdRequiredPage,
@@ -97,6 +98,7 @@ const protectedPages = [
   RoutingPreviewOtherLanguageLetterTemplatePage,
   RoutingPreviewSmsTemplatePage,
   RoutingPreviewStandardLetterTemplatePage,
+  RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
   TemplateMgmtChoosePage,
   TemplateMgmtChoosePrintingAndPostagePage,
@@ -111,6 +113,7 @@ const protectedPages = [
   TemplateMgmtEditSmsPage,
   TemplateMgmtEditTemplateCampaignPage,
   TemplateMgmtEditTemplateNamePage,
+  TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtInvalidTemplatePage,
   TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtMessageTemplatesPage,
@@ -123,6 +126,7 @@ const protectedPages = [
   TemplateMgmtPreviewSubmittedLetterPage,
   TemplateMgmtPreviewSubmittedNhsAppPage,
   TemplateMgmtPreviewSubmittedSmsPage,
+  TemplateMgmtRequestADigitalProofPage,
   TemplateMgmtRequestProofPage,
   TemplateMgmtReviewAndApproveLetterTemplatePage,
   TemplateMgmtSubmitEmailPage,
@@ -165,7 +169,7 @@ test.describe('Protected Routes Tests', () => {
 
     expect(uncovered).toHaveLength(0);
 
-    expect(nonPublic.length).toBe(protectedPages.length);
+    expect(nonPublic).toHaveLength(protectedPages.length);
   });
 
   for (const PageModel of protectedPages)

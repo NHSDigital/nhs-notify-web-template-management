@@ -91,34 +91,17 @@ export class RoutingConfigClient {
 
     if (validationResult.error) return validationResult;
 
-    const validated = validationResult.data;
-
     // Fetch routing config
     const routingConfig = await this.getRoutingConfig(routingConfigId, user);
 
     if (routingConfig.error) return routingConfig;
 
-    // expectedCampaignId = validated.campaignId || get from existing routing config (if exist)
-    const expectedCampaignId =
-      validated.campaignId || routingConfig.data?.campaignId;
-
-    // check to make sure if there is coverage for if there is no cascade.
-    if (
-      validated.campaignId &&
-      !clientConfiguration?.campaignIds?.includes(validated.campaignId)
-    ) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Invalid campaign ID in request'
-      );
-    }
-
     return this.routingConfigRepository.update(
       routingConfigId,
-      validated,
+      validationResult.data,
       user,
       lockNumberValidation.data,
-      expectedCampaignId as string
+      routingConfig.data.campaignId
     );
   }
 

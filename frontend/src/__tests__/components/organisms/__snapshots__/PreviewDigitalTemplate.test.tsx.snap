@@ -8,24 +8,6 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingEmail is en
     Template saved
   </div>
   Preview
-  <div
-    class="nhsuk-summary-list test-message-banner"
-  >
-    <div
-      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
-      data-testid="test-message-banner"
-    >
-      This is only a basic preview. 
-      <a
-        href="/templates/send-test-email/template-456"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Send a test email
-      </a>
-       to preview this message properly.
-    </div>
-  </div>
   <a
     aria-disabled="false"
     class="nhsuk-button nhsuk-button--secondary"
@@ -57,24 +39,6 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingNhsApp is e
     Template saved
   </div>
   Preview
-  <div
-    class="nhsuk-summary-list test-message-banner"
-  >
-    <div
-      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
-      data-testid="test-message-banner"
-    >
-      This is only a basic preview. 
-      <a
-        href="/templates/send-test-nhs-app-message/template-123"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Send a test NHS App message
-      </a>
-       to preview this message properly.
-    </div>
-  </div>
   <a
     aria-disabled="false"
     class="nhsuk-button nhsuk-button--secondary"
@@ -106,24 +70,6 @@ exports[`PreviewDigitalTemplate Digital proofing when digitalProofingSms is enab
     Template saved
   </div>
   Preview
-  <div
-    class="nhsuk-summary-list test-message-banner"
-  >
-    <div
-      class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width test-message-banner__callout"
-      data-testid="test-message-banner"
-    >
-      This is only a basic preview. 
-      <a
-        href="/templates/send-test-text-message/template-789"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Send a test text message
-      </a>
-       to preview this message properly.
-    </div>
-  </div>
   <a
     aria-disabled="false"
     class="nhsuk-button nhsuk-button--secondary"

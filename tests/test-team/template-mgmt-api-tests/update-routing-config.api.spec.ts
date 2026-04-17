@@ -218,41 +218,6 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
     });
   });
 
-  test('returns 400 if campaignId is not available for the client', async ({
-    request,
-  }) => {
-    const { dbEntry } = RoutingConfigFactory.create(user1);
-
-    await storageHelper.seed([dbEntry]);
-
-    const campaignId = 'not_a_client_campaign';
-
-    const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-          'X-Lock-Number': String(dbEntry.lockNumber),
-        },
-        data: {
-          campaignId,
-        },
-      }
-    );
-
-    const dbgClientCampaigns = JSON.stringify(user1.campaignIds);
-    expect(user1.campaignIds?.includes(campaignId), dbgClientCampaigns).toBe(
-      false
-    );
-
-    expect(response.status()).toBe(400);
-
-    expect(await response.json()).toEqual({
-      statusCode: 400,
-      technicalMessage: 'Invalid campaign ID in request',
-    });
-  });
-
   test('returns 404 - cannot update a DELETED routing config', async ({
     request,
   }) => {
@@ -282,6 +247,39 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
     expect(updateResponseBody).toEqual({
       statusCode: 404,
       technicalMessage: 'Routing configuration not found',
+    });
+  });
+
+  test('returns 400 if update includes campaignId', async ({ request }) => {
+    const { dbEntry } = RoutingConfigFactory.create(userMultiCampaign);
+
+    await storageHelper.seed([dbEntry]);
+
+    const update = {
+      campaignId: userMultiCampaign.campaignIds?.[1],
+    };
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await userMultiCampaign.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+        data: update,
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        $root: 'Unrecognized key: "campaignId"',
+      },
     });
   });
 
@@ -370,51 +368,6 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
         {
           headers: {
             Authorization: await user1.getAccessToken(),
-            'X-Lock-Number': String(dbEntry.lockNumber),
-          },
-          data: update,
-        }
-      );
-
-      expect(updateResponse.status()).toBe(200);
-
-      const updated = await updateResponse.json();
-
-      expect(updated).toEqual({
-        statusCode: 200,
-        data: {
-          ...apiResponse,
-          ...update,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-          lockNumber: dbEntry.lockNumber + 1,
-        },
-      });
-
-      expect(updated.data.updatedAt).toBeDateRoughlyBetween([
-        start,
-        new Date(),
-      ]);
-      expect(updated.data.createdAt).toEqual(dbEntry.createdAt);
-    });
-
-    test('campaignId only - returns 200 and the updated routing config data', async ({
-      request,
-    }) => {
-      const { dbEntry, apiResponse } =
-        RoutingConfigFactory.create(userMultiCampaign);
-
-      await storageHelper.seed([dbEntry]);
-
-      const update = {
-        campaignId: userMultiCampaign.campaignIds?.[1],
-      };
-      const start = new Date();
-
-      const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
-        {
-          headers: {
-            Authorization: await userMultiCampaign.getAccessToken(),
             'X-Lock-Number': String(dbEntry.lockNumber),
           },
           data: update,
@@ -720,6 +673,57 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       statusCode: 409,
       technicalMessage:
         'Lock number mismatch - Routing configuration has been modified since last read',
+    });
+  });
+
+  test('update fails when adding template with a different campaignId to the routing campaignId', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      campaignId: 'campaign-1',
+    });
+    user1.campaignId = 'campaign-2';
+    const emailTemplate = TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      user1
+    );
+
+    await storageHelper.seed([dbEntry]);
+    await templateStorageHelper.seedTemplateData([emailTemplate]);
+
+    const update = {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'primary',
+          defaultTemplateId: emailTemplate.id,
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+        data: update,
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Some templates not found',
+      details: {
+        templateIds: emailTemplate.id,
+      },
     });
   });
 });

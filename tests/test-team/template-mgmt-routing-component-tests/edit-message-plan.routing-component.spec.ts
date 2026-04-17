@@ -326,12 +326,12 @@ test.describe('Routing - Edit Message Plan page', () => {
       messagePlans.valid.name
     );
 
-    await expect(editMessagePlanPage.editSettingsLink).toHaveText(
-      'Edit settings'
+    await expect(editMessagePlanPage.renameLink).toHaveText(
+      'Rename message plan'
     );
-    await expect(editMessagePlanPage.editSettingsLink).toHaveAttribute(
+    await expect(editMessagePlanPage.renameLink).toHaveAttribute(
       'href',
-      `/templates/message-plans/edit-message-plan-settings/${messagePlans.valid.id}`
+      `/templates/message-plans/rename-message-plan/${messagePlans.valid.id}?lockNumber=${messagePlans.valid.lockNumber}`
     );
 
     await expect(editMessagePlanPage.routingConfigId).toHaveText(
@@ -348,8 +348,8 @@ test.describe('Routing - Edit Message Plan page', () => {
       messagePlans.valid.status.toLowerCase()
     );
 
-    const channelBlocks = await editMessagePlanPage.channelBlocks.all();
-    expect(channelBlocks.length).toBe(messagePlans.valid.cascade.length);
+    const channelBlocks = editMessagePlanPage.channelBlocks;
+    await expect(channelBlocks).toHaveCount(messagePlans.valid.cascade.length);
 
     await expect(editMessagePlanPage.moveToProductionButton).toHaveText(
       'Move to production'
@@ -424,6 +424,20 @@ test.describe('Routing - Edit Message Plan page', () => {
     );
 
     // TODO: CCM-11537 Choose template then return and assert updated
+  });
+
+  test('user can navigate to the rename page', async ({ page, baseURL }) => {
+    const editMessagePlanPage = new RoutingEditMessagePlanPage(
+      page
+    ).setPathParam('messagePlanId', routingConfigIds.valid);
+
+    await editMessagePlanPage.loadPage();
+
+    await editMessagePlanPage.clickRenameLink();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/message-plans/rename-message-plan/${routingConfigIds.valid}?lockNumber=${messagePlans.valid.lockNumber}`
+    );
   });
 
   test('user can change templates on their existing message plan', async ({
@@ -667,7 +681,7 @@ test.describe('Routing - Edit Message Plan page', () => {
 
     await test.step('foreign language templates are displayed with names and change link', async () => {
       const templateNames = await otherLanguagesItem.templateNames.all();
-      expect(templateNames.length).toBe(2);
+      expect(templateNames).toHaveLength(2);
 
       await expect(templateNames[0]).toHaveText(templates.FRENCH_LETTER.name);
       await expect(templateNames[1]).toHaveText(templates.SPANISH_LETTER.name);
@@ -753,7 +767,7 @@ test.describe('Routing - Edit Message Plan page', () => {
       );
 
       const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks.length).toBe(4);
+      expect(errorLinks).toHaveLength(4);
 
       await expect(errorLinks[0]).toHaveText(
         'You have not chosen a template for your first message'
@@ -805,7 +819,7 @@ test.describe('Routing - Edit Message Plan page', () => {
       );
 
       const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks.length).toBe(2);
+      expect(errorLinks).toHaveLength(2);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
       await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
     });
@@ -833,7 +847,7 @@ test.describe('Routing - Edit Message Plan page', () => {
       await expect(editMessagePlanPage.errorSummaryHeading).toBeVisible();
 
       const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks.length).toBe(1);
+      expect(errorLinks).toHaveLength(1);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-EMAIL');
     });
 

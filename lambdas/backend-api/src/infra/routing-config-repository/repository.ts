@@ -100,7 +100,7 @@ export class RoutingConfigRepository {
     lockNumber: number,
     expectedCampaignId: string
   ): Promise<ApplicationResult<RoutingConfig>> {
-    const { campaignId, cascade, cascadeGroupOverrides, name } = updateData;
+    const { cascade, cascadeGroupOverrides, name } = updateData;
 
     const update = new RoutingConfigUpdateBuilder(
       this.tableName,
@@ -111,12 +111,6 @@ export class RoutingConfigRepository {
 
     if (name) {
       update.setName(name);
-    }
-
-    if (campaignId) {
-      update.setCampaignId(campaignId);
-    } else {
-      update.expectCampaignId(expectedCampaignId);
     }
 
     if (cascade && cascadeGroupOverrides) {
@@ -473,11 +467,7 @@ export class RoutingConfigRepository {
     );
   }
 
-  private handleUpdateError(
-    err: unknown,
-    expectedLockNumber: number,
-    expectedCampaignId?: string
-  ) {
+  private handleUpdateError(err: unknown, expectedLockNumber: number) {
     if (err instanceof ConditionalCheckFailedException) {
       const item = unmarshall(err.Item ?? {});
 
@@ -499,14 +489,6 @@ export class RoutingConfigRepository {
         return failure(
           ErrorCase.CONFLICT,
           'Lock number mismatch - Routing configuration has been modified since last read',
-          err
-        );
-      }
-
-      if (item.campaignId !== expectedCampaignId) {
-        return failure(
-          ErrorCase.VALIDATION_FAILED,
-          'Campaign ID mismatch - Routing configuration campaign ID does not match expected campaign ID',
           err
         );
       }
@@ -556,8 +538,7 @@ export class RoutingConfigRepository {
   private handleUpdateTransactionError(
     err: unknown,
     lockNumber: number,
-    templateIds: string[],
-    expectedCampaignId?: string
+    templateIds: string[]
   ): ApplicationResult<RoutingConfig> {
     if (!(err instanceof TransactionCanceledException)) {
       return this.handleUpdateError(err, lockNumber);
@@ -585,13 +566,13 @@ export class RoutingConfigRepository {
     if (templatesMissing) {
       return failure(
         ErrorCase.TEMPLATES_REJECTED,
-        'Some templates not found',
+        'Some templates are not suitable to be updated',
         err,
         { templateIds: templateIds.join(',') }
       );
     }
 
-    return this.handleUpdateError(err, lockNumber, expectedCampaignId);
+    return this.handleUpdateError(err, lockNumber);
   }
 
   private clientOwnerKey(clientId: string) {
