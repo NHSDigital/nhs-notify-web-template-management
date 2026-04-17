@@ -17,10 +17,13 @@ import {
 } from '@testhelpers/helpers';
 import content from '@content/content';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
-import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import Link from 'next/link';
 
 const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
+const { backLink } = content.components.viewSubmittedTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -70,10 +73,25 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     });
     expect(page).toEqual(
       <NHSNotifyContainer>
-        <PreviewSubmittedDigitalTemplate
-          template={submittedLetterTemplate}
-          DetailComponent={PreviewTemplateDetailsPdfLetter}
-        />
+        <Link href={backLink.href} passHref legacyBehavior>
+          <NotifyBackLink>{backLink.text}</NotifyBackLink>
+        </Link>
+
+        <NHSNotifyMain>
+          <div className='nhsuk-grid-row'>
+            <div className='nhsuk-grid-column-full'>
+              <PreviewTemplateDetailsPdfLetter
+                template={submittedLetterTemplate}
+              />
+
+              <p>
+                <Link href={backLink.href} data-testid='back-link-bottom'>
+                  {backLink.text}
+                </Link>
+              </p>
+            </div>
+          </div>
+        </NHSNotifyMain>
       </NHSNotifyContainer>
     );
   });
