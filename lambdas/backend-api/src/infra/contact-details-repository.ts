@@ -1,4 +1,4 @@
-import { createHmac, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { GetParameterCommand, type SSMClient } from '@aws-sdk/client-ssm';
 import { PutCommand, type DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
@@ -9,6 +9,7 @@ import type {
   ContactDetailStatus,
 } from 'nhs-notify-web-template-management-types';
 import type { User } from 'nhs-notify-web-template-management-utils';
+import { hashContactDetailsOtp } from '@backend-api/domain/hash-contact-details-otp';
 import { failure, success, type ApplicationResult } from '@backend-api/utils';
 
 export class ContactDetailsRepository {
@@ -117,11 +118,6 @@ export class ContactDetailsRepository {
   private async hashOtp(details: ContactDetail, otp: string) {
     const secret = await this.getOtpSecret();
 
-    return createHmac('sha256', secret)
-      .update(details.id)
-      .update(details.value)
-      .update(otp)
-      .digest()
-      .toString('hex');
+    return hashContactDetailsOtp(details, otp, secret);
   }
 }

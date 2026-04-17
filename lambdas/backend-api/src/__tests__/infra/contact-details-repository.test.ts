@@ -6,7 +6,10 @@ import { mockClient } from 'aws-sdk-client-mock';
 import 'aws-sdk-client-mock-jest';
 import type { ContactDetailInputNormalized } from 'nhs-notify-web-template-management-types';
 import type { User } from 'nhs-notify-web-template-management-utils';
+import { hashContactDetailsOtp } from '@backend-api/domain/hash-contact-details-otp';
 import { ContactDetailsRepository } from '@backend-api/infra/contact-details-repository';
+
+jest.mock('@backend-api/domain/hash-contact-details-otp');
 
 const RANDOM_UUID = 'omg-so-totally-like-random';
 const TABLE_NAME = 'client-details-table';
@@ -24,12 +27,14 @@ const NOW = new Date('2026-04-07T11:07:08.490Z');
 const UNVERIFIED_TTL_SECONDS = 300;
 const EXPECTED_TTL = 1_775_560_328;
 
+const FAKE_HASH = 'fake-otp-hash';
+
 beforeEach(() => {
   jest.useFakeTimers({
     now: NOW,
   });
   jest.spyOn(crypto, 'randomUUID').mockReturnValue(RANDOM_UUID);
-  jest.spyOn(crypto, 'createHmac');
+  jest.mocked(hashContactDetailsOtp).mockReturnValue(FAKE_HASH);
 });
 
 afterEach(() => {
@@ -68,26 +73,18 @@ describe('ContactDetailsRepository', () => {
   describe('putContactDetail', () => {
     it.each([
       {
-        input: {
-          type: 'EMAIL',
-          value: 'email@nhs.net',
-          rawValue: ' EMAIL@NHS.NET ',
-        },
-        expectedHash:
-          '2f4f72805b62fcff8fd9885327c0d085962300b69ca128dcc278692832541106',
+        type: 'EMAIL',
+        value: 'email@nhs.net',
+        rawValue: ' EMAIL@NHS.NET ',
       },
       {
-        input: {
-          type: 'SMS',
-          value: '+447890123456',
-          rawValue: '07890 123 456',
-        },
-        expectedHash:
-          'acc22ae2e5d766231254b27fff85b9c9245e8c1673374587da3a5dd0512d70ef',
+        type: 'SMS',
+        value: '+447890123456',
+        rawValue: '07890 123 456',
       },
-    ] as { input: ContactDetailInputNormalized; expectedHash: string }[])(
-      'saves the $input.type item in DynamoDB',
-      async ({ input, expectedHash }) => {
+    ] as ContactDetailInputNormalized[])(
+      'saves the $type item in DynamoDB',
+      async (input) => {
         const { repo, mocks } = setup();
 
         const result = await repo.putContactDetail(input, OTP, USER);
@@ -107,7 +104,11 @@ describe('ContactDetailsRepository', () => {
           WithDecryption: true,
         });
 
-        expect(crypto.createHmac).toHaveBeenCalledWith('sha256', SECRET_VALUE);
+        expect(hashContactDetailsOtp).toHaveBeenCalledWith(
+          result.data,
+          OTP,
+          SECRET_VALUE
+        );
 
         expect(mocks.dynamodb).toHaveReceivedCommandWith(PutCommand, {
           TableName: TABLE_NAME,
@@ -118,7 +119,7 @@ describe('ContactDetailsRepository', () => {
             createdBy: `INTERNAL_USER#${USER.internalUserId}`,
             clientId: USER.clientId,
             id: RANDOM_UUID,
-            otpHash: expectedHash,
+            otpHash: FAKE_HASH,
             rawValue: input.rawValue,
             status: 'PENDING_VERIFICATION',
             ttl: EXPECTED_TTL,
