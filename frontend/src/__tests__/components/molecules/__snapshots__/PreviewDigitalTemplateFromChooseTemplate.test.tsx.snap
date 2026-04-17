@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewDigitalTemplateFromChooseTemplate renders Email template preview with correct back links 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+    >
+      Go back
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-full"
+        >
+          <div
+            data-testid="mock-detail"
+          >
+            email template name
+          </div>
+          <a
+            class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
+            data-testid="back-link-bottom"
+            href="/message-plans/choose-email-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+          >
+            Go back
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewDigitalTemplateFromChooseTemplate renders NHS App template preview with correct back links 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+    >
+      Go back
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-full"
+        >
+          <div
+            data-testid="mock-detail"
+          >
+            app template name
+          </div>
+          <a
+            class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
+            data-testid="back-link-bottom"
+            href="/message-plans/choose-nhs-app-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+          >
+            Go back
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewDigitalTemplateFromChooseTemplate renders SMS template preview with correct back links 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+    >
+      Go back
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-full"
+        >
+          <div
+            data-testid="mock-detail"
+          >
+            sms template name
+          </div>
+          <a
+            class="nhsuk-link nhsuk-body-m nhsuk-u-display-inline-block"
+            data-testid="back-link-bottom"
+            href="/message-plans/choose-text-message-template/fbb81055-79b9-4759-ac07-d191ae57be34?lockNumber=5"
+          >
+            Go back
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;

@@ -10,11 +10,11 @@ import {
   ORDINALS,
 } from 'nhs-notify-web-template-management-utils';
 import {
+  AUTHORING_LETTER_TEMPLATE,
   BSL_LETTER_TEMPLATE,
   EMAIL_TEMPLATE,
   LARGE_PRINT_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import { RoutingConfigFactory } from '@testhelpers/routing-config-factory';
@@ -77,17 +77,17 @@ const templates: MessagePlanTemplates = {
     templateStatus: 'SUBMITTED',
   },
   [letterTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...AUTHORING_LETTER_TEMPLATE,
     id: letterTemplateId,
     templateStatus: 'SUBMITTED',
   },
   [kuTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...AUTHORING_LETTER_TEMPLATE,
     id: kuTemplateId,
     templateStatus: 'SUBMITTED',
   },
   [sqTemplateId]: {
-    ...PDF_LETTER_TEMPLATE,
+    ...AUTHORING_LETTER_TEMPLATE,
     id: sqTemplateId,
     templateStatus: 'SUBMITTED',
   },
@@ -249,7 +249,7 @@ describe('full cascade plan', () => {
     await renderPage(routingConfig);
 
     const button = screen.getByRole('button', {
-      name: 'Open all template previews',
+      name: 'Open all digital template previews',
     });
 
     const detailsSections = screen
@@ -262,7 +262,7 @@ describe('full cascade plan', () => {
 
     await user.click(button);
 
-    expect(button).toHaveTextContent('Close all template previews');
+    expect(button).toHaveTextContent('Close all digital template previews');
 
     for (const section of detailsSections) {
       expect(section.open).toBe(true);
@@ -270,7 +270,7 @@ describe('full cascade plan', () => {
 
     await user.click(button);
 
-    expect(button).toHaveTextContent('Open all template previews');
+    expect(button).toHaveTextContent('Open all digital template previews');
 
     for (const section of detailsSections) {
       expect(section.open).toBe(false);
@@ -366,7 +366,7 @@ describe('letter only', () => {
 
     expect(
       screen.queryByRole('button', {
-        name: 'Open all template previews',
+        name: 'Open all digital template previews',
       })
     ).not.toBeInTheDocument();
 
@@ -374,14 +374,20 @@ describe('letter only', () => {
 
     const card = within(block).getByTestId('channel-card');
 
+    const name = within(card).getByTestId('template-name');
+
+    expect(name).toHaveTextContent(template.name);
+
     const link = within(card).getByRole('link');
 
-    expect(link).toHaveTextContent(template.name);
+    expect(link).toHaveTextContent('Preview template (opens in a new tab)');
 
     expect(link).toHaveAttribute(
       'href',
-      `/preview-submitted-letter-template/${template.id}`
+      `/message-plans/preview-message-plan/${routingConfig.id}/preview-template/${template.id}`
     );
+
+    expect(link).toHaveAttribute('target', '_blank');
 
     expect(
       within(block).queryByTestId('conditional-templates')
@@ -423,14 +429,20 @@ describe('letter only', () => {
       within(conditionalTemplatesList).getByTestId('conditional-template-x1')
     ).getByTestId('channel-card');
 
+    const name = within(largePrintCard).getByTestId('template-name');
+
+    expect(name).toHaveTextContent(template.name);
+
     const link = within(largePrintCard).getByRole('link');
 
-    expect(link).toHaveTextContent(template.name);
+    expect(link).toHaveTextContent('Preview template (opens in a new tab)');
 
     expect(link).toHaveAttribute(
       'href',
-      `/preview-submitted-letter-template/${template.id}`
+      `/message-plans/preview-message-plan/${routingConfig.id}/preview-template/${template.id}`
     );
+
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('shows the fallback conditions and card for BSL accessible format', async () => {
@@ -468,14 +480,20 @@ describe('letter only', () => {
       within(conditionalTemplatesList).getByTestId('conditional-template-q4')
     ).getByTestId('channel-card');
 
+    const name = within(bslCard).getByTestId('template-name');
+
+    expect(name).toHaveTextContent(template.name);
+
     const link = within(bslCard).getByRole('link');
 
-    expect(link).toHaveTextContent(template.name);
+    expect(link).toHaveTextContent('Preview template (opens in a new tab)');
 
     expect(link).toHaveAttribute(
       'href',
-      `/preview-submitted-letter-template/${template.id}`
+      `/message-plans/preview-message-plan/${routingConfig.id}/preview-template/${template.id}`
     );
+
+    expect(link).toHaveAttribute('target', '_blank');
   });
 
   it('shows the card for the other language templates', async () => {
@@ -515,8 +533,10 @@ describe('letter only', () => {
     ).getByTestId('channel-card');
 
     const links = within(languagesCard).getAllByRole('link');
+    const names = within(languagesCard).getAllByTestId('template-name');
 
     expect(links).toHaveLength(2);
+    expect(names).toHaveLength(2);
 
     for (const [
       index,
@@ -524,12 +544,17 @@ describe('letter only', () => {
     ] of routingConfig.cascade[0].conditionalTemplates!.entries()) {
       const template = templates[templateId!];
 
-      expect(links[index]).toHaveTextContent(template.name);
+      expect(names[index]).toHaveTextContent(template.name);
+      expect(links[index]).toHaveTextContent(
+        'Preview template (opens in a new tab)'
+      );
 
       expect(links[index]).toHaveAttribute(
         'href',
-        `/preview-submitted-letter-template/${template.id}`
+        `/message-plans/preview-message-plan/${routingConfig.id}/preview-template/${template.id}`
       );
+
+      expect(links[index]).toHaveAttribute('target', '_blank');
     }
   });
 });

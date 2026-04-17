@@ -1,23 +1,31 @@
-import type { PersonalisedRenderKey } from '@utils/types';
+import type { RenderKey } from '@utils/types';
+import content from '@content/content';
 
 type LetterRenderIframeProps = {
-  tab: PersonalisedRenderKey;
+  renderType: RenderKey;
   pdfUrl: string | null;
 } & React.ComponentProps<'iframe'>;
 
 export function LetterRenderIframe({
-  tab,
+  renderType,
   pdfUrl,
   ...rest
 }: LetterRenderIframeProps) {
-  if (!pdfUrl) return <p className='nhsuk-body'>No preview available</p>;
-  const tabDescription = tab === 'shortFormRender' ? 'short' : 'long';
+  if (!pdfUrl) {
+    return (
+      <p className='nhsuk-body'>
+        {content.components.letterRender.iframe.noPreview}
+      </p>
+    );
+  }
+
+  const { title, ariaLabel } = content.components.letterRender.iframe;
 
   return (
     <iframe
       src={pdfUrl}
-      title={`Letter preview - ${tabDescription} examples`}
-      aria-label={`PDF preview of letter template with ${tabDescription} example personalisation data`}
+      title={title[renderType]}
+      aria-label={ariaLabel[renderType]}
       {...rest}
     />
   );

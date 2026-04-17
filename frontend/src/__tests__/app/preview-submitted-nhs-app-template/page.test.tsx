@@ -14,7 +14,7 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -60,9 +60,9 @@ describe('PreviewSubmittedNHSAppTemplatePage', () => {
     });
     expect(page).toEqual(
       <NHSNotifyContainer>
-        <PreviewSubmittedTemplate
-          initialState={submittedNHSAppTemplate}
-          previewComponent={PreviewTemplateDetailsNhsApp}
+        <PreviewSubmittedDigitalTemplate
+          template={submittedNHSAppTemplate}
+          DetailComponent={PreviewTemplateDetailsNhsApp}
         />
       </NHSNotifyContainer>
     );

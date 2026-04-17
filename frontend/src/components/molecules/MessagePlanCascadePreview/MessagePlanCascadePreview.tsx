@@ -39,22 +39,23 @@ import {
 
 const pageContent = content.components.messagePlanCascadePreview;
 
-function getLetterTemplatePreviewHref(template: TemplateDto): string {
-  const linkTemplate =
-    template.templateStatus === 'SUBMITTED'
-      ? pageContent.letterTemplateLinks.previewSubmitted
-      : pageContent.letterTemplateLinks.preview;
-  return interpolate(linkTemplate, { id: template.id });
+function getLetterTemplatePreviewHref(
+  template: TemplateDto,
+  letterPreviewHrefBase: string
+): string {
+  return `${letterPreviewHrefBase}/preview-template/${template.id}`;
 }
 
 export type MessagePlanCascadePreviewProps = {
   messagePlan: RoutingConfig;
   templates: MessagePlanTemplates;
+  letterPreviewHrefBase: string;
 };
 
 export function MessagePlanCascadePreview({
   messagePlan,
   templates,
+  letterPreviewHrefBase,
 }: MessagePlanCascadePreviewProps) {
   return (
     <DetailsOpenProvider>
@@ -107,13 +108,19 @@ export function MessagePlanCascadePreview({
                   data-testid='channel-card'
                 >
                   {cascadeItem.channel === 'LETTER' ? (
-                    <p data-testid='template-name'>
+                    <>
+                      <p data-testid='template-name'>{defaultTemplate.name}</p>
                       <Link
-                        href={getLetterTemplatePreviewHref(defaultTemplate)}
+                        href={getLetterTemplatePreviewHref(
+                          defaultTemplate,
+                          letterPreviewHrefBase
+                        )}
+                        target='_blank'
+                        rel='noopener noreferrer'
                       >
-                        {defaultTemplate.name}
+                        {pageContent.letterTemplateLinkText}
                       </Link>
-                    </p>
+                    </>
                   ) : (
                     <>
                       <p data-testid='template-name'>{defaultTemplate.name}</p>
@@ -163,11 +170,19 @@ export function MessagePlanCascadePreview({
                           )}
                           data-testid='channel-card'
                         >
-                          <p data-testid='template-name'>
-                            <Link href={getLetterTemplatePreviewHref(template)}>
-                              {template.name}
+                          <Fragment key={template.id}>
+                            <p data-testid='template-name'>{template.name}</p>
+                            <Link
+                              href={getLetterTemplatePreviewHref(
+                                template,
+                                letterPreviewHrefBase
+                              )}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                            >
+                              {pageContent.letterTemplateLinkText}
                             </Link>
-                          </p>
+                          </Fragment>
                         </MessagePlanChannelCard>
                       </MessagePlanConditionalTemplatesListItem>
                     ))}
@@ -179,17 +194,20 @@ export function MessagePlanCascadePreview({
                           data-testid='channel-card'
                         >
                           {languageTemplates.map((template) => (
-                            <p
-                              data-testid='template-name'
-                              key={template.id}
-                              className='nhsuk-u-margin-bottom-0'
-                            >
+                            <Fragment key={template.id}>
+                              <p data-testid='template-name'>{template.name}</p>
                               <Link
-                                href={getLetterTemplatePreviewHref(template)}
+                                href={getLetterTemplatePreviewHref(
+                                  template,
+                                  letterPreviewHrefBase
+                                )}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='nhsuk-u-margin-bottom-0'
                               >
-                                {template.name}
+                                {pageContent.letterTemplateLinkText}
                               </Link>
-                            </p>
+                            </Fragment>
                           ))}
                         </MessagePlanChannelCard>
                       </MessagePlanConditionalTemplatesListItem>

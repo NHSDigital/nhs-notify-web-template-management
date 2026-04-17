@@ -3,6 +3,7 @@ import type {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
+import type { RenderKey } from '@utils/types';
 import type {
   DigitalTemplateType,
   FrontendSupportedLetterType,
@@ -572,6 +573,14 @@ const previewSubmittedLetterTemplate = {
   pageTitle: previewLetterTitle,
 };
 
+const previewMessagePlanPreviewLetter = {
+  pageTitle: previewLetterTitle,
+};
+
+const reviewAndMoveToProductionPreviewLetter = {
+  pageTitle: previewLetterTitle,
+};
+
 const letterRender = {
   heading: 'Letter preview',
   guidance: 'Check how your personalisation fields will appear in your letter.',
@@ -584,7 +593,23 @@ const letterRender = {
     short: 'Short examples',
     long: 'Long examples',
   },
+  examplePreviewHeading: 'Example preview',
   loadingText: 'Loading letter preview',
+  iframe: {
+    noPreview: 'No preview available',
+    title: {
+      initialRender: 'Letter preview',
+      shortFormRender: 'Letter preview - short examples',
+      longFormRender: 'Letter preview - long examples',
+    } satisfies Record<RenderKey, string>,
+    ariaLabel: {
+      initialRender: 'PDF preview of letter template',
+      shortFormRender:
+        'PDF preview of letter template with short example personalisation data',
+      longFormRender:
+        'PDF preview of letter template with long example personalisation data',
+    } satisfies Record<RenderKey, string>,
+  },
   pdsSection: {
     heading: 'PDS personalisation fields',
     hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',
@@ -1492,8 +1517,8 @@ const messagePlanConditionalLetterTemplates = {
 
 const messagePlanCascadePreview = {
   detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
+    openText: 'Close all digital template previews',
+    closedText: 'Open all digital template previews',
   },
   languageFormatsCardHeading: 'Other language letters (optional)',
   accessibleFormatCardHeading: '{{format}} (optional)',
@@ -1501,10 +1526,7 @@ const messagePlanCascadePreview = {
     prefix: 'Preview',
     suffix: 'template',
   },
-  letterTemplateLinks: {
-    previewSubmitted: '/preview-submitted-letter-template/{{id}}',
-    preview: '/preview-letter-template/{{id}}',
-  },
+  letterTemplateLinkText: 'Preview template (opens in a new tab)',
 };
 
 const editMessagePlan = {
@@ -2193,12 +2215,14 @@ const content = {
     previewLargePrintLetterTemplate,
     previewLetterTemplate,
     previewMessagePlan,
+    previewMessagePlanPreviewLetter,
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
     renameMessagePlan,
     reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
+    reviewAndMoveToProductionPreviewLetter,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,
   },

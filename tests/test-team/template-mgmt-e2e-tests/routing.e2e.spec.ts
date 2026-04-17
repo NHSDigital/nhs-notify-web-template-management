@@ -18,17 +18,23 @@ import {
   RoutingChooseLargePrintLetterTemplatePage,
   RoutingGetReadyToMovePage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
   RoutingChooseBritishSignLanguageLetterTemplatePage,
+  RoutingPreviewMessagePlanPage,
+  RoutingPreviewMessagePlanPreviewLetterTemplatePage,
 } from '../pages/routing';
 import { TemplateMgmtMessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { RoutingChooseTemplateForMessagePlanBasePage } from '../pages/routing/choose-template-base-page';
 import type { Template } from '../helpers/types';
 import { loginAsUser } from 'helpers/auth/login-as-user';
-import type { Channel } from 'nhs-notify-web-template-management-types';
+import type {
+  Channel,
+  LetterVariant,
+} from 'nhs-notify-web-template-management-types';
 
 const templateStorageHelper = new TemplateStorageHelper();
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   const templateIds = {
     NHSAPP: randomUUID(),
     EMAIL: randomUUID(),
@@ -67,6 +73,7 @@ function createTemplates(user: TestUser) {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -78,6 +85,7 @@ function createTemplates(user: TestUser) {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -89,6 +97,7 @@ function createTemplates(user: TestUser) {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -100,6 +109,7 @@ function createTemplates(user: TestUser) {
         language: 'ar',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
     POLISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -111,6 +121,7 @@ function createTemplates(user: TestUser) {
         language: 'pl',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
       }
     ),
   };
@@ -175,7 +186,10 @@ test.describe('Routing', () => {
     user = await context.auth.getTestUser(
       testUsers.UserLetterAuthoringEnabled.userId
     );
-    templates = createTemplates(user);
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    templates = createTemplates(user, globalLetterVariant);
 
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
@@ -198,6 +212,7 @@ test.describe('Routing', () => {
     const messageTemplatesPage = new TemplateMgmtMessageTemplatesPage(page);
     const messagePlansPage = new RoutingMessagePlansPage(page);
     const editMessagePlanPage = new RoutingEditMessagePlanPage(page);
+    const previewMessagePlanPage = new RoutingPreviewMessagePlanPage(page);
 
     await test.step('check initial template statuses', async () => {
       await messageTemplatesPage.loadPage();
@@ -445,6 +460,36 @@ test.describe('Routing', () => {
       expect(languageTemplateNames).toHaveLength(2);
       expect(languageTemplateNames).toContain(templates.ARABIC_LETTER.name);
       expect(languageTemplateNames).toContain(templates.POLISH_LETTER.name);
+    });
+
+    await test.step('preview letter template from review page', async () => {
+      const reviewPage = new RoutingReviewAndMoveToProductionPage(page);
+
+      const letterBlock = reviewPage.getTemplateBlock('LETTER');
+
+      const newPagePromise = page.context().waitForEvent('page');
+      await letterBlock.defaultTemplateCard.templateLink.click();
+      const newPage = await newPagePromise;
+      await newPage.waitForLoadState();
+
+      const previewLetterPage =
+        new RoutingReviewAndMoveToProductionPreviewLetterTemplatePage(newPage);
+
+      await expect(previewLetterPage.pageHeading).toContainText(
+        templates.LETTER.name
+      );
+
+      await expect(previewLetterPage.templateId).toContainText(
+        templates.LETTER.id
+      );
+
+      await newPage.close();
+
+      await expect(reviewPage.pageHeading).toBeVisible();
+    });
+
+    await test.step('move to production', async () => {
+      const reviewPage = new RoutingReviewAndMoveToProductionPage(page);
 
       await reviewPage.moveToProductionButton.click();
     });
@@ -463,8 +508,34 @@ test.describe('Routing', () => {
       );
     });
 
+    await test.step('preview letter template from preview message plan page', async () => {
+      await expect(previewMessagePlanPage.pageHeading).toBeVisible();
+
+      const letterBlock = previewMessagePlanPage.getTemplateBlock('LETTER');
+
+      const newPagePromise = page.context().waitForEvent('page');
+      await letterBlock.defaultTemplateCard.templateLink.click();
+      const newPage = await newPagePromise;
+      await newPage.waitForLoadState();
+
+      const previewLetterPage =
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(newPage);
+
+      await expect(previewLetterPage.pageHeading).toContainText(
+        templates.LETTER.name
+      );
+
+      await expect(previewLetterPage.templateId).toContainText(
+        templates.LETTER.id
+      );
+
+      await newPage.close();
+
+      await expect(previewMessagePlanPage.pageHeading).toBeVisible();
+    });
+
     await test.step('verify all templates are locked (except removed large print letter)', async () => {
-      await messagePlansPage.clickTemplatesHeaderLink();
+      await previewMessagePlanPage.clickTemplatesHeaderLink();
 
       await expect(messageTemplatesPage.pageHeading).toBeVisible();
 

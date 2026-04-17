@@ -20,7 +20,8 @@ repos:
         exclude: |
           (?x)^(
             .*/?package-lock.json |
-            packages/event-schemas/schemas/[^/]+/[^/]+\.json
+            packages/event-schemas/schemas/[^/]+/[^/]+\.json |
+            packages/event-schemas/examples/[^/]+/[^/]+/[^/]+\.json
           )$
         args: ['--autofix']
 

@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import PreviewSubmittedLetterTemplatePage, {
+import PreviewSubmittedPdfLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-letter-template/[templateId]/page';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
@@ -17,10 +17,13 @@ import {
 } from '@testhelpers/helpers';
 import content from '@content/content';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import Link from 'next/link';
 
 const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
+const { backLink } = content.components.viewSubmittedTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -28,7 +31,7 @@ jest.mock('next/navigation');
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
-describe('PreviewSubmittedLetterTemplatePage', () => {
+describe('PreviewSubmittedPdfLetterTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page with PDF letter template', async () => {
@@ -59,7 +62,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
-    const page = await PreviewSubmittedLetterTemplatePage({
+    const page = await PreviewSubmittedPdfLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -70,16 +73,31 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     });
     expect(page).toEqual(
       <NHSNotifyContainer>
-        <PreviewSubmittedTemplate
-          initialState={submittedLetterTemplate}
-          previewComponent={PreviewTemplateDetailsPdfLetter}
-        />
+        <Link href={backLink.href} passHref legacyBehavior>
+          <NotifyBackLink>{backLink.text}</NotifyBackLink>
+        </Link>
+
+        <NHSNotifyMain>
+          <div className='nhsuk-grid-row'>
+            <div className='nhsuk-grid-column-full'>
+              <PreviewTemplateDetailsPdfLetter
+                template={submittedLetterTemplate}
+              />
+
+              <p>
+                <Link href={backLink.href} data-testid='back-link-bottom'>
+                  {backLink.text}
+                </Link>
+              </p>
+            </div>
+          </div>
+        </NHSNotifyMain>
       </NHSNotifyContainer>
     );
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
-    await PreviewSubmittedLetterTemplatePage({
+    await PreviewSubmittedPdfLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -116,7 +134,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
-      await PreviewSubmittedLetterTemplatePage({
+      await PreviewSubmittedPdfLetterTemplatePage({
         params: Promise.resolve({
           templateId: 'template-id',
         }),
