@@ -1,4 +1,4 @@
-import { PreviewLetterFromMessagePlan } from '@molecules/PreviewLetterFromMessagePlan/PreviewLetterFromMessagePlan';
+import { PreviewLetterFromMessagePlanPreview } from '@molecules/PreviewLetterFromMessagePlanPreview/PreviewLetterFromMessagePlanPreview';
 import {
   AUTHORING_LETTER_TEMPLATE,
   makeLetterVariant,
@@ -24,7 +24,7 @@ const defaultProps = {
   searchParams: Promise.resolve({}),
 };
 
-describe('PreviewLetterFromMessagePlan', () => {
+describe('PreviewLetterFromMessagePlanPreview', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -32,7 +32,7 @@ describe('PreviewLetterFromMessagePlan', () => {
   it('should redirect to invalid-template when template is not found', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
-    await PreviewLetterFromMessagePlan({
+    await PreviewLetterFromMessagePlanPreview({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -50,7 +50,7 @@ describe('PreviewLetterFromMessagePlan', () => {
       templateType: 'EMAIL',
     } as unknown as TemplateDto);
 
-    await PreviewLetterFromMessagePlan(defaultProps);
+    await PreviewLetterFromMessagePlanPreview(defaultProps);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -62,7 +62,7 @@ describe('PreviewLetterFromMessagePlan', () => {
       letterVariantId: undefined,
     });
 
-    await PreviewLetterFromMessagePlan(defaultProps);
+    await PreviewLetterFromMessagePlanPreview(defaultProps);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     expect(getLetterVariantByIdMock).not.toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe('PreviewLetterFromMessagePlan', () => {
     });
     getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 
-    const page = await PreviewLetterFromMessagePlan({
+    const page = await PreviewLetterFromMessagePlanPreview({
       ...defaultProps,
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,

@@ -8,7 +8,7 @@ import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/Prev
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
-export const PreviewLetterFromMessagePlan = async (
+export const PreviewLetterFromMessagePlanPreview = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
   const { templateId } = await props.params;
