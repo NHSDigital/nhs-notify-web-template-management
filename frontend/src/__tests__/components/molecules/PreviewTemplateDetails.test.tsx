@@ -277,6 +277,78 @@ describe('PreviewTemplateDetailsPdfLetter', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('does not show proofs when clientId is missing', () => {
+    const { clientId: _, ...templateWithoutClientId } = {
+      ...basePdfLetter,
+      clientId: 'client-id',
+      templateStatus: 'PROOF_AVAILABLE' as const,
+      files: {
+        ...basePdfLetter.files,
+        proofs: {
+          'a.pdf': {
+            fileName: 'a.pdf',
+            virusScanStatus: 'PASSED' as const,
+            supplier: 'MBA' as const,
+          },
+        },
+      },
+    };
+
+    const container = render(
+      <PreviewTemplateDetailsPdfLetter template={templateWithoutClientId} />
+    );
+
+    expect(container.queryByTestId('proof-link_a.pdf')).not.toBeInTheDocument();
+  });
+
+  it('does not show proofs when status is NOT_YET_SUBMITTED', () => {
+    const container = render(
+      <PreviewTemplateDetailsPdfLetter
+        template={{
+          ...basePdfLetter,
+          clientId: 'client-id',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          files: {
+            ...basePdfLetter.files,
+            proofs: {
+              'a.pdf': {
+                fileName: 'a.pdf',
+                virusScanStatus: 'PASSED' as const,
+                supplier: 'MBA' as const,
+              },
+            },
+          },
+        }}
+      />
+    );
+
+    expect(container.queryByTestId('proof-link_a.pdf')).not.toBeInTheDocument();
+  });
+
+  it('does not show proofs when all proofs fail virus scan', () => {
+    const container = render(
+      <PreviewTemplateDetailsPdfLetter
+        template={{
+          ...basePdfLetter,
+          clientId: 'client-id',
+          templateStatus: 'PROOF_AVAILABLE',
+          files: {
+            ...basePdfLetter.files,
+            proofs: {
+              'a.pdf': {
+                fileName: 'a.pdf',
+                virusScanStatus: 'FAILED' as const,
+                supplier: 'MBA' as const,
+              },
+            },
+          },
+        }}
+      />
+    );
+
+    expect(container.queryByTestId('proof-link_a.pdf')).not.toBeInTheDocument();
+  });
 });
 
 describe('PreviewTemplateDetailsAuthoringLetter', () => {
