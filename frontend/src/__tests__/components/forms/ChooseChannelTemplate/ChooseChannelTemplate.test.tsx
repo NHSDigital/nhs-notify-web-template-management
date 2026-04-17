@@ -112,6 +112,7 @@ const renderComponent = (overrides = {}) => {
     messagePlan: ROUTING_CONFIG,
     lockNumber: 42,
     noTemplatesText: 'You do not have any templates yet.',
+    hintText: 'Choose one option',
     ...propsByChannel.NHSAPP,
   };
 
@@ -223,22 +224,6 @@ describe('ChooseChannelTemplate', () => {
       const container = renderComponent({
         templateList: nhsAppTemplates,
       });
-      expect(container.asFragment()).toMatchSnapshot();
-    });
-  });
-
-  describe('when isCampaignFiltered is true', () => {
-    it('displays campaign-filtered hint text', () => {
-      const container = renderComponent({
-        isCampaignFiltered: true,
-        templateList: [LARGE_PRINT_LETTER_TEMPLATE],
-      });
-
-      expect(
-        screen.getByText(
-          'Choose one option. You can only choose templates linked to the same campaign as your message plan.'
-        )
-      ).toBeInTheDocument();
       expect(container.asFragment()).toMatchSnapshot();
     });
   });

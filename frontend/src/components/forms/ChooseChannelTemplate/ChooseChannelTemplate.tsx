@@ -26,17 +26,13 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
   const {
     messagePlan,
     pageHeading,
-    noTemplatesText,
     templateList,
     cascadeIndex,
     lockNumber,
     accessibleFormat,
-    isCampaignFiltered,
+    noTemplatesText,
+    hintText,
   } = props;
-
-  const effectiveHintText = isCampaignFiltered
-    ? content.campaignFilteredHintText
-    : content.tableHintText;
 
   const [state, action] = useActionState(chooseChannelTemplateAction, {
     ...props,
@@ -111,7 +107,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 errorState={activeErrorState || null}
                 selectedTemplate={selectedTemplateId}
                 letterType={accessibleFormat}
-                hintText={effectiveHintText}
+                hintText={hintText}
                 lockNumber={lockNumber}
               />
             ) : (

@@ -2,7 +2,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
-import { ChooseChannelTemplateProps } from './choose-channel-template.types';
+import { ChooseChannelTemplateFormProps } from './choose-channel-template.types';
 import {
   isLetterTemplate,
   addAccessibleFormatLetterTemplateToCascade,
@@ -11,7 +11,7 @@ import {
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 
 export type ChooseChannelTemplateFormState = FormState &
-  Omit<ChooseChannelTemplateProps, 'lockNumber' | 'noTemplatesText'>;
+  ChooseChannelTemplateFormProps;
 
 export const $ChooseChannelTemplate = (errorMessage: string) =>
   z.object({

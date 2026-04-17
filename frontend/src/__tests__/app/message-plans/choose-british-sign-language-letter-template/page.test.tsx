@@ -128,4 +128,25 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
       'replace'
     );
   });
+
+  it('renders the empty state message when there are no templates', async () => {
+    getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
+    getTemplatesMock.mockResolvedValueOnce([]);
+
+    const page = await ChooseBritishSignLanguageLetterTemplate({
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
+    });
+
+    const container = render(page);
+
+    expect(container.getByTestId('no-templates-message').textContent).toBe(
+      'You do not have any British Sign Language letter templates linked to the campaign you chose for this message plan.'
+    );
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });

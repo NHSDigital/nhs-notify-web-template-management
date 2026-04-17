@@ -131,4 +131,25 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       'replace'
     );
   });
+
+  it('renders the empty state message when there are no templates', async () => {
+    getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
+    getTemplatesMock.mockResolvedValueOnce([]);
+
+    const page = await ChooseLargePrintLetterTemplate({
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
+    });
+
+    const container = render(page);
+
+    expect(container.getByTestId('no-templates-message').textContent).toBe(
+      'You do not have any large print letter templates linked to the campaign you chose for this message plan.'
+    );
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });
