@@ -675,4 +675,55 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
         'Lock number mismatch - Routing configuration has been modified since last read',
     });
   });
+
+  test('update fails when adding template with a different campaignId to the routing campaignId', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      campaignId: 'campaign-1',
+    });
+    user1.campaignId = 'campaign-2';
+    const emailTemplate = TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      user1
+    );
+
+    await storageHelper.seed([dbEntry]);
+    await templateStorageHelper.seedTemplateData([emailTemplate]);
+
+    const update = {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'primary',
+          defaultTemplateId: emailTemplate.id,
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+        data: update,
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Some templates not found',
+      details: {
+        templateIds: emailTemplate.id,
+      },
+    });
+  });
 });

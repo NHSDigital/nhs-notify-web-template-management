@@ -1486,7 +1486,13 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2);
+      const result = await repo.update(
+        routingConfig.id,
+        update,
+        user,
+        2,
+        routingConfig.campaignId
+      );
 
       expect(result).toEqual({ data: updated });
 
@@ -1534,7 +1540,14 @@ describe('RoutingConfigRepository', () => {
                 id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
         ],
@@ -1564,7 +1577,13 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2);
+      const result = await repo.update(
+        routingConfig.id,
+        update,
+        user,
+        2,
+        routingConfig.campaignId
+      );
 
       expect(result).toEqual({ data: updated });
 
@@ -1636,7 +1655,13 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2);
+      const result = await repo.update(
+        routingConfig.id,
+        update,
+        user,
+        2,
+        routingConfig.campaignId
+      );
 
       expect(result).toEqual({ data: updated });
 
@@ -1682,7 +1707,14 @@ describe('RoutingConfigRepository', () => {
                 id: 'c003b4f1-d788-423d-a948-0df511d07a23',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
         ],
@@ -1735,7 +1767,13 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2);
+      const result = await repo.update(
+        routingConfig.id,
+        update,
+        user,
+        2,
+        routingConfig.campaignId
+      );
 
       expect(result).toEqual({ data: updated });
 
@@ -1781,7 +1819,14 @@ describe('RoutingConfigRepository', () => {
                 id: 'default-template-id',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
           {
@@ -1791,7 +1836,14 @@ describe('RoutingConfigRepository', () => {
                 id: 'conditional-template-1',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
           {
@@ -1801,7 +1853,14 @@ describe('RoutingConfigRepository', () => {
                 id: 'conditional-template-2',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
           {
@@ -1811,7 +1870,14 @@ describe('RoutingConfigRepository', () => {
                 id: 'accessible-template-1',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
         ],
@@ -1849,7 +1915,13 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2);
+      const result = await repo.update(
+        routingConfig.id,
+        update,
+        user,
+        2,
+        routingConfig.campaignId
+      );
 
       expect(result).toEqual({ data: updated });
 
@@ -1893,7 +1965,14 @@ describe('RoutingConfigRepository', () => {
                 id: 'c003b4f1-d788-423d-a948-0df511d07a23',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
         ],
@@ -1924,7 +2003,13 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: updated });
 
-      const result = await repo.update(routingConfig.id, update, user, 2);
+      const result = await repo.update(
+        routingConfig.id,
+        update,
+        user,
+        2,
+        routingConfig.campaignId
+      );
 
       expect(result).toEqual({ data: updated });
 
@@ -1986,7 +2071,13 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo.on(TransactWriteCommand).resolves({});
       mocks.dynamo.on(GetCommand).resolves({ Item: routingConfig });
 
-      const result = await repo.update(routingConfig.id, update, user, 2);
+      const result = await repo.update(
+        routingConfig.id,
+        update,
+        user,
+        2,
+        routingConfig.campaignId
+      );
 
       expect(result).toEqual({ data: routingConfig });
 
@@ -2034,7 +2125,14 @@ describe('RoutingConfigRepository', () => {
                 id: '90e46ece-4a3b-47bd-b781-f986b42a5a09',
                 owner: clientOwnerKey,
               },
-              ConditionExpression: 'attribute_exists(id)',
+              ConditionExpression:
+                'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+              ExpressionAttributeValues: {
+                ':expectedCampaignId': routingConfig.campaignId,
+                ':letter': 'LETTER',
+              },
+              ReturnValuesOnConditionCheckFailure:
+                ReturnValuesOnConditionCheckFailure.ALL_OLD,
             },
           },
         ],
@@ -2064,7 +2162,8 @@ describe('RoutingConfigRepository', () => {
           name: routingConfig.name,
         },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2097,7 +2196,8 @@ describe('RoutingConfigRepository', () => {
           name: routingConfig.name,
         },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2141,7 +2241,8 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2174,7 +2275,8 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2207,7 +2309,8 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new name' },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2244,7 +2347,8 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2292,7 +2396,8 @@ describe('RoutingConfigRepository', () => {
           cascadeGroupOverrides: [],
         },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2300,7 +2405,7 @@ describe('RoutingConfigRepository', () => {
           actualError: err,
           errorMeta: {
             code: 400,
-            description: 'Some templates not found',
+            description: 'Some templates are not suitable to be updated',
             details: { templateIds: 'template1' },
           },
         },
@@ -2319,7 +2424,8 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({
@@ -2348,7 +2454,8 @@ describe('RoutingConfigRepository', () => {
         routingConfig.id,
         { name: 'new-name' },
         user,
-        2
+        2,
+        routingConfig.campaignId
       );
 
       expect(result).toEqual({

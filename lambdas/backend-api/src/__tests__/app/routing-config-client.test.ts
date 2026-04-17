@@ -770,6 +770,8 @@ describe('RoutingConfigClient', () => {
     test('returns updated routing config', async () => {
       const { client, mocks } = setup();
 
+      const campaignId = 'campaign-1';
+
       const update: UpdateRoutingConfig = {
         cascade: [
           ...routingConfig.cascade,
@@ -801,6 +803,10 @@ describe('RoutingConfigClient', () => {
         },
       });
 
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        data: routingConfig,
+      });
+
       mocks.routingConfigRepository.update.mockResolvedValueOnce({
         data: updated,
       });
@@ -816,7 +822,8 @@ describe('RoutingConfigClient', () => {
         routingConfig.id,
         update,
         user,
-        42
+        42,
+        campaignId
       );
 
       expect(result).toEqual({
@@ -954,6 +961,10 @@ describe('RoutingConfigClient', () => {
           features: { routing: true },
           campaignIds: [routingConfig.campaignId],
         },
+      });
+
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        data: routingConfig,
       });
 
       const result = await client.updateRoutingConfig(

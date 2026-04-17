@@ -97,7 +97,8 @@ export class RoutingConfigRepository {
     id: string,
     updateData: UpdateRoutingConfig,
     user: User,
-    lockNumber: number
+    lockNumber: number,
+    expectedCampaignId: string
   ): Promise<ApplicationResult<RoutingConfig>> {
     const { cascade, cascadeGroupOverrides, name } = updateData;
 
@@ -139,7 +140,14 @@ export class RoutingConfigRepository {
                   id: templateId,
                   owner: this.clientOwnerKey(user.clientId),
                 },
-                ConditionExpression: 'attribute_exists(id)',
+                ConditionExpression:
+                  'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+                ExpressionAttributeValues: {
+                  ':expectedCampaignId': expectedCampaignId,
+                  ':letter': 'LETTER',
+                },
+                ReturnValuesOnConditionCheckFailure:
+                  ReturnValuesOnConditionCheckFailure.ALL_OLD,
               },
             })),
           ],
@@ -340,7 +348,7 @@ export class RoutingConfigRepository {
     }
   }
 
-  private async getTemplates(
+  async getTemplates(
     templateIds: string[],
     clientId: string
   ): Promise<ApplicationResult<TemplateDto[]>> {
@@ -557,8 +565,8 @@ export class RoutingConfigRepository {
 
     if (templatesMissing) {
       return failure(
-        ErrorCase.ROUTING_CONFIG_TEMPLATES_NOT_FOUND,
-        'Some templates not found',
+        ErrorCase.TEMPLATES_REJECTED,
+        'Some templates are not suitable to be updated',
         err,
         { templateIds: templateIds.join(',') }
       );
