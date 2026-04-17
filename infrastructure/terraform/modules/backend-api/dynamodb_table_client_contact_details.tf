@@ -1,45 +1,45 @@
-resource "aws_dynamodb_table" "letter_variants" {
-  name = "${local.csi}-letter-variants"
+resource "aws_dynamodb_table" "client_contact_details" {
+  name = "${local.csi}-client-contact-details"
 
   billing_mode = "PAY_PER_REQUEST"
 
-  hash_key  = "PK"
-  range_key = "SK"
+  hash_key  = "owner"
+  range_key = "contactDetailKey"
 
   attribute {
-    name = "PK"
+    name = "owner"
     type = "S"
   }
 
   attribute {
-    name = "SK"
+    name = "contactDetailKey"
     type = "S"
   }
 
   attribute {
-    name = "ByScopeIndexPK"
-    type = "S"
-  }
-
-  attribute {
-    name = "ByScopeIndexSK"
+    name = "id"
     type = "S"
   }
 
   global_secondary_index {
-    name = "ByScope"
+    name = "ById"
 
     key_schema {
       key_type       = "HASH"
-      attribute_name = "ByScopeIndexPK"
+      attribute_name = "id"
     }
 
     key_schema {
       key_type       = "RANGE"
-      attribute_name = "ByScopeIndexSK"
+      attribute_name = "owner"
     }
 
     projection_type = "ALL"
+  }
+
+  ttl {
+    attribute_name = "ttl"
+    enabled        = true
   }
 
   point_in_time_recovery {

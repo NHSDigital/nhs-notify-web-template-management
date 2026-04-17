@@ -66,6 +66,7 @@ No requirements.
 | <a name="module_list_routing_configs_lambda"></a> [list\_routing\_configs\_lambda](#module\_list\_routing\_configs\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_patch_template_lambda"></a> [patch\_template\_lambda](#module\_patch\_template\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
+| <a name="module_request_contact_details_verification_lambda"></a> [request\_contact\_details\_verification\_lambda](#module\_request\_contact\_details\_verification\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.8/terraform-lambda.zip | n/a |
 | <a name="module_request_proof_lambda"></a> [request\_proof\_lambda](#module\_request\_proof\_lambda) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.29/terraform-lambda.zip | n/a |
 | <a name="module_s3bucket_download"></a> [s3bucket\_download](#module\_s3bucket\_download) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
@@ -89,6 +90,7 @@ No requirements.
 |------|-------------|
 | <a name="output_api_base_url"></a> [api\_base\_url](#output\_api\_base\_url) | n/a |
 | <a name="output_client_ssm_path_prefix"></a> [client\_ssm\_path\_prefix](#output\_client\_ssm\_path\_prefix) | n/a |
+| <a name="output_contact_details_table_name"></a> [contact\_details\_table\_name](#output\_contact\_details\_table\_name) | n/a |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
