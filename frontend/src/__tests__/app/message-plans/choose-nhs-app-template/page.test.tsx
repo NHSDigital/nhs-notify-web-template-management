@@ -102,4 +102,25 @@ describe('ChooseNHSAppTemplate page', () => {
       'replace'
     );
   });
+
+  it('renders the empty state message when there are no templates', async () => {
+    getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
+    getTemplatesMock.mockResolvedValueOnce([]);
+
+    const page = await ChooseNhsAppTemplate({
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
+    });
+
+    const container = render(page);
+
+    expect(container.getByTestId('no-templates-message').textContent).toBe(
+      'You do not have any NHS App templates yet.'
+    );
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });

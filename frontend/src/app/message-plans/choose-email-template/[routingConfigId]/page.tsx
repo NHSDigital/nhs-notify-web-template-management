@@ -10,8 +10,8 @@ import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { getTemplates } from '@utils/form-actions';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-const { pageTitle, pageHeading, noTemplatesText } =
-  content.pages.chooseEmailTemplate;
+const { pageTitle, pageHeading, noTemplatesText, hintText } =
+  content.pages.chooseDigitalTemplatePage('EMAIL');
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -57,6 +57,7 @@ export default async function ChooseEmailTemplate(props: MessagePlanPageProps) {
         messagePlan={messagePlan}
         pageHeading={pageHeading}
         noTemplatesText={noTemplatesText}
+        hintText={hintText}
         templateList={availableTemplateList}
         cascadeIndex={cascadeIndex}
         lockNumber={lockNumberResult.data}
