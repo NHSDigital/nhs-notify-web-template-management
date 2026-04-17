@@ -1769,7 +1769,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
           <h1
             class="nhsuk-heading-xl"
           >
-            Choose a letter template
+            Choose a standard English letter template"
           </h1>
         </div>
         <form

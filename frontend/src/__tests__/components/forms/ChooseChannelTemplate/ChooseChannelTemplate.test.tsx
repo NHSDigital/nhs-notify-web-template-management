@@ -95,7 +95,7 @@ const propsByChannel = {
     templateList: [SMS_TEMPLATE],
   },
   LETTER: {
-    pageHeading: 'Choose a letter template',
+    pageHeading: 'Choose a standard English letter template"',
     cascadeIndex: 3,
     templateList: [PDF_LETTER_TEMPLATE],
   },

@@ -48,7 +48,6 @@ const routingConfigIds = {
 function getTemplates(
   user: TestUser
 ): Record<keyof typeof templateIds, Template> {
-  const campaignId = user.campaignIds?.[0] ?? 'campaign';
   return {
     LARGE_PRINT_LETTER1: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.LARGE_PRINT_LETTER1,
@@ -56,7 +55,6 @@ function getTemplates(
       'Large print letter template 1',
       'SUBMITTED',
       {
-        campaignId,
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -68,7 +66,6 @@ function getTemplates(
       'Large print letter template 2',
       'SUBMITTED',
       {
-        campaignId,
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -80,7 +77,6 @@ function getTemplates(
       'Large print letter template 3 - proof approved',
       'PROOF_APPROVED',
       {
-        campaignId,
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -92,7 +88,7 @@ function getTemplates(
         user,
         'Proof available large print letter',
         'NOT_YET_SUBMITTED',
-        { campaignId, letterType: 'x1' }
+        { letterType: 'x1' }
       ),
     STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.STANDARD_LETTER,
@@ -100,7 +96,6 @@ function getTemplates(
       'Standard letter template',
       'SUBMITTED',
       {
-        campaignId,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -111,7 +106,6 @@ function getTemplates(
       'French letter template',
       'SUBMITTED',
       {
-        campaignId,
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },

@@ -40,7 +40,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -59,7 +58,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -77,7 +75,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -150,7 +147,7 @@ export const TemplateFactory = {
     const campaignId =
       options?.campaignId === null
         ? undefined
-        : (options?.campaignId ?? 'campaign-id');
+        : (options?.campaignId ?? user.campaignIds?.[0] ?? 'campaign-id');
 
     const files: Record<string, unknown> = {};
 

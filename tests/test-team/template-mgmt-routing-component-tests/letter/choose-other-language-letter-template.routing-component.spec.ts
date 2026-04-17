@@ -60,7 +60,6 @@ const routingConfigIds = {
 function getTemplates(
   user: TestUser
 ): Record<keyof typeof templateIds, Template> {
-  const campaignId = user.campaignIds?.[0] ?? 'campaign';
   return {
     NHSAPP: TemplateFactory.createNhsAppTemplate(
       templateIds.NHSAPP,
@@ -73,7 +72,6 @@ function getTemplates(
       `Test Letter template - ${templateIds.LETTER}`,
       'SUBMITTED',
       {
-        campaignId,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -84,7 +82,6 @@ function getTemplates(
       `Test Large Print Letter template - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
       {
-        campaignId,
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -96,7 +93,6 @@ function getTemplates(
       `Test French Letter template - ${templateIds.FRENCH_LETTER}`,
       'SUBMITTED',
       {
-        campaignId,
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -108,7 +104,6 @@ function getTemplates(
       `Test Duplicate French Letter template - ${templateIds.FRENCH_LETTER_APPROVED}`,
       'PROOF_APPROVED',
       {
-        campaignId,
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -119,7 +114,7 @@ function getTemplates(
       user,
       `Proof available French letter - ${templateIds.FRENCH_LETTER_NOT_SUBMITTED}`,
       'NOT_YET_SUBMITTED',
-      { campaignId, language: 'fr' }
+      { language: 'fr' }
     ),
     SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.SPANISH_LETTER,
@@ -127,7 +122,6 @@ function getTemplates(
       `Test Spanish Letter template - ${templateIds.SPANISH_LETTER}`,
       'SUBMITTED',
       {
-        campaignId,
         language: 'es',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -139,7 +133,6 @@ function getTemplates(
       `Test Polish Letter template - ${templateIds.POLISH_LETTER}`,
       'SUBMITTED',
       {
-        campaignId,
         language: 'pl',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
@@ -402,7 +395,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
       await expect(
         chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
       ).toHaveText(
-        'You do not have any templates linked to the campaign you chose for this message plan.'
+        'You do not have any other language letter templates linked to the campaign you chose for this message plan.'
       );
 
       await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
