@@ -412,6 +412,31 @@ describe('TemplateRepo#query', () => {
       });
     });
 
+    test('supports filtering by campaignId', async () => {
+      const { repo, mocks } = setup();
+
+      mocks.dynamo.on(QueryCommand).resolvesOnce({
+        Items: [],
+      });
+
+      await repo.query(clientId).campaignId('campaign-2').list();
+
+      expect(mocks.dynamo).toHaveReceivedCommandTimes(QueryCommand, 1);
+      expect(mocks.dynamo).toHaveReceivedCommandWith(QueryCommand, {
+        TableName: TABLE_NAME,
+        KeyConditionExpression: '#owner = :owner',
+        FilterExpression: '(#campaignId IN (:campaignId0))',
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#campaignId': 'campaignId',
+        },
+        ExpressionAttributeValues: {
+          ':owner': clientOwnerKey,
+          ':campaignId0': 'campaign-2',
+        },
+      });
+    });
+
     test('filters out invalid template items', async () => {
       const { repo, mocks } = setup();
 

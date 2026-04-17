@@ -99,6 +99,17 @@ function createTemplates(user: TestUser) {
         longFormRender: { status: 'RENDERED' },
       }
     ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user,
+      'Different campaign letter template',
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    ),
     APP: TemplateFactory.createNhsAppTemplate(
       randomUUID(),
       user,
@@ -212,7 +223,14 @@ test.describe('Routing - Choose letter template page', () => {
         );
       }
 
+      await expect(chooseLetterTemplatePage.tableHintText).toHaveText(
+        'Choose one option. You can only choose templates linked to the same campaign as your message plan.'
+      );
+
       // template filtering checks
+      await expect(
+        table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
+      ).toBeHidden();
       await expect(table.getByText(templates.FRENCH_LETTER.name)).toBeHidden();
       await expect(
         table.getByText(templates.ACCESSIBLE_LETTER.name)
@@ -243,7 +261,7 @@ test.describe('Routing - Choose letter template page', () => {
 
       await expect(chooseLetterTemplatePage.errorSummary).toBeVisible();
       await expect(chooseLetterTemplatePage.errorSummaryList).toHaveText([
-        'Choose a letter template',
+        'Choose a standard English letter template',
       ]);
     });
 

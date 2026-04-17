@@ -83,10 +83,11 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
       letterType: 'x0',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
 
     expect(await generateMetadata()).toEqual({
-      title: 'Choose a letter template - NHS Notify',
+      title: 'Choose a standard English letter template - NHS Notify',
     });
     expect(container.asFragment()).toMatchSnapshot();
   });
@@ -102,5 +103,26 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
       `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
       'replace'
     );
+  });
+
+  it('renders the empty state message when there are no templates', async () => {
+    getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
+    getTemplatesMock.mockResolvedValueOnce([]);
+
+    const page = await ChooseStandardEnglishLetterTemplate({
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
+    });
+
+    const container = render(page);
+
+    expect(container.getByTestId('no-templates-message').textContent).toBe(
+      'You do not have any standard English letter templates linked to the campaign you chose for this message plan.'
+    );
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });

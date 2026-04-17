@@ -21,7 +21,6 @@ const redirectMock = jest.mocked(redirect);
 describe('ChooseLargePrintLetterTemplate page', () => {
   it('should redirect to invalid page for invalid routing config id', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(undefined);
-    getTemplatesMock.mockResolvedValueOnce([LARGE_PRINT_LETTER_TEMPLATE]);
 
     await ChooseLargePrintLetterTemplate({
       params: Promise.resolve({
@@ -33,13 +32,6 @@ describe('ChooseLargePrintLetterTemplate page', () => {
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith('invalid-id');
-    expect(getTemplatesMock).toHaveBeenCalledWith({
-      templateType: 'LETTER',
-      language: 'en',
-      letterType: 'x1',
-      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
-      letterVersion: 'AUTHORING',
-    });
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/message-plans/invalid',
@@ -54,7 +46,6 @@ describe('ChooseLargePrintLetterTemplate page', () => {
         (item) => item.channel !== 'LETTER'
       ),
     });
-    getTemplatesMock.mockResolvedValueOnce([LARGE_PRINT_LETTER_TEMPLATE]);
 
     await ChooseLargePrintLetterTemplate({
       params: Promise.resolve({
@@ -73,7 +64,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
     );
   });
 
-  it('fetches routing config and templates in parallel', async () => {
+  it('calls getTemplates with correct filters', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
     getTemplatesMock.mockResolvedValueOnce([LARGE_PRINT_LETTER_TEMPLATE]);
 
@@ -93,6 +84,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       letterType: 'x1',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
   });
 
@@ -118,6 +110,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       letterType: 'x1',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
 
     expect(await generateMetadata()).toEqual({
@@ -137,5 +130,26 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
       'replace'
     );
+  });
+
+  it('renders the empty state message when there are no templates', async () => {
+    getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
+    getTemplatesMock.mockResolvedValueOnce([]);
+
+    const page = await ChooseLargePrintLetterTemplate({
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+      }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
+    });
+
+    const container = render(page);
+
+    expect(container.getByTestId('no-templates-message').textContent).toBe(
+      'You do not have any large print letter templates linked to the campaign you chose for this message plan.'
+    );
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });

@@ -10,8 +10,8 @@ import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { getTemplates } from '@utils/form-actions';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-const { pageTitle, pageHeading, noTemplatesText } =
-  content.pages.chooseStandardEnglishLetterTemplate;
+const { pageTitle, pageHeading, noTemplatesText, hintText } =
+  content.pages.chooseLetterTemplatePage('x0');
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -55,6 +55,7 @@ export default async function ChooseStandardEnglishLetterTemplate(
     letterType: 'x0',
     templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
     letterVersion: 'AUTHORING',
+    campaignId: messagePlan.campaignId,
   });
 
   return (
@@ -63,6 +64,7 @@ export default async function ChooseStandardEnglishLetterTemplate(
         messagePlan={messagePlan}
         pageHeading={pageHeading}
         noTemplatesText={noTemplatesText}
+        hintText={hintText}
         templateList={availableTemplateList}
         cascadeIndex={cascadeIndex}
         lockNumber={lockNumberResult.data}

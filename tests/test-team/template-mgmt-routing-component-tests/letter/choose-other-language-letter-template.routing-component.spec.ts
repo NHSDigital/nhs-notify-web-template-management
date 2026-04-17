@@ -42,6 +42,7 @@ const templateIds = {
   NHSAPP: randomUUID(),
   LETTER: randomUUID(),
   LARGE_PRINT_LETTER: randomUUID(),
+  DIFFERENT_CAMPAIGN_LETTER: randomUUID(),
   ...languageTemplates,
 };
 
@@ -133,6 +134,18 @@ function getTemplates(
       'SUBMITTED',
       {
         language: 'pl',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.DIFFERENT_CAMPAIGN_LETTER,
+      user,
+      `Test Different Campaign Letter template - ${templateIds.DIFFERENT_CAMPAIGN_LETTER}`,
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -293,7 +306,7 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await expect(
       chooseOtherLanguageLetterTemplatePage.tableHintText
     ).toHaveText(
-      'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.'
+      'Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.'
     );
 
     const table = chooseOtherLanguageLetterTemplatePage.templatesTable;
@@ -333,6 +346,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await expect(table.getByText(templates.LETTER.name)).toBeHidden();
     await expect(
       table.getByText(templates.LARGE_PRINT_LETTER.name)
+    ).toBeHidden();
+    await expect(
+      table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
     ).toBeHidden();
 
     await expect(
@@ -378,7 +394,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
 
       await expect(
         chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
-      ).toHaveText('You do not have any other language letter templates yet.');
+      ).toHaveText(
+        'You do not have any other language letter templates linked to the campaign you chose for this message plan.'
+      );
 
       await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
 

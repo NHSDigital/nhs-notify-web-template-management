@@ -84,7 +84,7 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
     expect(getTemplateMock).toHaveBeenCalledWith(PDF_LETTER_TEMPLATE.id);
 
     expect(await generateMetadata()).toEqual({
-      title: 'Preview letter template - NHS Notify',
+      title: 'Preview standard English letter template - NHS Notify',
     });
     expect(container.asFragment()).toMatchSnapshot();
   });

@@ -76,7 +76,7 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
               />
             </div>
             <div
-              class="nhsuk-summary-list__row missing-value"
+              class="nhsuk-summary-list__row"
               id="campaign-id"
             >
               <dt
@@ -86,7 +86,9 @@ exports[`PreviewTemplateFromMessagePlan renders Authoring Letter template previe
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                campaign-2
+              </dd>
               <dd
                 aria-hidden="true"
                 class="nhsuk-summary-list__actions"
@@ -387,6 +389,21 @@ exports[`PreviewTemplateFromMessagePlan renders French Letter template preview w
             </div>
             <div
               class="nhsuk-summary-list__row"
+              id="campaign-id"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Campaign
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                campaign-2
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
             >
               <dt
                 class="nhsuk-summary-list__key"
@@ -503,6 +520,21 @@ exports[`PreviewTemplateFromMessagePlan renders Large Print Letter template prev
                 data-testid="preview-template-id"
               >
                 large-print-letter-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+              id="campaign-id"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Campaign
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                campaign-2
               </dd>
             </div>
             <div
@@ -756,6 +788,21 @@ exports[`PreviewTemplateFromMessagePlan renders PDF Letter template preview with
                 data-testid="preview-template-id"
               >
                 letter-template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+              id="campaign-id"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Campaign
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                campaign-2
               </dd>
             </div>
             <div

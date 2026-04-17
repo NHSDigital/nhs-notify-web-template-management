@@ -32,6 +32,7 @@ const templateIds = {
   BSL_LETTER_NOT_SUBMITTED: randomUUID(),
   STANDARD_LETTER: randomUUID(),
   LARGE_PRINT_LETTER: randomUUID(),
+  DIFFERENT_CAMPAIGN_LETTER: randomUUID(),
   APP: randomUUID(),
 };
 
@@ -105,6 +106,18 @@ function getTemplates(
       'SUBMITTED',
       {
         letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.DIFFERENT_CAMPAIGN_LETTER,
+      user,
+      'Different campaign BSL letter',
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -226,6 +239,10 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
       'Choose a British Sign Language letter template'
     );
 
+    await expect(chooseBSLLetterTemplatePage.tableHintText).toHaveText(
+      'Choose one option. You can only choose templates linked to the same campaign as your message plan.'
+    );
+
     const table = chooseBSLLetterTemplatePage.templatesTable;
 
     for (const template of [
@@ -251,6 +268,9 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
 
     await expect(
       table.getByText(templates.BSL_LETTER_NOT_SUBMITTED.name)
+    ).toBeHidden();
+    await expect(
+      table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
     ).toBeHidden();
     await expect(table.getByText(templates.STANDARD_LETTER.name)).toBeHidden();
     await expect(

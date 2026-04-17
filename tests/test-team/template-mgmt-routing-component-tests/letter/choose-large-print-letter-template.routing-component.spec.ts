@@ -32,6 +32,7 @@ const templateIds = {
   LARGE_PRINT_LETTER_NOT_SUBMITTED: randomUUID(),
   STANDARD_LETTER: randomUUID(),
   FRENCH_LETTER: randomUUID(),
+  DIFFERENT_CAMPAIGN_LETTER: randomUUID(),
   APP: randomUUID(),
 };
 
@@ -106,6 +107,18 @@ function getTemplates(
       'SUBMITTED',
       {
         language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
+    ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.DIFFERENT_CAMPAIGN_LETTER,
+      user,
+      'Different campaign large print letter',
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
       }
@@ -228,6 +241,10 @@ test.describe('Routing - Choose large print letter template page', () => {
       'Choose a large print letter template'
     );
 
+    await expect(chooseLargePrintLetterTemplatePage.tableHintText).toHaveText(
+      'Choose one option. You can only choose templates linked to the same campaign as your message plan.'
+    );
+
     const table = chooseLargePrintLetterTemplatePage.templatesTable;
 
     for (const template of [
@@ -253,6 +270,9 @@ test.describe('Routing - Choose large print letter template page', () => {
 
     await expect(
       table.getByText(templates.LARGE_PRINT_LETTER_NOT_SUBMITTED.name)
+    ).toBeHidden();
+    await expect(
+      table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
     ).toBeHidden();
     await expect(table.getByText(templates.STANDARD_LETTER.name)).toBeHidden();
     await expect(table.getByText(templates.FRENCH_LETTER.name)).toBeHidden();

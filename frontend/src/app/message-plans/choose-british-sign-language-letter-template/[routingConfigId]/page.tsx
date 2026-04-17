@@ -10,8 +10,8 @@ import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
 import content from '@content/content';
-const { pageTitle, pageHeading, noTemplatesText } =
-  content.pages.chooseBritishSignLanguageLetterTemplate;
+const { pageTitle, pageHeading, noTemplatesText, hintText } =
+  content.pages.chooseLetterTemplatePage('q4');
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -35,16 +35,7 @@ export default async function ChooseBritishSignLanguageLetterTemplate(
     );
   }
 
-  const [messagePlan, availableTemplateList] = await Promise.all([
-    getRoutingConfig(routingConfigId),
-    getTemplates({
-      templateType: 'LETTER',
-      language: 'en',
-      letterType: 'q4',
-      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
-      letterVersion: 'AUTHORING',
-    }),
-  ]);
+  const messagePlan = await getRoutingConfig(routingConfigId);
 
   if (!messagePlan) {
     return redirect('/message-plans/invalid', RedirectType.replace);
@@ -58,13 +49,23 @@ export default async function ChooseBritishSignLanguageLetterTemplate(
     return redirect('/message-plans/invalid', RedirectType.replace);
   }
 
+  const filteredTemplateList = await getTemplates({
+    templateType: 'LETTER',
+    language: 'en',
+    letterType: 'q4',
+    templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+    letterVersion: 'AUTHORING',
+    campaignId: messagePlan.campaignId,
+  });
+
   return (
     <NHSNotifyContainer>
       <ChooseChannelTemplate
         messagePlan={messagePlan}
         pageHeading={pageHeading}
         noTemplatesText={noTemplatesText}
-        templateList={availableTemplateList}
+        hintText={hintText}
+        templateList={filteredTemplateList}
         cascadeIndex={cascadeIndex}
         accessibleFormat='q4'
         lockNumber={lockNumberResult.data}
