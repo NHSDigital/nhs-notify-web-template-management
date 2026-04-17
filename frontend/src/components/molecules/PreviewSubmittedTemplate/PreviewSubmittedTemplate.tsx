@@ -1,6 +1,6 @@
 'use client';
 
-import { PageComponentProps } from 'nhs-notify-web-template-management-utils';
+import type { PageComponentProps } from '@utils/types';
 import baseContent from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';

@@ -3,13 +3,16 @@ import type {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
-import type {
-  DigitalTemplateType,
-  FrontendSupportedLetterType,
+import {
+  createTemplateUrl,
+  type UrlParseableTemplate,
+  type DigitalTemplateType,
+  type FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
+import { escapeMarkdown } from '@utils/escape-markdown';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -531,6 +534,7 @@ const previewLetterTemplate = {
   approveProofText: 'Approve template proof',
   requestProofText: 'Request a proof',
   footer: previewLetterFooter,
+  uploadSuccessBanner: 'Template saved',
   virusScanError: 'The file(s) you uploaded may contain a virus.',
   virusScanErrorAction:
     'Create a new letter template to upload your file(s) again or upload different file(s).',
@@ -539,18 +543,104 @@ const previewLetterTemplate = {
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your example personalisation file',
   validationErrorMessages: {
-    MISSING_ADDRESS_LINES: [
-      'The template file you uploaded does not contain the address fields.',
-      'Add the address fields to the template file and upload it.',
+    MISSING_ADDRESS_LINES: () => [
+      {
+        type: 'text',
+        text: 'Your template is missing address personalisation fields',
+      },
+      {
+        type: 'text',
+        text: String.raw`You must include all fields from {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it includes the correct fields`,
+      },
+      {
+        type: 'text',
+        text: 'Upload it as a different letter template file',
+      },
     ],
-    VIRUS_SCAN_FAILED: [
-      'The file(s) you uploaded may contain a virus.',
-      'Create a new letter template to upload your file(s) again or upload different file(s).',
+    VIRUS_SCAN_FAILED: () => [
+      {
+        type: 'text',
+        text: 'Your file may contain a virus and we could not open it',
+      },
+      {
+        type: 'text',
+        text: 'Upload a different letter template file',
+      },
     ],
-    // not yet implemented, but required as placeholders
-    INVALID_MARKERS: [],
-    UNEXPECTED_ADDRESS_LINES: [],
-  } satisfies Record<string, string[]>,
+    INVALID_MARKERS: (issues): ContentBlock[] => [
+      {
+        type: 'text',
+        text: 'You used the following personalisation fields with incorrect formatting:',
+      },
+      {
+        type: 'text',
+        text: markdownList(
+          'ul',
+          issues.map((issue) => escapeMarkdown(issue))
+        ),
+        overrides: {
+          ul: {
+            props: {
+              className: 'nhsuk-u-margin-bottom-3 nhsuk-u-padding-left-0',
+            },
+          },
+          li: {
+            props: { className: 'nhsuk-error-message' },
+          },
+        },
+      },
+      {
+        type: 'text',
+        text: 'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
+      },
+      {
+        type: 'text',
+        text: 'They can only contain',
+      },
+      {
+        type: 'text',
+        text: markdownList('ul', [
+          'letters (a to z, A to Z)',
+          'numbers (1 to 9)',
+          'dashes',
+          'underscores',
+        ]),
+        overrides: {
+          ul: {
+            props: { className: 'nhsuk-error-message nhsuk-u-margin-bottom-3' },
+          },
+        },
+      },
+      {
+        type: 'text',
+        text: 'Update your letter template file and upload it again',
+      },
+    ],
+    UNEXPECTED_ADDRESS_LINES: () => [
+      {
+        type: 'text',
+        text: 'Your template has address personalisation fields we do not recognise',
+      },
+      {
+        type: 'text',
+        text: String.raw`You must only use {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it includes the correct fields`,
+      },
+      {
+        type: 'text',
+        text: 'Upload it as a different letter template file',
+      },
+    ],
+  } satisfies Record<string, (issues: string[]) => ContentBlock[]>,
+  defaultValidationErrorMessage: [
+    {
+      type: 'text',
+      text: 'We could not open your file. This may be a technical problem or an issue with your file',
+    },
+    {
+      type: 'text',
+      text: 'Upload a different letter template file',
+    },
+  ] satisfies ContentBlock[],
   preSubmissionText: previewLetterPreSubmissionText,
   rtlWarning: {
     heading: 'Important',
@@ -565,6 +655,15 @@ const previewLetterTemplate = {
       '{{basePath}}/submit-letter-template/{{templateId}}?lockNumber={{lockNumber}}',
     requestProofOfTemplate:
       '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
+    uploadDifferentTemplateFile: {
+      text: 'Upload a different letter template file',
+      href: (template: UrlParseableTemplate) =>
+        `${getBasePath()}${createTemplateUrl(template)}`,
+    },
+  },
+  validationFailedIframe: {
+    title: 'Letter preview',
+    ariaLabel: 'PDF preview of letter template',
   },
 };
 
@@ -598,6 +697,15 @@ const letterRender = {
     heading: 'Custom personalisation fields',
   },
   updatePreviewButton: 'Update preview',
+  iframe: {
+    title: 'Letter preview - {{tab}} examples',
+    ariaLabel:
+      'PDF preview of letter template with {{tab}} example personalisation data',
+  },
+};
+
+const letterRenderIframe = {
+  noPreviewAvailable: 'No preview available',
 };
 
 const previewNHSAppTemplate = {
@@ -696,6 +804,10 @@ const previewTemplateDetails = {
   },
   previewTemplateStatusFootnote,
   headerCaption: 'Template',
+  checkingFilesMessage: {
+    type: 'text',
+    text: 'Refresh the page to update the status. If your file is taking too long to upload, [raise a Service Now request (opens in a new tab)](https://nhsdigitallive.service-now.com/csm)',
+  } satisfies ContentBlock,
 };
 
 const error404 = {
@@ -2032,6 +2144,11 @@ const reviewAndApproveLetterTemplate = {
   submitText: 'Approve letter template',
   pageHeading: `Review and approve '{{templateName}}'`,
   headerCaption: 'Step 2 of 2',
+  iframe: {
+    title: 'Letter preview - {{tab}} examples',
+    ariaLabel:
+      'PDF preview of letter template with {{tab}} example personalisation data',
+  },
 };
 
 const editTemplateNamePage = {
@@ -2138,6 +2255,7 @@ const content = {
     header,
     howToRequestADigitalProof,
     letterRender,
+    letterRenderIframe,
     lockedTemplateWarning,
     logoutWarning,
     messageFormatting,

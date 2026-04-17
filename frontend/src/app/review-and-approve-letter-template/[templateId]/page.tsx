@@ -21,7 +21,7 @@ import styles from './ReviewAndApproveLetterTemplatePage.module.scss';
 import { interpolate } from '@utils/interpolate';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import concatClassNames from '@utils/concat-class-names';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import { getRenderDetails } from '@utils/letter-render';
 
 const {
   pageTitle,
@@ -32,6 +32,7 @@ const {
   submitText,
   pageHeading,
   headerCaption,
+  iframe,
 } = content.pages.reviewAndApproveLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -69,8 +70,6 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
     );
   }
 
-  const { longFormRender, shortFormRender } = validatedTemplate.files;
-
   const letterVariant = await getLetterVariantById(
     validatedTemplate.letterVariantId
   );
@@ -101,11 +100,9 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               styles.iframe,
               'nhsuk-u-margin-bottom-6'
             )}
-            tab='shortFormRender'
-            pdfUrl={buildLetterRenderUrl(
-              validatedTemplate,
-              shortFormRender.fileName
-            )}
+            src={getRenderDetails(validatedTemplate, 'shortFormRender').src}
+            title={interpolate(iframe.title, { tab: 'short' })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: 'short' })}
           />
           <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
           <LetterRenderIframe
@@ -113,11 +110,9 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
               styles.iframe,
               'nhsuk-u-margin-bottom-6'
             )}
-            tab='longFormRender'
-            pdfUrl={buildLetterRenderUrl(
-              validatedTemplate,
-              longFormRender.fileName
-            )}
+            src={getRenderDetails(validatedTemplate, 'longFormRender').src}
+            title={interpolate(iframe.title, { tab: 'long' })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: 'long' })}
           />
           <NHSNotifyForm.Form formId='review-and-approve-letter'>
             <input

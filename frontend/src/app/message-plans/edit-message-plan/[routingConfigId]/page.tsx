@@ -11,6 +11,7 @@ import {
   messagePlanStatusToDisplayText,
   messagePlanStatusToTagColour,
   FRONTEND_SUPPORTED_ACCESSIBLE_FORMATS,
+  toUrlParseableTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import {
   SummaryList,
@@ -172,7 +173,7 @@ export default async function EditMessagePlanPage(props: MessagePlanPageProps) {
                             templates={defaultTemplate ? [defaultTemplate] : []}
                             routingConfigId={messagePlan.id}
                             lockNumber={messagePlan.lockNumber}
-                            chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl(channelToTemplateType(cascadeItem.channel))}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
+                            chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl(toUrlParseableTemplate(channelToTemplateType(cascadeItem.channel)))}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
                             removeTemplateAction={removeTemplateFromMessagePlan}
                             testIdSuffix={cascadeItem.channel}
                           />
@@ -211,7 +212,7 @@ export default async function EditMessagePlanPage(props: MessagePlanPageProps) {
                                         channelTemplateType={formatDisplay}
                                         templates={template ? [template] : []}
                                         routingConfigId={messagePlan.id}
-                                        chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl('LETTER', format)}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
+                                        chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl(toUrlParseableTemplate('LETTER', format))}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
                                         lockNumber={messagePlan.lockNumber}
                                         removeTemplateAction={
                                           removeTemplateFromMessagePlan
@@ -238,7 +239,7 @@ export default async function EditMessagePlanPage(props: MessagePlanPageProps) {
                                   templates={languageTemplates}
                                   routingConfigId={messagePlan.id}
                                   lockNumber={messagePlan.lockNumber}
-                                  chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl('LETTER', 'language')}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
+                                  chooseTemplateUrl={`/message-plans/${messagePlanChooseTemplateUrl(toUrlParseableTemplate('LETTER', 'language'))}/${messagePlan.id}?lockNumber=${messagePlan.lockNumber}`}
                                   removeTemplateAction={
                                     removeTemplateFromMessagePlan
                                   }

@@ -198,9 +198,48 @@ function createTemplates(
       {
         letterVariantId: 'variant-address',
         validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
-        initialRender: { status: 'FAILED' },
       }
     ),
+    authoringUnexpectedAddressLines:
+      TemplateFactory.createAuthoringLetterTemplate(
+        '68316E60-AC8C-43DC-BC94-934FC96172FA',
+        user,
+        'authoring-unexpected-address-lines',
+        'VALIDATION_FAILED',
+        {
+          letterVariantId: 'variant-address',
+          validationErrors: [{ name: 'UNEXPECTED_ADDRESS_LINES' }],
+        }
+      ),
+    authoringInvalidMarkers: TemplateFactory.createAuthoringLetterTemplate(
+      'F9B3B6BB-4BE9-44DE-98E3-BDF492805DC3',
+      user,
+      'authoring-invalid-markers',
+      'VALIDATION_FAILED',
+      {
+        letterVariantId: 'variant-address',
+        validationErrors: [
+          {
+            name: 'INVALID_MARKERS',
+            issues: [
+              '{c.compliment}',
+              '{d.underscores_to_test_markdown_escapes}',
+            ],
+          },
+        ],
+      }
+    ),
+    authoringUnknownValidationFailed:
+      TemplateFactory.createAuthoringLetterTemplate(
+        '5D81C70C-D8B0-4AF1-A483-E988B6EEEC13',
+        user,
+        'authoring-unknown-validation-error',
+        'VALIDATION_FAILED',
+        {
+          letterVariantId: 'variant-address',
+          initialRender: { status: 'FAILED' },
+        }
+      ),
     authoringWithCustomFields: TemplateFactory.createAuthoringLetterTemplate(
       'A7B8C9D0-E1F2-3456-ABCD-789012345678',
       user,
@@ -282,17 +321,7 @@ function createTemplates(
           },
         }
       ),
-    authoringValidationFailedWithRender:
-      TemplateFactory.createAuthoringLetterTemplate(
-        'B8C9D0E1-F2A3-4567-BCDE-890123456789',
-        user,
-        'authoring-validation-failed-with-render',
-        'VALIDATION_FAILED',
-        {
-          letterVariantId: 'variant-fail-render',
-          validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
-        }
-      ),
+
     authoringWithFailedInitialRender:
       TemplateFactory.createAuthoringLetterTemplate(
         'F1E2D3C4-B5A6-7890-FEDC-BA9876543210',
@@ -625,6 +654,25 @@ test.describe('Preview Letter template Page', () => {
 
       await expect(previewPage.sheetsAction).toBeVisible();
       await expect(previewPage.statusAction).toBeVisible();
+
+      await expect(previewPage.uploadSuccessBanner).toBeHidden();
+    });
+
+    test('when user visits page from upload page, the success banner is shown', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewPage = new TemplateMgmtPreviewLetterPage(page)
+        .setPathParam('templateId', templates.authoringValid.id)
+        .setSearchParam('from', 'upload');
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-letter-template/${templates.authoringValid.id}?from=upload`
+      );
+
+      await expect(previewPage.uploadSuccessBanner).toBeVisible();
     });
 
     test('when initial render is recently requested (in PENDING status), the spinner is shown', async ({
@@ -664,9 +712,56 @@ test.describe('Preview Letter template Page', () => {
 
       await expect(previewPage.pageSpinner).toBeVisible();
 
-      await expect(previewPage.letterRender).toBeHidden();
+      await expect(previewPage.tabbedRenderSection).toBeHidden();
 
       await expect(previewPage.statusTag).toBeHidden();
+    });
+
+    test('when initial render request is stale the spinner is not displayed and the page is shown with a service now link', async ({
+      page,
+      baseURL,
+    }) => {
+      const user = await getTestContext().auth.getTestUser(
+        testUsers.User1.userId
+      );
+
+      // seed the template here to reduce the chance that render timeout expires during the test
+      const template = TemplateFactory.createAuthoringLetterTemplate(
+        'f5414ae6-2a7a-4de3-a5dd-4b1994bf8ed8',
+        user,
+        'authoring-pending-stale',
+        'PENDING_VALIDATION',
+        {
+          initialRender: {
+            status: 'PENDING',
+            requestedAt: new Date(Date.now() - 25_000).toISOString(),
+          },
+        }
+      );
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
+        'templateId',
+        template.id
+      );
+
+      await previewPage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-letter-template/${template.id}`
+      );
+
+      await expect(previewPage.pageSpinner).toBeHidden();
+
+      await expect(previewPage.tabbedRenderSection).toBeHidden();
+
+      await expect(previewPage.statusTag).toBeVisible();
+      await expect(previewPage.statusTag).toHaveText('Checking files');
+      await expect(previewPage.serviceNowLink).toHaveAttribute(
+        'href',
+        'https://nhsdigitallive.service-now.com/csm'
+      );
     });
 
     test('when user visits page with missing data, then an invalid template error is displayed', async ({
@@ -738,7 +833,7 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        await expect(previewPage.letterRender).toBeVisible();
+        await expect(previewPage.tabbedRenderSection).toBeVisible();
 
         await expect(previewPage.shortTab.tab).toBeVisible();
         await expect(previewPage.longTab.tab).toBeVisible();
@@ -766,7 +861,7 @@ test.describe('Preview Letter template Page', () => {
 
         await previewPage.loadPage();
 
-        await expect(previewPage.letterRender).toBeHidden();
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
       });
 
       test('can switch between short and long example tabs', async ({
@@ -1255,60 +1350,184 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.errorSummary).toBeVisible();
 
-        await expect(previewPage.errorSummary).toContainText(
-          'The file(s) you uploaded may contain a virus'
-        );
+        const errorMessageLines = [
+          'Your file may contain a virus and we could not open it',
+          'Upload a different letter template file',
+        ];
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+        await expect(previewPage.initialRenderIframe).toBeHidden();
 
         await expect(previewPage.continueButton).toBeHidden();
 
         await expect(previewPage.editNameLink).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/upload-standard-english-letter-template'
+        );
       });
 
       test('displays missing address lines error when status is VALIDATION_FAILED with MISSING_ADDRESS_LINES', async ({
         page,
       }) => {
+        const { clientId, files, id } = templates.authoringMissingAddressLines;
+
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
-        ).setPathParam('templateId', templates.authoringMissingAddressLines.id);
+        ).setPathParam('templateId', id);
 
         await previewPage.loadPage();
 
         await expect(previewPage.errorSummary).toBeVisible();
 
-        await expect(previewPage.errorSummary).toContainText(
-          'The template file you uploaded does not contain the address fields'
+        const errorMessageLines = [
+          'Your template is missing address personalisation fields',
+          'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+          'Upload it as a different letter template file',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+
+        await expect(previewPage.initialRenderIframe).toBeVisible();
+        await expect(previewPage.initialRenderIframe).toHaveAttribute(
+          'src',
+          `/templates/files/${clientId}/renders/${id}/${files!.initialRender!.fileName}`
         );
 
         await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/upload-standard-english-letter-template'
+        );
       });
 
-      test('hides letter preview section when VALIDATION_FAILED with no initialRender', async ({
+      test('displays unexpected address lines error when status is VALIDATION_FAILED with UNEXPECTED_ADDRESS_LINES', async ({
         page,
       }) => {
+        const { clientId, files, id } =
+          templates.authoringUnexpectedAddressLines;
+
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
-        ).setPathParam('templateId', templates.authoringVirusScanFailed.id);
+        ).setPathParam('templateId', id);
 
         await previewPage.loadPage();
 
-        await expect(previewPage.letterRender).toBeHidden();
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const errorMessageLines = [
+          'Your template has address personalisation fields we do not recognise',
+          'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+          'Upload it as a different letter template file',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+
+        await expect(previewPage.initialRenderIframe).toBeVisible();
+        await expect(previewPage.initialRenderIframe).toHaveAttribute(
+          'src',
+          `/templates/files/${clientId}/renders/${id}/${files!.initialRender!.fileName}`
+        );
+
+        await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/upload-standard-english-letter-template'
+        );
       });
 
-      test('shows letter preview section when VALIDATION_FAILED but has initialRender', async ({
+      test('displays dynamic invalid markers error when status is VALIDATION_FAILED with INVALID_MARKERS', async ({
+        page,
+      }) => {
+        const { clientId, files, id } = templates.authoringInvalidMarkers;
+
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', id);
+
+        await previewPage.loadPage();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const errorMessageLines = [
+          'You used the following personalisation fields with incorrect formatting:',
+          '{c.compliment}',
+          '{d.underscores_to_test_markdown_escapes}',
+          'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
+          'They can only contain',
+          'letters (a to z, A to Z)',
+          'numbers (1 to 9)',
+          'dashes',
+          'underscores',
+          'Update your letter template file and upload it again',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+
+        await expect(previewPage.initialRenderIframe).toBeVisible();
+        await expect(previewPage.initialRenderIframe).toHaveAttribute(
+          'src',
+          `/templates/files/${clientId}/renders/${id}/${files!.initialRender!.fileName}`
+        );
+
+        await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/upload-standard-english-letter-template'
+        );
+      });
+
+      test('displays fallback error when status is VALIDATION_FAILED with no validation error', async ({
         page,
       }) => {
         const previewPage = new TemplateMgmtPreviewLetterPage(
           page
         ).setPathParam(
           'templateId',
-          templates.authoringValidationFailedWithRender.id
+          templates.authoringUnknownValidationFailed.id
         );
 
         await previewPage.loadPage();
 
         await expect(previewPage.errorSummary).toBeVisible();
 
-        await expect(previewPage.letterRender).toBeVisible();
+        const errorMessageLines = [
+          'We could not open your file. This may be a technical problem or an issue with your file',
+          'Upload a different letter template file',
+        ];
+
+        for (const errorMessage of errorMessageLines) {
+          await expect(previewPage.errorSummary).toContainText(errorMessage);
+        }
+
+        await expect(previewPage.tabbedRenderSection).toBeHidden();
+        await expect(previewPage.initialRenderIframe).toBeHidden();
+
+        await expect(previewPage.continueButton).toBeHidden();
+
+        await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
+          'href',
+          '/templates/upload-standard-english-letter-template'
+        );
       });
 
       test('hides campaign and postage rows when VALIDATION_FAILED', async ({

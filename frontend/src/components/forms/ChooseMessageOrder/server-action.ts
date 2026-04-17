@@ -1,10 +1,8 @@
 import { redirect, RedirectType } from 'next/navigation';
-import {
-  FormState,
-  MESSAGE_ORDER_OPTIONS_LIST,
-} from 'nhs-notify-web-template-management-utils';
+import { MESSAGE_ORDER_OPTIONS_LIST } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import content from '@content/content';
+import { FormState } from '@utils/types';
 
 export const $ChooseMessageOrder = z.object({
   messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST, {

@@ -9,7 +9,7 @@ import type {
   ClientFeatures,
   LetterVersion,
 } from 'nhs-notify-web-template-management-types';
-import { DigitalTemplateType } from './types';
+import { DigitalTemplate, DigitalTemplateType, LetterTemplate } from './types';
 
 /**
  * @typedef {Object} LanguageMetadata
@@ -245,21 +245,45 @@ export const sendDigitalTemplateTestMessageUrl = (
   templateId: string
 ) => `/send-test-${testMessageUrlSegmentMapping(type)}/${templateId}`;
 
-export const templateTypeToUrlTextMappings = (
-  type: TemplateType,
-  letterType?: FrontendSupportedLetterType
-) =>
-  ({
-    NHS_APP: 'nhs-app',
-    SMS: 'text-message',
-    EMAIL: 'email',
-    LETTER: {
+type UrlParseableLetterTemplate = Pick<LetterTemplate, 'templateType'> &
+  Partial<Pick<LetterTemplate, 'language' | 'letterType'>>;
+
+export type UrlParseableTemplate =
+  | Pick<DigitalTemplate, 'templateType'>
+  | UrlParseableLetterTemplate;
+
+const getLetterTypeForUrl = (
+  template: UrlParseableLetterTemplate
+): FrontendSupportedLetterType => {
+  if (template.letterType && template.letterType !== 'x0') {
+    return template.letterType;
+  }
+
+  if (template.language && template.language !== 'en') {
+    return 'language';
+  }
+
+  return 'x0';
+};
+
+export const templateToUrlTextMappings = (template: UrlParseableTemplate) => {
+  if (template.templateType === 'LETTER') {
+    const letterType = getLetterTypeForUrl(template);
+
+    return {
       q4: 'british-sign-language-letter',
       x0: 'standard-english-letter',
       x1: 'large-print-letter',
       language: 'other-language-letter',
-    }[letterType || 'x0'],
-  })[type];
+    }[letterType];
+  }
+
+  return {
+    NHS_APP: 'nhs-app',
+    SMS: 'text-message',
+    EMAIL: 'email',
+  }[template.templateType];
+};
 
 const creationAction = (type: TemplateType) =>
   ({
@@ -272,11 +296,35 @@ const creationAction = (type: TemplateType) =>
 export const legacyTemplateCreationPages = (type: TemplateType) =>
   `/${creationAction(type)}-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 
-export const createTemplateUrl = (
+const parseFrontendLetterType = (
+  letterType?: FrontendSupportedLetterType
+): LetterType => {
+  if (!letterType || letterType === 'language') return 'x0';
+  return letterType;
+};
+
+const parseFrontendLetterTypeLanguage = (
+  letterType?: FrontendSupportedLetterType
+): Language => {
+  if (!letterType || letterType !== 'language') return 'en';
+  return 'fr';
+};
+
+export const toUrlParseableTemplate = (
   templateType: TemplateType,
   letterType?: FrontendSupportedLetterType
-) =>
-  `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
+): UrlParseableTemplate =>
+  templateType === 'LETTER'
+    ? {
+        templateType,
+        letterType: parseFrontendLetterType(letterType),
+        language: parseFrontendLetterTypeLanguage(letterType),
+      }
+    : { templateType };
+
+export const createTemplateUrl = (template: UrlParseableTemplate) => {
+  return `/${creationAction(template.templateType)}-${templateToUrlTextMappings(template)}-template`;
+};
 
 export const getPreviewURL = (template: TemplateDto) => {
   if (
@@ -295,9 +343,10 @@ export const getPreviewURL = (template: TemplateDto) => {
 };
 
 export const messagePlanChooseTemplateUrl = (
-  type: TemplateType,
-  letterType?: FrontendSupportedLetterType
-) => `choose-${templateTypeToUrlTextMappings(type, letterType)}-template`;
+  template: UrlParseableTemplate
+) => {
+  return `choose-${templateToUrlTextMappings(template)}-template`;
+};
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (

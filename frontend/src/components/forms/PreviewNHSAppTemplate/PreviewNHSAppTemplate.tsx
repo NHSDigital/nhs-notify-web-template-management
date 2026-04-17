@@ -3,11 +3,7 @@
 import Link from 'next/link';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
-import {
-  ErrorState,
-  NHSAppTemplate,
-  PageComponentProps,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useSearchParams } from 'next/navigation';
 import { useActionState, useState } from 'react';
@@ -15,6 +11,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { previewNhsAppTemplateAction, schema } from './server-action';
 import { validate } from '@utils/client-validate-form';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { ErrorState, PageComponentProps } from '@utils/types';
 
 export function PreviewNHSAppTemplate({
   initialState,

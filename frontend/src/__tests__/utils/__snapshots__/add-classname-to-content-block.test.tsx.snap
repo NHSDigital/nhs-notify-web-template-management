@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`block type content adds the given classname to the content 1`] = `
+<DocumentFragment>
+  <p
+    class="new-class-name"
+  >
+    Hello
+  </p>
+</DocumentFragment>
+`;
+
+exports[`block type content adds the given classname when existing override has no props 1`] = `
+<DocumentFragment>
+  <em
+    class="new-class-name"
+  >
+    Hello
+  </em>
+</DocumentFragment>
+`;
+
+exports[`block type content existing override is not an object adds the classname when override is component 1`] = `
+<DocumentFragment>
+  <strong
+    class="new-class-name"
+  >
+    Hello
+  </strong>
+</DocumentFragment>
+`;
+
+exports[`block type content existing override is not an object adds the classname when override is element name 1`] = `
+<DocumentFragment>
+  <h1
+    class="new-class-name"
+  >
+    Hello
+  </h1>
+</DocumentFragment>
+`;
+
+exports[`block type content merges with existing override props 1`] = `
+<DocumentFragment>
+  <h1
+    class="old-class-name new-class-name"
+    foo="bar"
+  >
+    Hello
+  </h1>
+</DocumentFragment>
+`;
+
+exports[`inline-block type content adds the given classname to the content 1`] = `
+<DocumentFragment>
+  <span
+    class="new-class-name"
+  >
+    Hello
+  </span>
+</DocumentFragment>
+`;
+
+exports[`inline-block type content adds the given classname when existing override has no props 1`] = `
+<DocumentFragment>
+  <em
+    class="new-class-name"
+  >
+    Hello
+  </em>
+</DocumentFragment>
+`;
+
+exports[`inline-block type content existing override is not an object adds the classname when override is component 1`] = `
+<DocumentFragment>
+  <strong
+    class="new-class-name"
+  >
+    Hello
+  </strong>
+</DocumentFragment>
+`;
+
+exports[`inline-block type content existing override is not an object adds the classname when override is element name 1`] = `
+<DocumentFragment>
+  <h1
+    class="new-class-name"
+  >
+    Hello
+  </h1>
+</DocumentFragment>
+`;
+
+exports[`inline-block type content merges with existing override props 1`] = `
+<DocumentFragment>
+  <span
+    class="old-class-name new-class-name"
+    foo="bar"
+  >
+    Hello
+  </span>
+</DocumentFragment>
+`;
