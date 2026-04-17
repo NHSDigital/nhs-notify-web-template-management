@@ -4,7 +4,9 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
+import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
+import { buildLetterRenderUrl } from '@utils/letter-render-url';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
@@ -25,17 +27,30 @@ export const PreviewLetterFromMessagePlanPreview = async (
     validatedTemplate.letterVariantId
   );
 
+  const { initialRender } = validatedTemplate.files;
+
+  const pdfUrl =
+    initialRender.status === 'RENDERED'
+      ? buildLetterRenderUrl(validatedTemplate, initialRender.fileName)
+      : null;
+
   return (
     <NHSNotifyContainer>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplateDetailsLetter
+            <PreviewTemplateDetailsAuthoringLetter
               template={validatedTemplate}
               letterVariant={letterVariant}
               hideStatus
               hideEditActions
               hideLearnMore
+            />
+            <h2 className='nhsuk-heading-m'>Example preview</h2>
+            <LetterRenderIframe
+              renderType={'initialRender'}
+              pdfUrl={pdfUrl}
+              className='letter-render-iframe nhsuk-u-margin-bottom-6'
             />
           </div>
         </div>

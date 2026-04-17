@@ -1,6 +1,5 @@
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
@@ -614,54 +613,5 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
         screen.queryByTestId('printing-postage-action')
       ).not.toBeInTheDocument();
     });
-  });
-});
-
-describe('PreviewTemplateDetailsLetter', () => {
-  it('renders PDF letter component for PDF letterVersion', () => {
-    render(<PreviewTemplateDetailsLetter template={basePdfLetter} />);
-
-    expect(screen.getByText('file.pdf')).toBeInTheDocument();
-    expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
-  });
-
-  it('renders authoring letter component for AUTHORING letterVersion', () => {
-    render(<PreviewTemplateDetailsLetter template={baseAuthoringLetter} />);
-
-    expect(screen.getByTestId('edit-name-link')).toBeInTheDocument();
-    expect(screen.getByText('Sheets')).toBeInTheDocument();
-  });
-
-  it('passes hideStatus and hideEditActions props through', () => {
-    render(
-      <PreviewTemplateDetailsLetter
-        template={{ ...baseAuthoringLetter, campaignId: 'campaign-123' }}
-        hideStatus
-        hideEditActions
-      />
-    );
-
-    expect(screen.queryByTestId('status-tag')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('edit-name-link')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('campaign-action')).not.toBeInTheDocument();
-  });
-
-  it('renders "No preview available" when initialRender is not RENDERED', () => {
-    render(
-      <PreviewTemplateDetailsLetter
-        template={{
-          ...baseAuthoringLetter,
-          files: {
-            docxTemplate: baseAuthoringLetter.files.docxTemplate,
-            initialRender: {
-              status: 'PENDING',
-              requestedAt: '2026-02-27T09:42:04.142Z',
-            },
-          },
-        }}
-      />
-    );
-
-    expect(screen.getByText('No preview available')).toBeInTheDocument();
   });
 });
