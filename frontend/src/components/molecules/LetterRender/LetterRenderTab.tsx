@@ -15,7 +15,7 @@ import styles from './LetterRenderTab.module.scss';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import content from '@content/content';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import { getRenderDetails } from '@utils/letter-render';
 import { interpolate } from '@utils/interpolate';
 
 const { loadingText, iframe } = content.components.letterRender;
@@ -28,18 +28,13 @@ type LetterRenderTabProps = {
 
 function derivePdfUrl(
   template: AuthoringLetterTemplate,
-  personalisedRender: RenderDetails | undefined
+  key: PersonalisedRenderKey
 ): string | undefined {
-  const initialRender = template.files.initialRender;
+  const personalisedRender = getRenderDetails(template, key);
 
-  const render =
-    personalisedRender?.status === 'RENDERED'
-      ? personalisedRender
-      : initialRender;
+  if (personalisedRender.rendered) return personalisedRender.src;
 
-  if (render?.status !== 'RENDERED') return;
-
-  return buildLetterRenderUrl(template, render.fileName);
+  return getRenderDetails(template, 'initialRender').src;
 }
 
 function deriveFormState(
@@ -126,7 +121,7 @@ export function LetterRenderTab({
   const personalisedRender = template.files[tab];
 
   const formState = deriveFormState(template, personalisedRender);
-  const pdfUrl = derivePdfUrl(template, personalisedRender);
+  const pdfUrl = derivePdfUrl(template, tab);
 
   return (
     <NHSNotifyFormProvider

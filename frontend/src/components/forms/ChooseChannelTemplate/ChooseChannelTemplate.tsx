@@ -105,7 +105,6 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 templateList={templateList}
                 errorState={activeErrorState || null}
                 selectedTemplate={selectedTemplateId}
-                letterType={accessibleFormat}
                 lockNumber={lockNumber}
               />
             ) : (

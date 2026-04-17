@@ -28,7 +28,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
 import styles from './page.module.scss';
 import concatClassNames from '@utils/concat-class-names';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import { getRenderDetails } from '@utils/letter-render';
 
 const {
   approveButtonText,
@@ -60,20 +60,6 @@ function getValidationErrors(template: AuthoringLetterTemplate) {
   return [defaultValidationErrorMessage];
 }
 
-function getInitialRenderDetails(template: AuthoringLetterTemplate): {
-  rendered: boolean;
-  src?: string;
-} {
-  if (template.files.initialRender.status !== 'RENDERED') {
-    return { rendered: false };
-  }
-
-  return {
-    rendered: true,
-    src: buildLetterRenderUrl(template, template.files.initialRender.fileName),
-  };
-}
-
 export default async function PreviewLetterTemplatePage({
   params,
   searchParams,
@@ -103,7 +89,7 @@ export default async function PreviewLetterTemplatePage({
     return redirect(getPreviewURL(validatedTemplate), RedirectType.replace);
   }
 
-  const initialRender = getInitialRenderDetails(validatedTemplate);
+  const initialRender = getRenderDetails(validatedTemplate, 'initialRender');
   const showRenderer = initialRender.rendered;
   const showTabbedRenderer =
     showRenderer && validatedTemplate.templateStatus !== 'VALIDATION_FAILED';
@@ -202,7 +188,9 @@ export default async function PreviewLetterTemplatePage({
                 <p>
                   {validationErrors.length > 0 ? (
                     <NHSNotifyButton
-                      href={links.uploadDifferentTemplateFile.href}
+                      href={links.uploadDifferentTemplateFile.href(
+                        validatedTemplate
+                      )}
                     >
                       {links.uploadDifferentTemplateFile.text}
                     </NHSNotifyButton>

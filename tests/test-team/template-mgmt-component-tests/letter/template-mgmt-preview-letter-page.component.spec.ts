@@ -717,7 +717,7 @@ test.describe('Preview Letter template Page', () => {
       await expect(previewPage.statusTag).toBeHidden();
     });
 
-    test('when initial render request is stale the regular page is shown with a service now link', async ({
+    test('when initial render request is stale the spinner is not displayed and the page is shown with a service now link', async ({
       page,
       baseURL,
     }) => {
@@ -1367,7 +1367,7 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
           'href',
-          '/templates/choose-a-template-type'
+          '/templates/upload-standard-english-letter-template'
         );
       });
 
@@ -1386,7 +1386,8 @@ test.describe('Preview Letter template Page', () => {
 
         const errorMessageLines = [
           'Your template is missing address personalisation fields',
-          'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file',
+          'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+          'Upload it as a different letter template file',
         ];
 
         for (const errorMessage of errorMessageLines) {
@@ -1405,7 +1406,7 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
           'href',
-          '/templates/choose-a-template-type'
+          '/templates/upload-standard-english-letter-template'
         );
       });
 
@@ -1425,7 +1426,8 @@ test.describe('Preview Letter template Page', () => {
 
         const errorMessageLines = [
           'Your template has address personalisation fields we do not recognise',
-          'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file',
+          'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+          'Upload it as a different letter template file',
         ];
 
         for (const errorMessage of errorMessageLines) {
@@ -1444,7 +1446,7 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
           'href',
-          '/templates/choose-a-template-type'
+          '/templates/upload-standard-english-letter-template'
         );
       });
 
@@ -1490,7 +1492,7 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
           'href',
-          '/templates/choose-a-template-type'
+          '/templates/upload-standard-english-letter-template'
         );
       });
 
@@ -1524,7 +1526,7 @@ test.describe('Preview Letter template Page', () => {
 
         await expect(previewPage.uploadDifferentTemplateButton).toHaveAttribute(
           'href',
-          '/templates/choose-a-template-type'
+          '/templates/upload-standard-english-letter-template'
         );
       });
 

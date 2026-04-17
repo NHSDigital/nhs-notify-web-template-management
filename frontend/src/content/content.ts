@@ -3,9 +3,11 @@ import type {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-types';
-import type {
-  DigitalTemplateType,
-  FrontendSupportedLetterType,
+import {
+  createTemplateUrl,
+  type UrlParseableTemplate,
+  type DigitalTemplateType,
+  type FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
@@ -548,7 +550,11 @@ const previewLetterTemplate = {
       },
       {
         type: 'text',
-        text: String.raw`You must include all fields from {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file`,
+        text: String.raw`You must include all fields from {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it includes the correct fields`,
+      },
+      {
+        type: 'text',
+        text: 'Upload it as a different letter template file',
       },
     ],
     VIRUS_SCAN_FAILED: () => [
@@ -561,17 +567,28 @@ const previewLetterTemplate = {
         text: 'Upload a different letter template file',
       },
     ],
-    INVALID_MARKERS: (issues) => [
+    INVALID_MARKERS: (issues): ContentBlock[] => [
       {
         type: 'text',
         text: 'You used the following personalisation fields with incorrect formatting:',
       },
-      ...issues.map(
-        (issue): ContentBlock => ({
-          type: 'text',
-          text: escapeMarkdown(issue),
-        })
-      ),
+      {
+        type: 'text',
+        text: markdownList(
+          'ul',
+          issues.map((issue) => escapeMarkdown(issue))
+        ),
+        overrides: {
+          ul: {
+            props: {
+              className: 'nhsuk-u-margin-bottom-3 nhsuk-u-padding-left-0',
+            },
+          },
+          li: {
+            props: { className: 'nhsuk-error-message' },
+          },
+        },
+      },
       {
         type: 'text',
         text: 'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
@@ -606,7 +623,11 @@ const previewLetterTemplate = {
       },
       {
         type: 'text',
-        text: String.raw`You must only use {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file`,
+        text: String.raw`You must only use {d.address\_line\_1} to {d.address\_line\_7}. Use the blank letter template file to set up your template as it includes the correct fields`,
+      },
+      {
+        type: 'text',
+        text: 'Upload it as a different letter template file',
       },
     ],
   } satisfies Record<string, (issues: string[]) => ContentBlock[]>,
@@ -636,7 +657,8 @@ const previewLetterTemplate = {
       '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
     uploadDifferentTemplateFile: {
       text: 'Upload a different letter template file',
-      href: '/templates/choose-a-template-type',
+      href: (template: UrlParseableTemplate) =>
+        `${getBasePath()}${createTemplateUrl(template)}`,
     },
   },
   validationFailedIframe: {
@@ -784,7 +806,7 @@ const previewTemplateDetails = {
   headerCaption: 'Template',
   checkingFilesMessage: {
     type: 'text',
-    text: 'Refresh the page to update the status. If your file is taking to long to upload, [raise a Service Now request (opens in a new tab)](https://nhsdigitallive.service-now.com/csm)',
+    text: 'Refresh the page to update the status. If your file is taking too long to upload, [raise a Service Now request (opens in a new tab)](https://nhsdigitallive.service-now.com/csm)',
   } satisfies ContentBlock,
 };
 

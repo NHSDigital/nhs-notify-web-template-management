@@ -19,6 +19,8 @@ import content from '@content/content';
 import { RENDER_TIMEOUT_MS } from '@molecules/PollLetterRender/PollLetterRender';
 import {
   AuthoringLetterFiles,
+  Language,
+  LetterType,
   RenderDetailsRendered,
   ValidationErrorDetail,
 } from 'nhs-notify-web-template-management-types';
@@ -367,6 +369,15 @@ describe('valid authoring letter template', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+  it('does not display the template saved banner when not navigated to from the upload page', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
 });
 
 describe('authoring letter template with no letter variant set', () => {
@@ -510,7 +521,7 @@ describe('when authoring letter template status is submitted', () => {
 });
 
 describe('authoring letter template with VALIDATION_FAILED status', () => {
-  const cases: {
+  const validationErrorCases: {
     name: string;
     validationError?: ValidationErrorDetail;
     expectedErrorMessageLines: string[];
@@ -540,7 +551,8 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
       validationError: { name: 'MISSING_ADDRESS_LINES' },
       expectedErrorMessageLines: [
         'Your template is missing address personalisation fields',
-        'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields. Upload it as a different letter template file',
+        'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+        'Upload it as a different letter template file',
       ],
       files: {
         docxTemplate: {
@@ -561,7 +573,8 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
       validationError: { name: 'UNEXPECTED_ADDRESS_LINES' },
       expectedErrorMessageLines: [
         'Your template has address personalisation fields we do not recognise',
-        'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it has the correct fields. Upload this as a different letter template file',
+        'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+        'Upload it as a different letter template file',
       ],
       files: {
         docxTemplate: {
@@ -634,116 +647,152 @@ describe('authoring letter template with VALIDATION_FAILED status', () => {
     },
   ];
 
-  describe.each(cases)(
-    '$name',
+  const letterTypeCases: {
+    letterType: LetterType;
+    language: Language;
+    expectedLink: string;
+  }[] = [
+    {
+      letterType: 'x0',
+      language: 'en',
+      expectedLink: '/templates/upload-standard-english-letter-template',
+    },
+    {
+      letterType: 'x1',
+      language: 'en',
+      expectedLink: '/templates/upload-large-print-letter-template',
+    },
+    {
+      letterType: 'q4',
+      language: 'en',
+      expectedLink: '/templates/upload-british-sign-language-letter-template',
+    },
+    {
+      letterType: 'x0',
+      language: 'es',
+      expectedLink: '/templates/upload-other-language-letter-template',
+    },
+  ];
+
+  describe.each(validationErrorCases)(
+    'validation error: $name',
     ({ validationError, expectedErrorMessageLines, files }) => {
-      beforeEach(() => {
-        jest.mocked(getTemplate).mockResolvedValue({
-          ...AUTHORING_LETTER_TEMPLATE,
-          templateStatus: 'VALIDATION_FAILED',
-          validationErrors: validationError && [validationError],
-          files,
-        });
-      });
+      describe.each(letterTypeCases)(
+        'letterType: $letterType, language: $language',
+        ({ letterType, language, expectedLink }) => {
+          beforeEach(() => {
+            jest.mocked(getTemplate).mockResolvedValue({
+              ...AUTHORING_LETTER_TEMPLATE,
+              letterType,
+              language,
+              templateStatus: 'VALIDATION_FAILED',
+              validationErrors: validationError && [validationError],
+              files,
+            });
+          });
 
-      it('displays error summary with correct error messages when validationErrors are present', async () => {
-        render(
-          await Page({
-            params: Promise.resolve({
-              templateId: AUTHORING_LETTER_TEMPLATE.id,
-            }),
-          })
-        );
+          it('displays error summary with correct error messages when validationErrors are present', async () => {
+            render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
 
-        expect(redirect).not.toHaveBeenCalled();
+            expect(redirect).not.toHaveBeenCalled();
 
-        const errorSummary = screen.getByRole('alert', {
-          name: 'There is a problem',
-        });
+            const errorSummary = screen.getByRole('alert', {
+              name: 'There is a problem',
+            });
 
-        for (const errorMessage of expectedErrorMessageLines) {
-          expect(
-            within(errorSummary).getByText(errorMessage)
-          ).toBeInTheDocument();
+            for (const errorMessage of expectedErrorMessageLines) {
+              expect(
+                within(errorSummary).getByText(errorMessage)
+              ).toBeInTheDocument();
+            }
+          });
+
+          it('does not display tabbed renderer', async () => {
+            render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
+
+            expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+          });
+
+          if (files.initialRender.status === 'RENDERED') {
+            it('displays initial render iframe when render is available', async () => {
+              const { id, clientId } = AUTHORING_LETTER_TEMPLATE;
+              render(
+                await Page({
+                  params: Promise.resolve({
+                    templateId: AUTHORING_LETTER_TEMPLATE.id,
+                  }),
+                })
+              );
+
+              const iframe = screen.queryByTitle('Letter preview');
+
+              expect(iframe).toBeVisible();
+              expect(iframe).toHaveAttribute(
+                'src',
+                `/templates/files/${clientId}/renders/${id}/${(files.initialRender as RenderDetailsRendered).fileName}`
+              );
+            });
+          } else {
+            it('does not display initial render iframe when render is not available', async () => {
+              render(
+                await Page({
+                  params: Promise.resolve({
+                    templateId: AUTHORING_LETTER_TEMPLATE.id,
+                  }),
+                })
+              );
+
+              expect(
+                screen.queryByTitle('Letter preview')
+              ).not.toBeInTheDocument();
+            });
+          }
+
+          it('displays "upload different template" button instead of submit button when validation has failed', async () => {
+            render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
+
+            expect(
+              screen.queryByRole('button', { name: 'Submit template' })
+            ).not.toBeInTheDocument();
+
+            expect(
+              screen.getByRole('button', {
+                name: 'Upload a different letter template file',
+              })
+            ).toHaveAttribute('href', expectedLink);
+          });
+
+          it('matches snapshot', async () => {
+            const { asFragment } = render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
+
+            expect(asFragment()).toMatchSnapshot();
+          });
         }
-      });
-
-      it('does not display tabbed renderer', async () => {
-        render(
-          await Page({
-            params: Promise.resolve({
-              templateId: AUTHORING_LETTER_TEMPLATE.id,
-            }),
-          })
-        );
-
-        expect(screen.queryByRole('tab')).not.toBeInTheDocument();
-      });
-
-      if (files.initialRender.status === 'RENDERED') {
-        it('displays initial render iframe when render is available', async () => {
-          const { id, clientId } = AUTHORING_LETTER_TEMPLATE;
-          render(
-            await Page({
-              params: Promise.resolve({
-                templateId: AUTHORING_LETTER_TEMPLATE.id,
-              }),
-            })
-          );
-
-          const iframe = screen.queryByTitle('Letter preview');
-
-          expect(iframe).toBeVisible();
-          expect(iframe).toHaveAttribute(
-            'src',
-            `/templates/files/${clientId}/renders/${id}/${(files.initialRender as RenderDetailsRendered).fileName}`
-          );
-        });
-      } else {
-        it('does not display initial render iframe when render is not available', async () => {
-          render(
-            await Page({
-              params: Promise.resolve({
-                templateId: AUTHORING_LETTER_TEMPLATE.id,
-              }),
-            })
-          );
-
-          expect(screen.queryByTitle('Letter preview')).not.toBeInTheDocument();
-        });
-      }
-
-      it('displays "upload different template" button instead of submit button when validation has failed', async () => {
-        render(
-          await Page({
-            params: Promise.resolve({
-              templateId: AUTHORING_LETTER_TEMPLATE.id,
-            }),
-          })
-        );
-
-        expect(
-          screen.queryByRole('button', { name: 'Submit template' })
-        ).not.toBeInTheDocument();
-
-        expect(
-          screen.getByRole('button', {
-            name: 'Upload a different letter template file',
-          })
-        ).toHaveAttribute('href', '/templates/choose-a-template-type');
-      });
-
-      it('matches snapshot', async () => {
-        const { asFragment } = render(
-          await Page({
-            params: Promise.resolve({
-              templateId: AUTHORING_LETTER_TEMPLATE.id,
-            }),
-          })
-        );
-
-        expect(asFragment()).toMatchSnapshot();
-      });
+      );
     }
   );
 });

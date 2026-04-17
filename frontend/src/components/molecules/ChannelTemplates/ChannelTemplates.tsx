@@ -7,8 +7,7 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   templateTypeDisplayMappings,
-  templateTypeToUrlTextMappings,
-  FrontendSupportedLetterType,
+  templateToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { interpolate } from '@utils/interpolate';
@@ -27,14 +26,12 @@ export function ChannelTemplates({
   templateList,
   errorState,
   selectedTemplate,
-  letterType,
   lockNumber,
 }: {
   routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
-  letterType?: FrontendSupportedLetterType;
   lockNumber: number;
 }) {
   return (
@@ -101,10 +98,7 @@ export function ChannelTemplates({
                     <Link
                       className='nhsuk-u-margin-bottom-2 nhsuk-link'
                       href={interpolate(tableContent.action.preview.href, {
-                        templateType: templateTypeToUrlTextMappings(
-                          template.templateType,
-                          letterType
-                        ),
+                        templateType: templateToUrlTextMappings(template),
                         routingConfigId,
                         templateId: template.id,
                         lockNumber,

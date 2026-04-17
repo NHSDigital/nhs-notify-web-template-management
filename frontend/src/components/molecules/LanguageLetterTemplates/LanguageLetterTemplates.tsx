@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
-  templateTypeToUrlTextMappings,
+  templateToUrlTextMappings,
   type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
@@ -103,10 +103,7 @@ export function LanguageLetterTemplates({
                     <Link
                       className='nhsuk-u-margin-bottom-2 nhsuk-link'
                       href={interpolate(tableContent.action.preview.href, {
-                        templateType: templateTypeToUrlTextMappings(
-                          template.templateType,
-                          'language'
-                        ),
+                        templateType: templateToUrlTextMappings(template),
                         routingConfigId,
                         templateId: template.id,
                         lockNumber,
