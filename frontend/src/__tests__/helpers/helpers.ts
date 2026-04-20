@@ -144,6 +144,13 @@ export const BSL_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   letterType: 'q4',
 } as const;
 
+export const LARGE_PRINT_AUTHORING_TEMPLATE = {
+  ...AUTHORING_LETTER_TEMPLATE,
+  id: 'large-print-authoring-id',
+  name: 'large print authoring letter',
+  letterType: 'x1' as const,
+};
+
 export const ROUTING_CONFIG: RoutingConfig = {
   id: 'fbb81055-79b9-4759-ac07-d191ae57be34',
   name: 'Autumn Campaign Plan',

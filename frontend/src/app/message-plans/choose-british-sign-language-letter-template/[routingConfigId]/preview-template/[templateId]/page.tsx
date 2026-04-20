@@ -19,12 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewBritishSignLanguageLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  return (
-    <PreviewLetterFromChooseTemplate
-      {...props}
-      validateTemplate={validateBritishSignLanguageLetterTemplate}
-    />
-  );
+  return PreviewLetterFromChooseTemplate({
+    ...props,
+    validateTemplate: validateBritishSignLanguageLetterTemplate,
+  });
 };
 
 export default PreviewBritishSignLanguageLetterTemplateFromMessagePlan;

@@ -17,7 +17,7 @@ import { ComponentType } from 'react';
 type PreviewDigitalTemplateFromChooseTemplateProps<T extends TemplateDto> =
   MessagePlanAndTemplatePageProps & {
     validateTemplate: (template?: TemplateDto) => T | undefined;
-    DetailComponent: ComponentType<{ template: T; hideStatus?: boolean }>;
+    detailsComponent: ComponentType<{ template: T; hideStatus?: boolean }>;
   };
 
 export async function PreviewDigitalTemplateFromChooseTemplate<
@@ -53,7 +53,7 @@ export async function PreviewDigitalTemplateFromChooseTemplate<
     lockNumber,
   });
 
-  const { DetailComponent } = props;
+  const { detailsComponent: DetailComponent } = props;
 
   return (
     <NHSNotifyContainer>

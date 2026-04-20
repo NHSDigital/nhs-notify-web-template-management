@@ -17,12 +17,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewLargePrintLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  return (
-    <PreviewLetterFromChooseTemplate
-      {...props}
-      validateTemplate={validateLargePrintLetterTemplate}
-    />
-  );
+  return PreviewLetterFromChooseTemplate({
+    ...props,
+    validateTemplate: validateLargePrintLetterTemplate,
+  });
 };
 
 export default PreviewLargePrintLetterTemplateFromMessagePlan;

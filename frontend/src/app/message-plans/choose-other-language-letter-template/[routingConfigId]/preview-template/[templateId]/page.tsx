@@ -17,12 +17,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewOtherLanguageLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  return (
-    <PreviewLetterFromChooseTemplate
-      {...props}
-      validateTemplate={validateForeignLanguageLetterTemplate}
-    />
-  );
+  return PreviewLetterFromChooseTemplate({
+    ...props,
+    validateTemplate: validateForeignLanguageLetterTemplate,
+  });
 };
 
 export default PreviewOtherLanguageLetterTemplateFromMessagePlan;

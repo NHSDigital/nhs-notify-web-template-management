@@ -45,11 +45,9 @@ const PreviewSubmittedPdfLetterTemplatePage = async (
           <div className='nhsuk-grid-column-full'>
             <PreviewTemplateDetailsPdfLetter template={validatedTemplate} />
 
-            <p>
-              <Link href={backLink.href} data-testid='back-link-bottom'>
-                {backLink.text}
-              </Link>
-            </p>
+            <Link href={backLink.href} data-testid='back-link-bottom'>
+              {backLink.text}
+            </Link>
           </div>
         </div>
       </NHSNotifyMain>

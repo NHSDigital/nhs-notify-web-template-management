@@ -13,6 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const PreviewLetterTemplateFromReviewAndMoveToProduction = async (
   props: MessagePlanAndTemplatePageProps
-) => <PreviewLetterFromMessagePlanPreview {...props} />;
+) => PreviewLetterFromMessagePlanPreview(props);
 
 export default PreviewLetterTemplateFromReviewAndMoveToProduction;

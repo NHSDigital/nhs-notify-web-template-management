@@ -18,11 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function PreviewEmailTemplateFromMessagePlan(
   props: MessagePlanAndTemplatePageProps
 ) {
-  return (
-    <PreviewDigitalTemplateFromChooseTemplate
-      {...props}
-      validateTemplate={validateEmailTemplate}
-      DetailComponent={PreviewTemplateDetailsEmail}
-    />
-  );
+  return PreviewDigitalTemplateFromChooseTemplate({
+    ...props,
+    validateTemplate: validateEmailTemplate,
+    detailsComponent: PreviewTemplateDetailsEmail,
+  });
 }

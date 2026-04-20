@@ -1,10 +1,6 @@
-/**
- * @jest-environment node
- */
 import PreviewSubmittedNHSAppTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-nhs-app-template/[templateId]/page';
-import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-web-template-management-types';
@@ -14,22 +10,29 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
-import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
-import { NHSNotifyContainer } from '@layouts/container/container';
+import { render } from '@testing-library/react';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
 
 const { pageTitle } = content.components.previewNHSAppTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
 describe('PreviewSubmittedNHSAppTemplatePage', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
 
-  it('should load page', async () => {
+  it('should render full page', async () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'NHS_APP',
@@ -40,12 +43,6 @@ describe('PreviewSubmittedNHSAppTemplatePage', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
       lockNumber: 1,
     } satisfies TemplateDto;
-
-    const submittedNHSAppTemplate: NHSAppTemplate = {
-      ...templateDTO,
-      templateType: 'NHS_APP',
-      templateStatus: 'SUBMITTED',
-    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
@@ -58,14 +55,10 @@ describe('PreviewSubmittedNHSAppTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(
-      <NHSNotifyContainer>
-        <PreviewSubmittedDigitalTemplate
-          template={submittedNHSAppTemplate}
-          DetailComponent={PreviewTemplateDetailsNhsApp}
-        />
-      </NHSNotifyContainer>
-    );
+
+    const { asFragment } = render(page);
+
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

@@ -18,11 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function PreviewTextMessageTemplateFromMessagePlan(
   props: MessagePlanAndTemplatePageProps
 ) {
-  return (
-    <PreviewDigitalTemplateFromChooseTemplate
-      {...props}
-      validateTemplate={validateSMSTemplate}
-      DetailComponent={PreviewTemplateDetailsSms}
-    />
-  );
+  return PreviewDigitalTemplateFromChooseTemplate({
+    ...props,
+    validateTemplate: validateSMSTemplate,
+    detailsComponent: PreviewTemplateDetailsSms,
+  });
 }

@@ -1,36 +1,44 @@
-/**
- * @jest-environment node
- */
 import PreviewNhsAppTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-nhs-app-template/[routingConfigId]/preview-template/[templateId]/page';
-import { PreviewDigitalTemplateFromChooseTemplate } from '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate';
-import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
-import { validateNHSAppTemplate } from 'nhs-notify-web-template-management-utils';
+import { render } from '@testing-library/react';
+import { getTemplate } from '@utils/form-actions';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
+import { NHS_APP_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 
-jest.mock(
-  '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate'
-);
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
+
+const getTemplateMock = jest.mocked(getTemplate);
 
 describe('PreviewNhsAppTemplateFromMessagePlan page', () => {
-  it('should render PreviewDigitalTemplateFromChooseTemplate with validateNHSAppTemplate and PreviewTemplateDetailsNhsApp', async () => {
-    const props = {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
+
+  it('should render full page with NHS App template', async () => {
+    getTemplateMock.mockResolvedValueOnce({
+      ...NHS_APP_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    });
+
+    const page = await PreviewNhsAppTemplateFromMessagePlan({
       params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
+        routingConfigId: ROUTING_CONFIG.id,
+        templateId: NHS_APP_TEMPLATE.id,
       }),
       searchParams: Promise.resolve({ lockNumber: '5' }),
-    };
+    });
 
-    const page = await PreviewNhsAppTemplateFromMessagePlan(props);
+    const { asFragment } = render(page);
 
-    expect(page).toEqual(
-      <PreviewDigitalTemplateFromChooseTemplate
-        {...props}
-        validateTemplate={validateNHSAppTemplate}
-        DetailComponent={PreviewTemplateDetailsNhsApp}
-      />
-    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should have the correct page title', async () => {

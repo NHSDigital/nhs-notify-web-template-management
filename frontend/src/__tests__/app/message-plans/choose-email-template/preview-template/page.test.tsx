@@ -1,36 +1,44 @@
-/**
- * @jest-environment node
- */
 import PreviewEmailTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-email-template/[routingConfigId]/preview-template/[templateId]/page';
-import { PreviewDigitalTemplateFromChooseTemplate } from '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate';
-import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import { validateEmailTemplate } from 'nhs-notify-web-template-management-utils';
+import { render } from '@testing-library/react';
+import { getTemplate } from '@utils/form-actions';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
+import { EMAIL_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 
-jest.mock(
-  '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate'
-);
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
+
+const getTemplateMock = jest.mocked(getTemplate);
 
 describe('PreviewEmailTemplateFromMessagePlan page', () => {
-  it('should render PreviewDigitalTemplateFromChooseTemplate with validateEmailTemplate and PreviewTemplateDetailsEmail', async () => {
-    const props = {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
+
+  it('should render full page with email template', async () => {
+    getTemplateMock.mockResolvedValueOnce({
+      ...EMAIL_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    });
+
+    const page = await PreviewEmailTemplateFromMessagePlan({
       params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
+        routingConfigId: ROUTING_CONFIG.id,
+        templateId: EMAIL_TEMPLATE.id,
       }),
       searchParams: Promise.resolve({ lockNumber: '5' }),
-    };
+    });
 
-    const page = await PreviewEmailTemplateFromMessagePlan(props);
+    const { asFragment } = render(page);
 
-    expect(page).toEqual(
-      <PreviewDigitalTemplateFromChooseTemplate
-        {...props}
-        validateTemplate={validateEmailTemplate}
-        DetailComponent={PreviewTemplateDetailsEmail}
-      />
-    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should have the correct page title', async () => {

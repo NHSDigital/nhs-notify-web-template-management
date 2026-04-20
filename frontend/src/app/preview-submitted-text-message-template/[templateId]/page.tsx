@@ -33,7 +33,7 @@ const PreviewSubmittedSMSTemplatePage = async (props: TemplatePageProps) => {
     <NHSNotifyContainer>
       <PreviewSubmittedDigitalTemplate
         template={validatedTemplate}
-        DetailComponent={PreviewTemplateDetailsSms}
+        detailsComponent={PreviewTemplateDetailsSms}
       />
     </NHSNotifyContainer>
   );

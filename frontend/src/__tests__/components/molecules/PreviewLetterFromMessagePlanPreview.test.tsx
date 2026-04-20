@@ -68,30 +68,6 @@ describe('PreviewLetterFromMessagePlanPreview', () => {
     expect(getLetterVariantByIdMock).not.toHaveBeenCalled();
   });
 
-  it('renders an authoring letter template preview', async () => {
-    const letterVariant = makeLetterVariant();
-
-    getTemplateMock.mockResolvedValueOnce({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-    });
-    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
-
-    const page = await PreviewLetterFromMessagePlanPreview({
-      ...defaultProps,
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
-      }),
-    });
-
-    const container = render(page);
-
-    expect(getTemplateMock).toHaveBeenCalledWith(AUTHORING_LETTER_TEMPLATE.id);
-    expect(getLetterVariantByIdMock).toHaveBeenCalledWith('variant-123');
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
   it('renders with null pdfUrl when initialRender is not RENDERED', async () => {
     const letterVariant = makeLetterVariant();
 

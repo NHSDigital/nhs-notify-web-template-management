@@ -18,11 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function PreviewNhsAppTemplateFromMessagePlan(
   props: MessagePlanAndTemplatePageProps
 ) {
-  return (
-    <PreviewDigitalTemplateFromChooseTemplate
-      {...props}
-      validateTemplate={validateNHSAppTemplate}
-      DetailComponent={PreviewTemplateDetailsNhsApp}
-    />
-  );
+  return PreviewDigitalTemplateFromChooseTemplate({
+    ...props,
+    validateTemplate: validateNHSAppTemplate,
+    detailsComponent: PreviewTemplateDetailsNhsApp,
+  });
 }

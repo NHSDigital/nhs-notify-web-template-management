@@ -10,7 +10,6 @@ import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -18,6 +17,7 @@ import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import Link from 'next/link';
 import baseContent from '@content/content';
 import { interpolate } from '@utils/interpolate';
+import { buildLetterRenderUrl } from '@utils/letter-render-url';
 
 type PreviewLetterFromChooseTemplateProps = MessagePlanAndTemplatePageProps & {
   validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;

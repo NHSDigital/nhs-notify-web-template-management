@@ -17,12 +17,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewStandardEnglishLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  return (
-    <PreviewLetterFromChooseTemplate
-      {...props}
-      validateTemplate={validateLetterTemplate}
-    />
-  );
+  return PreviewLetterFromChooseTemplate({
+    ...props,
+    validateTemplate: validateLetterTemplate,
+  });
 };
 
 export default PreviewStandardEnglishLetterTemplateFromMessagePlan;

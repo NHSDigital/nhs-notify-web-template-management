@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewSubmittedEmailTemplatePage should render full page 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <a
+      class="nhsuk-back-link"
+      data-testid="back-link-top"
+      href="/message-templates"
+    >
+      Back to all templates
+    </a>
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-full"
+        >
+          <div
+            class="nhsuk-u-reading-width"
+          >
+            <span
+              class="nhsuk-caption-l"
+            >
+              Template
+            </span>
+            <h1
+              data-testid="preview-message__heading"
+            >
+              template-name
+            </h1>
+          </div>
+          <div
+            class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+          >
+            <dl
+              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+            >
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template ID
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value monospace-font"
+                  data-testid="preview-template-id"
+                >
+                  template-id
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template type
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  Email
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Status
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  <strong
+                    class="nhsuk-tag nhsuk-tag--grey"
+                    data-status="submitted"
+                    data-testid="status-tag"
+                  >
+                    Submitted
+                  </strong>
+                </dd>
+              </div>
+            </dl>
+            <dl
+              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+            >
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  <div
+                    data-testid="preview__heading-0"
+                    id="preview-heading-subject"
+                  >
+                    Subject
+                  </div>
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  <div
+                    class="preview__content"
+                    data-testid="preview__content-0"
+                    id="preview-content-subject"
+                  >
+                    template-subject-line
+                  </div>
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  <div
+                    data-testid="preview__heading-1"
+                    id="preview-heading-message"
+                  >
+                    Message
+                  </div>
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  <div
+                    class="preview__content"
+                    data-testid="preview__content-1"
+                    id="preview-content-message"
+                  >
+                    <p>
+                      template-message
+                    </p>
+                    
+
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </div>
+          <div
+            class="nhsuk-summary-list message-banner"
+          >
+            <div
+              class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width message-banner__callout"
+              data-testid="request-proof-message-banner"
+            >
+              This is only a basic preview. 
+              <a
+                href="/templates/request-a-proof/template-id"
+              >
+                Request a proof
+              </a>
+               to preview this template properly.
+            </div>
+          </div>
+          <p>
+            This template cannot be edited because it has been submitted.
+          </p>
+          <p>
+            If you want to change a submitted or live template, you must create a new template to replace it.
+          </p>
+          <p>
+            <a
+              data-testid="back-link-bottom"
+              href="/message-templates"
+            >
+              Back to all templates
+            </a>
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;

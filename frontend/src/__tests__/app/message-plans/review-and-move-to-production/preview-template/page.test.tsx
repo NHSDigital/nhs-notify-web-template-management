@@ -1,28 +1,51 @@
-/**
- * @jest-environment node
- */
 import PreviewLetterTemplateFromReviewAndMoveToProduction, {
   generateMetadata,
 } from '@app/message-plans/review-and-move-to-production/[routingConfigId]/preview-template/[templateId]/page';
-import { PreviewLetterFromMessagePlanPreview } from '@molecules/PreviewLetterFromMessagePlanPreview/PreviewLetterFromMessagePlanPreview';
+import { render } from '@testing-library/react';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
+import {
+  AUTHORING_LETTER_TEMPLATE,
+  makeLetterVariant,
+  ROUTING_CONFIG,
+} from '@testhelpers/helpers';
 
-jest.mock(
-  '@molecules/PreviewLetterFromMessagePlanPreview/PreviewLetterFromMessagePlanPreview'
-);
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
+
+const getTemplateMock = jest.mocked(getTemplate);
+const getLetterVariantByIdMock = jest.mocked(getLetterVariantById);
 
 describe('PreviewLetterTemplateFromReviewAndMoveToProduction page', () => {
-  it('should render PreviewLetterFromMessagePlanPreview with authoring letter validator', async () => {
-    const props = {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
+
+  it('should render full page with letter template', async () => {
+    const letterVariant = makeLetterVariant();
+
+    getTemplateMock.mockResolvedValueOnce({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    });
+    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
+
+    const page = await PreviewLetterTemplateFromReviewAndMoveToProduction({
       params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
+        routingConfigId: ROUTING_CONFIG.id,
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
       }),
-    };
+    });
 
-    const page =
-      await PreviewLetterTemplateFromReviewAndMoveToProduction(props);
+    const { asFragment } = render(page);
 
-    expect(page).toEqual(<PreviewLetterFromMessagePlanPreview {...props} />);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should have the correct page title', async () => {

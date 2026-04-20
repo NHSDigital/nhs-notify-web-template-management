@@ -33,7 +33,7 @@ const PreviewSubmittedEmailTemplatePage = async (props: TemplatePageProps) => {
     <NHSNotifyContainer>
       <PreviewSubmittedDigitalTemplate
         template={validatedTemplate}
-        DetailComponent={PreviewTemplateDetailsEmail}
+        detailsComponent={PreviewTemplateDetailsEmail}
       />
     </NHSNotifyContainer>
   );

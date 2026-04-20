@@ -1,35 +1,52 @@
-/**
- * @jest-environment node
- */
 import PreviewBritishSignLanguageLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-british-sign-language-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { PreviewLetterFromChooseTemplate } from '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate';
-import { validateBritishSignLanguageLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { render } from '@testing-library/react';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
+import {
+  BSL_LETTER_TEMPLATE,
+  makeLetterVariant,
+  ROUTING_CONFIG,
+} from '@testhelpers/helpers';
 
-jest.mock(
-  '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate'
-);
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
+
+const getTemplateMock = jest.mocked(getTemplate);
+const getLetterVariantByIdMock = jest.mocked(getLetterVariantById);
 
 describe('PreviewBritishSignLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should render PreviewLetterFromChooseTemplate with validateBritishSignLanguageLetterTemplate', async () => {
-    const props = {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
+
+  it('should render full page with BSL letter template', async () => {
+    const letterVariant = makeLetterVariant();
+
+    getTemplateMock.mockResolvedValueOnce({
+      ...BSL_LETTER_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    });
+    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
+
+    const page = await PreviewBritishSignLanguageLetterTemplateFromMessagePlan({
       params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
+        routingConfigId: ROUTING_CONFIG.id,
+        templateId: BSL_LETTER_TEMPLATE.id,
       }),
       searchParams: Promise.resolve({ lockNumber: '5' }),
-    };
+    });
 
-    const page =
-      await PreviewBritishSignLanguageLetterTemplateFromMessagePlan(props);
+    const { asFragment } = render(page);
 
-    expect(page).toEqual(
-      <PreviewLetterFromChooseTemplate
-        {...props}
-        validateTemplate={validateBritishSignLanguageLetterTemplate}
-      />
-    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should have the correct page title', async () => {

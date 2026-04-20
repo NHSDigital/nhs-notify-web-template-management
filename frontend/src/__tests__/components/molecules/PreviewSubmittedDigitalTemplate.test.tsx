@@ -31,7 +31,7 @@ describe('PreviewSubmittedDigitalTemplate component', () => {
             updatedAt: '2025-01-13T10:19:25.579Z',
             lockNumber: 1,
           }}
-          DetailComponent={PreviewTemplateDetailsNhsApp}
+          detailsComponent={PreviewTemplateDetailsNhsApp}
         />
       );
 
@@ -52,7 +52,7 @@ describe('PreviewSubmittedDigitalTemplate component', () => {
             updatedAt: '2025-01-13T10:19:25.579Z',
             lockNumber: 1,
           }}
-          DetailComponent={PreviewTemplateDetailsEmail}
+          detailsComponent={PreviewTemplateDetailsEmail}
         />
       );
 
@@ -72,7 +72,7 @@ describe('PreviewSubmittedDigitalTemplate component', () => {
             updatedAt: '2025-01-13T10:19:25.579Z',
             lockNumber: 1,
           }}
-          DetailComponent={PreviewTemplateDetailsSms}
+          detailsComponent={PreviewTemplateDetailsSms}
         />
       );
 

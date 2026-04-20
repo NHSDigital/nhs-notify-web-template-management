@@ -10,12 +10,12 @@ import { ComponentType } from 'react';
 
 export type PreviewSubmittedDigitalTemplateProps<T extends TemplateDto> = {
   template: T;
-  DetailComponent: ComponentType<{ template: T; hideStatus?: boolean }>;
+  detailsComponent: ComponentType<{ template: T; hideStatus?: boolean }>;
 };
 
 export function PreviewSubmittedDigitalTemplate<T extends TemplateDto>({
   template,
-  DetailComponent,
+  detailsComponent: DetailComponent,
 }: Readonly<PreviewSubmittedDigitalTemplateProps<T>>) {
   const content = baseContent.components.viewSubmittedTemplate;
 

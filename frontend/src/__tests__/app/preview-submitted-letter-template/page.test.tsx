@@ -1,10 +1,6 @@
-/**
- * @jest-environment node
- */
 import PreviewSubmittedPdfLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-letter-template/[templateId]/page';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-web-template-management-types';
@@ -16,14 +12,9 @@ import {
   AUTHORING_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
-import { NHSNotifyContainer } from '@layouts/container/container';
-import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import Link from 'next/link';
+import { render } from '@testing-library/react';
 
 const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
-const { backLink } = content.components.viewSubmittedTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -34,7 +25,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 describe('PreviewSubmittedPdfLetterTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should load page with PDF letter template', async () => {
+  it('should render full page with PDF letter template', async () => {
     const templateDTO = {
       createdAt: '2025-01-13T10:19:25.579Z',
       files: {
@@ -55,11 +46,6 @@ describe('PreviewSubmittedPdfLetterTemplatePage', () => {
       lockNumber: 1,
     } satisfies TemplateDto;
 
-    const submittedLetterTemplate: LetterTemplate = {
-      ...templateDTO,
-      templateStatus: 'SUBMITTED',
-    };
-
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewSubmittedPdfLetterTemplatePage({
@@ -71,29 +57,10 @@ describe('PreviewSubmittedPdfLetterTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(
-      <NHSNotifyContainer>
-        <Link href={backLink.href} passHref legacyBehavior>
-          <NotifyBackLink>{backLink.text}</NotifyBackLink>
-        </Link>
 
-        <NHSNotifyMain>
-          <div className='nhsuk-grid-row'>
-            <div className='nhsuk-grid-column-full'>
-              <PreviewTemplateDetailsPdfLetter
-                template={submittedLetterTemplate}
-              />
+    const { asFragment } = render(page);
 
-              <p>
-                <Link href={backLink.href} data-testid='back-link-bottom'>
-                  {backLink.text}
-                </Link>
-              </p>
-            </div>
-          </div>
-        </NHSNotifyMain>
-      </NHSNotifyContainer>
-    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

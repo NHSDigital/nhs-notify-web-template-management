@@ -1,18 +1,9 @@
 import { PreviewDigitalTemplateFromChooseTemplate } from '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate';
-import {
-  EMAIL_TEMPLATE,
-  NHS_APP_TEMPLATE,
-  SMS_TEMPLATE,
-  ROUTING_CONFIG,
-} from '@testhelpers/helpers';
+import { EMAIL_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import {
-  validateEmailTemplate,
-  validateNHSAppTemplate,
-  validateSMSTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { validateEmailTemplate } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
@@ -32,7 +23,7 @@ const defaultProps = {
   }),
   searchParams: Promise.resolve({ lockNumber: '5' }),
   validateTemplate: validateEmailTemplate,
-  DetailComponent: MockDetailComponent,
+  detailsComponent: MockDetailComponent,
 };
 
 describe('PreviewDigitalTemplateFromChooseTemplate', () => {
@@ -90,7 +81,7 @@ describe('PreviewDigitalTemplateFromChooseTemplate', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('renders Email template preview with correct back links', async () => {
+  it('renders Email template preview', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...EMAIL_TEMPLATE,
       templateStatus: 'SUBMITTED',
@@ -103,56 +94,21 @@ describe('PreviewDigitalTemplateFromChooseTemplate', () => {
         templateId: EMAIL_TEMPLATE.id,
       }),
       validateTemplate: validateEmailTemplate,
-      DetailComponent: MockDetailComponent,
+      detailsComponent: MockDetailComponent,
     });
 
     const container = render(page);
 
     expect(getTemplateMock).toHaveBeenCalledWith(EMAIL_TEMPLATE.id);
-    expect(container.asFragment()).toMatchSnapshot();
-  });
 
-  it('renders NHS App template preview with correct back links', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      ...NHS_APP_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-    });
+    const expectedBackLinkHref = `/message-plans/choose-email-template/${ROUTING_CONFIG.id}?lockNumber=5`;
 
-    const page = await PreviewDigitalTemplateFromChooseTemplate({
-      ...defaultProps,
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: NHS_APP_TEMPLATE.id,
-      }),
-      validateTemplate: validateNHSAppTemplate,
-      DetailComponent: MockDetailComponent,
-    });
+    const topBackLink = container.getByTestId('back-link-top');
+    expect(topBackLink).toHaveAttribute('href', expectedBackLinkHref);
 
-    const container = render(page);
+    const bottomBackLink = container.getByTestId('back-link-bottom');
+    expect(bottomBackLink).toHaveAttribute('href', expectedBackLinkHref);
 
-    expect(getTemplateMock).toHaveBeenCalledWith(NHS_APP_TEMPLATE.id);
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('renders SMS template preview with correct back links', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      ...SMS_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-    });
-
-    const page = await PreviewDigitalTemplateFromChooseTemplate({
-      ...defaultProps,
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: SMS_TEMPLATE.id,
-      }),
-      validateTemplate: validateSMSTemplate,
-      DetailComponent: MockDetailComponent,
-    });
-
-    const container = render(page);
-
-    expect(getTemplateMock).toHaveBeenCalledWith(SMS_TEMPLATE.id);
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

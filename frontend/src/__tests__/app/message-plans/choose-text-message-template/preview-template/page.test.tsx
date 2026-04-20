@@ -1,36 +1,44 @@
-/**
- * @jest-environment node
- */
 import PreviewTextMessageTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-text-message-template/[routingConfigId]/preview-template/[templateId]/page';
-import { PreviewDigitalTemplateFromChooseTemplate } from '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate';
-import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
-import { validateSMSTemplate } from 'nhs-notify-web-template-management-utils';
+import { render } from '@testing-library/react';
+import { getTemplate } from '@utils/form-actions';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
+import { SMS_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 
-jest.mock(
-  '@molecules/PreviewDigitalTemplateFromChooseTemplate/PreviewDigitalTemplateFromChooseTemplate'
-);
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
+
+const getTemplateMock = jest.mocked(getTemplate);
 
 describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
-  it('should render PreviewDigitalTemplateFromChooseTemplate with validateSMSTemplate and PreviewTemplateDetailsSms', async () => {
-    const props = {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
+
+  it('should render full page with SMS template', async () => {
+    getTemplateMock.mockResolvedValueOnce({
+      ...SMS_TEMPLATE,
+      templateStatus: 'SUBMITTED',
+    });
+
+    const page = await PreviewTextMessageTemplateFromMessagePlan({
       params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
+        routingConfigId: ROUTING_CONFIG.id,
+        templateId: SMS_TEMPLATE.id,
       }),
       searchParams: Promise.resolve({ lockNumber: '5' }),
-    };
+    });
 
-    const page = await PreviewTextMessageTemplateFromMessagePlan(props);
+    const { asFragment } = render(page);
 
-    expect(page).toEqual(
-      <PreviewDigitalTemplateFromChooseTemplate
-        {...props}
-        validateTemplate={validateSMSTemplate}
-        DetailComponent={PreviewTemplateDetailsSms}
-      />
-    );
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should have the correct page title', async () => {

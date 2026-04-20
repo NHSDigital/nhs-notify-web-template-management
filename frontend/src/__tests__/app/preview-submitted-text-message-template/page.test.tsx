@@ -1,10 +1,6 @@
-/**
- * @jest-environment node
- */
 import PreviewSubmittedSMSTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-text-message-template/[templateId]/page';
-import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-web-template-management-types';
@@ -14,22 +10,29 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
-import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
-import { NHSNotifyContainer } from '@layouts/container/container';
+import { render } from '@testing-library/react';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
 
 const { pageTitle } = content.components.previewSMSTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
 describe('PreviewSubmittedSMSTemplatePage', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
 
-  it('should load page', async () => {
+  it('should render full page', async () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'SMS',
@@ -40,12 +43,6 @@ describe('PreviewSubmittedSMSTemplatePage', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
       lockNumber: 1,
     } satisfies TemplateDto;
-
-    const submittedSMSTemplate: SMSTemplate = {
-      ...templateDTO,
-      templateType: 'SMS',
-      templateStatus: 'SUBMITTED',
-    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
@@ -58,14 +55,10 @@ describe('PreviewSubmittedSMSTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(
-      <NHSNotifyContainer>
-        <PreviewSubmittedDigitalTemplate
-          template={submittedSMSTemplate}
-          DetailComponent={PreviewTemplateDetailsSms}
-        />
-      </NHSNotifyContainer>
-    );
+
+    const { asFragment } = render(page);
+
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

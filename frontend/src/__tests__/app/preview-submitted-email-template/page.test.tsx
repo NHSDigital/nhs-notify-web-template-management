@@ -1,10 +1,6 @@
-/**
- * @jest-environment node
- */
 import PreviewSubmittedEmailTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-email-template/[templateId]/page';
-import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-web-template-management-types';
@@ -14,22 +10,29 @@ import {
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
-import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
-import { NHSNotifyContainer } from '@layouts/container/container';
+import { render } from '@testing-library/react';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
 
 const { pageTitle } = content.components.previewEmailTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
 describe('ViewSubmittedEmailTemplatePage', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
+  });
 
-  it('should load page', async () => {
+  it('should render full page', async () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'EMAIL',
@@ -42,13 +45,6 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       lockNumber: 1,
     } satisfies TemplateDto;
 
-    const submittedEmailTemplate: EmailTemplate = {
-      ...templateDTO,
-      subject: 'template-subject-line',
-      templateType: 'EMAIL',
-      templateStatus: 'SUBMITTED',
-    };
-
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewSubmittedEmailTemplatePage({
@@ -60,14 +56,10 @@ describe('ViewSubmittedEmailTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(
-      <NHSNotifyContainer>
-        <PreviewSubmittedDigitalTemplate
-          template={submittedEmailTemplate}
-          DetailComponent={PreviewTemplateDetailsEmail}
-        />
-      </NHSNotifyContainer>
-    );
+
+    const { asFragment } = render(page);
+
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
