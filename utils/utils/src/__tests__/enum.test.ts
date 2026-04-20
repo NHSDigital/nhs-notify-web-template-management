@@ -35,7 +35,7 @@ import {
   legacyTemplateTypeToUrlTextMappings,
   testMessageUrlSegmentMapping,
   sendDigitalTemplateTestMessageUrl,
-  templateToUrlTextMappings,
+  templateTypeToUrlTextMappings,
   accessibleFormatDisplayMappings,
   createTemplateUrl,
   isLanguage,
@@ -45,8 +45,8 @@ import {
   FRONTEND_SUPPORTED_LETTER_TYPES,
   getPreviewURL,
   FrontendSupportedAccessibleFormats,
-  UrlFormattableTemplate,
-  toUrlFormattableTemplate,
+  FrontendSupportedLetterType,
+  getFrontendLetterTypeForUrl,
 } from '../enum';
 import { mockDeep } from 'jest-mock-extended';
 
@@ -224,7 +224,7 @@ describe('legacyTemplateTypeToUrlTextMappings', () => {
     ['SMS', 'text-message'],
     ['EMAIL', 'email'],
     ['LETTER', 'letter'],
-  ] as const)('$type maps to url fragment $expected', (type, expected) => {
+  ] as const)('%s maps to url fragment %s', (type, expected) => {
     expect(legacyTemplateTypeToUrlTextMappings(type)).toEqual(expected);
   });
 });
@@ -254,37 +254,30 @@ describe('sendDigitalTemplateTestMessageUrl', () => {
   );
 });
 
-describe('templateToUrlTextMappings', () => {
+describe('templateTypeToUrlTextMappings', () => {
   test.each([
-    [{ templateType: 'NHS_APP' }, 'nhs-app'],
-    [{ templateType: 'SMS' }, 'text-message'],
-    [{ templateType: 'EMAIL' }, 'email'],
-    [{ templateType: 'LETTER' }, 'standard-english-letter'],
-  ] as const)('$type maps to url fragment $expected', (type, expected) => {
-    expect(templateToUrlTextMappings(type)).toEqual(expected);
-  });
+    ['NHS_APP', 'nhs-app'],
+    ['SMS', 'text-message'],
+    ['EMAIL', 'email'],
+    ['LETTER', 'standard-english-letter'],
+  ] as [TemplateType, string][])(
+    '%s maps to url fragment %s',
+    (type, expected) => {
+      expect(templateTypeToUrlTextMappings(type)).toEqual(expected);
+    }
+  );
 
   test.each([
-    [
-      { templateType: 'LETTER', letterType: 'x0', language: 'en' },
-      'standard-english-letter',
-    ],
-    [
-      { templateType: 'LETTER', letterType: 'x1', language: 'en' },
-      'large-print-letter',
-    ],
-    [
-      { templateType: 'LETTER', letterType: 'q4', language: 'en' },
-      'british-sign-language-letter',
-    ],
-    [
-      { templateType: 'LETTER', letterType: 'x0', language: 'hu' },
-      'other-language-letter',
-    ],
-  ] as const)(
-    '$template.letterType / $template.language $template.templateType maps to url fragment $expected',
-    (template, expected) => {
-      expect(templateToUrlTextMappings(template)).toEqual(expected);
+    ['x0', 'standard-english-letter'],
+    ['x1', 'large-print-letter'],
+    ['q4', 'british-sign-language-letter'],
+    ['language', 'other-language-letter'],
+  ] as [FrontendSupportedLetterType, string][])(
+    '%s letter maps to url fragment %s',
+    (letterType, expected) => {
+      expect(templateTypeToUrlTextMappings('LETTER', letterType)).toEqual(
+        expected
+      );
     }
   );
 });
@@ -295,225 +288,59 @@ describe('legacyTemplateCreationPages', () => {
     ['SMS' as const, '/create-text-message-template'],
     ['EMAIL' as const, '/create-email-template'],
     ['LETTER' as const, '/upload-letter-template'],
-  ])('$templateType', (templateType: TemplateType, slug) => {
+  ])('%s', (templateType: TemplateType, slug) => {
     expect(legacyTemplateCreationPages(templateType)).toEqual(slug);
   });
 });
 
 describe('createTemplateUrl', () => {
   test.each([
-    {
-      template: { templateType: 'NHS_APP' },
-      expected: '/create-nhs-app-template',
-    },
-    {
-      template: { templateType: 'SMS' },
-      expected: '/create-text-message-template',
-    },
-    { template: { templateType: 'EMAIL' }, expected: '/create-email-template' },
-  ] as { template: UrlFormattableTemplate; expected: string }[])(
-    '$template.templateType digital template returns $expected',
-    ({ template, expected }) => {
-      expect(createTemplateUrl(template)).toEqual(expected);
+    ['NHS_APP', '/create-nhs-app-template'],
+    ['SMS', '/create-text-message-template'],
+    ['EMAIL', '/create-email-template'],
+    ['LETTER', '/upload-standard-english-letter-template'],
+  ] as [TemplateType, string][])(
+    '%s template returns %s',
+    (templateType, expected) => {
+      expect(createTemplateUrl(templateType)).toEqual(expected);
     }
   );
 
   test.each([
-    {
-      template: {
-        templateType: 'LETTER',
-      },
-      expected: '/upload-standard-english-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-      },
-      expected: '/upload-standard-english-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        language: 'pl',
-      },
-      expected: '/upload-other-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'en',
-      },
-      expected: '/upload-standard-english-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'ar',
-      },
-      expected: '/upload-other-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x1',
-      },
-      expected: '/upload-large-print-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x1',
-        language: 'en',
-      },
-      expected: '/upload-large-print-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x1',
-        language: 'ar',
-      },
-      expected: '/upload-large-print-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'q4',
-      },
-      expected: '/upload-british-sign-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'q4',
-        language: 'en',
-      },
-      expected: '/upload-british-sign-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'q4',
-        language: 'ar',
-      },
-      expected: '/upload-british-sign-language-letter-template',
-    },
-  ] as { template: UrlFormattableTemplate; expected: string }[])(
-    '$template.letterType / $template.language letter returns $expected',
-    ({ template, expected }) => {
-      expect(createTemplateUrl(template)).toEqual(expected);
+    ['x0', '/upload-standard-english-letter-template'],
+    ['language', '/upload-other-language-letter-template'],
+    ['x1', '/upload-large-print-letter-template'],
+    ['q4', '/upload-british-sign-language-letter-template'],
+  ] as [FrontendSupportedLetterType, string][])(
+    '%s letter returns %s',
+    (letterType, expected) => {
+      expect(createTemplateUrl('LETTER', letterType)).toEqual(expected);
     }
   );
 });
 
 describe('messagePlanChooseTemplateUrl', () => {
   test.each([
-    {
-      template: { templateType: 'NHS_APP' },
-      expected: 'choose-nhs-app-template',
-    },
-    {
-      template: { templateType: 'SMS' },
-      expected: 'choose-text-message-template',
-    },
-    { template: { templateType: 'EMAIL' }, expected: 'choose-email-template' },
-  ] as { template: UrlFormattableTemplate; expected: string }[])(
-    '$template.templateType digital template returns $expected',
-    ({ template, expected }) => {
-      expect(messagePlanChooseTemplateUrl(template)).toBe(expected);
+    ['NHS_APP', 'choose-nhs-app-template'],
+    ['SMS', 'choose-text-message-template'],
+    ['EMAIL', 'choose-email-template'],
+    ['LETTER', 'choose-standard-english-letter-template'],
+  ] as [TemplateType, string][])(
+    '%s template returns %s',
+    (templateType, expected) => {
+      expect(messagePlanChooseTemplateUrl(templateType)).toBe(expected);
     }
   );
 
   test.each([
-    {
-      template: {
-        templateType: 'LETTER',
-      },
-      expected: 'choose-standard-english-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-      },
-      expected: 'choose-standard-english-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        language: 'pl',
-      },
-      expected: 'choose-other-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'en',
-      },
-      expected: 'choose-standard-english-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'ar',
-      },
-      expected: 'choose-other-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x1',
-      },
-      expected: 'choose-large-print-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x1',
-        language: 'en',
-      },
-      expected: 'choose-large-print-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'x1',
-        language: 'ar',
-      },
-      expected: 'choose-large-print-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'q4',
-      },
-      expected: 'choose-british-sign-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'q4',
-        language: 'en',
-      },
-      expected: 'choose-british-sign-language-letter-template',
-    },
-    {
-      template: {
-        templateType: 'LETTER',
-        letterType: 'q4',
-        language: 'ar',
-      },
-      expected: 'choose-british-sign-language-letter-template',
-    },
-  ] as { template: UrlFormattableTemplate; expected: string }[])(
-    '$template.letterType / $template.language letter returns $expected',
-    ({ template, expected }) => {
-      expect(messagePlanChooseTemplateUrl(template)).toBe(expected);
+    ['x0', 'choose-standard-english-letter-template'],
+    ['language', 'choose-other-language-letter-template'],
+    ['x1', 'choose-large-print-letter-template'],
+    ['q4', 'choose-british-sign-language-letter-template'],
+  ] as [FrontendSupportedLetterType, string][])(
+    '%s letter returns %s',
+    (letterType, expected) => {
+      expect(messagePlanChooseTemplateUrl('LETTER', letterType)).toBe(expected);
     }
   );
 });
@@ -838,72 +665,31 @@ describe('getMessageOrderOptions', () => {
   });
 });
 
-describe('toUrlFormattableTemplate', () => {
-  test.each([
-    {
-      templateType: 'NHS_APP' as const,
-      expected: { templateType: 'NHS_APP' },
-    },
-    {
-      templateType: 'SMS' as const,
-      expected: { templateType: 'SMS' },
-    },
-    {
-      templateType: 'EMAIL' as const,
-      expected: { templateType: 'EMAIL' },
-    },
-  ])(
-    'digital template $templateType returns correct parseable template',
-    ({ templateType, expected }) => {
-      expect(toUrlFormattableTemplate(templateType)).toEqual(expected);
+describe('getFrontendLetterTypeForUrl', () => {
+  test.each(['NHS_APP', 'EMAIL', 'SMS'] as TemplateType[])(
+    'digital template type %s returns undefined',
+    (templateType) => {
+      expect(getFrontendLetterTypeForUrl({ templateType })).toBeUndefined();
     }
   );
 
   test.each([
-    {
-      letterType: undefined,
-      expected: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'en',
-      },
-    },
-    {
-      letterType: 'x0' as const,
-      expected: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'en',
-      },
-    },
-    {
-      letterType: 'language' as const,
-      expected: {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'fr',
-      },
-    },
-    {
-      letterType: 'x1' as const,
-      expected: {
-        templateType: 'LETTER',
-        letterType: 'x1',
-        language: 'en',
-      },
-    },
-    {
-      letterType: 'q4' as const,
-      expected: {
-        templateType: 'LETTER',
-        letterType: 'q4',
-        language: 'en',
-      },
-    },
-  ])(
-    'letter with letterType=$letterType returns correct parseable template',
-    ({ letterType, expected }) => {
-      expect(toUrlFormattableTemplate('LETTER', letterType)).toEqual(expected);
+    ['x0', 'en', 'x0'],
+    ['x0', 'fr', 'language'],
+    ['x1', 'en', 'x1'],
+    ['x1', 'fr', 'x1'],
+    ['q4', 'en', 'q4'],
+    ['q4', 'fr', 'q4'],
+  ] as [LetterType, Language, string][])(
+    'letter template type=%s language=%s returns %s',
+    (letterType, language, expected) => {
+      expect(
+        getFrontendLetterTypeForUrl({
+          templateType: 'LETTER',
+          letterType,
+          language,
+        })
+      ).toEqual(expected);
     }
   );
 });

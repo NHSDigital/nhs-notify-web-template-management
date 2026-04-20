@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
-import { templateToUrlTextMappings } from 'nhs-notify-web-template-management-utils';
+import {
+  getFrontendLetterTypeForUrl,
+  templateTypeToUrlTextMappings,
+} from 'nhs-notify-web-template-management-utils';
 import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
 import { interpolate } from '@utils/interpolate';
 import { PageComponentProps } from '@utils/types';
@@ -26,7 +29,10 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
   const backLinkHref = interpolate(content.backLink.href, {
-    templateType: templateToUrlTextMappings(template),
+    templateType: templateTypeToUrlTextMappings(
+      template.templateType,
+      getFrontendLetterTypeForUrl(template)
+    ),
     routingConfigId,
     lockNumber,
   });

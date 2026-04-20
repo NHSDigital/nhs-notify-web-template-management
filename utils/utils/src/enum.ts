@@ -252,9 +252,13 @@ export type UrlFormattableTemplate =
   | Pick<DigitalTemplate, 'templateType'>
   | UrlFormattableLetterTemplate;
 
-const getFrontendLetterTypeForUrl = (
-  template: UrlFormattableLetterTemplate
-): FrontendSupportedLetterType => {
+export const getFrontendLetterTypeForUrl = (
+  template: UrlFormattableTemplate
+): FrontendSupportedLetterType | undefined => {
+  if (template.templateType !== 'LETTER') {
+    return;
+  }
+
   if (template.letterType && template.letterType !== 'x0') {
     return template.letterType;
   }
@@ -266,23 +270,21 @@ const getFrontendLetterTypeForUrl = (
   return 'x0';
 };
 
-export const templateToUrlTextMappings = (template: UrlFormattableTemplate) => {
-  if (template.templateType === 'LETTER') {
-    const letterType = getFrontendLetterTypeForUrl(template);
-
-    return {
-      q4: 'british-sign-language-letter',
-      x0: 'standard-english-letter',
-      x1: 'large-print-letter',
-      language: 'other-language-letter',
-    }[letterType];
-  }
-
+export const templateTypeToUrlTextMappings = (
+  templateType: TemplateType,
+  letterType: FrontendSupportedLetterType = 'x0'
+) => {
   return {
     NHS_APP: 'nhs-app',
     SMS: 'text-message',
     EMAIL: 'email',
-  }[template.templateType];
+    LETTER: {
+      q4: 'british-sign-language-letter',
+      x0: 'standard-english-letter',
+      x1: 'large-print-letter',
+      language: 'other-language-letter',
+    }[letterType],
+  }[templateType];
 };
 
 const creationAction = (type: TemplateType) =>
@@ -296,36 +298,11 @@ const creationAction = (type: TemplateType) =>
 export const legacyTemplateCreationPages = (type: TemplateType) =>
   `/${creationAction(type)}-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 
-const frontendLetterTypeToBackendLetterType = (
-  letterType?: FrontendSupportedLetterType
-): LetterType => {
-  if (!letterType || letterType === 'language') return 'x0';
-  return letterType;
-};
-
-const frontendLetterTypeToDefaultLanguage = (
-  letterType?: FrontendSupportedLetterType
-): Language => {
-  if (!letterType || letterType !== 'language') return 'en';
-  // If a language letter, return any non-"en" value
-  // This gets mapped to "other-language" in urls
-  return 'fr';
-};
-
-export const toUrlFormattableTemplate = (
+export const createTemplateUrl = (
   templateType: TemplateType,
   letterType?: FrontendSupportedLetterType
-): UrlFormattableTemplate =>
-  templateType === 'LETTER'
-    ? {
-        templateType,
-        letterType: frontendLetterTypeToBackendLetterType(letterType),
-        language: frontendLetterTypeToDefaultLanguage(letterType),
-      }
-    : { templateType };
-
-export const createTemplateUrl = (template: UrlFormattableTemplate) => {
-  return `/${creationAction(template.templateType)}-${templateToUrlTextMappings(template)}-template`;
+) => {
+  return `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
 };
 
 export const getPreviewURL = (template: TemplateDto) => {
@@ -345,9 +322,10 @@ export const getPreviewURL = (template: TemplateDto) => {
 };
 
 export const messagePlanChooseTemplateUrl = (
-  template: UrlFormattableTemplate
+  templateType: TemplateType,
+  letterType?: FrontendSupportedLetterType
 ) => {
-  return `choose-${templateToUrlTextMappings(template)}-template`;
+  return `choose-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
 };
 
 const templateStatusCopyAction = (status: TemplateStatus) =>

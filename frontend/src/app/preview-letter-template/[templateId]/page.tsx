@@ -7,6 +7,7 @@ import type {
   TemplatePageProps,
 } from 'nhs-notify-web-template-management-utils';
 import {
+  getFrontendLetterTypeForUrl,
   getPreviewURL,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -189,7 +190,8 @@ export default async function PreviewLetterTemplatePage({
                   {validationErrors.length > 0 ? (
                     <NHSNotifyButton
                       href={links.uploadDifferentTemplateFile.href(
-                        validatedTemplate
+                        validatedTemplate.templateType,
+                        getFrontendLetterTypeForUrl(validatedTemplate)
                       )}
                     >
                       {links.uploadDifferentTemplateFile.text}
