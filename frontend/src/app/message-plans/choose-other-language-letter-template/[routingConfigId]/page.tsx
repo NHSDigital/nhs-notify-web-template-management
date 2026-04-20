@@ -2,14 +2,10 @@
 
 import { Metadata } from 'next';
 import { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
-import { getRoutingConfig } from '@utils/message-plans';
-import { redirect, RedirectType } from 'next/navigation';
-import { ChooseLanguageLetterTemplates } from '@forms/ChooseLanguageLetterTemplates/ChooseLanguageLetterTemplates';
-import { getForeignLanguageLetterTemplates } from '@utils/form-actions';
-import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-import { NHSNotifyContainer } from '@layouts/container/container';
-
+import { getTemplates } from '@utils/form-actions';
+import { ChooseTemplateFromMessagePlan } from '@molecules/ChooseTemplateFromMessagePlan/ChooseTemplateFromMessagePlan';
 import content from '@content/content';
+
 const { pageTitle, pageHeading } =
   content.pages.chooseOtherLanguageLetterTemplate;
 
@@ -22,48 +18,19 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ChooseOtherLanguageLetterTemplate(
   props: MessagePlanPageProps
 ) {
-  const { routingConfigId } = await props.params;
-
-  const searchParams = await props.searchParams;
-
-  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
-
-  if (!lockNumberResult.success) {
-    return redirect(
-      `/message-plans/edit-message-plan/${routingConfigId}`,
-      RedirectType.replace
-    );
-  }
-
-  const messagePlan = await getRoutingConfig(routingConfigId);
-
-  if (!messagePlan) {
-    return redirect('/message-plans/invalid', RedirectType.replace);
-  }
-
-  const cascadeIndex = messagePlan.cascade.findIndex(
-    (item) => item.channel === 'LETTER'
-  );
-
-  if (cascadeIndex === -1) {
-    return redirect('/message-plans/invalid', RedirectType.replace);
-  }
-
-  const filteredTemplates = await getForeignLanguageLetterTemplates({
-    templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
-    letterVersion: 'AUTHORING',
-    campaignId: messagePlan.campaignId,
+  return ChooseTemplateFromMessagePlan({
+    props,
+    variant: 'language',
+    channel: 'LETTER',
+    templateListFetcher: (campaignId) =>
+      getTemplates({
+        templateType: 'LETTER',
+        letterType: 'x0',
+        excludeLanguage: 'en',
+        templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
+        letterVersion: 'AUTHORING',
+        campaignId,
+      }),
+    pageHeading,
   });
-
-  return (
-    <NHSNotifyContainer>
-      <ChooseLanguageLetterTemplates
-        messagePlan={messagePlan}
-        pageHeading={pageHeading}
-        templateList={filteredTemplates}
-        cascadeIndex={cascadeIndex}
-        lockNumber={lockNumberResult.data}
-      />
-    </NHSNotifyContainer>
-  );
 }

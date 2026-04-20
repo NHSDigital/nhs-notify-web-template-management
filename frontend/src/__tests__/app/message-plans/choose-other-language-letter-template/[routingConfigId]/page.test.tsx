@@ -3,9 +3,8 @@ import ChooseOtherLanguageLetterTemplate, {
 } from '@app/message-plans/choose-other-language-letter-template/[routingConfigId]/page';
 import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
-import { getForeignLanguageLetterTemplates } from '@utils/form-actions';
+import { getTemplates } from '@utils/form-actions';
 import { getRoutingConfig } from '@utils/message-plans';
-import { redirect } from 'next/navigation';
 import { Language } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/message-plans');
@@ -13,10 +12,7 @@ jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 
 const getRoutingConfigMock = jest.mocked(getRoutingConfig);
-const getForeignLanguageLetterTemplatesMock = jest.mocked(
-  getForeignLanguageLetterTemplates
-);
-const redirectMock = jest.mocked(redirect);
+const getTemplatesMock = jest.mocked(getTemplates);
 
 const FRENCH_LETTER_TEMPLATE = {
   ...PDF_LETTER_TEMPLATE,
@@ -33,54 +29,9 @@ const POLISH_LETTER_TEMPLATE = {
 };
 
 describe('ChooseOtherLanguageLetterTemplate page', () => {
-  it('should redirect to invalid page for invalid routing config id', async () => {
-    getRoutingConfigMock.mockResolvedValueOnce(undefined);
-
-    await ChooseOtherLanguageLetterTemplate({
-      params: Promise.resolve({
-        routingConfigId: 'invalid-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '42',
-      }),
-    });
-
-    expect(getRoutingConfigMock).toHaveBeenCalledWith('invalid-id');
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/invalid',
-      'replace'
-    );
-  });
-
-  it('should redirect to invalid page if plan has no letter cascade entry', async () => {
-    getRoutingConfigMock.mockResolvedValueOnce({
-      ...ROUTING_CONFIG,
-      cascade: ROUTING_CONFIG.cascade.filter(
-        (item) => item.channel !== 'LETTER'
-      ),
-    });
-
-    await ChooseOtherLanguageLetterTemplate({
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '42',
-      }),
-    });
-
-    expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/invalid',
-      'replace'
-    );
-  });
-
-  it('calls getForeignLanguageLetterTemplates with correct filters', async () => {
+  it('calls getTemplates with correct filters', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
-    getForeignLanguageLetterTemplatesMock.mockResolvedValueOnce([
+    getTemplatesMock.mockResolvedValueOnce([
       FRENCH_LETTER_TEMPLATE,
       POLISH_LETTER_TEMPLATE,
     ]);
@@ -95,7 +46,10 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     });
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
-    expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
+    expect(getTemplatesMock).toHaveBeenCalledWith({
+      templateType: 'LETTER',
+      letterType: 'x0',
+      excludeLanguage: 'en',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
       campaignId: ROUTING_CONFIG.campaignId,
@@ -104,7 +58,7 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
 
   it('renders foreign language letter template selection', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
-    getForeignLanguageLetterTemplatesMock.mockResolvedValueOnce([
+    getTemplatesMock.mockResolvedValueOnce([
       FRENCH_LETTER_TEMPLATE,
       POLISH_LETTER_TEMPLATE,
     ]);
@@ -121,7 +75,10 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
     const container = render(page);
 
     expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
-    expect(getForeignLanguageLetterTemplatesMock).toHaveBeenCalledWith({
+    expect(getTemplatesMock).toHaveBeenCalledWith({
+      templateType: 'LETTER',
+      letterType: 'x0',
+      excludeLanguage: 'en',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
       campaignId: ROUTING_CONFIG.campaignId,
@@ -131,18 +88,5 @@ describe('ChooseOtherLanguageLetterTemplate page', () => {
       title: 'Choose other language letter templates - NHS Notify',
     });
     expect(container.asFragment()).toMatchSnapshot();
-  });
-
-  it('redirects to the edit message plan page if the lockNumber is missing', async () => {
-    await ChooseOtherLanguageLetterTemplate({
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-      }),
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
-      'replace'
-    );
   });
 });
