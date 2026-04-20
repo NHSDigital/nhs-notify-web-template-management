@@ -45,8 +45,8 @@ import {
   FRONTEND_SUPPORTED_LETTER_TYPES,
   getPreviewURL,
   FrontendSupportedAccessibleFormats,
-  UrlParseableTemplate,
-  toUrlParseableTemplate,
+  UrlFormattableTemplate,
+  toUrlFormattableTemplate,
 } from '../enum';
 import { mockDeep } from 'jest-mock-extended';
 
@@ -311,7 +311,7 @@ describe('createTemplateUrl', () => {
       expected: '/create-text-message-template',
     },
     { template: { templateType: 'EMAIL' }, expected: '/create-email-template' },
-  ] as { template: UrlParseableTemplate; expected: string }[])(
+  ] as { template: UrlFormattableTemplate; expected: string }[])(
     '$template.templateType digital template returns $expected',
     ({ template, expected }) => {
       expect(createTemplateUrl(template)).toEqual(expected);
@@ -401,7 +401,7 @@ describe('createTemplateUrl', () => {
       },
       expected: '/upload-british-sign-language-letter-template',
     },
-  ] as { template: UrlParseableTemplate; expected: string }[])(
+  ] as { template: UrlFormattableTemplate; expected: string }[])(
     '$template.letterType / $template.language letter returns $expected',
     ({ template, expected }) => {
       expect(createTemplateUrl(template)).toEqual(expected);
@@ -420,7 +420,7 @@ describe('messagePlanChooseTemplateUrl', () => {
       expected: 'choose-text-message-template',
     },
     { template: { templateType: 'EMAIL' }, expected: 'choose-email-template' },
-  ] as { template: UrlParseableTemplate; expected: string }[])(
+  ] as { template: UrlFormattableTemplate; expected: string }[])(
     '$template.templateType digital template returns $expected',
     ({ template, expected }) => {
       expect(messagePlanChooseTemplateUrl(template)).toBe(expected);
@@ -510,7 +510,7 @@ describe('messagePlanChooseTemplateUrl', () => {
       },
       expected: 'choose-british-sign-language-letter-template',
     },
-  ] as { template: UrlParseableTemplate; expected: string }[])(
+  ] as { template: UrlFormattableTemplate; expected: string }[])(
     '$template.letterType / $template.language letter returns $expected',
     ({ template, expected }) => {
       expect(messagePlanChooseTemplateUrl(template)).toBe(expected);
@@ -838,7 +838,7 @@ describe('getMessageOrderOptions', () => {
   });
 });
 
-describe('toUrlParseableTemplate', () => {
+describe('toUrlFormattableTemplate', () => {
   test.each([
     {
       templateType: 'NHS_APP' as const,
@@ -855,7 +855,7 @@ describe('toUrlParseableTemplate', () => {
   ])(
     'digital template $templateType returns correct parseable template',
     ({ templateType, expected }) => {
-      expect(toUrlParseableTemplate(templateType)).toEqual(expected);
+      expect(toUrlFormattableTemplate(templateType)).toEqual(expected);
     }
   );
 
@@ -903,7 +903,7 @@ describe('toUrlParseableTemplate', () => {
   ])(
     'letter with letterType=$letterType returns correct parseable template',
     ({ letterType, expected }) => {
-      expect(toUrlParseableTemplate('LETTER', letterType)).toEqual(expected);
+      expect(toUrlFormattableTemplate('LETTER', letterType)).toEqual(expected);
     }
   );
 });

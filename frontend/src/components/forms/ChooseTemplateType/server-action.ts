@@ -4,7 +4,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import {
   createTemplateUrl,
   legacyTemplateCreationPages,
-  toUrlParseableTemplate,
+  toUrlFormattableTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { serverIsFeatureEnabled } from '@utils/server-features';
@@ -34,7 +34,7 @@ export async function chooseTemplateTypeAction(
     const { templateType, letterType } = parsedForm.data;
 
     redirect(
-      createTemplateUrl(toUrlParseableTemplate(templateType, letterType)),
+      createTemplateUrl(toUrlFormattableTemplate(templateType, letterType)),
       RedirectType.push
     );
   } else {

@@ -5,7 +5,7 @@ import type {
 } from 'nhs-notify-web-template-management-types';
 import {
   createTemplateUrl,
-  type UrlParseableTemplate,
+  type UrlFormattableTemplate,
   type DigitalTemplateType,
   type FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
@@ -657,7 +657,7 @@ const previewLetterTemplate = {
       '{{basePath}}/request-proof-of-template/{{templateId}}?lockNumber={{lockNumber}}',
     uploadDifferentTemplateFile: {
       text: 'Upload a different letter template file',
-      href: (template: UrlParseableTemplate) =>
+      href: (template: UrlFormattableTemplate) =>
         `${getBasePath()}${createTemplateUrl(template)}`,
     },
   },

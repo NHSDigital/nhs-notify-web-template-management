@@ -245,15 +245,15 @@ export const sendDigitalTemplateTestMessageUrl = (
   templateId: string
 ) => `/send-test-${testMessageUrlSegmentMapping(type)}/${templateId}`;
 
-type UrlParseableLetterTemplate = Pick<LetterTemplate, 'templateType'> &
+type UrlFormattableLetterTemplate = Pick<LetterTemplate, 'templateType'> &
   Partial<Pick<LetterTemplate, 'language' | 'letterType'>>;
 
-export type UrlParseableTemplate =
+export type UrlFormattableTemplate =
   | Pick<DigitalTemplate, 'templateType'>
-  | UrlParseableLetterTemplate;
+  | UrlFormattableLetterTemplate;
 
-const getLetterTypeForUrl = (
-  template: UrlParseableLetterTemplate
+const getFrontendLetterTypeForUrl = (
+  template: UrlFormattableLetterTemplate
 ): FrontendSupportedLetterType => {
   if (template.letterType && template.letterType !== 'x0') {
     return template.letterType;
@@ -266,9 +266,9 @@ const getLetterTypeForUrl = (
   return 'x0';
 };
 
-export const templateToUrlTextMappings = (template: UrlParseableTemplate) => {
+export const templateToUrlTextMappings = (template: UrlFormattableTemplate) => {
   if (template.templateType === 'LETTER') {
-    const letterType = getLetterTypeForUrl(template);
+    const letterType = getFrontendLetterTypeForUrl(template);
 
     return {
       q4: 'british-sign-language-letter',
@@ -296,33 +296,35 @@ const creationAction = (type: TemplateType) =>
 export const legacyTemplateCreationPages = (type: TemplateType) =>
   `/${creationAction(type)}-${legacyTemplateTypeToUrlTextMappings(type)}-template`;
 
-const parseFrontendLetterType = (
+const frontendLetterTypeToBackendLetterType = (
   letterType?: FrontendSupportedLetterType
 ): LetterType => {
   if (!letterType || letterType === 'language') return 'x0';
   return letterType;
 };
 
-const parseFrontendLetterTypeLanguage = (
+const frontendLetterTypeToDefaultLanguage = (
   letterType?: FrontendSupportedLetterType
 ): Language => {
   if (!letterType || letterType !== 'language') return 'en';
+  // If a language letter, return any non-"en" value
+  // This gets mapped to "other-language" in urls
   return 'fr';
 };
 
-export const toUrlParseableTemplate = (
+export const toUrlFormattableTemplate = (
   templateType: TemplateType,
   letterType?: FrontendSupportedLetterType
-): UrlParseableTemplate =>
+): UrlFormattableTemplate =>
   templateType === 'LETTER'
     ? {
         templateType,
-        letterType: parseFrontendLetterType(letterType),
-        language: parseFrontendLetterTypeLanguage(letterType),
+        letterType: frontendLetterTypeToBackendLetterType(letterType),
+        language: frontendLetterTypeToDefaultLanguage(letterType),
       }
     : { templateType };
 
-export const createTemplateUrl = (template: UrlParseableTemplate) => {
+export const createTemplateUrl = (template: UrlFormattableTemplate) => {
   return `/${creationAction(template.templateType)}-${templateToUrlTextMappings(template)}-template`;
 };
 
@@ -343,7 +345,7 @@ export const getPreviewURL = (template: TemplateDto) => {
 };
 
 export const messagePlanChooseTemplateUrl = (
-  template: UrlParseableTemplate
+  template: UrlFormattableTemplate
 ) => {
   return `choose-${templateToUrlTextMappings(template)}-template`;
 };
