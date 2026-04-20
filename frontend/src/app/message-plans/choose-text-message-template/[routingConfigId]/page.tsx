@@ -2,14 +2,9 @@
 
 import { Metadata } from 'next';
 import { MessagePlanPageProps } from 'nhs-notify-web-template-management-utils';
-import { getRoutingConfig } from '@utils/message-plans';
-import { redirect, RedirectType } from 'next/navigation';
-
 import content from '@content/content';
-import { ChooseChannelTemplate } from '@forms/ChooseChannelTemplate';
-import { NHSNotifyContainer } from '@layouts/container/container';
 import { getTemplates } from '@utils/form-actions';
-import { $LockNumber } from 'nhs-notify-backend-client/schemas';
+import { ChooseTemplateFromMessagePlan } from '@molecules/ChooseTemplateFromMessagePlan/ChooseTemplateFromMessagePlan';
 
 const { pageTitle, pageHeading, noTemplatesText, hintText } =
   content.pages.chooseDigitalTemplatePage('SMS');
@@ -23,48 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ChooseTextMessageTemplate(
   props: MessagePlanPageProps
 ) {
-  const { routingConfigId } = await props.params;
-
-  const searchParams = await props.searchParams;
-
-  const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
-
-  if (!lockNumberResult.success) {
-    return redirect(
-      `/message-plans/edit-message-plan/${routingConfigId}`,
-      RedirectType.replace
-    );
-  }
-
-  const messagePlan = await getRoutingConfig(routingConfigId);
-
-  if (!messagePlan) {
-    return redirect('/message-plans/invalid', RedirectType.replace);
-  }
-
-  const cascadeIndex = messagePlan.cascade.findIndex(
-    (item) => item.channel === 'SMS'
-  );
-
-  if (cascadeIndex === -1) {
-    return redirect('/message-plans/invalid', RedirectType.replace);
-  }
-
-  const availableTemplateList = await getTemplates({
-    templateType: 'SMS',
+  return ChooseTemplateFromMessagePlan({
+    props,
+    variant: 'single',
+    channel: 'SMS',
+    templateListFetcher: () => getTemplates({ templateType: 'SMS' }),
+    pageHeading,
+    noTemplatesText,
+    hintText,
   });
-
-  return (
-    <NHSNotifyContainer>
-      <ChooseChannelTemplate
-        messagePlan={messagePlan}
-        pageHeading={pageHeading}
-        noTemplatesText={noTemplatesText}
-        hintText={hintText}
-        templateList={availableTemplateList}
-        cascadeIndex={cascadeIndex}
-        lockNumber={lockNumberResult.data}
-      />
-    </NHSNotifyContainer>
-  );
 }
