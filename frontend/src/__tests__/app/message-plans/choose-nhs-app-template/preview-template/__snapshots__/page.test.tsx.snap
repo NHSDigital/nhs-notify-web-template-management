@@ -38,27 +38,6 @@ exports[`PreviewNhsAppTemplateFromMessagePlan page should render full page with 
             </h1>
           </div>
           <div
-            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
-          >
-            <strong
-              class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
-            >
-              Locked
-            </strong>
-            <p>
-              You cannot edit or delete this template because it's used in a message plan that's in production.
-            </p>
-            <p>
-              <a
-                data-testid="copy-link"
-                href="/copy-template/app-template-id"
-              >
-                Copy this template
-              </a>
-               to create a draft with the same content.
-            </p>
-          </div>
-          <div
             class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
           >
             <dl

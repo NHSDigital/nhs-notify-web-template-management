@@ -28,7 +28,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 describe('PreviewSubmittedNHSAppTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    jest.mocked(useFeatureFlags).mockReturnValue({ routing: false });
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
     jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
   });
 

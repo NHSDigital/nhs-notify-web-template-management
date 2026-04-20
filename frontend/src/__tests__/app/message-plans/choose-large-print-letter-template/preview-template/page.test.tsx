@@ -32,7 +32,7 @@ describe('PreviewLargePrintLetterTemplateFromMessagePlan page', () => {
 
     getTemplateMock.mockResolvedValueOnce({
       ...LARGE_PRINT_AUTHORING_TEMPLATE,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'PROOF_APPROVED',
     });
     getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 

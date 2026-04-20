@@ -25,7 +25,7 @@ describe('PreviewNhsAppTemplateFromMessagePlan page', () => {
   it('should render full page with NHS App template', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...NHS_APP_TEMPLATE,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'NOT_YET_SUBMITTED',
     });
 
     const page = await PreviewNhsAppTemplateFromMessagePlan({

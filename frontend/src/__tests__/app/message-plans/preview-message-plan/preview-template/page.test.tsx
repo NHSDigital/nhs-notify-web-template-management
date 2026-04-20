@@ -32,7 +32,7 @@ describe('PreviewLetterTemplateFromPreviewMessagePlan page', () => {
 
     getTemplateMock.mockResolvedValueOnce({
       ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'PROOF_APPROVED',
     });
     getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 
