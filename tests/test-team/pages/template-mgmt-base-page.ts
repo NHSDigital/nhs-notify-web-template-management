@@ -36,6 +36,8 @@ export abstract class TemplateMgmtBasePage {
 
   readonly errorSummaryList: Locator;
 
+  readonly errorSummaryLinks: Locator;
+
   readonly skipLink: Locator;
 
   protected pathParams = new Map<string, string | number>();
@@ -72,6 +74,8 @@ export abstract class TemplateMgmtBasePage {
     this.errorSummaryHint = this.errorSummary.locator('.nhsuk-hint');
 
     this.errorSummaryList = this.errorSummary.getByRole('listitem');
+
+    this.errorSummaryLinks = this.errorSummary.locator('a');
 
     this.skipLink = page
       .locator('[id="skip-link"]')
