@@ -17,12 +17,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewLargePrintLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  const { routingConfigId } = await props.params;
   return (
     <PreviewLetterFromChooseTemplate
       {...props}
       validateTemplate={validateLargePrintLetterTemplate}
-      redirectUrlOnLockNumberFailure={`/message-plans/edit-message-plan/${routingConfigId}`}
     />
   );
 };

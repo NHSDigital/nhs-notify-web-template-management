@@ -19,12 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewBritishSignLanguageLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  const { routingConfigId } = await props.params;
   return (
     <PreviewLetterFromChooseTemplate
       {...props}
       validateTemplate={validateBritishSignLanguageLetterTemplate}
-      redirectUrlOnLockNumberFailure={`/message-plans/edit-message-plan/${routingConfigId}`}
     />
   );
 };

@@ -17,12 +17,10 @@ export async function generateMetadata(): Promise<Metadata> {
 const PreviewOtherLanguageLetterTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
 ) => {
-  const { routingConfigId } = await props.params;
   return (
     <PreviewLetterFromChooseTemplate
       {...props}
       validateTemplate={validateForeignLanguageLetterTemplate}
-      redirectUrlOnLockNumberFailure={`/message-plans/edit-message-plan/${routingConfigId}`}
     />
   );
 };

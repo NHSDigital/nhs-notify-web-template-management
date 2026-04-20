@@ -12,7 +12,7 @@ jest.mock(
 );
 
 describe('PreviewBritishSignLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should render PreviewLetterFromChooseTemplate with validateBritishSignLanguageLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
+  it('should render PreviewLetterFromChooseTemplate with validateBritishSignLanguageLetterTemplate', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -28,7 +28,6 @@ describe('PreviewBritishSignLanguageLetterTemplateFromMessagePlan page', () => {
       <PreviewLetterFromChooseTemplate
         {...props}
         validateTemplate={validateBritishSignLanguageLetterTemplate}
-        redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'
       />
     );
   });

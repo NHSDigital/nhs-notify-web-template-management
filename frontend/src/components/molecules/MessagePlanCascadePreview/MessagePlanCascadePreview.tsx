@@ -170,7 +170,7 @@ export function MessagePlanCascadePreview({
                           )}
                           data-testid='channel-card'
                         >
-                          <Fragment key={template.id}>
+                          <>
                             <p data-testid='template-name'>{template.name}</p>
                             <Link
                               href={getLetterTemplatePreviewHref(
@@ -182,7 +182,7 @@ export function MessagePlanCascadePreview({
                             >
                               {pageContent.letterTemplateLinkText}
                             </Link>
-                          </Fragment>
+                          </>
                         </MessagePlanChannelCard>
                       </MessagePlanConditionalTemplatesListItem>
                     ))}

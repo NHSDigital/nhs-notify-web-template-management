@@ -21,20 +21,23 @@ import { interpolate } from '@utils/interpolate';
 
 type PreviewLetterFromChooseTemplateProps = MessagePlanAndTemplatePageProps & {
   validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
-  redirectUrlOnLockNumberFailure: string;
 };
+
+const content = baseContent.components.previewTemplateFromMessagePlan;
 
 export const PreviewLetterFromChooseTemplate = async (
   props: PreviewLetterFromChooseTemplateProps
 ) => {
   const { templateId, routingConfigId } = await props.params;
-  const { redirectUrlOnLockNumberFailure } = props;
 
   const searchParams = await props.searchParams;
   const lockNumberResult = $LockNumber.safeParse(searchParams?.lockNumber);
 
   if (!lockNumberResult.success) {
-    return redirect(redirectUrlOnLockNumberFailure, RedirectType.replace);
+    return redirect(
+      `/message-plans/edit-message-plan/${routingConfigId}`,
+      RedirectType.replace
+    );
   }
 
   const lockNumber = lockNumberResult.data;
@@ -55,11 +58,11 @@ export const PreviewLetterFromChooseTemplate = async (
     validatedTemplate.letterVariantId
   );
 
-  const content = baseContent.components.previewTemplateFromMessagePlan;
-
   let letterType: FrontendSupportedLetterType | undefined;
+
   const isForeignLanguage =
     validatedTemplate.language && validatedTemplate.language !== 'en';
+
   if (isForeignLanguage) {
     letterType = 'language';
   } else if (isFrontendSupportedLetterType(validatedTemplate.letterType)) {
@@ -74,6 +77,14 @@ export const PreviewLetterFromChooseTemplate = async (
     routingConfigId,
     lockNumber,
   });
+
+  const pdfUrl =
+    validatedTemplate.files.initialRender.status === 'RENDERED'
+      ? buildLetterRenderUrl(
+          validatedTemplate,
+          validatedTemplate.files.initialRender.fileName
+        )
+      : null;
 
   return (
     <NHSNotifyContainer>
@@ -96,14 +107,7 @@ export const PreviewLetterFromChooseTemplate = async (
             </h2>
             <LetterRenderIframe
               renderType={'initialRender'}
-              pdfUrl={
-                validatedTemplate.files.initialRender.status === 'RENDERED'
-                  ? buildLetterRenderUrl(
-                      validatedTemplate,
-                      validatedTemplate.files.initialRender.fileName
-                    )
-                  : null
-              }
+              pdfUrl={pdfUrl}
               className='letter-render-iframe nhsuk-u-margin-bottom-6'
             />
             <Link

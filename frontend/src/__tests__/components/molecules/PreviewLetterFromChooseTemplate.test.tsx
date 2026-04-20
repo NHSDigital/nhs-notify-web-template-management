@@ -17,8 +17,6 @@ const getTemplateMock = jest.mocked(getTemplate);
 const getLetterVariantByIdMock = jest.mocked(getLetterVariantById);
 const redirectMock = jest.mocked(redirect);
 
-const defaultRedirectUrl = '/message-plans/edit-message-plan/routing-config-id';
-
 const defaultProps = {
   params: Promise.resolve({
     routingConfigId: 'routing-config-id',
@@ -26,7 +24,6 @@ const defaultProps = {
   }),
   searchParams: Promise.resolve({ lockNumber: '5' }),
   validateTemplate: validateLetterTemplate,
-  redirectUrlOnLockNumberFailure: defaultRedirectUrl,
 };
 
 describe('PreviewLetterFromChooseTemplate', () => {
@@ -38,10 +35,12 @@ describe('PreviewLetterFromChooseTemplate', () => {
     await PreviewLetterFromChooseTemplate({
       ...defaultProps,
       searchParams: Promise.resolve({ lockNumber: 'invalid' }),
-      redirectUrlOnLockNumberFailure: '/custom-redirect',
     });
 
-    expect(redirectMock).toHaveBeenCalledWith('/custom-redirect', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/message-plans/edit-message-plan/routing-config-id',
+      'replace'
+    );
   });
 
   it('should redirect when lockNumber is missing', async () => {
@@ -50,7 +49,10 @@ describe('PreviewLetterFromChooseTemplate', () => {
       searchParams: Promise.resolve({}),
     });
 
-    expect(redirectMock).toHaveBeenCalledWith(defaultRedirectUrl, 'replace');
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/message-plans/edit-message-plan/routing-config-id',
+      'replace'
+    );
   });
 
   it('should redirect to invalid-template when template is not found', async () => {

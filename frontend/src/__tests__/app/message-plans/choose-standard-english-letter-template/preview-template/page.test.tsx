@@ -12,7 +12,7 @@ jest.mock(
 );
 
 describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
-  it('should render PreviewLetterFromChooseTemplate with validateLetterTemplate and redirectUrlOnLockNumberFailure', async () => {
+  it('should render PreviewLetterFromChooseTemplate with validateLetterTemplate', async () => {
     const props = {
       params: Promise.resolve({
         routingConfigId: 'routing-config-id',
@@ -28,7 +28,6 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
       <PreviewLetterFromChooseTemplate
         {...props}
         validateTemplate={validateLetterTemplate}
-        redirectUrlOnLockNumberFailure='/message-plans/edit-message-plan/routing-config-id'
       />
     );
   });
