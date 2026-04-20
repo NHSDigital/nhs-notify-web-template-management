@@ -58,7 +58,7 @@ export function PreviewNHSAppTemplate({
                 radiosId: 'previewNHSAppTemplateAction',
                 formAttributes: { onSubmit: formValidate },
               }}
-              previewDetailsComponent={
+              detailsComponent={
                 <PreviewTemplateDetailsNhsApp template={initialState} />
               }
               editPath={`/edit-nhs-app-template/${initialState.id}`}

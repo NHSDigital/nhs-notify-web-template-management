@@ -58,7 +58,7 @@ export function PreviewSMSTemplate({
                 radiosId: 'previewSMSTemplateAction',
                 formAttributes: { onSubmit: formValidate },
               }}
-              previewDetailsComponent={
+              detailsComponent={
                 <PreviewTemplateDetailsSms template={initialState} />
               }
               editPath={`/edit-text-message-template/${initialState.id}`}

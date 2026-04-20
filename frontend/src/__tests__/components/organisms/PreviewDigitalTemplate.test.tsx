@@ -80,7 +80,7 @@ const renderPreviewTemplate = <T extends DigitalTemplate['templateType']>(
       sectionHeading='Template saved'
       template={template}
       editPath={editPath}
-      previewDetailsComponent={<>Preview</>}
+      detailsComponent={<>Preview</>}
       form={defaultForm}
       {...additionalProps}
     />
