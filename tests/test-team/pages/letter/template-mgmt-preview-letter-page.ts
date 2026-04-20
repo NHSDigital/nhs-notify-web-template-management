@@ -85,12 +85,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
       getCustomFieldInput: (fieldName: string): Locator =>
         panel.locator(`input[id="custom-${fieldName}-${variant}"]`),
       getInlineError: (fieldId: string): Locator =>
-        panel
-          .locator(`[id="${fieldId}"]`)
-          .locator('xpath=..')
-          .locator('.nhsuk-error-message'),
-      getFormGroupForField: (fieldId: string): Locator =>
-        panel.locator(`[id="${fieldId}"]`).locator('xpath=..'),
+        panel.locator(`[data-testid="error-${fieldId}"]`),
       getRecipientOptions: (): Locator => recipientSelect.locator('option'),
 
       async clickTab() {

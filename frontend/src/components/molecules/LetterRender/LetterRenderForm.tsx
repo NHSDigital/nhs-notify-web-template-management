@@ -46,6 +46,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         </Label>
         <NHSNotifyForm.ErrorMessage
           htmlFor={`system-personalisation-pack-id-${tab}`}
+          data-testid={`error-system-personalisation-pack-id-${tab}`}
         />
         <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
@@ -74,7 +75,10 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
                 <Label size='s' htmlFor={id}>
                   {field}
                 </Label>
-                <NHSNotifyForm.ErrorMessage htmlFor={id} />
+                <NHSNotifyForm.ErrorMessage
+                  htmlFor={id}
+                  data-testid={`error-${id}`}
+                />
                 <NHSNotifyForm.Input
                   type='text'
                   id={id}
