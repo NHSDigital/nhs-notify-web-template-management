@@ -131,6 +131,7 @@ exports[`PreviewSubmittedPdfLetterTemplatePage should render full page with PDF 
             </dl>
           </div>
           <a
+            class="nhsuk-body-m"
             data-testid="back-link-bottom"
             href="/message-templates"
           >

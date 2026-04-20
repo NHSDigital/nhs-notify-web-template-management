@@ -45,7 +45,11 @@ const PreviewSubmittedPdfLetterTemplatePage = async (
           <div className='nhsuk-grid-column-full'>
             <PreviewTemplateDetailsPdfLetter template={validatedTemplate} />
 
-            <Link href={backLink.href} data-testid='back-link-bottom'>
+            <Link
+              href={backLink.href}
+              data-testid='back-link-bottom'
+              className='nhsuk-body-m'
+            >
               {backLink.text}
             </Link>
           </div>
