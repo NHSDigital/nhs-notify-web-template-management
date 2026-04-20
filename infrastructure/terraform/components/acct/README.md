@@ -48,7 +48,7 @@
 | <a name="module_s3bucket_artefacts_us_east_1"></a> [s3bucket\_artefacts\_us\_east\_1](#module\_s3bucket\_artefacts\_us\_east\_1) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_backup_reports"></a> [s3bucket\_backup\_reports](#module\_s3bucket\_backup\_reports) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_data_migration_backups"></a> [s3bucket\_data\_migration\_backups](#module\_s3bucket\_data\_migration\_backups) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
-| <a name="module_s3bucket_shared_files"></a> [s3bucket\_shared\_files](#module\_s3bucket\_shared\_files) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.8/terraform-s3bucket.zip | n/a |
+| <a name="module_s3bucket_shared_files"></a> [s3bucket\_shared\_files](#module\_s3bucket\_shared\_files) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.9/terraform-s3bucket.zip | n/a |
 | <a name="module_sandbox_ses"></a> [sandbox\_ses](#module\_sandbox\_ses) | ../../modules/ses | n/a |
 | <a name="module_ses_testing"></a> [ses\_testing](#module\_ses\_testing) | ../../modules/acct-ses-testing | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |

@@ -1,5 +1,5 @@
 module "s3bucket_shared_files" {
-  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.8/terraform-s3bucket.zip"
+  source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.9/terraform-s3bucket.zip"
 
   name = "shared-files"
 
