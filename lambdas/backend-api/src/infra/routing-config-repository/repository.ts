@@ -559,16 +559,32 @@ export class RoutingConfigRepository {
       );
     }
 
-    const templatesMissing = templateReasons.some(
-      (r) => r.Code === 'ConditionalCheckFailed'
-    );
+    const notFoundTemplateIds: string[] = [];
+    const invalidTemplateIds: string[] = [];
 
-    if (templatesMissing) {
+    for (const [index, reason] of templateReasons.entries()) {
+      if (reason?.Code !== 'ConditionalCheckFailed') continue;
+      const templateId = templateIds[index];
+      if (reason.Item) {
+        invalidTemplateIds.push(templateId);
+      } else {
+        notFoundTemplateIds.push(templateId);
+      }
+    }
+    if (notFoundTemplateIds.length > 0) {
       return failure(
-        ErrorCase.TEMPLATES_REJECTED,
-        'Some templates are not suitable to be updated',
+        ErrorCase.ROUTING_CONFIG_TEMPLATES_NOT_FOUND,
+        'Some templates not found',
         err,
-        { templateIds: templateIds.join(',') }
+        { templateIds: notFoundTemplateIds.join(',') }
+      );
+    }
+    if (invalidTemplateIds.length > 0) {
+      return failure(
+        ErrorCase.ROUTING_CONFIG_TEMPLATES_INVALID,
+        'Some templates failed validation',
+        err,
+        { templateIds: invalidTemplateIds.join(',') }
       );
     }
 

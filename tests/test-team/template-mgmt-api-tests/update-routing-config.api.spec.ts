@@ -726,4 +726,68 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       },
     });
   });
+
+  // be a test here where we do an update with a valid template and one that will error? so we can check what comes back in templateIds on the error response?
+  test('update fails when adding multiple templates where at least one template does not belong to the routing config campaign', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      campaignId: 'campaign-1',
+    });
+    const emailTemplate1 = TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      user1
+    );
+    const emailTemplate2 = TemplateFactory.createEmailTemplate(randomUUID(), {
+      ...user1,
+      campaignId: 'campaign-2',
+    });
+
+    await storageHelper.seed([dbEntry]);
+    await templateStorageHelper.seedTemplateData([
+      emailTemplate1,
+      emailTemplate2,
+    ]);
+
+    const update = {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'primary',
+          defaultTemplateId: emailTemplate1.id,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'EMAIL',
+          channelType: 'secondary',
+          defaultTemplateId: emailTemplate2.id,
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+        data: update,
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Some templates not found',
+      details: {
+        templateIds: [emailTemplate2.id],
+      },
+    });
+  });
 });

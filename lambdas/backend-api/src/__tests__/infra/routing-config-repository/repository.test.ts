@@ -2405,7 +2405,60 @@ describe('RoutingConfigRepository', () => {
           actualError: err,
           errorMeta: {
             code: 400,
-            description: 'Some templates are not suitable to be updated',
+            description: 'Some templates not found',
+            details: { templateIds: 'template1' },
+          },
+        },
+      });
+    });
+
+    test('returns 400 failure if some templates are invalid', async () => {
+      const { repo, mocks } = setup();
+
+      const err = new TransactionCanceledException({
+        CancellationReasons: [
+          {
+            Code: 'None', // Update succeeded
+          },
+          {
+            Code: 'ProvisionedThroughputExceeded', // should be ignored
+          },
+          {
+            Code: 'ConditionalCheckFailed',
+            Item: { id: { S: 'template1' } }, // Invalid template
+          },
+        ],
+        $metadata: {},
+        message: 'Transaction cancelled',
+      });
+
+      mocks.dynamo.on(TransactWriteCommand).rejects(err);
+
+      const result = await repo.update(
+        routingConfig.id,
+        {
+          name: 'new-name',
+          cascade: [
+            {
+              cascadeGroups: ['standard'],
+              channel: 'SMS',
+              channelType: 'primary',
+              defaultTemplateId: 'template1',
+            },
+          ],
+          cascadeGroupOverrides: [],
+        },
+        user,
+        2,
+        routingConfig.campaignId
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          errorMeta: {
+            code: 400,
+            description: 'Some templates failed validation',
             details: { templateIds: 'template1' },
           },
         },
