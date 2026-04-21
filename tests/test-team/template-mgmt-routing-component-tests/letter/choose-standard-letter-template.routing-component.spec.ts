@@ -49,6 +49,7 @@ function createTemplates(user: TestUser) {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LETTER2: TemplateFactory.createAuthoringLetterTemplate(
@@ -59,6 +60,7 @@ function createTemplates(user: TestUser) {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LETTER_APPROVED: TemplateFactory.createAuthoringLetterTemplate(
@@ -69,6 +71,7 @@ function createTemplates(user: TestUser) {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LETTER_NOT_SUBMITTED: TemplateFactory.createAuthoringLetterTemplate(
@@ -86,6 +89,7 @@ function createTemplates(user: TestUser) {
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     ACCESSIBLE_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -97,6 +101,7 @@ function createTemplates(user: TestUser) {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     APP: TemplateFactory.createNhsAppTemplate(

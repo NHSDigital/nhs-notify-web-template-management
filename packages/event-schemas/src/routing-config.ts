@@ -28,9 +28,6 @@ const $RoutingConfigEventConditionalTemplate = z
       description:
         'Communication preference override for the template - q1:Braille, q4:British Sign Language, x1:Large Print, x3:Audio',
     }),
-    supplierReferences: z.record(z.string(), z.string()).optional().meta({
-      description: 'Supplier references that identify the template',
-    }),
     templateId: z
       .string()
       // eslint-disable-next-line security/detect-unsafe-regex
@@ -52,9 +49,6 @@ const $BaseCascadeItem = z.object({
   }),
   channelType: $RoutingConfigEventChannelType.meta({
     description: 'Channel type for this cascade item',
-  }),
-  supplierReferences: z.record(z.string(), z.string()).optional().meta({
-    description: 'Supplier references that identify the template',
   }),
   conditionalTemplates: z
     .array($RoutingConfigEventConditionalTemplate)

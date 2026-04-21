@@ -30,6 +30,7 @@
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_root_domain_name"></a> [root\_domain\_name](#input\_root\_domain\_name) | The service's root DNS root nameespace, like nonprod.nhsnotify.national.nhs.uk | `string` | `"nonprod.nhsnotify.national.nhs.uk"` | no |
+| <a name="input_shared_files_bucket_allowlist"></a> [shared\_files\_bucket\_allowlist](#input\_shared\_files\_bucket\_allowlist) | List of ARNs allowed to access the shared files bucket | `list(string)` | `[]` | no |
 | <a name="input_support_sandbox_environments"></a> [support\_sandbox\_environments](#input\_support\_sandbox\_environments) | Does this account support dev sandbox environments? | `bool` | `false` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | n/a | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_vpc_subnet_cidr_bits"></a> [vpc\_subnet\_cidr\_bits](#input\_vpc\_subnet\_cidr\_bits) | Number of additional bits to use for subnetting the VPC CIDR block. The bits are evently distributed | <pre>object({<br/>    public  = number<br/>    private = number<br/>  })</pre> | <pre>{<br/>  "private": 3,<br/>  "public": 12<br/>}</pre> | no |
@@ -37,6 +38,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_kms"></a> [kms](#module\_kms) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.8/terraform-kms.zip | n/a |
 | <a name="module_kms_ecr"></a> [kms\_ecr](#module\_kms\_ecr) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_kms_sandbox"></a> [kms\_sandbox](#module\_kms\_sandbox) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-kms.zip | n/a |
 | <a name="module_obs_datasource"></a> [obs\_datasource](#module\_obs\_datasource) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-obs-datasource.zip | n/a |
@@ -46,6 +48,7 @@
 | <a name="module_s3bucket_artefacts_us_east_1"></a> [s3bucket\_artefacts\_us\_east\_1](#module\_s3bucket\_artefacts\_us\_east\_1) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.4/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_backup_reports"></a> [s3bucket\_backup\_reports](#module\_s3bucket\_backup\_reports) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
 | <a name="module_s3bucket_data_migration_backups"></a> [s3bucket\_data\_migration\_backups](#module\_s3bucket\_data\_migration\_backups) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/v2.0.20/terraform-s3bucket.zip | n/a |
+| <a name="module_s3bucket_shared_files"></a> [s3bucket\_shared\_files](#module\_s3bucket\_shared\_files) | https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.0.9/terraform-s3bucket.zip | n/a |
 | <a name="module_sandbox_ses"></a> [sandbox\_ses](#module\_sandbox\_ses) | ../../modules/ses | n/a |
 | <a name="module_ses_testing"></a> [ses\_testing](#module\_ses\_testing) | ../../modules/acct-ses-testing | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |
@@ -55,6 +58,7 @@
 |------|-------------|
 | <a name="output_dns_zone"></a> [dns\_zone](#output\_dns\_zone) | n/a |
 | <a name="output_github_pat_ssm_param_name"></a> [github\_pat\_ssm\_param\_name](#output\_github\_pat\_ssm\_param\_name) | n/a |
+| <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | n/a |
 | <a name="output_log_subscription_role_arn"></a> [log\_subscription\_role\_arn](#output\_log\_subscription\_role\_arn) | n/a |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | n/a |
 | <a name="output_ses_testing_config"></a> [ses\_testing\_config](#output\_ses\_testing\_config) | n/a |

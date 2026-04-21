@@ -8,10 +8,19 @@ import {
   $DynamoDBProofRequest,
   $DynamoDBRoutingConfig,
   $DynamoDBTemplate,
+  $DynamoDBTemplateOldImage,
+  DynamoDBTemplate,
   PublishableEventRecord,
 } from './input-schemas';
 import { Event, $Event } from './output-schemas';
 import { shouldPublish } from './should-publish';
+
+type EventBuilderOutput =
+  | {
+      event: Event;
+      sharedFiles?: Record<string, string>;
+    }
+  | undefined;
 
 export class EventBuilder {
   constructor(
@@ -19,6 +28,8 @@ export class EventBuilder {
     private readonly routingConfigTableName: string,
     private readonly proofRequestsTableName: string,
     private readonly eventSource: string,
+    private readonly sharedFilesBucket: string,
+    private readonly sharedFilesPrefix: string,
     private readonly logger: Logger
   ) {}
 
@@ -74,9 +85,69 @@ export class EventBuilder {
     };
   }
 
+  private getInternalFilePathForTemplateEvent(
+    databaseTemplate: DynamoDBTemplate
+  ) {
+    const { clientId, id, files } = databaseTemplate;
+    if (!files || !files.docxTemplate) {
+      this.logger.error({
+        description: 'Unexpected missing docx template',
+        databaseTemplate,
+      });
+      throw new Error('Unexpected missing DOCX template');
+    }
+
+    return `docx-template/${clientId}/${id}/${files.docxTemplate.currentVersion}.docx`;
+  }
+
+  private getSharedFilePathForTemplateEvent(
+    { clientId, id }: DynamoDBTemplate,
+    sequenceNumber: string
+  ) {
+    return `${this.sharedFilesPrefix}/${clientId}/${id}/${sequenceNumber}.docx`;
+  }
+
+  private getNonDatabaseFieldsForTemplateEvent(
+    databaseTemplate: DynamoDBTemplate,
+    sequenceNumber: string
+  ) {
+    if (databaseTemplate.templateType !== 'LETTER') {
+      return {};
+    }
+
+    return {
+      files: {
+        docxTemplate: {
+          url: `${this.sharedFilesBucket}/${this.getSharedFilePathForTemplateEvent(databaseTemplate, sequenceNumber)}`,
+        },
+      },
+      personalisationParameters: databaseTemplate.customPersonalisation,
+    };
+  }
+
+  private getSharedFileMappingsForTemplateEvent(
+    databaseTemplate: DynamoDBTemplate,
+    sequenceNumber: string
+  ) {
+    if (databaseTemplate.templateType !== 'LETTER') {
+      return {};
+    }
+
+    const internalFilePath =
+      this.getInternalFilePathForTemplateEvent(databaseTemplate);
+    const sharedFilePath = this.getSharedFilePathForTemplateEvent(
+      databaseTemplate,
+      sequenceNumber
+    );
+
+    return {
+      [internalFilePath]: sharedFilePath,
+    };
+  }
+
   private buildTemplateDatabaseEvent(
     publishableEventRecord: PublishableEventRecord
-  ): Event | undefined {
+  ): EventBuilderOutput {
     if (!publishableEventRecord.dynamodb.NewImage) {
       // if this is a hard delete do not publish an event - we will publish events
       // when the status is set to deleted
@@ -94,8 +165,23 @@ export class EventBuilder {
       ? unmarshall(publishableEventRecord.dynamodb.OldImage)
       : undefined;
 
-    const databaseTemplateNew = $DynamoDBTemplate.parse(dynamoRecordNew);
-    const databaseTemplateOld = $DynamoDBTemplate
+    const safeParsedDynamoRecordNew =
+      $DynamoDBTemplate.safeParse(dynamoRecordNew);
+
+    if (!safeParsedDynamoRecordNew.success) {
+      const error = safeParsedDynamoRecordNew.error;
+      this.logger
+        .child({
+          description: 'Failed to parse dynamo record',
+          publishableEventRecord,
+        })
+        .error(error);
+
+      throw error;
+    }
+
+    const databaseTemplateNew = safeParsedDynamoRecordNew.data;
+    const databaseTemplateOld = $DynamoDBTemplateOldImage
       .optional()
       .parse(dynamoRecordOld);
 
@@ -109,16 +195,28 @@ export class EventBuilder {
     }
 
     try {
-      return $Event.parse({
-        ...this.buildEventMetadata(
-          publishableEventRecord.eventID,
-          this.classifyTemplateSavedEventType(
-            databaseTemplateNew.templateStatus
+      return {
+        event: $Event.parse({
+          ...this.buildEventMetadata(
+            publishableEventRecord.eventID,
+            this.classifyTemplateSavedEventType(
+              databaseTemplateNew.templateStatus
+            ),
+            databaseTemplateNew.id
           ),
-          databaseTemplateNew.id
+          data: {
+            ...dynamoRecordNew,
+            ...this.getNonDatabaseFieldsForTemplateEvent(
+              databaseTemplateNew,
+              publishableEventRecord.dynamodb.SequenceNumber
+            ),
+          },
+        }),
+        sharedFiles: this.getSharedFileMappingsForTemplateEvent(
+          databaseTemplateNew,
+          publishableEventRecord.dynamodb.SequenceNumber
         ),
-        data: dynamoRecordNew,
-      });
+      };
     } catch (error) {
       this.logger
         .child({
@@ -133,7 +231,7 @@ export class EventBuilder {
 
   private buildRoutingConfigDatabaseEvent(
     publishableEventRecord: PublishableEventRecord
-  ): Event | undefined {
+  ): EventBuilderOutput {
     if (!publishableEventRecord.dynamodb.NewImage) {
       // if this is a hard delete do not publish an event - we will publish events
       // when the status is set to deleted
@@ -169,12 +267,12 @@ export class EventBuilder {
       return undefined;
     }
 
-    return event.data;
+    return { event: event.data };
   }
 
   private buildProofRequestedEvent(
     publishableEventRecord: PublishableEventRecord
-  ): Event | undefined {
+  ): EventBuilderOutput {
     if (!publishableEventRecord.dynamodb.NewImage) {
       // Do not publish an event if a proof-request record is deleted
       this.logger.debug({
@@ -190,15 +288,17 @@ export class EventBuilder {
     const databaseProofRequest = $DynamoDBProofRequest.parse(dynamoRecord);
 
     try {
-      return $Event.parse({
-        ...this.buildEventMetadata(
-          publishableEventRecord.eventID,
-          'ProofRequested',
-          databaseProofRequest.id,
-          'data'
-        ),
-        data: dynamoRecord,
-      });
+      return {
+        event: $Event.parse({
+          ...this.buildEventMetadata(
+            publishableEventRecord.eventID,
+            'ProofRequested',
+            databaseProofRequest.id,
+            'data'
+          ),
+          data: dynamoRecord,
+        }),
+      };
     } catch (error) {
       this.logger
         .child({
@@ -213,7 +313,7 @@ export class EventBuilder {
 
   buildEvent(
     publishableEventRecord: PublishableEventRecord
-  ): Event | undefined {
+  ): EventBuilderOutput {
     switch (publishableEventRecord.tableName) {
       case this.templatesTableName: {
         return this.buildTemplateDatabaseEvent(publishableEventRecord);
