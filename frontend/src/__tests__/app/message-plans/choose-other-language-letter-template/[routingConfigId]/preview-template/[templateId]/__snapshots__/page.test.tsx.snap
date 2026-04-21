@@ -79,7 +79,7 @@ exports[`PreviewOtherLanguageLetterTemplateFromMessagePlan page should render fu
                 />
               </div>
               <div
-                class="nhsuk-summary-list__row missing-value"
+                class="nhsuk-summary-list__row"
                 id="campaign-id"
               >
                 <dt
@@ -89,7 +89,9 @@ exports[`PreviewOtherLanguageLetterTemplateFromMessagePlan page should render fu
                 </dt>
                 <dd
                   class="nhsuk-summary-list__value"
-                />
+                >
+                  campaign-1
+                </dd>
                 <dd
                   aria-hidden="true"
                   class="nhsuk-summary-list__actions"

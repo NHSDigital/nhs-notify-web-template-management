@@ -84,7 +84,7 @@ exports[`PreviewLetterTemplateFromReviewAndMoveToProduction page should render f
                 />
               </div>
               <div
-                class="nhsuk-summary-list__row missing-value"
+                class="nhsuk-summary-list__row"
                 id="campaign-id"
               >
                 <dt
@@ -94,7 +94,9 @@ exports[`PreviewLetterTemplateFromReviewAndMoveToProduction page should render f
                 </dt>
                 <dd
                   class="nhsuk-summary-list__value"
-                />
+                >
+                  campaign-1
+                </dd>
                 <dd
                   aria-hidden="true"
                   class="nhsuk-summary-list__actions"

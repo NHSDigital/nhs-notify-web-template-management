@@ -72,7 +72,7 @@ exports[`PreviewLetterTemplateFromPreviewMessagePlan page should render full pag
                 />
               </div>
               <div
-                class="nhsuk-summary-list__row missing-value"
+                class="nhsuk-summary-list__row"
                 id="campaign-id"
               >
                 <dt
@@ -82,7 +82,9 @@ exports[`PreviewLetterTemplateFromPreviewMessagePlan page should render full pag
                 </dt>
                 <dd
                   class="nhsuk-summary-list__value"
-                />
+                >
+                  campaign-1
+                </dd>
                 <dd
                   aria-hidden="true"
                   class="nhsuk-summary-list__actions"

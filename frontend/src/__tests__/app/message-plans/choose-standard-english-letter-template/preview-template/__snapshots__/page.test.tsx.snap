@@ -91,7 +91,7 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page should render 
                 />
               </div>
               <div
-                class="nhsuk-summary-list__row missing-value"
+                class="nhsuk-summary-list__row"
                 id="campaign-id"
               >
                 <dt
@@ -101,7 +101,9 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page should render 
                 </dt>
                 <dd
                   class="nhsuk-summary-list__value"
-                />
+                >
+                  campaign-1
+                </dd>
                 <dd
                   aria-hidden="true"
                   class="nhsuk-summary-list__actions"

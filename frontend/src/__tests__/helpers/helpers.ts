@@ -106,6 +106,7 @@ const BASE_AUTHORING_LETTER_TEMPLATE: Omit<
   'id' | 'name'
 > = {
   clientId: 'client-1',
+  campaignId: 'campaign-1',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x0',
