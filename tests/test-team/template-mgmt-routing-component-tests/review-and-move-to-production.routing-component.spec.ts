@@ -61,7 +61,6 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
         letterVariantId: letterVariant.id,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
