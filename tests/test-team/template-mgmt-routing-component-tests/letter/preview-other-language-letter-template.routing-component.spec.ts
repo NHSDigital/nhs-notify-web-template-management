@@ -67,6 +67,7 @@ function createTemplates(user: TestUser) {
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
   };

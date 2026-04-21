@@ -430,6 +430,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
           language: 'fr',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 
@@ -442,6 +443,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
           language: 'ar',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 
@@ -652,17 +654,27 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     const englishTemplate = TemplateFactory.createAuthoringLetterTemplate(
       englishTemplateId,
       user1,
-      'English Template'
+      'English Template',
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
+      }
     );
-    englishTemplate.templateStatus = 'PROOF_APPROVED';
     englishTemplate.lockNumber = 3;
 
     const frenchTemplate = TemplateFactory.createAuthoringLetterTemplate(
       frenchTemplateId,
       user1,
-      'French Template'
+      'French Template',
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
+      }
     );
-    frenchTemplate.templateStatus = 'PROOF_APPROVED';
     frenchTemplate.lockNumber = 4;
 
     await templateStorageHelper.seedTemplateData([

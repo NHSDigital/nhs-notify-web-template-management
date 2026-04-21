@@ -120,6 +120,7 @@ test.describe('GET /v1/template/:templateId/routing-configurations', () => {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     );
 

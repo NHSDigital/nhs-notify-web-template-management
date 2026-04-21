@@ -19,10 +19,10 @@ module "kms_sandbox" {
   alias           = "alias/${local.csi}-sandbox"
   iam_delegation  = true
 
-  key_policy_documents = [data.aws_iam_policy_document.kms.json]
+  key_policy_documents = [data.aws_iam_policy_document.kms_sandbox.json]
 }
 
-data "aws_iam_policy_document" "kms" {
+data "aws_iam_policy_document" "kms_sandbox" {
   # '*' resource scope is permitted in access policies as as the resource is itself
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-services.html
 

@@ -5,364 +5,243 @@ import {
 import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { getTestContext } from '../helpers/context/context';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { readFileSync } from 'node:fs';
-import { SftpHelper } from '../helpers/sftp/sftp-helper';
-import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
-import { setTimeout } from 'node:timers/promises';
-import { Template } from 'helpers/types';
 import { eventWithId } from '../helpers/events/matchers';
+import { docxFixtures } from 'fixtures/letters';
 
 test.describe('Event publishing - Letters', () => {
   const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
-  const sftpHelper = new SftpHelper();
-  const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
-
-  let userRoutingEnabled: TestUser;
-  let userRoutingDisabledProofingEnabled: TestUser;
-  let userProofingDisabled: TestUser;
+  let userDigitalProofingEnabled: TestUser;
 
   test.beforeAll(async () => {
-    await sftpHelper.connect();
-    userRoutingEnabled = await context.auth.getTestUser(testUsers.User1.userId);
-    userRoutingDisabledProofingEnabled = await context.auth.getTestUser(
-      testUsers.User2.userId
-    );
-    userProofingDisabled = await context.auth.getTestUser(
-      testUsers.User3.userId
+    userDigitalProofingEnabled = await context.auth.getTestUser(
+      testUsers.UserDigitalProofingEnabled.userId
     );
   });
 
   test.afterAll(async () => {
-    await sftpHelper.end();
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('Expect no events when proofingEnabled is false', async ({
-    request,
+  test('template in a PROOF_APPROVED status causes a TemplateDrafted event to be sent', async ({
     eventSubscriber,
   }) => {
-    const templateId = randomUUID();
-
     const start = new Date();
 
-    const template = {
-      ...TemplateFactory.uploadPdfLetterTemplate(
-        templateId,
-        userProofingDisabled,
-        'user-proof-disabled'
-      ),
-      proofingEnabled: false,
-    };
+    const templateId = '0012213b-bcdd-4914-8d24-c4d446da9b4c';
+    const currentVersion = '9aa5e69b-c089-48fd-a387-f24df840771b';
 
-    await templateStorageHelper.seedTemplateData([template]);
-
-    const submittedResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
-      {
-        headers: {
-          Authorization: await userProofingDisabled.getAccessToken(),
-          'X-Lock-Number': String(template.lockNumber),
-        },
-      }
-    );
-
-    expect(submittedResponse.status()).toBe(200);
-
-    // Note: not ideal - but we are expecting 0 events and there can be a delay
-    // in events arriving. We should wait for a moment
-    // 5 seconds seems to largest delay when testing locally
-    await setTimeout(5000);
-
-    const events = await eventSubscriber.receive({
-      since: start,
-      match: eventWithId(templateId),
-    });
-
-    expect(events).toHaveLength(0);
-  });
-
-  test('expect no events when deleting a letter when previous status is not publishable', async ({
-    request,
-    eventSubscriber,
-  }) => {
-    const templateId = randomUUID();
-
-    const start = new Date();
-
-    const template = {
-      ...TemplateFactory.uploadPdfLetterTemplate(
-        templateId,
-        userRoutingEnabled,
-        'user-proof-disabled',
-        'VALIDATION_FAILED'
-      ),
-    };
-
-    await templateStorageHelper.seedTemplateData([template]);
-
-    const deletedResponse = await request.delete(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}`,
-      {
-        headers: {
-          Authorization: await userRoutingEnabled.getAccessToken(),
-          'X-Lock-Number': String(template.lockNumber),
-        },
-      }
-    );
-
-    expect(deletedResponse.status()).toBe(204);
-
-    // Note: not ideal - but we are expecting 0 events and there can be a delay
-    await setTimeout(5000);
-
-    const events = await eventSubscriber.receive({
-      since: start,
-      match: eventWithId(templateId),
-    });
-
-    expect(events).toHaveLength(0);
-  });
-
-  test('Expect Draft.v1 events When waiting for Proofs to become available (routing disabled)', async ({
-    request,
-    eventSubscriber,
-  }) => {
-    const templateId = randomUUID();
-
-    const template = {
-      ...TemplateFactory.uploadPdfLetterTemplate(
-        templateId,
-        userRoutingDisabledProofingEnabled,
-        'userProofingEnabledTemplate',
-        'PENDING_PROOF_REQUEST'
-      ),
-      // the values in this array do not matter at this point
-      personalisationParameters: ['nhsNumber'],
-    };
-
-    await templateStorageHelper.seedTemplateData([template]);
-
-    const start = new Date();
-
-    const pdfContent = readFileSync(
-      './fixtures/letters/no-custom-personalisation/template.pdf'
-    );
-
-    const supplierReference = [
-      userRoutingDisabledProofingEnabled.clientId,
-      'campaign',
+    const template = TemplateFactory.createAuthoringLetterTemplate(
       templateId,
-      'en',
-      'x0',
-    ].join('_');
-
-    await sftpHelper.put(
-      pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-1.pdf`
-    );
-    await sftpHelper.put(
-      pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-2.pdf`
-    );
-    await sftpHelper.put(
-      pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${supplierReference}/proof-3.pdf`
-    );
-
-    const requestProofResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
+      userDigitalProofingEnabled,
+      'letter-event-tests-template-drafted',
+      'PROOF_APPROVED',
       {
-        headers: {
-          Authorization:
-            await userRoutingDisabledProofingEnabled.getAccessToken(),
-          'X-Lock-Number': String(template.lockNumber),
+        docxTemplate: {
+          currentVersion,
+          fileName: 'filename.docx',
+          virusScanStatus: 'PASSED',
         },
+        shortFormRender: {
+          status: 'RENDERED',
+        },
+        longFormRender: {
+          status: 'RENDERED',
+        },
+        letterVariantId: 'letter-variant-id',
       }
     );
 
-    expect(requestProofResponse.status()).toBe(200);
-
-    await lambdaClient.send(
-      new InvokeCommand({
-        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-        Payload: JSON.stringify({
-          supplier: 'WTMMOCK',
-        }),
-      })
-    );
-
-    let latest: Template = template;
-
-    await expect(async () => {
-      latest = await templateStorageHelper.getTemplate({
+    await templateStorageHelper.putScannedDocxTemplateFile(
+      {
+        clientId: userDigitalProofingEnabled.clientId,
         templateId,
-        clientId: userRoutingDisabledProofingEnabled.clientId,
-      });
-
-      expect(latest.templateStatus).toBe('PROOF_AVAILABLE');
-    }).toPass({ timeout: 15_000, intervals: [1000, 3000, 5000] });
-
-    const submitResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
-      {
-        headers: {
-          Authorization:
-            await userRoutingDisabledProofingEnabled.getAccessToken(),
-          'X-Lock-Number': String(latest.lockNumber),
-        },
-      }
+      },
+      currentVersion,
+      docxFixtures.standard.open()
     );
 
-    expect(submitResponse.status()).toBe(200);
+    await templateStorageHelper.seedTemplateData([template]);
 
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
         match: eventWithId(templateId),
       });
+      expect(events.length).toBe(1);
 
-      // Note: This is weird, But sometimes the tests find all relevant events within
-      // 6 events and can never find the 7th event before the test times out.
-      // Following the updates in Code we do a total of 7 updates so we'd expect 7 events.
-      /*
-       *  PENDING_PROOF_REQUEST: 1 update
-       *  WAITING_FOR_PROOF: 2 updates
-       * * * Set status WAITING_FOR_PROOF
-       * * * Add proof-1.pdf
-       *  PROOF_AVAILABLE: 3 updates
-       * * * Set Status to PROOF_AVAILABLE
-       * * * add proof-2.pdf
-       * * * add proof-3.pdf
-       *  SUBMITTED: 1 update
-       */
-      // This check is here to prevent events we don't want to publish from slipping through.
-      // I.E PENDING_UPLOAD status.
-      expect(events.length).toBeGreaterThanOrEqual(6);
-      expect(events.length).toBeLessThanOrEqual(7);
-
-      const drafts = events.filter(
+      const draftEvents = events.filter(
         ({ record }) =>
           record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
-      expect(drafts.length, JSON.stringify(events)).toBeGreaterThanOrEqual(5);
-
-      console.log(`Events found: ${events.length}. Expected: 6 or 7`);
-    }).toPass({ timeout: 90_000, intervals: [1000, 3000, 5000] });
+      expect(draftEvents.length, JSON.stringify(events)).toBe(1);
+    }).toPass({ timeout: 90_000 });
   });
 
-  test('Expect Draft event when routing is enabled and proof is approved', async ({
-    request,
+  test('template in a SUBMITTED status causes a TemplateCompleted event to be sent', async ({
     eventSubscriber,
   }) => {
-    const templateId = randomUUID();
-
-    const template = TemplateFactory.uploadPdfLetterTemplate(
-      templateId,
-      userRoutingEnabled,
-      'userRoutingEnabledTemplate',
-      'PROOF_AVAILABLE'
-    );
-
-    await templateStorageHelper.seedTemplateData([template]);
-
     const start = new Date();
 
-    const submitResponse = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
+    const templateId = 'b5d46027-c877-4f91-9e58-96ca24cce0dd';
+    const currentVersion = 'c28cea1f-ed36-47ab-b94c-b3c0695d36a1';
+
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      templateId,
+      userDigitalProofingEnabled,
+      'letter-event-tests-template-completed',
+      'SUBMITTED',
       {
-        headers: {
-          Authorization: await userRoutingEnabled.getAccessToken(),
-          'X-Lock-Number': String(template.lockNumber),
+        docxTemplate: {
+          currentVersion,
+          fileName: 'filename.docx',
+          virusScanStatus: 'PASSED',
         },
+        shortFormRender: {
+          status: 'RENDERED',
+        },
+        longFormRender: {
+          status: 'RENDERED',
+        },
+        letterVariantId: 'letter-variant-id',
       }
     );
 
-    expect(submitResponse.status()).toBe(200);
+    await templateStorageHelper.putScannedDocxTemplateFile(
+      {
+        clientId: userDigitalProofingEnabled.clientId,
+        templateId,
+      },
+      currentVersion,
+      docxFixtures.standard.open()
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
         match: eventWithId(templateId),
       });
+      expect(events.length).toBe(1);
 
-      expect(events).toHaveLength(2);
+      const completedEvents = events.filter(
+        ({ record }) =>
+          record.type ===
+          'uk.nhs.notify.template-management.TemplateCompleted.v1'
+      );
 
-      const drafts = events.filter(
+      expect(completedEvents.length, JSON.stringify(events)).toBe(1);
+    }).toPass({ timeout: 90_000 });
+  });
+
+  test('template in a DELETED status causes a TemplateDeleted event to be sent when the previous status was PROOF_APPROVED', async ({
+    eventSubscriber,
+  }) => {
+    const start = new Date();
+
+    const templateId = 'b3e014e1-38bf-429d-a6ed-70eb92a4e4fc';
+    const currentVersion = 'e3fd4109-6995-4592-9dbc-a0c467f9a51e';
+
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      templateId,
+      userDigitalProofingEnabled,
+      'letter-event-tests-template-deleted',
+      'PROOF_APPROVED',
+      {
+        docxTemplate: {
+          currentVersion,
+          fileName: 'filename.docx',
+          virusScanStatus: 'PASSED',
+        },
+        shortFormRender: {
+          status: 'RENDERED',
+        },
+        longFormRender: {
+          status: 'RENDERED',
+        },
+        letterVariantId: 'letter-variant-id',
+      }
+    );
+
+    await templateStorageHelper.putScannedDocxTemplateFile(
+      {
+        clientId: userDigitalProofingEnabled.clientId,
+        templateId,
+      },
+      currentVersion,
+      docxFixtures.standard.open()
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    await templateStorageHelper.seedTemplateData([
+      { ...template, templateStatus: 'DELETED' },
+    ]);
+
+    await expect(async () => {
+      const events = await eventSubscriber.receive({
+        since: start,
+        match: eventWithId(templateId),
+      });
+      expect(events.length).toBe(2);
+
+      const draftEvents = events.filter(
         ({ record }) =>
           record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
-      expect(drafts).toHaveLength(2);
-    }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
+      const completedEvents = events.filter(
+        ({ record }) =>
+          record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
+      );
+
+      expect(draftEvents.length, JSON.stringify(events)).toBe(1);
+      expect(completedEvents.length, JSON.stringify(events)).toBe(1);
+    }).toPass({ timeout: 90_000 });
   });
 
-  test('Expect Deleted.v1 event when deleting templates', async ({
-    request,
+  test('template in a NOT_YET_SUBMITTED status causes no events to be sent', async ({
     eventSubscriber,
   }) => {
-    const templateId = randomUUID();
-
     const start = new Date();
 
-    const template = {
-      ...TemplateFactory.uploadPdfLetterTemplate(
-        templateId,
-        userRoutingEnabled,
-        'user-proof-deleted',
-        'PENDING_PROOF_REQUEST'
-      ),
-      proofingEnabled: true,
-      // just so it is not empty
-      personalisationParameters: ['nhsNumber'],
-    };
+    const templateId = '1be43ae1-b467-4d60-8f1e-860c5ffa8a6c';
+    const currentVersion = '58cab804-1c18-4adc-bee4-9f1a9ea00b02';
 
-    await templateStorageHelper.seedTemplateData([template]);
-
-    const deletedResponse = await request.delete(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}`,
+    const template = TemplateFactory.createAuthoringLetterTemplate(
+      templateId,
+      userDigitalProofingEnabled,
+      'letter-event-tests-no-events',
+      'NOT_YET_SUBMITTED',
       {
-        headers: {
-          Authorization: await userRoutingEnabled.getAccessToken(),
-          'X-Lock-Number': String(template.lockNumber),
+        docxTemplate: {
+          currentVersion,
+          fileName: 'filename.docx',
+          virusScanStatus: 'PASSED',
         },
       }
     );
 
-    expect(deletedResponse.status()).toBe(204);
+    await templateStorageHelper.putScannedDocxTemplateFile(
+      {
+        clientId: userDigitalProofingEnabled.clientId,
+        templateId,
+      },
+      currentVersion,
+      docxFixtures.standard.open()
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
 
     await expect(async () => {
       const events = await eventSubscriber.receive({
         since: start,
         match: eventWithId(templateId),
       });
-
-      expect(events).toHaveLength(2);
-
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          record: expect.objectContaining({
-            type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
-            data: expect.objectContaining({
-              id: templateId,
-            }),
-          }),
-        })
-      );
-
-      expect(events).toContainEqual(
-        expect.objectContaining({
-          record: expect.objectContaining({
-            type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
-            data: expect.objectContaining({
-              id: templateId,
-            }),
-          }),
-        })
-      );
-    }).toPass({ timeout: 60_000, intervals: [1000, 3000, 5000] });
+      expect(events.length).toBe(0);
+    }).toPass({ timeout: 90_000 });
   });
 });

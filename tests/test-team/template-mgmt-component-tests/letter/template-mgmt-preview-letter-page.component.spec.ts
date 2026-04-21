@@ -135,6 +135,7 @@ function createTemplates(
     authoringInvalid: {
       id: 'preview-page-invalid-authoring-letter',
       version: 1,
+      clientId: user.clientId,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateType: 'LETTER',

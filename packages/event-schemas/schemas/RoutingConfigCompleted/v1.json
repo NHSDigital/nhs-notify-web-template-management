@@ -139,16 +139,6 @@
           ],
           "description": "Channel type for this cascade item"
         },
-        "supplierReferences": {
-          "description": "Supplier references that identify the template",
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
         "conditionalTemplates": {
           "type": "array",
           "items": {
@@ -221,16 +211,6 @@
             "x1",
             "x3"
           ]
-        },
-        "supplierReferences": {
-          "description": "Supplier references that identify the template",
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "type": "string"
-          }
         },
         "templateId": {
           "type": "string",
