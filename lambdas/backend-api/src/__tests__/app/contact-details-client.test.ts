@@ -2,7 +2,6 @@ import { mock } from 'jest-mock-extended';
 import type { FailureResult } from 'nhs-notify-backend-client/types';
 import type { User } from 'nhs-notify-web-template-management-utils';
 import { ContactDetailsClient } from '@backend-api/app/contact-details-client';
-import type { ClientConfigRepository } from '@backend-api/infra/client-config-repository';
 import type { ContactDetailsRepository } from '@backend-api/infra/contact-details-repository';
 import type { OtpService } from '@backend-api/infra/otp-service';
 
@@ -27,16 +26,6 @@ function setup() {
       })
   );
 
-  const clientConfigRepo = mock<ClientConfigRepository>();
-  clientConfigRepo.get.mockResolvedValue({
-    data: {
-      features: {
-        digitalProofingEmail: true,
-        digitalProofingSms: true,
-      },
-    },
-  });
-
   const otpService = mock<OtpService>();
   otpService.generate.mockResolvedValue({
     data: OTP,
@@ -45,15 +34,11 @@ function setup() {
     data: undefined,
   });
 
-  const client = new ContactDetailsClient(
-    contactDetailsRepo,
-    otpService,
-    clientConfigRepo
-  );
+  const client = new ContactDetailsClient(contactDetailsRepo, otpService);
 
   return {
     client,
-    mocks: { contactDetailsRepo, clientConfigRepo, otpService },
+    mocks: { contactDetailsRepo, otpService },
   };
 }
 
@@ -118,33 +103,6 @@ describe('ContactDetailsClient', () => {
       expect(result.error?.errorMeta.description).toBe(
         'Request failed validation'
       );
-    });
-
-    it('returns fetch client config error result', async () => {
-      const { client, mocks } = setup();
-
-      const error: FailureResult = {
-        error: {
-          errorMeta: {
-            code: 500,
-            description: 'Something went wrong',
-          },
-        },
-      };
-
-      mocks.clientConfigRepo.get.mockResolvedValueOnce(error);
-
-      const result = await client.requestVerification(
-        {
-          type: 'SMS',
-          value: '07890123456',
-        },
-        USER
-      );
-
-      expect(result).toBe(error);
-
-      expect(mocks.clientConfigRepo.get).toHaveBeenCalledWith(USER.clientId);
     });
 
     it('returns otp generation error result', async () => {
@@ -220,62 +178,6 @@ describe('ContactDetailsClient', () => {
       );
 
       expect(result).toBe(error);
-    });
-
-    describe('feature flags disabled', () => {
-      it('returns feature disabled result for email request if client has email proofing disabled', async () => {
-        const { client, mocks } = setup();
-
-        mocks.clientConfigRepo.get.mockResolvedValueOnce({
-          data: {
-            features: {
-              digitalProofingEmail: false,
-              digitalProofingSms: true,
-            },
-          },
-        });
-
-        const result = await client.requestVerification(
-          {
-            type: 'EMAIL',
-            value: 'test@nhs.net',
-          },
-          USER
-        );
-
-        expect(result.data).toBeUndefined();
-        expect(result.error?.errorMeta.code).toBe(403);
-        expect(result.error?.errorMeta.description).toBe(
-          'User cannot request contact detail verification for EMAIL.'
-        );
-      });
-
-      it('returns feature disabled result for sms request if client has sms proofing disabled', async () => {
-        const { client, mocks } = setup();
-
-        mocks.clientConfigRepo.get.mockResolvedValueOnce({
-          data: {
-            features: {
-              digitalProofingEmail: true,
-              digitalProofingSms: false,
-            },
-          },
-        });
-
-        const result = await client.requestVerification(
-          {
-            type: 'SMS',
-            value: '07890123456',
-          },
-          USER
-        );
-
-        expect(result.data).toBeUndefined();
-        expect(result.error?.errorMeta.code).toBe(403);
-        expect(result.error?.errorMeta.description).toBe(
-          'User cannot request contact detail verification for SMS.'
-        );
-      });
     });
   });
 });

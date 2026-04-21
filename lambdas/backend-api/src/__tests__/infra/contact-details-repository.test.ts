@@ -91,7 +91,6 @@ describe('ContactDetailsRepository', () => {
 
         expect(result).toEqual({
           data: {
-            clientId: USER.clientId,
             id: RANDOM_UUID,
             status: 'PENDING_VERIFICATION',
             type: input.type,
@@ -113,7 +112,7 @@ describe('ContactDetailsRepository', () => {
         expect(mocks.dynamodb).toHaveReceivedCommandWith(PutCommand, {
           TableName: TABLE_NAME,
           Item: {
-            owner: `CLIENT#${USER.clientId}`,
+            owner: `INTERNAL_USER#${USER.internalUserId}`,
             contactDetailKey: `${input.type}#${input.value}`,
             createdAt: NOW.toISOString(),
             createdBy: `INTERNAL_USER#${USER.internalUserId}`,

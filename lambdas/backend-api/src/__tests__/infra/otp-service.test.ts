@@ -50,7 +50,6 @@ describe('OtpService', () => {
       const result = await service.send(
         {
           id: 'contact-details-id',
-          clientId: 'client-id',
           status: 'PENDING_VERIFICATION',
           type: 'EMAIL',
           value: 'email@nhs.net',
@@ -65,7 +64,6 @@ describe('OtpService', () => {
         description: 'Fake sending OTP',
         details: {
           id: 'contact-details-id',
-          clientId: 'client-id',
           status: 'PENDING_VERIFICATION',
           type: 'EMAIL',
         },

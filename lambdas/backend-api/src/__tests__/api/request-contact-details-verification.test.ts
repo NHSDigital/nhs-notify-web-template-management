@@ -143,7 +143,6 @@ describe('Contact Details Verification Request Handler', () => {
       ...input,
       id: 'id',
       status: 'PENDING_VERIFICATION',
-      clientId: 'notify-client-id',
     };
 
     mocks.contactDetailsClient.requestVerification.mockResolvedValueOnce({

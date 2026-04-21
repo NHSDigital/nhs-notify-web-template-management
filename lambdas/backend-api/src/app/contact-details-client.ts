@@ -1,17 +1,15 @@
 import { $ContactDetailInputNormalized } from 'nhs-notify-backend-client/schemas';
-import { ErrorCase, type Result } from 'nhs-notify-backend-client/types';
+import type { Result } from 'nhs-notify-backend-client/types';
 import type { ContactDetail } from 'nhs-notify-web-template-management-types';
 import type { User } from 'nhs-notify-web-template-management-utils';
-import type { ClientConfigRepository } from '@backend-api/infra/client-config-repository';
 import type { ContactDetailsRepository } from '@backend-api/infra/contact-details-repository';
 import type { OtpService } from '@backend-api/infra/otp-service';
-import { failure, validate } from '@backend-api/utils';
+import { validate } from '@backend-api/utils';
 
 export class ContactDetailsClient {
   constructor(
     private contactDetailsRepo: ContactDetailsRepository,
-    private otpService: OtpService,
-    private clientConfigRepo: ClientConfigRepository
+    private otpService: OtpService
   ) {}
 
   async requestVerification(
@@ -21,22 +19,6 @@ export class ContactDetailsClient {
     const validation = await validate($ContactDetailInputNormalized, payload);
 
     if (validation.error) return validation;
-
-    const clientConfig = await this.clientConfigRepo.get(user.clientId);
-
-    if (clientConfig.error) return clientConfig;
-
-    if (
-      (validation.data.type === 'EMAIL' &&
-        !clientConfig.data?.features.digitalProofingEmail) ||
-      (validation.data.type === 'SMS' &&
-        !clientConfig.data?.features.digitalProofingSms)
-    ) {
-      return failure(
-        ErrorCase.FEATURE_DISABLED,
-        `User cannot request contact detail verification for ${validation.data.type}.`
-      );
-    }
 
     const otp = await this.otpService.generate();
 

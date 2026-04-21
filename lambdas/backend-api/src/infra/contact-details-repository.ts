@@ -29,7 +29,6 @@ export class ContactDetailsRepository {
     user: User
   ): Promise<ApplicationResult<ContactDetail>> {
     const dto: ContactDetail = {
-      clientId: user.clientId,
       id: randomUUID(),
       status: 'PENDING_VERIFICATION',
       type: details.type,
@@ -43,9 +42,10 @@ export class ContactDetailsRepository {
         new PutCommand({
           TableName: this.tableName,
           Item: {
-            owner: `CLIENT#${user.clientId}`,
+            owner: `INTERNAL_USER#${user.internalUserId}`,
             contactDetailKey: this.getContactDetailKey(details),
             ...dto,
+            clientId: user.clientId,
             rawValue: details.rawValue,
             otpHash: await this.hashOtp(dto, otp),
             ttl: this.getUnverifiedTtl(now),

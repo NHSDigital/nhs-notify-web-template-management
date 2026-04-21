@@ -479,9 +479,6 @@
           },
           {
             "properties": {
-              "clientId": {
-                "type": "string"
-              },
               "id": {
                 "type": "string"
               },

@@ -7,7 +7,7 @@ import { chunk } from 'helpers/chunk';
 import { FactoryContactDetail } from 'helpers/factories/contact-details-factory';
 
 export type ContactDetailKey = {
-  clientId: string;
+  owner: string;
   type: string;
   value: string;
 };
@@ -42,9 +42,9 @@ export class ContactDetailHelper {
               [process.env.CONTACT_DETAILS_TABLE_NAME]: batch.map((item) => ({
                 PutRequest: {
                   Item: {
-                    owner: `CLIENT#${item.clientId}`,
-                    contactDetailKey: `${item.type}#${item.value}`,
                     ...item,
+                    owner: `INTERNAL_USER#${item.owner}`,
+                    contactDetailKey: `${item.type}#${item.value}`,
                   },
                 },
               })),
@@ -89,7 +89,7 @@ export class ContactDetailHelper {
               [process.env.CONTACT_DETAILS_TABLE_NAME]: batch.map((key) => ({
                 DeleteRequest: {
                   Key: {
-                    owner: `CLIENT#${key.clientId}`,
+                    owner: `INTERNAL_USER#${key.owner}`,
                     contactDetailKey: `${key.type}#${key.value}`,
                   },
                 },

@@ -5,11 +5,11 @@ export type FactoryContactDetail = {
   status: string;
   value: string;
   type: string;
-  clientId: string;
+  owner: string;
 };
 
 export const makeVerifiedContactDetail = (
-  input: Pick<FactoryContactDetail, 'clientId' | 'type' | 'value'>
+  input: Pick<FactoryContactDetail, 'owner' | 'type' | 'value'>
 ): FactoryContactDetail => ({
   id: randomUUID(),
   status: 'VERIFIED',

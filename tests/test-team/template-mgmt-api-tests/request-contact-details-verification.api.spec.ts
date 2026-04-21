@@ -37,17 +37,13 @@ const generateMobileNumber = (locale: Locale = 'GB') => {
 
 test.describe('PUT /v1/contact-details', () => {
   let user: TestUser;
-  let userFeatureDisabled: TestUser;
+  let user2: TestUser;
   const contactDetailHelper = new ContactDetailHelper();
   const context = getTestContext();
 
   test.beforeAll(async () => {
-    user = await context.auth.getTestUser(
-      testUsers.UserDigitalProofingEnabled.userId
-    );
-    userFeatureDisabled = await context.auth.getTestUser(
-      testUsers.User1.userId
-    );
+    user = await context.auth.getTestUser(testUsers.User1.userId);
+    user2 = await context.auth.getTestUser(testUsers.User2.userId);
   });
 
   test.afterAll(async () => {
@@ -80,7 +76,6 @@ test.describe('PUT /v1/contact-details', () => {
         statusCode: 201,
         data: {
           id: expect.stringMatching(uuidRegExp),
-          clientId: user.clientId,
           status: 'PENDING_VERIFICATION',
           type: 'EMAIL',
           value: email,
@@ -171,7 +166,7 @@ test.describe('PUT /v1/contact-details', () => {
       });
     }
 
-    test('returns 409 if email contact detail is already verified for the client', async ({
+    test('returns 409 if email contact detail is already verified for the user', async ({
       request,
     }) => {
       const email = generateEmailAddress();
@@ -179,7 +174,7 @@ test.describe('PUT /v1/contact-details', () => {
       const contactDetail = makeVerifiedContactDetail({
         type: 'EMAIL',
         value: email,
-        clientId: user.clientId,
+        owner: user.internalUserId,
       });
 
       await contactDetailHelper.seed([contactDetail]);
@@ -207,7 +202,7 @@ test.describe('PUT /v1/contact-details', () => {
       });
     });
 
-    test('allows verification of email address that is already verified for another client', async ({
+    test('allows verification of email address that is already verified for another user', async ({
       request,
     }) => {
       const email = generateEmailAddress();
@@ -216,7 +211,7 @@ test.describe('PUT /v1/contact-details', () => {
       const contactDetail = makeVerifiedContactDetail({
         type: 'EMAIL',
         value: email,
-        clientId: userFeatureDisabled.clientId,
+        owner: user2.internalUserId,
       });
 
       await contactDetailHelper.seed([contactDetail]);
@@ -244,7 +239,6 @@ test.describe('PUT /v1/contact-details', () => {
         statusCode: 201,
         data: {
           id: expect.stringMatching(uuidRegExp),
-          clientId: user.clientId,
           status: 'PENDING_VERIFICATION',
           type: 'EMAIL',
           value: email,
@@ -254,35 +248,6 @@ test.describe('PUT /v1/contact-details', () => {
       contactDetailHelper.addAdHoc(body.data);
 
       expect(body.data.id).not.toEqual(contactDetail.id);
-    });
-
-    test('returns 403 if the email proofing feature is disabled for the client', async ({
-      request,
-    }) => {
-      const email = generateEmailAddress();
-
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/contact-details`,
-        {
-          headers: {
-            Authorization: await userFeatureDisabled.getAccessToken(),
-          },
-          data: {
-            type: 'EMAIL',
-            value: email,
-          },
-        }
-      );
-
-      expect(response.status()).toBe(403);
-
-      const body = await response.json();
-
-      expect(body).toEqual({
-        statusCode: 403,
-        technicalMessage:
-          'User cannot request contact detail verification for EMAIL.',
-      });
     });
   });
 
@@ -314,7 +279,6 @@ test.describe('PUT /v1/contact-details', () => {
           statusCode: 201,
           data: {
             id: expect.stringMatching(uuidRegExp),
-            clientId: user.clientId,
             status: 'PENDING_VERIFICATION',
             type: 'SMS',
             value: num,
@@ -408,7 +372,7 @@ test.describe('PUT /v1/contact-details', () => {
       });
     }
 
-    test('returns 409 if sms contact detail is already verified for the client', async ({
+    test('returns 409 if sms contact detail is already verified for the user', async ({
       request,
     }) => {
       const num = generateMobileNumber();
@@ -416,7 +380,7 @@ test.describe('PUT /v1/contact-details', () => {
       const contactDetail = makeVerifiedContactDetail({
         type: 'SMS',
         value: num,
-        clientId: user.clientId,
+        owner: user.internalUserId,
       });
 
       await contactDetailHelper.seed([contactDetail]);
@@ -444,7 +408,7 @@ test.describe('PUT /v1/contact-details', () => {
       });
     });
 
-    test('allows verification of sms that is already verified for another client', async ({
+    test('allows verification of sms that is already verified for another user', async ({
       request,
     }) => {
       const num = generateMobileNumber();
@@ -453,7 +417,7 @@ test.describe('PUT /v1/contact-details', () => {
       const contactDetail = makeVerifiedContactDetail({
         type: 'SMS',
         value: num,
-        clientId: userFeatureDisabled.clientId,
+        owner: user2.internalUserId,
       });
 
       await contactDetailHelper.seed([contactDetail]);
@@ -481,7 +445,6 @@ test.describe('PUT /v1/contact-details', () => {
         statusCode: 201,
         data: {
           id: expect.stringMatching(uuidRegExp),
-          clientId: user.clientId,
           status: 'PENDING_VERIFICATION',
           type: 'SMS',
           value: num,
@@ -492,38 +455,9 @@ test.describe('PUT /v1/contact-details', () => {
 
       expect(body.data.id).not.toEqual(contactDetail.id);
     });
-
-    test('returns 403 if the sms proofing feature is disabled for the client', async ({
-      request,
-    }) => {
-      const num = generateMobileNumber();
-
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/contact-details`,
-        {
-          headers: {
-            Authorization: await userFeatureDisabled.getAccessToken(),
-          },
-          data: {
-            type: 'SMS',
-            value: num,
-          },
-        }
-      );
-
-      expect(response.status()).toBe(403);
-
-      const body = await response.json();
-
-      expect(body).toEqual({
-        statusCode: 403,
-        technicalMessage:
-          'User cannot request contact detail verification for SMS.',
-      });
-    });
   });
 
-  test('returns 401 is no auth token on request', async ({ request }) => {
+  test('returns 401 if no auth token on request', async ({ request }) => {
     const response = await request.post(
       `${process.env.API_BASE_URL}/v1/contact-details`,
       {

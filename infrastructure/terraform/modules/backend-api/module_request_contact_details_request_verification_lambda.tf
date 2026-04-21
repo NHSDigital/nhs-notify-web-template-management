@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "request_contact_details_verification" {
   }
 
   statement {
-    sid    = "AllowSSMReadAccess"
+    sid    = "AllowOtpSecretRead"
     effect = "Allow"
 
     actions = [
@@ -62,7 +62,6 @@ data "aws_iam_policy_document" "request_contact_details_verification" {
 
     resources = [
       aws_ssm_parameter.contact_details_otp_secret.arn,
-      local.client_ssm_path_pattern,
     ]
   }
 
