@@ -6,6 +6,9 @@ const $Config = z.object({
   SNS_TOPIC_ARN: z.string(),
   TEMPLATES_TABLE_NAME: z.string(),
   PROOF_REQUESTS_TABLE_NAME: z.string(),
+  INTERNAL_BUCKET_NAME: z.string(),
+  SHARED_FILES_BUCKET_NAME: z.string(),
+  SHARED_FILES_BUCKET_PREFIX: z.string(),
 });
 
 export const loadConfig = () => {

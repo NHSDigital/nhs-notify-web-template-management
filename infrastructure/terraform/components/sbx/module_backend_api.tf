@@ -38,4 +38,8 @@ module "backend_api" {
   proof_requested_sender_email_address    = local.sandbox_letter_supplier_mock_proof_requested_sender
 
   access_logging_bucket = local.acct.s3_buckets["access_logs"]["id"]
+
+  shared_files_bucket_name = local.acct.s3_buckets["shared_files"]["id"]
+  shared_files_bucket_arn  = local.acct.s3_buckets["shared_files"]["arn"]
+  acct_kms_key_arn         = local.acct.kms_key_arn
 }

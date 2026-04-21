@@ -826,6 +826,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     );
 
@@ -865,6 +866,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     );
 

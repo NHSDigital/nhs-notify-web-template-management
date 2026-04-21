@@ -10,13 +10,12 @@ describe('shouldPublish', () => {
     (type) => {
       const publish = shouldPublish(
         {
-          templateType: type,
-          id: 'id',
           templateStatus: 'NOT_YET_SUBMITTED',
         },
         {
           templateType: type,
           id: 'id',
+          clientId: 'client-id',
           templateStatus: 'SUBMITTED',
         }
       );
@@ -25,41 +24,52 @@ describe('shouldPublish', () => {
     }
   );
 
-  test.each([false, undefined])(
-    'templateType LETTER should return false when proofingEnabled is %p',
-    (proofingEnabled) => {
-      const publish = shouldPublish(
-        {
-          id: 'id',
-          templateType: 'LETTER',
-          templateStatus: 'PROOF_AVAILABLE',
-          proofingEnabled,
-        },
-        {
-          id: 'id',
-          templateType: 'LETTER',
-          templateStatus: 'SUBMITTED',
-          proofingEnabled,
-        }
-      );
+  test('templateType LETTER should return false when letterVersion is not present', () => {
+    const publish = shouldPublish(
+      {
+        templateStatus: 'PROOF_AVAILABLE',
+      },
+      {
+        id: 'id',
+        clientId: 'client-id',
+        templateType: 'LETTER',
+        templateStatus: 'SUBMITTED',
+      }
+    );
 
-      expect(publish).toEqual(false);
-    }
-  );
+    expect(publish).toEqual(false);
+  });
+
+  test('templateType LETTER should return false when letterVersion is not AUTHORING', () => {
+    const publish = shouldPublish(
+      {
+        templateStatus: 'PROOF_AVAILABLE',
+      },
+      {
+        id: 'id',
+        clientId: 'client-id',
+        templateType: 'LETTER',
+        templateStatus: 'SUBMITTED',
+        letterVersion: 'PDF',
+      }
+    );
+
+    expect(publish).toEqual(false);
+  });
 
   type LetterStatus = Exclude<TemplateStatus, 'NOT_YET_SUBMITTED'>;
 
   const letterPublishCases: Record<LetterStatus, boolean> = {
     DELETED: true,
-    PENDING_PROOF_REQUEST: true,
+    PENDING_PROOF_REQUEST: false,
     PENDING_UPLOAD: false,
     PENDING_VALIDATION: false,
     PROOF_APPROVED: true,
-    PROOF_AVAILABLE: true,
+    PROOF_AVAILABLE: false,
     SUBMITTED: true,
     VALIDATION_FAILED: false,
     VIRUS_SCAN_FAILED: false,
-    WAITING_FOR_PROOF: true,
+    WAITING_FOR_PROOF: false,
   };
 
   // not all of these transitions are expected in real usage
@@ -68,16 +78,14 @@ describe('shouldPublish', () => {
     (templateStatus, publishable) => {
       const publish = shouldPublish(
         {
-          id: 'id',
-          templateType: 'LETTER',
-          templateStatus: 'PENDING_PROOF_REQUEST',
-          proofingEnabled: true,
+          templateStatus: 'SUBMITTED',
         },
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus,
-          proofingEnabled: true,
+          letterVersion: 'AUTHORING',
         }
       );
 
@@ -91,16 +99,14 @@ describe('shouldPublish', () => {
     (templateStatus, publishable) => {
       const publish = shouldPublish(
         {
-          id: 'id',
-          templateType: 'LETTER',
           templateStatus,
-          proofingEnabled: true,
         },
         {
           id: 'id',
+          clientId: 'client-id',
           templateType: 'LETTER',
           templateStatus: 'DELETED',
-          proofingEnabled: true,
+          letterVersion: 'AUTHORING',
         }
       );
 
@@ -112,9 +118,10 @@ describe('shouldPublish', () => {
     expect(
       shouldPublish(undefined, {
         id: 'id',
+        clientId: 'client-id',
         templateType: 'LETTER',
         templateStatus: 'DELETED',
-        proofingEnabled: true,
+        letterVersion: 'AUTHORING',
       })
     ).toEqual(false);
   });
