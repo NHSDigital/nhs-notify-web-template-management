@@ -76,6 +76,11 @@ variable "kms_key_arn" {
   description = "KMS Key ARN"
 }
 
+variable "acct_kms_key_arn" {
+  type        = string
+  description = "account-level KMS Key ARN"
+}
+
 variable "letter_suppliers" {
   type = map(object({
     email_addresses  = list(string)
@@ -156,4 +161,14 @@ variable "access_logging_bucket" {
   type        = string
   description = "Name of S3 bucket to use for access logging"
   default     = ""
+}
+
+variable "shared_files_bucket_name" {
+  type        = string
+  description = "Name of S3 bucket to use for shared files"
+}
+
+variable "shared_files_bucket_arn" {
+  type        = string
+  description = "ARN of S3 bucket to use for shared files"
 }

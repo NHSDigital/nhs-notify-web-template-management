@@ -56,6 +56,7 @@ async function createTemplates() {
 
     INVALID: {
       id: templateIds.INVALID,
+      clientId: user.clientId,
       version: 1,
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
