@@ -6,7 +6,6 @@ describe('hashContactDetailsOtp', () => {
     id: 'contact-123',
     value: 'user@example.com',
     type: 'EMAIL',
-    clientId: 'client-456',
     status: 'PENDING_VERIFICATION',
   };
 
