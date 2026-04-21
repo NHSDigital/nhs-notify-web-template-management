@@ -2421,11 +2421,11 @@ describe('RoutingConfigRepository', () => {
             Code: 'None', // Update succeeded
           },
           {
-            Code: 'ProvisionedThroughputExceeded', // should be ignored
-          },
-          {
             Code: 'ConditionalCheckFailed',
             Item: { id: { S: 'template1' } }, // Invalid template
+          },
+          {
+            Code: 'ProvisionedThroughputExceeded', // should be ignored
           },
         ],
         $metadata: {},
