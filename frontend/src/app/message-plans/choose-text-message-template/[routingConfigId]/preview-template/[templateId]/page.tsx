@@ -15,12 +15,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function PreviewTextMessageTemplateFromMessagePlan(
+const PreviewTextMessageTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
-) {
+) => {
   return PreviewDigitalTemplateFromChooseTemplate({
     ...props,
     validateTemplate: validateSMSTemplate,
     detailsComponent: PreviewTemplateDetailsSms,
   });
-}
+};
+
+export default PreviewTextMessageTemplateFromMessagePlan;

@@ -326,7 +326,7 @@ describe('PreviewTemplateDetailsPdfLetter', () => {
     expect(container.queryByTestId('proof-link_a.pdf')).not.toBeInTheDocument();
   });
 
-  it('does not show proofs when all proofs fail virus scan', () => {
+  it('does not show proofs when proofs fail virus scan', () => {
     const container = render(
       <PreviewTemplateDetailsPdfLetter
         template={{

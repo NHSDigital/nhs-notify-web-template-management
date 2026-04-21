@@ -15,12 +15,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function PreviewNhsAppTemplateFromMessagePlan(
+const PreviewNhsAppTemplateFromMessagePlan = async (
   props: MessagePlanAndTemplatePageProps
-) {
+) => {
   return PreviewDigitalTemplateFromChooseTemplate({
     ...props,
     validateTemplate: validateNHSAppTemplate,
     detailsComponent: PreviewTemplateDetailsNhsApp,
   });
-}
+};
+
+export default PreviewNhsAppTemplateFromMessagePlan;
