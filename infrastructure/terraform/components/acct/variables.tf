@@ -144,3 +144,9 @@ variable "enable_env_destroy_event_rule" {
   description = "Toggles the creation of the CloudWatch Event Rule for environment destruction failures"
   default     = false
 }
+
+variable "shared_files_bucket_allowlist" {
+  type        = list(string)
+  description = "List of ARNs allowed to access the shared files bucket"
+  default     = []
+}

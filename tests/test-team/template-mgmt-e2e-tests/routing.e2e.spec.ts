@@ -67,6 +67,7 @@ function createTemplates(user: TestUser) {
       {
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -78,6 +79,7 @@ function createTemplates(user: TestUser) {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -89,6 +91,7 @@ function createTemplates(user: TestUser) {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     ARABIC_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -100,6 +103,7 @@ function createTemplates(user: TestUser) {
         language: 'ar',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     POLISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -111,6 +115,7 @@ function createTemplates(user: TestUser) {
         language: 'pl',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
   };
