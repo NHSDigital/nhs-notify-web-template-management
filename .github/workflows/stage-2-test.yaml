@@ -200,7 +200,7 @@ jobs:
           name: code-coverage-report
           path: .reports/lcov.info
 
-   perform-static-analysis:
+  perform-static-analysis:
      name: "Perform static analysis"
      needs: [test-unit, merge-coverage]
      runs-on: ubuntu-latest
