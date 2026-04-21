@@ -7,7 +7,6 @@ import {
 import { render } from '@testing-library/react';
 import { getRoutingConfig } from '@utils/message-plans';
 import { redirect } from 'next/navigation';
-import { Language } from 'nhs-notify-web-template-management-types';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/message-plans');
@@ -24,7 +23,7 @@ const FRENCH_LETTER_TEMPLATE: LetterTemplate = {
   ...PDF_LETTER_TEMPLATE,
   id: 'french-letter-id',
   name: 'French letter template',
-  language: 'fr' as Language,
+  language: 'fr',
 };
 
 const languageTemplateListFetcher = jest
