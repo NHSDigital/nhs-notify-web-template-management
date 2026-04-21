@@ -11,6 +11,7 @@ import {
 import {
   assertChooseTemplatePageWithTemplatesAvailable,
   assertChooseTemplatePageWithPreviousSelection,
+  assertChooseTemplatePageWithNoTemplates,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
@@ -41,6 +42,7 @@ const routingConfigIds = {
   withLargePrintSelected: randomUUID(),
   validationError: randomUUID(),
   nonLetter: randomUUID(),
+  withNoTemplates: randomUUID(),
   invalid: 'invalid-id',
   notFound: randomUUID(),
 };
@@ -172,6 +174,15 @@ function getRoutingConfigs(
         name: 'Test message plan with no letter channel',
       }
     ).dbEntry,
+    withNoTemplates: RoutingConfigFactory.createForMessageOrder(
+      user,
+      'LETTER',
+      {
+        id: routingConfigIds.withNoTemplates,
+        name: 'Test message plan with no matching large print templates',
+        campaignId: 'no-matching-campaign',
+      }
+    ).dbEntry,
   };
 }
 
@@ -240,14 +251,6 @@ test.describe('Routing - Choose large print letter template page', () => {
 
     await expect(chooseLargePrintLetterTemplatePage.messagePlanName).toHaveText(
       routingConfigs.valid.name
-    );
-
-    await expect(chooseLargePrintLetterTemplatePage.pageHeading).toHaveText(
-      'Choose a large print letter template'
-    );
-
-    await expect(chooseLargePrintLetterTemplatePage.tableHintText).toHaveText(
-      'Choose one option. You can only choose templates linked to the same campaign as your message plan.'
     );
 
     const table = chooseLargePrintLetterTemplatePage.templatesTable;
@@ -427,6 +430,28 @@ test.describe('Routing - Choose large print letter template page', () => {
       new RoutingEditMessagePlanPage(page).alternativeLetterFormats().largePrint
         .templateName
     ).toHaveText(templates.LARGE_PRINT_LETTER_APPROVED.name);
+  });
+
+  test('user sees the no templates version of the page when no large print letter templates match the campaign filter', async ({
+    page,
+  }) => {
+    const chooseLargePrintLetterTemplatePage =
+      new RoutingChooseLargePrintLetterTemplatePage(page);
+    await chooseLargePrintLetterTemplatePage
+      .setPathParam('messagePlanId', routingConfigs.withNoTemplates.id)
+      .setSearchParam(
+        'lockNumber',
+        String(routingConfigs.withNoTemplates.lockNumber)
+      )
+      .loadPage();
+
+    await expect(chooseLargePrintLetterTemplatePage.messagePlanName).toHaveText(
+      routingConfigs.withNoTemplates.name
+    );
+
+    await assertChooseTemplatePageWithNoTemplates({
+      page: chooseLargePrintLetterTemplatePage,
+    });
   });
 
   test.describe('redirects to invalid message plan page', () => {

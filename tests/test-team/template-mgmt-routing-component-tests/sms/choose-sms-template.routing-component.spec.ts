@@ -12,14 +12,17 @@ import {
 import {
   assertChooseTemplatePageWithPreviousSelection,
   assertChooseTemplatePageWithTemplatesAvailable,
+  assertChooseTemplatePageWithNoTemplates,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
+import { loginAsUser } from 'helpers/auth/login-as-user';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseTextMessageTemplatePage } from 'pages/routing/sms/choose-sms-template-page';
 import { getTestContext } from 'helpers/context/context';
+import { RoutingConfigDbEntry, Template } from 'helpers/types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -68,16 +71,38 @@ function createTemplates(user: TestUser) {
 test.describe('Routing - Choose sms template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
+  let userWithNoSmsTemplates: TestUser;
+  let routingConfigForUserWithNoSmsTemplates: RoutingConfigDbEntry;
+  let templateForUserWithNoSmsTemplates: Template;
 
   test.beforeAll(async () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
+    userWithNoSmsTemplates = await context.auth.getTestUser(
+      testUsers.User2.userId
+    );
 
     messagePlans = createMessagePlans(user);
     templates = createTemplates(user);
+    routingConfigForUserWithNoSmsTemplates =
+      RoutingConfigFactory.createForMessageOrder(
+        userWithNoSmsTemplates,
+        'NHSAPP,SMS'
+      ).dbEntry;
+    templateForUserWithNoSmsTemplates = TemplateFactory.createNhsAppTemplate(
+      randomUUID(),
+      userWithNoSmsTemplates,
+      'NHS App template for user with no sms templates'
+    );
 
-    await routingConfigStorageHelper.seed(Object.values(messagePlans));
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
+    await routingConfigStorageHelper.seed([
+      ...Object.values(messagePlans),
+      routingConfigForUserWithNoSmsTemplates,
+    ]);
+    await templateStorageHelper.seedTemplateData([
+      ...Object.values(templates),
+      templateForUserWithNoSmsTemplates,
+    ]);
   });
 
   test.afterAll(async () => {
@@ -287,6 +312,41 @@ test.describe('Routing - Choose sms template page', () => {
         await expect(page).toHaveURL(
           `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.SMS_ROUTING_CONFIG.id}`
         );
+      });
+    });
+
+    test.describe('user with no sms templates', () => {
+      test.use({ storageState: { cookies: [], origins: [] } });
+
+      test('user sees a message when no SMS templates are available and can go to create templates', async ({
+        page,
+        baseURL,
+      }) => {
+        await loginAsUser(userWithNoSmsTemplates, page);
+
+        const chooseSmsTemplatePage = new RoutingChooseTextMessageTemplatePage(
+          page
+        );
+        await chooseSmsTemplatePage
+          .setPathParam(
+            'messagePlanId',
+            routingConfigForUserWithNoSmsTemplates.id
+          )
+          .setSearchParam(
+            'lockNumber',
+            String(routingConfigForUserWithNoSmsTemplates.lockNumber)
+          )
+          .loadPage();
+
+        await assertChooseTemplatePageWithNoTemplates({
+          page: chooseSmsTemplatePage,
+        });
+
+        await expect(chooseSmsTemplatePage.noTemplatesMessage).toBeVisible();
+
+        await chooseSmsTemplatePage.goToTemplatesLink.click();
+
+        await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
       });
     });
   });
