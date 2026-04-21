@@ -21,15 +21,6 @@ import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 const formContent = content.components.messagePlanForm;
 
-const campaignWarningCallout = (
-  <WarningCallout className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'>
-    <WarningCallout.Label>
-      {formContent.fields.campaignId.warningCallout.heading}
-    </WarningCallout.Label>
-    <p>{formContent.fields.campaignId.warningCallout.content}</p>
-  </WarningCallout>
-);
-
 export function MessagePlanForm({
   backLink,
   campaignIds,
@@ -90,7 +81,6 @@ export function MessagePlanForm({
                 {formContent.fields.campaignId.label}
               </Label>
               <HintText>{formContent.fields.campaignId.hintSingle}</HintText>
-              {campaignWarningCallout}
               <input
                 type='hidden'
                 name='campaignId'
@@ -105,7 +95,12 @@ export function MessagePlanForm({
                 {formContent.fields.campaignId.label}
               </Label>
               <HintText>{formContent.fields.campaignId.hintMulti}</HintText>
-              {campaignWarningCallout}
+              <WarningCallout className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'>
+                <WarningCallout.Label>
+                  {formContent.fields.campaignId.warningCallout.heading}
+                </WarningCallout.Label>
+                <p>{formContent.fields.campaignId.warningCallout.content}</p>
+              </WarningCallout>
               <Select
                 id='campaignId'
                 name='campaignId'
