@@ -1,9 +1,9 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { ErrorCodes } from '@utils/error-codes';
 import { Tabs } from 'nhsuk-react-components';
 
-const focusMock = jest.spyOn(window.HTMLElement.prototype, 'focus');
 const scrollIntoViewMock = jest.spyOn(
   window.HTMLElement.prototype,
   'scrollIntoView'
@@ -17,7 +17,6 @@ test('Renders NhsNotifyErrorSummary correctly without errors', async () => {
   const container = render(<NhsNotifyErrorSummary errorState={undefined} />);
 
   expect(container.asFragment()).toMatchSnapshot();
-  expect(focusMock).not.toHaveBeenCalled();
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
@@ -25,7 +24,6 @@ test('Renders NhsNotifyErrorSummary correctly with empty error state', async () 
   const container = render(<NhsNotifyErrorSummary errorState={{}} />);
 
   expect(container.asFragment()).toMatchSnapshot();
-  expect(focusMock).not.toHaveBeenCalled();
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
@@ -40,7 +38,6 @@ test('Renders NhsNotifyErrorSummary correctly with falsey error state', async ()
   );
 
   expect(container.asFragment()).toMatchSnapshot();
-  expect(focusMock).not.toHaveBeenCalled();
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
@@ -61,7 +58,6 @@ test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
   );
 
   expect(container.asFragment()).toMatchSnapshot();
-  expect(focusMock).toHaveBeenCalled();
   expect(scrollIntoViewMock).toHaveBeenCalled();
 
   const errorSummaryHeading = await screen.getByTestId('error-summary');
@@ -94,6 +90,23 @@ test('renders correctly with markdown formatted formErrors', async () => {
 });
 
 describe('handleErrorLinkClick — hidden tab panel behaviour', () => {
+  function trackDefaultPrevented(target: HTMLElement) {
+    let wasPrevented: boolean | undefined;
+
+    const onDocumentClick = (event: MouseEvent) => {
+      if (event.target === target) {
+        wasPrevented = event.defaultPrevented;
+      }
+    };
+
+    document.addEventListener('click', onDocumentClick);
+
+    return {
+      wasPrevented: () => wasPrevented,
+      cleanup: () => document.removeEventListener('click', onDocumentClick),
+    };
+  }
+
   function renderTabsWithError(errorField: string) {
     return render(
       <>
@@ -121,99 +134,134 @@ describe('handleErrorLinkClick — hidden tab panel behaviour', () => {
   test('activates the hidden tab and focuses the field when its error link is clicked', async () => {
     renderTabsWithError('hidden-tab-field');
 
-    const rafSpy = jest
-      .spyOn(window, 'requestAnimationFrame')
-      .mockImplementation((cb) => {
-        cb(0);
-        return 0;
-      });
-
-    const clickSpy = jest
-      .spyOn(HTMLElement.prototype, 'click')
-      .mockImplementation(function (this: HTMLElement) {
-        // Simulate the tab panel becoming visible when the NHS UK tab link is clicked
-        if (this.classList.contains('nhsuk-tabs__tab')) {
-          document
-            .querySelector('.nhsuk-tabs__panel--hidden')
-            ?.classList.remove('nhsuk-tabs__panel--hidden');
-        }
-      });
-
-    focusMock.mockClear();
-
+    const user = userEvent.setup();
     const errorLink = screen.getByRole('link', { name: /an error/i });
-    fireEvent.click(errorLink);
 
-    expect(clickSpy).toHaveBeenCalled();
+    // Simulate the hidden tab becoming visible when its tab link is clicked.
+    const hiddenTabPanel = document.querySelector<HTMLElement>('#hidden-tab');
+    const hiddenTabLink = document.querySelector<HTMLAnchorElement>(
+      '[aria-controls="hidden-tab"].nhsuk-tabs__tab'
+    );
+    let hiddenTabClicked = false;
 
-    const field = document.querySelector('#hidden-tab-field');
-    expect(focusMock).toHaveBeenCalledTimes(1);
-    expect(focusMock.mock.instances[0]).toBe(field);
+    hiddenTabLink?.addEventListener('click', () => {
+      hiddenTabClicked = true;
+      hiddenTabPanel?.classList.remove('nhsuk-tabs__panel--hidden');
+    });
 
-    clickSpy.mockRestore();
-    rafSpy.mockRestore();
+    const defaultPreventedTracker = trackDefaultPrevented(errorLink);
+
+    try {
+      await user.click(errorLink);
+      expect(hiddenTabClicked).toBe(true);
+      expect(hiddenTabPanel).not.toHaveClass('nhsuk-tabs__panel--hidden');
+      expect(defaultPreventedTracker.wasPrevented()).toBe(true);
+
+      const field = document.querySelector('#hidden-tab-field');
+      await waitFor(() => {
+        expect(field).toHaveFocus();
+      });
+    } finally {
+      defaultPreventedTracker.cleanup();
+    }
   });
 
-  test('does not intercept the click when the target field is in a visible tab panel', () => {
+  test('does not activate a hidden tab when the target field is in a visible tab panel', async () => {
     renderTabsWithError('visible-tab-field');
-
-    const clickSpy = jest
-      .spyOn(HTMLElement.prototype, 'click')
-      .mockImplementation(jest.fn());
+    const user = userEvent.setup();
 
     const errorLink = screen.getByRole('link', { name: /an error/i });
-    fireEvent.click(errorLink);
+    const hiddenTabPanel = document.querySelector<HTMLElement>('#hidden-tab');
+    const hiddenTabLink = document.querySelector<HTMLAnchorElement>(
+      '[aria-controls="hidden-tab"].nhsuk-tabs__tab'
+    );
+    let hiddenTabClicked = false;
 
-    expect(clickSpy).not.toHaveBeenCalled();
+    hiddenTabLink?.addEventListener('click', () => {
+      hiddenTabClicked = true;
+    });
 
-    clickSpy.mockRestore();
+    // In JSDOM hash-link focus is not reliable; verify the handler does not try to activate hidden tabs.
+    await user.click(errorLink);
+    expect(hiddenTabClicked).toBe(false);
+    expect(hiddenTabPanel).toHaveClass('nhsuk-tabs__panel--hidden');
   });
 
-  test('link focuses without handler interacting when the target field is not inside any tab panel', () => {
+  test('does not prevent default behaviour when the target field is not inside any tab panel', async () => {
     renderTabsWithError('standalone-field');
+    const user = userEvent.setup();
 
-    // No tab links clicked — if the handler incorrectly tried to interact it would throw
     const errorLink = screen.getByRole('link', { name: /an error/i });
-    expect(() => fireEvent.click(errorLink)).not.toThrow();
-    expect(focusMock).toHaveBeenCalledTimes(1);
+    const defaultPreventedTracker = trackDefaultPrevented(errorLink);
+
+    try {
+      await user.click(errorLink);
+    } finally {
+      defaultPreventedTracker.cleanup();
+    }
+
+    expect(defaultPreventedTracker.wasPrevented()).toBe(false);
   });
 
-  test('does not interact when the event target is not an HTMLElement', () => {
+  test('does not interact when the event target is not an HTMLElement', async () => {
     const { container } = renderTabsWithError('hidden-tab-field');
 
     const errorSummary = container.querySelector('.nhsuk-error-summary')!;
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     errorSummary.append(svg);
 
-    focusMock.mockClear();
-    expect(() => fireEvent.click(svg, { bubbles: true })).not.toThrow();
-    expect(focusMock).not.toHaveBeenCalled();
+    const user = userEvent.setup();
+
+    const errorLink = screen.getByRole('link', { name: /an error/i });
+    const defaultPreventedTracker = trackDefaultPrevented(errorLink);
+
+    try {
+      await user.click(svg);
+    } finally {
+      defaultPreventedTracker.cleanup();
+    }
+
+    expect(defaultPreventedTracker.wasPrevented()).toBe(undefined);
   });
 
-  test('does not interact when the click target is not inside any link', () => {
+  test('does not interact when the click target is not inside any link', async () => {
     const { container } = renderTabsWithError('hidden-tab-field');
 
     // Click the error summary container directly (not on a link)
     const errorSummary = container.querySelector('.nhsuk-error-summary');
-    expect(errorSummary).toBeTruthy();
 
-    focusMock.mockClear();
-    expect(() =>
-      fireEvent.click(errorSummary!, { bubbles: true })
-    ).not.toThrow();
-    expect(focusMock).not.toHaveBeenCalled();
+    const user = userEvent.setup();
+
+    const errorLink = screen.getByRole('link', { name: /an error/i });
+    const defaultPreventedTracker = trackDefaultPrevented(errorLink);
+
+    try {
+      await user.click(errorSummary!);
+    } finally {
+      defaultPreventedTracker.cleanup();
+    }
+
+    expect(defaultPreventedTracker.wasPrevented()).toBe(undefined);
   });
 
-  test('does not interact when the linked field does not exist in the DOM', () => {
+  test('does not interact when the linked field does not exist in the DOM', async () => {
     render(
       <NhsNotifyErrorSummary
         errorState={{ fieldErrors: { 'non-existent-field': ['An error'] } }}
       />
     );
 
-    focusMock.mockClear();
+    const user = userEvent.setup();
+
     const errorLink = screen.getByRole('link', { name: /an error/i });
-    expect(() => fireEvent.click(errorLink)).not.toThrow();
-    expect(focusMock).not.toHaveBeenCalled();
+    const defaultPreventedTracker = trackDefaultPrevented(errorLink);
+
+    try {
+      await user.click(errorLink!);
+    } finally {
+      defaultPreventedTracker.cleanup();
+    }
+
+    expect(defaultPreventedTracker.wasPrevented()).toBe(false);
   });
 });

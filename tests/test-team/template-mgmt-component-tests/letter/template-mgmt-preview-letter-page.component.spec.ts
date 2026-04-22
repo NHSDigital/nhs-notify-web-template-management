@@ -1988,6 +1988,35 @@ test.describe('Preview Letter template Page', () => {
           })
         ).toBeVisible();
       });
+
+      test('clicking an error summary link for a hidden tab activates that tab and moves focus to it', async ({
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringNoExamplesGenerated.id);
+
+        await previewPage.loadPage();
+
+        // Both tabs start with short tab active; long tab panel is hidden
+        await expect(previewPage.longTab.panel).toBeHidden();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+
+        const longErrorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Enter long example data/,
+        });
+
+        await longErrorLink.click();
+
+        // Clicking the error link should activate the long tab
+        await expect(previewPage.longTab.panel).toBeVisible();
+
+        // Focus should move to the long tab panel
+        await expect(page.locator('#tab-long')).toBeFocused();
+      });
     });
   });
 });
