@@ -4826,7 +4826,7 @@ exports[`valid authoring letter template displays the template saved banner when
                   />
                 </div>
                 <div
-                  class="nhsuk-summary-list__row missing-value"
+                  class="nhsuk-summary-list__row"
                   id="campaign-id"
                 >
                   <dt
@@ -4836,7 +4836,9 @@ exports[`valid authoring letter template displays the template saved banner when
                   </dt>
                   <dd
                     class="nhsuk-summary-list__value"
-                  />
+                  >
+                    campaign-1
+                  </dd>
                   <dd
                     class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
                   >

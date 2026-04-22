@@ -12,7 +12,6 @@ import type { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { markdownList } from '@utils/markdown-list';
 import { escapeMarkdown } from '@utils/escape-markdown';
-import { RenderKey } from '@utils/types';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -695,21 +694,6 @@ const letterRender = {
   },
   examplePreviewHeading: 'Example preview',
   loadingText: 'Loading letter preview',
-  // iframe: {
-  //   noPreview: 'No preview available',
-  //   title: {
-  //     initialRender: 'Letter preview',
-  //     shortFormRender: 'Letter preview - short examples',
-  //     longFormRender: 'Letter preview - long examples',
-  //   } satisfies Record<RenderKey, string>,
-  //   ariaLabel: {
-  //     initialRender: 'PDF preview of letter template',
-  //     shortFormRender:
-  //       'PDF preview of letter template with short example personalisation data',
-  //     longFormRender:
-  //       'PDF preview of letter template with long example personalisation data',
-  //   } satisfies Record<RenderKey, string>,
-  // },
   pdsSection: {
     heading: 'PDS personalisation fields',
     hint: 'The PDS fields will be pre-filled with example data when you choose a test recipient.',
@@ -724,9 +708,15 @@ const letterRender = {
   },
   updatePreviewButton: 'Update preview',
   iframe: {
-    title: 'Letter preview - {{tab}} examples',
-    ariaLabel:
-      'PDF preview of letter template with {{tab}} example personalisation data',
+    nonpersonalised: {
+      title: 'Letter preview',
+      ariaLabel: 'PDF preview of letter template',
+    },
+    personalised: {
+      title: 'Letter preview - {{tab}} examples',
+      ariaLabel:
+        'PDF preview of letter template with {{tab}} example personalisation data',
+    },
   },
 };
 

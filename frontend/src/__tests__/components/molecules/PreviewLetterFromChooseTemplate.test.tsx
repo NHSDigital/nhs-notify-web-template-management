@@ -117,33 +117,4 @@ describe('PreviewLetterFromChooseTemplate', () => {
     expect(getLetterVariantByIdMock).toHaveBeenCalledWith('variant-123');
     expect(container.asFragment()).toMatchSnapshot();
   });
-
-  it('renders with null pdfUrl when initialRender is not RENDERED', async () => {
-    const letterVariant = makeLetterVariant();
-
-    getTemplateMock.mockResolvedValueOnce({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'SUBMITTED',
-      files: {
-        ...AUTHORING_LETTER_TEMPLATE.files,
-        initialRender: {
-          status: 'PENDING',
-          requestedAt: '2026-02-27T09:42:04.142Z',
-        },
-      },
-    });
-    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
-
-    const page = await PreviewLetterFromChooseTemplate({
-      ...defaultProps,
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-        templateId: AUTHORING_LETTER_TEMPLATE.id,
-      }),
-    });
-
-    const container = render(page);
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
 });

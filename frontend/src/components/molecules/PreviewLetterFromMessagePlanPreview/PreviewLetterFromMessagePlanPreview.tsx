@@ -9,7 +9,9 @@ import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import { getRenderDetails } from '@utils/letter-render';
+
+const { letterRender } = content.components;
 
 export const PreviewLetterFromMessagePlanPreview = async (
   props: MessagePlanAndTemplatePageProps
@@ -28,12 +30,7 @@ export const PreviewLetterFromMessagePlanPreview = async (
     validatedTemplate.letterVariantId
   );
 
-  const { initialRender } = validatedTemplate.files;
-
-  const pdfUrl =
-    initialRender.status === 'RENDERED'
-      ? buildLetterRenderUrl(validatedTemplate, initialRender.fileName)
-      : null;
+  const { src: pdfUrl } = getRenderDetails(validatedTemplate, 'initialRender');
 
   return (
     <NHSNotifyContainer>
@@ -51,8 +48,9 @@ export const PreviewLetterFromMessagePlanPreview = async (
               {content.components.letterRender.examplePreviewHeading}
             </h2>
             <LetterRenderIframe
-              renderType={'initialRender'}
-              pdfUrl={pdfUrl}
+              src={pdfUrl}
+              title={letterRender.iframe.nonpersonalised.title}
+              aria-label={letterRender.iframe.nonpersonalised.ariaLabel}
               className='letter-render-iframe nhsuk-u-margin-bottom-6'
             />
           </div>

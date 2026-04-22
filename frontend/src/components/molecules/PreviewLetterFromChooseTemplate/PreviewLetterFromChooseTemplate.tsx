@@ -2,8 +2,7 @@ import {
   LetterTemplate,
   MessagePlanAndTemplatePageProps,
   templateTypeToUrlTextMappings,
-  isFrontendSupportedLetterType,
-  FrontendSupportedLetterType,
+  getFrontendLetterTypeForUrl,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
@@ -15,15 +14,15 @@ import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import Link from 'next/link';
-import baseContent from '@content/content';
+import content from '@content/content';
 import { interpolate } from '@utils/interpolate';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import { getRenderDetails } from '@utils/letter-render';
 
 type PreviewLetterFromChooseTemplateProps = MessagePlanAndTemplatePageProps & {
   validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
 };
 
-const content = baseContent.components.previewTemplateFromMessagePlan;
+const { previewTemplateFromMessagePlan, letterRender } = content.components;
 
 export const PreviewLetterFromChooseTemplate = async (
   props: PreviewLetterFromChooseTemplateProps
@@ -58,38 +57,24 @@ export const PreviewLetterFromChooseTemplate = async (
     validatedTemplate.letterVariantId
   );
 
-  let letterType: FrontendSupportedLetterType | undefined;
+  const backLinkHref = interpolate(
+    previewTemplateFromMessagePlan.backLink.href,
+    {
+      templateType: templateTypeToUrlTextMappings(
+        validatedTemplate.templateType,
+        getFrontendLetterTypeForUrl(validatedTemplate)
+      ),
+      routingConfigId,
+      lockNumber,
+    }
+  );
 
-  const isForeignLanguage =
-    validatedTemplate.language && validatedTemplate.language !== 'en';
-
-  if (isForeignLanguage) {
-    letterType = 'language';
-  } else if (isFrontendSupportedLetterType(validatedTemplate.letterType)) {
-    letterType = validatedTemplate.letterType;
-  }
-
-  const backLinkHref = interpolate(content.backLink.href, {
-    templateType: templateTypeToUrlTextMappings(
-      validatedTemplate.templateType,
-      letterType
-    ),
-    routingConfigId,
-    lockNumber,
-  });
-
-  const pdfUrl =
-    validatedTemplate.files.initialRender.status === 'RENDERED'
-      ? buildLetterRenderUrl(
-          validatedTemplate,
-          validatedTemplate.files.initialRender.fileName
-        )
-      : null;
+  const { src: pdfUrl } = getRenderDetails(validatedTemplate, 'initialRender');
 
   return (
     <NHSNotifyContainer>
       <NHSNotifyBackLink href={backLinkHref}>
-        {content.backLink.text}
+        {previewTemplateFromMessagePlan.backLink.text}
       </NHSNotifyBackLink>
 
       <NHSNotifyMain>
@@ -103,11 +88,12 @@ export const PreviewLetterFromChooseTemplate = async (
               hideLearnMore
             />
             <h2 className='nhsuk-heading-m'>
-              {baseContent.components.letterRender.examplePreviewHeading}
+              {letterRender.examplePreviewHeading}
             </h2>
             <LetterRenderIframe
-              renderType={'initialRender'}
-              pdfUrl={pdfUrl}
+              src={pdfUrl}
+              title={letterRender.iframe.nonpersonalised.title}
+              aria-label={letterRender.iframe.nonpersonalised.ariaLabel}
               className='letter-render-iframe nhsuk-u-margin-bottom-6'
             />
             <Link
@@ -115,7 +101,7 @@ export const PreviewLetterFromChooseTemplate = async (
               href={backLinkHref}
               data-testid='back-link-bottom'
             >
-              {content.backLink.text}
+              {previewTemplateFromMessagePlan.backLink.text}
             </Link>
           </div>
         </div>

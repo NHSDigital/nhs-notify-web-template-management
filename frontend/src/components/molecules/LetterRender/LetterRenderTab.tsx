@@ -89,8 +89,12 @@ function LetterRenderTabContent({
         {hideEditActions ? (
           <LetterRenderIframe
             src={pdfUrl}
-            title={interpolate(iframe.title, { tab: tabDescription })}
-            aria-label={interpolate(iframe.ariaLabel, { tab: tabDescription })}
+            title={interpolate(iframe.personalised.title, {
+              tab: tabDescription,
+            })}
+            aria-label={interpolate(iframe.personalised.ariaLabel, {
+              tab: tabDescription,
+            })}
           />
         ) : (
           <PollLetterRender
@@ -101,8 +105,10 @@ function LetterRenderTabContent({
           >
             <LetterRenderIframe
               src={pdfUrl}
-              title={interpolate(iframe.title, { tab: tabDescription })}
-              aria-label={interpolate(iframe.ariaLabel, {
+              title={interpolate(iframe.personalised.title, {
+                tab: tabDescription,
+              })}
+              aria-label={interpolate(iframe.personalised.ariaLabel, {
                 tab: tabDescription,
               })}
             />
