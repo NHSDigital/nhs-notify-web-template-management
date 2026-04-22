@@ -1,4 +1,4 @@
-import { FormStateFields } from 'nhs-notify-web-template-management-utils';
+import { FormStateFields } from '@utils/types';
 
 /**
  * Use in server actions to parse a form data object into form state that can be returned to the client when using `useActionState`

@@ -1,32 +1,16 @@
-import type { RenderKey } from '@utils/types';
 import content from '@content/content';
 
-type LetterRenderIframeProps = {
-  renderType: RenderKey;
-  pdfUrl: string | null;
-} & React.ComponentProps<'iframe'>;
+type IframeProps = React.ComponentProps<'iframe'>;
+type LetterRenderIframeProps = IframeProps &
+  Required<Pick<IframeProps, 'title' | 'aria-label'>>;
 
-export function LetterRenderIframe({
-  renderType,
-  pdfUrl,
-  ...rest
-}: LetterRenderIframeProps) {
-  if (!pdfUrl) {
+export function LetterRenderIframe(props: LetterRenderIframeProps) {
+  if (!props.src)
     return (
       <p className='nhsuk-body'>
-        {content.components.letterRender.iframe.noPreview}
+        {content.components.letterRenderIframe.noPreviewAvailable}
       </p>
     );
-  }
 
-  const { title, ariaLabel } = content.components.letterRender.iframe;
-
-  return (
-    <iframe
-      src={pdfUrl}
-      title={title[renderType]}
-      aria-label={ariaLabel[renderType]}
-      {...rest}
-    />
-  );
+  return <iframe {...props} title={props.title} />;
 }

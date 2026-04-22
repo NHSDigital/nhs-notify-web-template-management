@@ -1,9 +1,6 @@
 'use client';
 
-import type {
-  AuthoringLetterTemplate,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import {
   NHSNotifyFormProvider,
   useNHSNotifyForm,
@@ -13,14 +10,15 @@ import { LetterRenderDetails } from './LetterRenderDetails';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
-import type { PersonalisedRenderKey } from '@utils/types';
+import type { FormState, PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import content from '@content/content';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import { getRenderDetails } from '@utils/letter-render';
+import { interpolate } from '@utils/interpolate';
 
-const { loadingText } = content.components.letterRender;
+const { loadingText, iframe } = content.components.letterRender;
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -30,18 +28,13 @@ type LetterRenderTabProps = {
 
 function derivePdfUrl(
   template: AuthoringLetterTemplate,
-  personalisedRender: RenderDetails | undefined
-): string | null {
-  const initialRender = template.files.initialRender;
+  key: PersonalisedRenderKey
+): string | undefined {
+  const personalisedRender = getRenderDetails(template, key);
 
-  const render =
-    personalisedRender?.status === 'RENDERED'
-      ? personalisedRender
-      : initialRender;
+  if (personalisedRender.rendered) return personalisedRender.src;
 
-  return render?.status === 'RENDERED'
-    ? buildLetterRenderUrl(template, render.fileName)
-    : null;
+  return getRenderDetails(template, 'initialRender').src;
 }
 
 function deriveFormState(
@@ -75,10 +68,12 @@ function LetterRenderTabContent({
 }: {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
-  pdfUrl: string | null;
+  pdfUrl?: string;
   hideEditActions?: boolean;
 }) {
   const [_state, _dispatch, isPending] = useNHSNotifyForm();
+
+  const tabDescription = tab === 'longFormRender' ? 'long' : 'short';
 
   return (
     <div className={`nhsuk-grid-row ${styles.tabRow}`}>
@@ -92,7 +87,11 @@ function LetterRenderTabContent({
 
       <div className={`nhsuk-grid-column-two-thirds ${styles.iframeColumn}`}>
         {hideEditActions ? (
-          <LetterRenderIframe renderType={tab} pdfUrl={pdfUrl} />
+          <LetterRenderIframe
+            src={pdfUrl}
+            title={interpolate(iframe.title, { tab: tabDescription })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: tabDescription })}
+          />
         ) : (
           <PollLetterRender
             template={template}
@@ -100,7 +99,13 @@ function LetterRenderTabContent({
             loadingElement={<p>{loadingText}</p>}
             forcePolling={isPending}
           >
-            <LetterRenderIframe renderType={tab} pdfUrl={pdfUrl} />
+            <LetterRenderIframe
+              src={pdfUrl}
+              title={interpolate(iframe.title, { tab: tabDescription })}
+              aria-label={interpolate(iframe.ariaLabel, {
+                tab: tabDescription,
+              })}
+            />
           </PollLetterRender>
         )}
       </div>
@@ -116,7 +121,7 @@ export function LetterRenderTab({
   const personalisedRender = template.files[tab];
 
   const formState = deriveFormState(template, personalisedRender);
-  const pdfUrl = derivePdfUrl(template, personalisedRender);
+  const pdfUrl = derivePdfUrl(template, tab);
 
   return (
     <NHSNotifyFormProvider

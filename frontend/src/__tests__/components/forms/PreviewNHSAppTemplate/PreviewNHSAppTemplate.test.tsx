@@ -2,14 +2,12 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate';
-import {
-  NHSAppTemplate,
-  TemplateFormState,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { TemplateFormState } from '@utils/types';
 
 jest.mock('@utils/markdownit');
 

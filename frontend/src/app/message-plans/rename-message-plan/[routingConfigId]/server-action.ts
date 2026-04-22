@@ -2,10 +2,10 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod/v4';
-import type { FormState } from 'nhs-notify-web-template-management-utils';
-import { updateRoutingConfig } from '@utils/message-plans';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { $MessagePlanFormData } from '@forms/MessagePlanForm/schema';
+import { updateRoutingConfig } from '@utils/message-plans';
+import type { FormState } from '@utils/types';
 
 const $RenameMessagePlanFormData = $MessagePlanFormData
   .omit({ campaignId: true })

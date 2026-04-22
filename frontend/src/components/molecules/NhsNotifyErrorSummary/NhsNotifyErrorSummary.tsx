@@ -1,14 +1,10 @@
+import { useEffect, useRef } from 'react';
 import { ErrorSummary, HintText } from 'nhsuk-react-components';
-import { ErrorState } from 'nhs-notify-web-template-management-utils';
-import { FC, HTMLProps, useEffect, useRef } from 'react';
 import content from '@content/content';
 import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
-
-const UnlinkedErrorSummaryItem: FC<HTMLProps<HTMLSpanElement>> = (props) => (
-  <li>
-    <span className='nhsuk-error-message' {...props} />
-  </li>
-);
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { addClassNameToContentBlock } from '@utils/add-classname-to-content-block';
+import { ErrorState } from '@utils/types';
 
 export type NhsNotifyErrorSummaryProps = {
   hint?: string;
@@ -61,9 +57,20 @@ export const NhsNotifyErrorSummary = ({
         {renderedFieldErrors}
         {formErrors &&
           formErrors.map((error, id) => (
-            <UnlinkedErrorSummaryItem key={`form-error-summary-${id}`}>
-              {error}
-            </UnlinkedErrorSummaryItem>
+            <li key={`form-error-summary-${id}`}>
+              {typeof error === 'string' ? (
+                <span className='nhsuk-error-message'>{error}</span>
+              ) : (
+                <ContentRenderer
+                  content={error.map((contentBlock) =>
+                    addClassNameToContentBlock(
+                      contentBlock,
+                      'nhsuk-error-message'
+                    )
+                  )}
+                />
+              )}
+            </li>
           ))}
       </ErrorSummary.List>
     </ErrorSummary>

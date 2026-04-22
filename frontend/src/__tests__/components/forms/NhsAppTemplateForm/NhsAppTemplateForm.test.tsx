@@ -1,12 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
-import {
-  NHSAppTemplate,
-  TemplateFormState,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import { ErrorCodes } from '@utils/error-codes';
+import { TemplateFormState } from '@utils/types';
 
 jest.mock('@utils/amplify-utils');
 

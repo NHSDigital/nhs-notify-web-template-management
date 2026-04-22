@@ -1,7 +1,6 @@
 import {
   CreateUpdateEmailTemplate,
   EmailTemplate,
-  TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate, saveTemplate } from '@utils/form-actions';
@@ -12,6 +11,7 @@ import {
 } from '@utils/constants';
 import content from '@content/content';
 import { ErrorCodes } from '@utils/error-codes';
+import { TemplateFormState } from '@utils/types';
 
 const {
   components: {

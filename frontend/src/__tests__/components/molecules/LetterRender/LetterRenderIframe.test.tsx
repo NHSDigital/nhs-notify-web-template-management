@@ -6,8 +6,9 @@ describe('LetterRenderIframe', () => {
     it('renders iframe with provided pdfUrl', () => {
       render(
         <LetterRenderIframe
-          renderType='shortFormRender'
-          pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
+          src='/templates/files/client-123/renders/template-123/initial.pdf'
+          title='Letter preview - short examples'
+          aria-label='PDF preview of letter template with short example personalisation data'
         />
       );
 
@@ -22,8 +23,9 @@ describe('LetterRenderIframe', () => {
     it('adds additional props', () => {
       render(
         <LetterRenderIframe
-          renderType='longFormRender'
-          pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
+          src='/templates/files/client-123/renders/template-123/initial.pdf'
+          title='Letter preview - long examples'
+          aria-label='PDF preview of letter template with long example personalisation data'
           className='additional'
         />
       );
@@ -32,44 +34,17 @@ describe('LetterRenderIframe', () => {
 
       expect(iframe).toHaveAttribute('class', 'additional');
     });
-
-    it('renders correct title for short tab', () => {
-      render(
-        <LetterRenderIframe renderType='shortFormRender' pdfUrl='/test.pdf' />
-      );
-
-      expect(
-        screen.getByTitle('Letter preview - short examples')
-      ).toBeInTheDocument();
-    });
-
-    it('renders correct title for long tab', () => {
-      render(
-        <LetterRenderIframe renderType='longFormRender' pdfUrl='/test.pdf' />
-      );
-
-      expect(
-        screen.getByTitle('Letter preview - long examples')
-      ).toBeInTheDocument();
-    });
-
-    it('renders correct title and aria-label for initialRender', () => {
-      render(
-        <LetterRenderIframe renderType='initialRender' pdfUrl='/test.pdf' />
-      );
-
-      const iframe = screen.getByTitle('Letter preview');
-      expect(iframe).toBeInTheDocument();
-      expect(iframe).toHaveAttribute(
-        'aria-label',
-        'PDF preview of letter template'
-      );
-    });
   });
 
   describe('missing file handling', () => {
-    it('shows message when pdfUrl is null', () => {
-      render(<LetterRenderIframe renderType='shortFormRender' pdfUrl={null} />);
+    it('shows message when pdfUrl is undefined', () => {
+      render(
+        <LetterRenderIframe
+          src={undefined}
+          title='Letter preview - short examples'
+          aria-label='PDF preview of letter template with short example personalisation data'
+        />
+      );
 
       expect(screen.getByText('No preview available')).toBeInTheDocument();
 
@@ -83,8 +58,9 @@ describe('LetterRenderIframe', () => {
     it('matches snapshot with PDF URL', () => {
       const container = render(
         <LetterRenderIframe
-          renderType='shortFormRender'
-          pdfUrl='/templates/files/client-123/renders/template-123/initial.pdf'
+          src='/templates/files/client-123/renders/template-123/initial.pdf'
+          title='Letter preview - short examples'
+          aria-label='PDF preview of letter template with short example personalisation data'
         />
       );
 
@@ -93,7 +69,11 @@ describe('LetterRenderIframe', () => {
 
     it('matches snapshot without PDF file', () => {
       const container = render(
-        <LetterRenderIframe renderType='shortFormRender' pdfUrl={null} />
+        <LetterRenderIframe
+          src={undefined}
+          title='Letter preview - short examples'
+          aria-label='PDF preview of letter template with short example personalisation data'
+        />
       );
 
       expect(container.asFragment()).toMatchSnapshot();

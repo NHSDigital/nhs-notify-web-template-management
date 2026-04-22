@@ -7,6 +7,7 @@ import type {
   TemplatePageProps,
 } from 'nhs-notify-web-template-management-utils';
 import {
+  getFrontendLetterTypeForUrl,
   getPreviewURL,
   validateLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -24,6 +25,11 @@ import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
+import styles from './page.module.scss';
+import concatClassNames from '@utils/concat-class-names';
+import { getRenderDetails } from '@utils/letter-render';
 
 const {
   approveButtonText,
@@ -31,7 +37,10 @@ const {
   links,
   loadingText,
   pageTitle,
+  uploadSuccessBanner,
   validationErrorMessages,
+  defaultValidationErrorMessage,
+  validationFailedIframe,
 } = content.pages.previewLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -40,18 +49,21 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function getValidationErrors(template: AuthoringLetterTemplate): string[] {
+function getValidationErrors(template: AuthoringLetterTemplate) {
   if (template.templateStatus !== 'VALIDATION_FAILED') return [];
 
-  return (
-    template.validationErrors?.flatMap(
-      (error) => validationErrorMessages[error.name]
-    ) ?? []
-  );
+  if (template.validationErrors && template.validationErrors.length > 0) {
+    return template.validationErrors.map((error) =>
+      validationErrorMessages[error.name](error.issues ?? [])
+    );
+  }
+
+  return [defaultValidationErrorMessage];
 }
 
 export default async function PreviewLetterTemplatePage({
   params,
+  searchParams,
 }: TemplatePageProps) {
   const { templateId } = await params;
 
@@ -78,8 +90,10 @@ export default async function PreviewLetterTemplatePage({
     return redirect(getPreviewURL(validatedTemplate), RedirectType.replace);
   }
 
-  const showRenderer =
-    validatedTemplate.files.initialRender.status === 'RENDERED';
+  const initialRender = getRenderDetails(validatedTemplate, 'initialRender');
+  const showRenderer = initialRender.rendered;
+  const showTabbedRenderer =
+    showRenderer && validatedTemplate.templateStatus !== 'VALIDATION_FAILED';
 
   const showSubmitForm =
     validatedTemplate.templateStatus === 'NOT_YET_SUBMITTED';
@@ -92,13 +106,19 @@ export default async function PreviewLetterTemplatePage({
     );
   }
 
+  const validationErrors = getValidationErrors(validatedTemplate);
+
+  const search = await searchParams;
+
+  const isFromUploadPage = search?.from === 'upload';
+
   return (
-    <NHSNotifyContainer fullWidth={showRenderer}>
+    <NHSNotifyContainer fullWidth={showTabbedRenderer}>
       <NHSNotifyFormProvider
         key={validatedTemplate.templateStatus}
         initialState={{
           errorState: {
-            formErrors: getValidationErrors(validatedTemplate),
+            formErrors: validationErrors,
           },
         }}
         serverAction={submitAuthoringLetterAction}
@@ -119,6 +139,16 @@ export default async function PreviewLetterTemplatePage({
                 <NHSNotifyForm.ErrorSummary />
                 <div className='nhsuk-grid-row'>
                   <div className='nhsuk-grid-column-full'>
+                    {isFromUploadPage &&
+                      validatedTemplate.templateStatus ===
+                        'NOT_YET_SUBMITTED' && (
+                        <section
+                          className='notify-confirmation-panel nhsuk-heading-l'
+                          role='status'
+                        >
+                          {uploadSuccessBanner}
+                        </section>
+                      )}
                     <PreviewTemplateDetailsAuthoringLetter
                       template={validatedTemplate}
                       letterVariant={letterVariant}
@@ -126,8 +156,21 @@ export default async function PreviewLetterTemplatePage({
                   </div>
                 </div>
               </NHSNotifyContainer>
-              {showRenderer && <LetterRender template={validatedTemplate} />}
-              <NHSNotifyContainer fullWidth={showRenderer}>
+              {showRenderer &&
+                (showTabbedRenderer ? (
+                  <LetterRender template={validatedTemplate} />
+                ) : (
+                  <LetterRenderIframe
+                    className={concatClassNames(
+                      styles.iframe,
+                      'nhsuk-u-margin-bottom-6'
+                    )}
+                    src={initialRender.src}
+                    title={validationFailedIframe.title}
+                    aria-label={validationFailedIframe.ariaLabel}
+                  />
+                ))}
+              <NHSNotifyContainer fullWidth={showTabbedRenderer}>
                 {showSubmitForm && (
                   <NHSNotifyForm.Form formId='preview-letter-template'>
                     <input
@@ -144,12 +187,23 @@ export default async function PreviewLetterTemplatePage({
                   </NHSNotifyForm.Form>
                 )}
                 <p>
-                  <Link
-                    data-testid='back-link-bottom'
-                    href={links.messageTemplates}
-                  >
-                    {backLinkText}
-                  </Link>
+                  {validationErrors.length > 0 ? (
+                    <NHSNotifyButton
+                      href={links.uploadDifferentTemplateFile.href(
+                        validatedTemplate.templateType,
+                        getFrontendLetterTypeForUrl(validatedTemplate)
+                      )}
+                    >
+                      {links.uploadDifferentTemplateFile.text}
+                    </NHSNotifyButton>
+                  ) : (
+                    <Link
+                      data-testid='back-link-bottom'
+                      href={links.messageTemplates}
+                    >
+                      {backLinkText}
+                    </Link>
+                  )}
                 </p>
               </NHSNotifyContainer>
             </NHSNotifyMain>

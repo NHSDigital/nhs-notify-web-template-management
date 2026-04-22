@@ -13,9 +13,7 @@ import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
   CreateUpdateNHSAppTemplate,
-  ErrorState,
   NHSAppTemplate,
-  PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
@@ -30,6 +28,7 @@ import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import NHSNotifyTextArea from '@atoms/NHSNotifyTextArea/NHSNotifyTextArea';
 import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
+import { ErrorState, PageComponentProps } from '@utils/types';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | CreateUpdateNHSAppTemplate>

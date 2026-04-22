@@ -4,17 +4,14 @@ import Link from 'next/link';
 import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
-import {
-  EmailTemplate,
-  ErrorState,
-  PageComponentProps,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { useActionState, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $FormSchema, previewEmailTemplateAction } from './server-actions';
 import { validate } from '@utils/client-validate-form';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { ErrorState, PageComponentProps } from '@utils/types';
 
 export function PreviewEmailTemplate({
   initialState,

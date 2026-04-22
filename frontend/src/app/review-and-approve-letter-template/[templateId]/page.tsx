@@ -19,7 +19,8 @@ import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { interpolate } from '@utils/interpolate';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
+import concatClassNames from '@utils/concat-class-names';
+import { getRenderDetails } from '@utils/letter-render';
 
 const {
   pageTitle,
@@ -30,6 +31,7 @@ const {
   submitText,
   pageHeading,
   headerCaption,
+  iframe,
 } = content.pages.reviewAndApproveLetterTemplate;
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -67,8 +69,6 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
     );
   }
 
-  const { longFormRender, shortFormRender } = validatedTemplate.files;
-
   const letterVariant = await getLetterVariantById(
     validatedTemplate.letterVariantId
   );
@@ -95,21 +95,23 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
           />
           <h2 className='nhsuk-heading-m'>{shortExampleHeading}</h2>
           <LetterRenderIframe
-            className='letter-render-iframe nhsuk-u-margin-bottom-6'
-            renderType='shortFormRender'
-            pdfUrl={buildLetterRenderUrl(
-              validatedTemplate,
-              shortFormRender.fileName
+            className={concatClassNames(
+              // styles.iframe,
+              'nhsuk-u-margin-bottom-6'
             )}
+            src={getRenderDetails(validatedTemplate, 'shortFormRender').src}
+            title={interpolate(iframe.title, { tab: 'short' })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: 'short' })}
           />
           <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
           <LetterRenderIframe
-            className='letter-render-iframe nhsuk-u-margin-bottom-6'
-            renderType='longFormRender'
-            pdfUrl={buildLetterRenderUrl(
-              validatedTemplate,
-              longFormRender.fileName
+            className={concatClassNames(
+              // styles.iframe,
+              'nhsuk-u-margin-bottom-6'
             )}
+            src={getRenderDetails(validatedTemplate, 'longFormRender').src}
+            title={interpolate(iframe.title, { tab: 'long' })}
+            aria-label={interpolate(iframe.ariaLabel, { tab: 'long' })}
           />
           <NHSNotifyForm.Form formId='review-and-approve-letter'>
             <input
