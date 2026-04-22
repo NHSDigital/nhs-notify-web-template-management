@@ -1,6 +1,6 @@
 'use client';
 
-import type { ErrorState } from 'nhs-notify-web-template-management-utils';
+import type { ErrorState } from '@utils/types';
 import {
   createContext,
   useContext,
