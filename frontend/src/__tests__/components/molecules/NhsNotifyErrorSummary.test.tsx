@@ -194,6 +194,7 @@ describe('handleErrorLinkClick — hidden tab panel behaviour', () => {
     const errorLink = screen.getByRole('link', { name: /an error/i });
     const defaultPreventedTracker = trackDefaultPrevented(errorLink);
 
+    // In JSDOM hash-link focus is not reliable; verify we did not prevent default behaviour.
     try {
       await user.click(errorLink);
     } finally {
@@ -244,7 +245,7 @@ describe('handleErrorLinkClick — hidden tab panel behaviour', () => {
     expect(defaultPreventedTracker.wasPrevented()).toBe(undefined);
   });
 
-  test('does not interact when the linked field does not exist in the DOM', async () => {
+  test('does not prevent default behaviour when the linked field does not exist in the DOM', async () => {
     render(
       <NhsNotifyErrorSummary
         errorState={{ fieldErrors: { 'non-existent-field': ['An error'] } }}

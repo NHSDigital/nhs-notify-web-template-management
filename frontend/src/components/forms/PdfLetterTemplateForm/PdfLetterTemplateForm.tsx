@@ -10,7 +10,7 @@ import {
   WarningCallout,
   ErrorMessage,
 } from 'nhsuk-react-components';
-import { processFormActions } from '@forms/LetterTemplateForm/server-action';
+import { processFormActions } from '@forms/PdfLetterTemplateForm/server-action';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
@@ -33,7 +33,7 @@ import { FormContext } from '@providers/form-provider';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { ErrorState, PageComponentProps } from '@utils/types';
 
-export const LetterTemplateForm: FC<
+export const PdfLetterTemplateForm: FC<
   PageComponentProps<UploadLetterTemplate> & {
     campaignIds: string[];
   }

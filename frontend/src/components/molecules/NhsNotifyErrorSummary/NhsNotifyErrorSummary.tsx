@@ -8,7 +8,7 @@ import { ErrorState } from '@utils/types';
 
 /**
  * Handles clicks on error summary links that point to form fields inside unselected NHS UK tab panels.
- * Iff the target field is inside a hidden tab panel (`nhsuk-tabs__panel--hidden`), the default
+ * If the target field is inside a hidden tab panel (`nhsuk-tabs__panel--hidden`), the default
  * navigation is prevented, the correct tab is activated by programmatically clicking its tab link,
  * and then focus is moved to the field once the panel becomes visible.
  */
