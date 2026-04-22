@@ -94,6 +94,30 @@ describe('PreviewLetterFromChooseTemplate', () => {
     expect(getLetterVariantByIdMock).not.toHaveBeenCalled();
   });
 
+  it('renders a letter template', async () => {
+    const letterVariant = makeLetterVariant();
+
+    getTemplateMock.mockResolvedValueOnce({
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'PROOF_APPROVED',
+    });
+    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
+
+    const page = await PreviewLetterFromChooseTemplate({
+      ...defaultProps,
+      params: Promise.resolve({
+        routingConfigId: ROUTING_CONFIG.id,
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
+      }),
+    });
+
+    const container = render(page);
+
+    expect(getTemplateMock).toHaveBeenCalledWith(AUTHORING_LETTER_TEMPLATE.id);
+    expect(getLetterVariantByIdMock).toHaveBeenCalledWith('variant-123');
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('renders with null pdfUrl when initialRender is not RENDERED', async () => {
     const letterVariant = makeLetterVariant();
 
