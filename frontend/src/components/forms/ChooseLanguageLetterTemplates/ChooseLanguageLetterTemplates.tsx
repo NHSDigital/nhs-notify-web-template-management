@@ -5,10 +5,7 @@ import { Details, SummaryList } from 'nhsuk-react-components';
 import Link from 'next/link';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { useActionState, useState } from 'react';
-import {
-  ErrorState,
-  LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import {
   $ChooseLanguageLetterTemplates,
@@ -22,6 +19,7 @@ import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import baseContent from '@content/content';
 import { LanguageLetterTemplates } from '@molecules/LanguageLetterTemplates/LanguageLetterTemplates';
 import { interpolate } from '@utils/interpolate';
+import { ErrorState } from '@utils/types';
 
 const content = baseContent.components.chooseLanguageLetterTemplates;
 

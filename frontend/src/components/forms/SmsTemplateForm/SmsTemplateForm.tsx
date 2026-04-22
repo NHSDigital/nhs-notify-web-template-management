@@ -8,8 +8,6 @@ import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { HintText, Label, TextInput } from 'nhsuk-react-components';
 import {
   CreateUpdateSMSTemplate,
-  ErrorState,
-  PageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { FC, useActionState, useState } from 'react';
@@ -29,6 +27,7 @@ import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import NHSNotifyTextArea from '@atoms/NHSNotifyTextArea/NHSNotifyTextArea';
 import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
+import type { ErrorState, PageComponentProps } from '@utils/types';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>

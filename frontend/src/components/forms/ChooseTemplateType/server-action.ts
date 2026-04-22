@@ -3,7 +3,6 @@
 import { redirect, RedirectType } from 'next/navigation';
 import {
   createTemplateUrl,
-  FormState,
   legacyTemplateCreationPages,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
@@ -12,6 +11,7 @@ import {
   $ChooseTemplateTypeBase,
   $ChooseTemplateTypeWithLetterAuthoring,
 } from './schemas';
+import { FormState } from '@utils/types';
 
 export async function chooseTemplateTypeAction(
   _: FormState,

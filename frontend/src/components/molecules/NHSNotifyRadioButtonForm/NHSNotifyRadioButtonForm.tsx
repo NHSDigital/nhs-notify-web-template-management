@@ -1,5 +1,5 @@
 import { Radios, Fieldset } from 'nhsuk-react-components';
-import { FormState } from 'nhs-notify-web-template-management-utils';
+import type { FormState } from '@utils/types';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { DetailedHTMLProps, FormHTMLAttributes, ReactNode } from 'react';

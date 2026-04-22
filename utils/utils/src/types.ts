@@ -25,20 +25,6 @@ export type FormId =
   | 'create-nhs-app-template-back'
   | 'create-email-template-back';
 
-export type ErrorState = {
-  formErrors?: string[];
-  fieldErrors?: Record<string, string[]>;
-};
-
-type FormStateFieldValue = string | undefined;
-
-export type FormStateFields = Record<string, FormStateFieldValue>;
-
-export type FormState = {
-  errorState?: ErrorState;
-  fields?: FormStateFields;
-};
-
 export type CreateUpdateNHSAppTemplate = Extract<
   CreateUpdateTemplate,
   { templateType: 'NHS_APP' }
@@ -75,9 +61,6 @@ export type DigitalTemplate = NHSAppTemplate | EmailTemplate | SMSTemplate;
 
 export type DigitalTemplateType = Exclude<TemplateType, 'LETTER'>;
 
-export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
-  FormState & T;
-
 export type NextJsPageProps = {
   params?: Promise<Record<string, string>>;
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -100,10 +83,6 @@ export type MessagePlanAndTemplatePageProps = NextJsPageProps & {
     routingConfigId: string;
     templateId: string;
   }>;
-};
-
-export type PageComponentProps<T> = {
-  initialState: TemplateFormState<T>;
 };
 
 export type ActionPageProps = {

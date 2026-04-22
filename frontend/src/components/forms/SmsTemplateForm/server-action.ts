@@ -1,5 +1,4 @@
 import {
-  TemplateFormState,
   SMSTemplate,
   CreateUpdateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -12,6 +11,7 @@ import {
 } from '@utils/constants';
 import content from '@content/content';
 import { ErrorCodes } from '@utils/error-codes';
+import { TemplateFormState } from '@utils/types';
 
 const {
   components: {
