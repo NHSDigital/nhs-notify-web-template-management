@@ -10,6 +10,7 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_logging_bucket"></a> [access\_logging\_bucket](#input\_access\_logging\_bucket) | Name of S3 bucket to use for access logging | `string` | `""` | no |
+| <a name="input_acct_kms_key_arn"></a> [acct\_kms\_key\_arn](#input\_acct\_kms\_key\_arn) | account-level KMS Key ARN | `string` | n/a | yes |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | The AWS Account ID (numeric) | `string` | n/a | yes |
 | <a name="input_cloudfront_distribution_arn"></a> [cloudfront\_distribution\_arn](#input\_cloudfront\_distribution\_arn) | ARN of the cloudfront distribution to serve files from | `string` | `null` | no |
 | <a name="input_cognito_config"></a> [cognito\_config](#input\_cognito\_config) | Cognito config | <pre>object({<br/>    USER_POOL_ID : string,<br/>    USER_POOL_CLIENT_ID : string<br/>  })</pre> | n/a | yes |
@@ -33,6 +34,8 @@ No requirements.
 | <a name="input_proof_requested_sender_email_address"></a> [proof\_requested\_sender\_email\_address](#input\_proof\_requested\_sender\_email\_address) | Proof requested sender email address | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | `true` | no |
+| <a name="input_shared_files_bucket_arn"></a> [shared\_files\_bucket\_arn](#input\_shared\_files\_bucket\_arn) | ARN of S3 bucket to use for shared files | `string` | n/a | yes |
+| <a name="input_shared_files_bucket_name"></a> [shared\_files\_bucket\_name](#input\_shared\_files\_bucket\_name) | Name of S3 bucket to use for shared files | `string` | n/a | yes |
 | <a name="input_sns_topic_arn"></a> [sns\_topic\_arn](#input\_sns\_topic\_arn) | SNS topic ARN | `string` | `null` | no |
 | <a name="input_template_submitted_sender_email_address"></a> [template\_submitted\_sender\_email\_address](#input\_template\_submitted\_sender\_email\_address) | Template submitted sender email address | `string` | n/a | yes |
 ## Modules

@@ -3,10 +3,15 @@
     "clientId": "9c7b373b-4b8a-4b14-812b-f2759f6648fe",
     "createdAt": "2025-07-29T10:11:13.881Z",
     "createdBy": "INTERNAL_USER#fd70f0ac-4eb3-4159-bcfa-60a325cc1bf2",
-    "files": {},
+    "files": {
+      "docxTemplate": {
+        "url": "s3://template-mgmt/nhs-notify-main-app/9c7b373b-4b8a-4b14-812b-f2759f6648fe/91be480d-c667-4741-957a-057b6475376/1641027600000.docx"
+      }
+    },
     "id": "91be480d-c667-4741-957a-057b64753762",
     "language": "en",
     "letterType": "x0",
+    "letterVariantId": "letter-variant-id",
     "name": "Example Letter Template",
     "owner": "9c7b373b-4b8a-4b14-812b-f2759f6648fe",
     "personalisationParameters": [

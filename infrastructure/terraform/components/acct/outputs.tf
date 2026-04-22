@@ -37,6 +37,11 @@ output "s3_buckets" {
       bucket = module.s3bucket_backup_reports.bucket
       id     = module.s3bucket_backup_reports.id
     }
+    shared_files = {
+      arn    = module.s3bucket_shared_files.arn
+      bucket = module.s3bucket_shared_files.bucket
+      id     = module.s3bucket_shared_files.id
+    }
   }
 }
 
@@ -61,4 +66,8 @@ output "ses_testing_config" {
     iam_role_arn  = module.ses_testing.0.iam_role_arn
     rule_set_name = module.ses_testing.0.rule_set_name
   }, null)
+}
+
+output "kms_key_arn" {
+  value = module.kms.key_arn
 }
