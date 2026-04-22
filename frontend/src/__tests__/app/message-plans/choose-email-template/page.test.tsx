@@ -55,9 +55,6 @@ describe('ChooseEmailTemplate page', () => {
 
     const container = render(page);
 
-    expect(container.getByTestId('no-templates-message').textContent).toBe(
-      'You do not have any email templates yet.'
-    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

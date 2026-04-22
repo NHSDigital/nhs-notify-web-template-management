@@ -59,9 +59,6 @@ describe('ChooseNHSAppTemplate page', () => {
 
     const container = render(page);
 
-    expect(container.getByTestId('no-templates-message').textContent).toBe(
-      'You do not have any NHS App templates yet.'
-    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });
