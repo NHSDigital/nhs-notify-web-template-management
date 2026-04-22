@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewLetterFromMessagePlanPreview renders an authoring letter template preview 1`] = `
+exports[`PreviewLetterFromMessagePlanPreview renders a letter template 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-width-container"
