@@ -1,33 +1,32 @@
-import type { DynamoDBTemplate } from './input-schemas';
+import type {
+  DynamoDBTemplate,
+  DynamoDBTemplateOldImage,
+} from './input-schemas';
 
-const publishableLetterStatuses = new Set<DynamoDBTemplate['templateStatus']>([
-  'DELETED',
-  'PENDING_PROOF_REQUEST',
-  'PROOF_AVAILABLE',
-  'PROOF_APPROVED',
-  'SUBMITTED',
-  'WAITING_FOR_PROOF',
-  'PROOF_APPROVED',
-]);
+const publishableAuthoringLetterStatuses = new Set<
+  DynamoDBTemplate['templateStatus']
+>(['DELETED', 'SUBMITTED', 'PROOF_APPROVED']);
 
 function shouldPublishLetter(
-  previous: DynamoDBTemplate | undefined,
+  previous: DynamoDBTemplateOldImage | undefined,
   current: DynamoDBTemplate
 ): boolean {
-  if (!current.proofingEnabled) return false;
+  if (current.letterVersion !== 'AUTHORING') {
+    return false;
+  }
 
   if (current.templateStatus === 'DELETED') {
     return (
       previous !== undefined &&
-      publishableLetterStatuses.has(previous.templateStatus)
+      publishableAuthoringLetterStatuses.has(previous.templateStatus)
     );
   }
 
-  return publishableLetterStatuses.has(current.templateStatus);
+  return publishableAuthoringLetterStatuses.has(current.templateStatus);
 }
 
 export function shouldPublish(
-  previous: DynamoDBTemplate | undefined,
+  previous: DynamoDBTemplateOldImage | undefined,
   current: DynamoDBTemplate
 ) {
   if (current.templateType === 'LETTER') {

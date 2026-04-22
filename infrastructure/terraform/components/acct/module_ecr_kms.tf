@@ -14,7 +14,7 @@ module "kms_ecr" {
   name                 = "ecr"
   deletion_window      = var.kms_deletion_window
   alias                = "alias/${local.csi}-ecr"
-  key_policy_documents = [data.aws_iam_policy_document.kms.json]
+  key_policy_documents = [data.aws_iam_policy_document.kms_ecr.json]
   iam_delegation       = true
 }
 

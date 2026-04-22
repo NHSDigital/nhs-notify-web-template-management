@@ -4,6 +4,8 @@ import { App } from './app/app';
 import { loadConfig } from './config';
 import { EventBuilder } from './domain/event-builder';
 import { SNSRepository } from './infra/sns-repository';
+import { SharedFileRepository } from './infra/shared-file-repository';
+import { S3Client } from '@aws-sdk/client-s3';
 
 export const createContainer = () => {
   const {
@@ -12,9 +14,13 @@ export const createContainer = () => {
     SNS_TOPIC_ARN,
     TEMPLATES_TABLE_NAME,
     PROOF_REQUESTS_TABLE_NAME,
+    INTERNAL_BUCKET_NAME,
+    SHARED_FILES_BUCKET_NAME,
+    SHARED_FILES_BUCKET_PREFIX,
   } = loadConfig();
 
   const snsClient = new SNSClient({ region: 'eu-west-2' });
+  const s3Client = new S3Client();
 
   const snsRepository = new SNSRepository(snsClient, SNS_TOPIC_ARN);
 
@@ -23,12 +29,26 @@ export const createContainer = () => {
     ROUTING_CONFIG_TABLE_NAME,
     PROOF_REQUESTS_TABLE_NAME,
     EVENT_SOURCE,
+    SHARED_FILES_BUCKET_NAME,
+    SHARED_FILES_BUCKET_PREFIX,
     logger
   );
 
-  const app = new App(snsRepository, eventBuilder, logger);
+  const sharedFileRepository = new SharedFileRepository(
+    s3Client,
+    INTERNAL_BUCKET_NAME,
+    SHARED_FILES_BUCKET_NAME
+  );
+
+  const app = new App(
+    snsRepository,
+    eventBuilder,
+    sharedFileRepository,
+    logger
+  );
 
   return {
     app,
+    logger,
   };
 };

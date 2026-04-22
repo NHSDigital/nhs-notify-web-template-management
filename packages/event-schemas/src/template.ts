@@ -78,18 +78,13 @@ const $LetterTemplateEventV1Data = $TemplateEventV1BaseData
   .extend({
     files: z
       .object({
-        proofs: z
-          .record(
-            z.string(),
-            z.object({
-              supplier: z.string().max(1000),
-            })
-          )
-          .optional(),
+        docxTemplate: z.object({
+          url: z.string(),
+        }),
       })
       .meta({
         description:
-          'Object containing information about proofs attached to the template',
+          'Object containing information about the location of the template file',
       }),
     templateType: z.literal('LETTER').meta({
       description: 'Template type',
@@ -102,10 +97,15 @@ const $LetterTemplateEventV1Data = $TemplateEventV1BaseData
       description:
         'Letter type - q1:Braille, q4:British Sign Language, x0:Standard, x1:Large Print, x3:Audio',
     }),
-    personalisationParameters: z.array(z.string().max(1000)).meta({
-      description: 'List of personalisation parameters used in the template',
+    personalisationParameters: z
+      .array(z.string().max(1000))
+      .meta({
+        description: 'List of personalisation parameters used in the template',
+      })
+      .optional(),
+    letterVariantId: z.string().meta({
+      description: 'Letter variant ID',
     }),
-    supplierReferences: z.record(z.string(), z.string()).optional(),
   })
   .meta({
     id: 'LetterTemplateEventData',
