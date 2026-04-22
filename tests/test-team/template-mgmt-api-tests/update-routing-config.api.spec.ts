@@ -682,22 +682,25 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
     const { dbEntry } = RoutingConfigFactory.create(user1, {
       campaignId: 'campaign-1',
     });
-    user1.campaignId = 'campaign-2';
-    const emailTemplate = TemplateFactory.createEmailTemplate(
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
-      user1
+      {
+        ...user1,
+        campaignId: 'campaign-2',
+      },
+      'new-name'
     );
 
     await storageHelper.seed([dbEntry]);
-    await templateStorageHelper.seedTemplateData([emailTemplate]);
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
 
     const update = {
       cascade: [
         {
-          cascadeGroups: ['standard'],
-          channel: 'EMAIL',
+          cascadeGroups: ['accessible'],
+          channel: 'LETTER',
           channelType: 'primary',
-          defaultTemplateId: emailTemplate.id,
+          defaultTemplateId: letterTemplate.id,
         },
       ],
       cascadeGroupOverrides: [],
@@ -720,48 +723,55 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
 
     expect(updated).toEqual({
       statusCode: 400,
-      technicalMessage: 'Some templates not found',
+      technicalMessage: 'Some templates failed validation',
       details: {
-        templateIds: emailTemplate.id,
+        templateIds: letterTemplate.id,
       },
     });
   });
 
-  // be a test here where we do an update with a valid template and one that will error? so we can check what comes back in templateIds on the error response?
   test('update fails when adding multiple templates where at least one template does not belong to the routing config campaign', async ({
     request,
   }) => {
     const { dbEntry } = RoutingConfigFactory.create(user1, {
       campaignId: 'campaign-1',
     });
-    const emailTemplate1 = TemplateFactory.createEmailTemplate(
+    const letterTemplate1 = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
-      user1
+      {
+        ...user1,
+        campaignId: 'campaign-1',
+      },
+      'new-name'
     );
-    const emailTemplate2 = TemplateFactory.createEmailTemplate(randomUUID(), {
-      ...user1,
-      campaignId: 'campaign-2',
-    });
+    const letterTemplate2 = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      {
+        ...user1,
+        campaignId: 'campaign-2',
+      },
+      'new-name'
+    );
 
     await storageHelper.seed([dbEntry]);
     await templateStorageHelper.seedTemplateData([
-      emailTemplate1,
-      emailTemplate2,
+      letterTemplate1,
+      letterTemplate2,
     ]);
 
     const update = {
       cascade: [
         {
           cascadeGroups: ['standard'],
-          channel: 'EMAIL',
+          channel: 'LETTER',
           channelType: 'primary',
-          defaultTemplateId: emailTemplate1.id,
+          defaultTemplateId: letterTemplate1.id,
         },
         {
           cascadeGroups: ['standard'],
-          channel: 'EMAIL',
+          channel: 'LETTER',
           channelType: 'secondary',
-          defaultTemplateId: emailTemplate2.id,
+          defaultTemplateId: letterTemplate2.id,
         },
       ],
       cascadeGroupOverrides: [],
@@ -784,9 +794,9 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
 
     expect(updated).toEqual({
       statusCode: 400,
-      technicalMessage: 'Some templates not found',
+      technicalMessage: 'Some templates failed validation',
       details: {
-        templateIds: [emailTemplate2.id],
+        templateIds: [letterTemplate2.id],
       },
     });
   });

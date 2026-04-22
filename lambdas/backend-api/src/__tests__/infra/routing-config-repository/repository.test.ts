@@ -2445,6 +2445,22 @@ describe('RoutingConfigRepository', () => {
               channelType: 'primary',
               defaultTemplateId: 'template1',
             },
+            {
+              cascadeGroups: ['accessible'],
+              channel: 'EMAIL',
+              channelType: 'secondary',
+              conditionalTemplates: [
+                { templateId: 'template2', accessibleFormat: 'x1' },
+              ],
+            },
+            {
+              cascadeGroups: ['translations'],
+              channel: 'NHSAPP',
+              channelType: 'primary',
+              conditionalTemplates: [
+                { templateId: 'template3', language: 'ar' },
+              ],
+            },
           ],
           cascadeGroupOverrides: [],
         },
