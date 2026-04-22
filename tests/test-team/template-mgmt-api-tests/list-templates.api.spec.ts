@@ -221,6 +221,7 @@ test.describe('GET /v1/templates', () => {
           campaignId,
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 
@@ -234,6 +235,7 @@ test.describe('GET /v1/templates', () => {
           campaignId: otherCampaignId,
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 
@@ -247,6 +249,7 @@ test.describe('GET /v1/templates', () => {
           campaignId: null,
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
         }
       );
 

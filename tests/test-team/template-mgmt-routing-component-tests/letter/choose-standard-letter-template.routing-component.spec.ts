@@ -117,6 +117,7 @@ function createTemplates(user: TestUser) {
         campaignId: 'different-campaign',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
       }
     ),
     APP: TemplateFactory.createNhsAppTemplate(
