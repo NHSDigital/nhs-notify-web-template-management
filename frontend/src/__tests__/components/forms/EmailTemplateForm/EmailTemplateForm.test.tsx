@@ -1,11 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
-import {
-  TemplateFormState,
-  EmailTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 import { ErrorCodes } from '@utils/error-codes';
+import { TemplateFormState } from '@utils/types';
 
 jest.mock('@utils/amplify-utils');
 

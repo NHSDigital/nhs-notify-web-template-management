@@ -87,7 +87,7 @@ test.describe('Upload Other Language Letter Template Page', () => {
       await uploadPage.submitButton.click();
 
       const previewPageRegex =
-        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)$/;
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)\?from=upload$/;
 
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
@@ -155,7 +155,7 @@ test.describe('Upload Other Language Letter Template Page', () => {
       await uploadPage.submitButton.click();
 
       const previewPageRegex =
-        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)$/;
+        /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)\?from=upload$/;
 
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 

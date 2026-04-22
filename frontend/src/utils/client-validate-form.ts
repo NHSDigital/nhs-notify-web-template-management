@@ -1,7 +1,7 @@
 'use client';
 
-import { ErrorState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
+import { ErrorState } from '@utils/types';
 
 export const validate = (
   $schema: z.Schema,

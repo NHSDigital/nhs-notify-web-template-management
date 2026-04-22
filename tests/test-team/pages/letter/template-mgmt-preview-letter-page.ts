@@ -12,6 +12,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
+  public readonly uploadDifferentTemplateButton: Locator;
   public readonly statusTag: Locator;
 
   // PDF letter specific
@@ -24,12 +25,18 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly campaignAction: Locator;
   public readonly printingAndPostage: Locator;
 
-  public readonly letterRender: Locator;
+  public readonly tabbedRenderSection: Locator;
 
   public readonly shortTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
   public readonly longTab: ReturnType<TemplateMgmtPreviewLetterPage['getTab']>;
 
   public readonly pageSpinner: Locator;
+
+  public readonly serviceNowLink: Locator;
+
+  public readonly uploadSuccessBanner: Locator;
+
+  public readonly initialRenderIframe: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -37,6 +44,9 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.statusTag = page.getByTestId('status-tag');
+    this.uploadDifferentTemplateButton = page.getByRole('button', {
+      name: 'Upload a different letter template file',
+    });
 
     // PDF letter specific
     this.pdfLinks = page.locator('[data-testid^="proof-link"]');
@@ -48,14 +58,28 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.campaignAction = page.getByTestId('campaign-action');
     this.printingAndPostage = page.locator('[id="printing-and-postage"]');
 
-    this.letterRender = page.locator('section').filter({
+    this.tabbedRenderSection = page.locator('section').filter({
       has: page.getByRole('heading', { name: 'Letter preview' }),
     });
 
     this.shortTab = this.getTab('shortFormRender');
     this.longTab = this.getTab('longFormRender');
 
-    this.pageSpinner = page.getByRole('status');
+    this.pageSpinner = page
+      .getByRole('status')
+      .getByRole('heading', { name: 'Uploading letter template' });
+
+    this.uploadSuccessBanner = page
+      .getByRole('status')
+      .and(page.getByText('Template saved'));
+
+    this.serviceNowLink = page.getByRole('link', {
+      name: /raise a Service Now request/,
+    });
+
+    this.initialRenderIframe = page
+      .getByTitle('Letter preview')
+      .and(page.locator('iframe'));
   }
 
   public getTab(variant: TabVariant) {

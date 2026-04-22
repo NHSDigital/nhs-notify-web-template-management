@@ -1,5 +1,5 @@
 import { redirect, RedirectType } from 'next/navigation';
-import { FormState } from 'nhs-notify-web-template-management-utils';
+import type { FormState } from '@utils/types';
 import { z } from 'zod';
 import { updateRoutingConfig } from '@utils/message-plans';
 import { ChooseChannelTemplateFormProps } from './choose-channel-template.types';

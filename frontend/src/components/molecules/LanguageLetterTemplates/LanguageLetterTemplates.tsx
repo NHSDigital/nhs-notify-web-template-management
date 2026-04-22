@@ -5,12 +5,13 @@ import baseContent from '@content/content';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import {
+  getFrontendLetterTypeForUrl,
   letterTypeDisplayMappings,
-  ErrorState,
   templateTypeToUrlTextMappings,
   type LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { interpolate } from '@utils/interpolate';
+import { ErrorState } from '@utils/types';
 
 const { tableHintText, tableContent } =
   baseContent.components.chooseLanguageLetterTemplates;
@@ -105,7 +106,7 @@ export function LanguageLetterTemplates({
                       href={interpolate(tableContent.action.preview.href, {
                         templateType: templateTypeToUrlTextMappings(
                           template.templateType,
-                          'language'
+                          getFrontendLetterTypeForUrl(template)
                         ),
                         routingConfigId,
                         templateId: template.id,

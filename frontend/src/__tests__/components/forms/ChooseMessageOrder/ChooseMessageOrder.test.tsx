@@ -1,7 +1,7 @@
 import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseMessageOrder } from '@forms/ChooseMessageOrder/ChooseMessageOrder';
-import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
+import type { TemplateFormState } from '@utils/types';
 import { useFeatureFlags } from '@providers/client-config-provider';
 import { initialFeatureFlags } from '@utils/client-config';
 

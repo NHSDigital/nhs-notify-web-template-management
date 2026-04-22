@@ -1,14 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type {
-  ErrorState,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
 import { Label } from '@atoms/nhsuk-components';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
+import type { ErrorState, FormState } from '@utils/types';
 
 jest.mock('@utils/csrf-utils');
 
