@@ -1,6 +1,5 @@
 import markdownit from 'markdown-it';
 import {
-  TemplateFormState,
   NHSAppTemplate,
   CreateUpdateNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -10,6 +9,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { INVALID_PERSONALISATION_FIELDS } from '@utils/constants';
 import content from '@content/content';
 import { ErrorCodes } from '@utils/error-codes';
+import { TemplateFormState } from '@utils/types';
 
 const {
   components: {

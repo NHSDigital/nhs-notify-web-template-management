@@ -4,10 +4,7 @@ import { useActionState, useState } from 'react';
 import { Radios } from 'nhsuk-react-components';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import copy from '@content/content';
-import {
-  ErrorState,
-  FRONTEND_SUPPORTED_LETTER_TYPES,
-} from 'nhs-notify-web-template-management-utils';
+import { FRONTEND_SUPPORTED_LETTER_TYPES } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateTypeAction } from './server-action';
 import {
@@ -21,6 +18,7 @@ import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import { useFeatureFlags } from '@providers/client-config-provider';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { ErrorState } from '@utils/types';
 
 const content = copy.components.chooseTemplateType;
 

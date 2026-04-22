@@ -739,15 +739,20 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
     const letterTemplate1 = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
       user1,
-      'new-name'
+      'new-name',
+      'NOT_YET_SUBMITTED',
+      {
+        campaignId: 'campaign-1',
+      }
     );
     const letterTemplate2 = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
+      user1,
+      'new-name',
+      'NOT_YET_SUBMITTED',
       {
-        ...user1,
         campaignId: 'campaign-2',
-      },
-      'new-name'
+      }
     );
 
     await storageHelper.seed([dbEntry]);
@@ -793,7 +798,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       statusCode: 400,
       technicalMessage: 'Some templates failed validation',
       details: {
-        templateIds: [letterTemplate1.id, letterTemplate2.id],
+        templateIds: letterTemplate2.id,
       },
     });
   });

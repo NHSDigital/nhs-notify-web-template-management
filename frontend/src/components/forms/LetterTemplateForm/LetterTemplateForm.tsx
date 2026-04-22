@@ -17,9 +17,7 @@ import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
   UploadLetterTemplate,
-  ErrorState,
   isRightToLeft,
-  PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
@@ -31,6 +29,7 @@ import { validate } from '@utils/client-validate-form';
 import type { Language } from 'nhs-notify-web-template-management-types';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { ErrorState, PageComponentProps } from '@utils/types';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<UploadLetterTemplate> & {

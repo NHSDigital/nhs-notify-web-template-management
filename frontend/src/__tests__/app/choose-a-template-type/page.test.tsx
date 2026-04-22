@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import ChooseATemplateTypePage, {
   generateMetadata,
 } from '@app/choose-a-template-type/page';
-import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
+import type { TemplateFormState } from '@utils/types';
 import content from '@content/content';
 import { useFeatureFlags } from '@providers/client-config-provider';
 

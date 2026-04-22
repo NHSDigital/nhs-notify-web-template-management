@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import ChooseMessageOrderPage, {
   generateMetadata,
 } from '@app/message-plans/choose-message-order/page';
-import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
+import type { TemplateFormState } from '@utils/types';
 import content from '@content/content';
 import { useFeatureFlags } from '@providers/client-config-provider';
 import { initialFeatureFlags } from '@utils/client-config';

@@ -2,12 +2,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { LetterRenderTab } from '@molecules/LetterRender/LetterRenderTab';
 import { updateLetterPreview } from '@molecules/LetterRender/server-action';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
-import type {
-  AuthoringLetterTemplate,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import type { PropsWithChildren } from 'react';
+import { FormState } from '@utils/types';
 
 jest.mock('@utils/csrf-utils');
 jest.mocked(verifyFormCsrfToken).mockResolvedValue(true);
