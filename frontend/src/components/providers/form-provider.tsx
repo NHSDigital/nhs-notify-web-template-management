@@ -6,7 +6,7 @@ import {
   useActionState,
   useContext,
 } from 'react';
-import type { FormState } from 'nhs-notify-web-template-management-utils';
+import type { FormState } from '@utils/types';
 
 type NHSNotifyFormActionState = ReturnType<
   typeof useActionState<FormState, FormData>

@@ -73,6 +73,26 @@ test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
   });
 });
 
+test('renders correctly with markdown formatted formErrors', async () => {
+  const container = render(
+    <NhsNotifyErrorSummary
+      errorState={{
+        formErrors: [
+          [
+            { type: 'text', text: 'There is a **problem**' },
+            {
+              type: 'text',
+              text: '[Click here](https://example.com) to fix it',
+            },
+          ],
+        ],
+      }}
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
 describe('handleErrorLinkClick — hidden tab panel behaviour', () => {
   function renderTabsWithError(errorField: string) {
     return render(

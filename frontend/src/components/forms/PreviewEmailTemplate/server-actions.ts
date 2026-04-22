@@ -1,10 +1,8 @@
-import {
-  EmailTemplate,
-  TemplateFormState,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
 import content from '@content/content';
+import { TemplateFormState } from '@utils/types';
 
 const {
   components: {

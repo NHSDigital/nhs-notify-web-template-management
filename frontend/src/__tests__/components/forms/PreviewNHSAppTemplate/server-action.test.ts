@@ -1,10 +1,8 @@
 import { redirect } from 'next/navigation';
 import { previewNhsAppTemplateAction } from '@forms/PreviewNHSAppTemplate';
 import { getMockFormData } from '@testhelpers/helpers';
-import {
-  NHSAppTemplate,
-  TemplateFormState,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
+import { TemplateFormState } from '@utils/types';
 
 jest.mock('next/navigation');
 

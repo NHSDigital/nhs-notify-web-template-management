@@ -7,12 +7,12 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   templateTypeDisplayMappings,
-  ErrorState,
   templateTypeToUrlTextMappings,
-  FrontendSupportedLetterType,
+  getFrontendLetterTypeForUrl,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { interpolate } from '@utils/interpolate';
+import { ErrorState } from '@utils/types';
 
 const { tableHintText, tableContent } =
   baseContent.components.chooseChannelTemplate;
@@ -27,14 +27,12 @@ export function ChannelTemplates({
   templateList,
   errorState,
   selectedTemplate,
-  letterType,
   lockNumber,
 }: {
   routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
-  letterType?: FrontendSupportedLetterType;
   lockNumber: number;
 }) {
   return (
@@ -103,7 +101,7 @@ export function ChannelTemplates({
                       href={interpolate(tableContent.action.preview.href, {
                         templateType: templateTypeToUrlTextMappings(
                           template.templateType,
-                          letterType
+                          getFrontendLetterTypeForUrl(template)
                         ),
                         routingConfigId,
                         templateId: template.id,

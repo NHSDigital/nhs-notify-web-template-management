@@ -1,9 +1,6 @@
 'use client';
 
-import type {
-  AuthoringLetterTemplate,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import {
   NHSNotifyFormProvider,
   useNHSNotifyForm,
@@ -13,16 +10,17 @@ import { LetterRenderDetails } from './LetterRenderDetails';
 import { LetterRenderForm } from './LetterRenderForm';
 import { LetterRenderIframe } from './LetterRenderIframe';
 import { updateLetterPreview } from './server-action';
-import type { PersonalisedRenderKey } from '@utils/types';
+import type { FormState, PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderTab.module.scss';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import content from '@content/content';
-import { buildLetterRenderUrl } from '@utils/letter-render-url';
 import { useLetterRenderError } from '@providers/letter-render-error-provider';
 import { useEffect, type ReactNode } from 'react';
+import { getRenderDetails } from '@utils/letter-render';
+import { interpolate } from '@utils/interpolate';
 
-const { loadingText } = content.components.letterRender;
+const { loadingText, iframe } = content.components.letterRender;
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -32,18 +30,13 @@ type LetterRenderTabProps = {
 
 function derivePdfUrl(
   template: AuthoringLetterTemplate,
-  personalisedRender: RenderDetails | undefined
-): string | null {
-  const initialRender = template.files.initialRender;
+  key: PersonalisedRenderKey
+): string | undefined {
+  const personalisedRender = getRenderDetails(template, key);
 
-  const render =
-    personalisedRender?.status === 'RENDERED'
-      ? personalisedRender
-      : initialRender;
+  if (personalisedRender.rendered) return personalisedRender.src;
 
-  return render?.status === 'RENDERED'
-    ? buildLetterRenderUrl(template, render.fileName)
-    : null;
+  return getRenderDetails(template, 'initialRender').src;
 }
 
 function deriveFormState(
@@ -89,11 +82,13 @@ function LetterRenderTabLayout({
 function LetterRenderTabFormInner({
   template,
   tab,
+  tabDescription,
   pdfUrl,
 }: {
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
-  pdfUrl: string | null;
+  tabDescription: string;
+  pdfUrl?: string;
 }) {
   const [state, _dispatch, isPending] = useNHSNotifyForm();
   const { setLetterRenderErrorState } = useLetterRenderError();
@@ -112,7 +107,13 @@ function LetterRenderTabFormInner({
           loadingElement={<p>{loadingText}</p>}
           forcePolling={isPending}
         >
-          <LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />
+          <LetterRenderIframe
+            src={pdfUrl}
+            title={interpolate(iframe.title, { tab: tabDescription })}
+            aria-label={interpolate(iframe.ariaLabel, {
+              tab: tabDescription,
+            })}
+          />
         </PollLetterRender>
       }
     />
@@ -128,14 +129,20 @@ function LetterRenderTabForm({
 }) {
   const personalisedRender = template.files[tab];
   const formState = deriveFormState(template, personalisedRender);
-  const pdfUrl = derivePdfUrl(template, personalisedRender);
+  const tabDescription = tab === 'longFormRender' ? 'long' : 'short';
+  const pdfUrl = derivePdfUrl(template, tab);
 
   return (
     <NHSNotifyFormProvider
       initialState={formState}
       serverAction={updateLetterPreview}
     >
-      <LetterRenderTabFormInner template={template} tab={tab} pdfUrl={pdfUrl} />
+      <LetterRenderTabFormInner
+        template={template}
+        tab={tab}
+        tabDescription={tabDescription}
+        pdfUrl={pdfUrl}
+      />
     </NHSNotifyFormProvider>
   );
 }
@@ -147,12 +154,21 @@ function LetterRenderTabReadOnly({
   template: AuthoringLetterTemplate;
   tab: PersonalisedRenderKey;
 }) {
-  const pdfUrl = derivePdfUrl(template, template.files[tab]);
+  const tabDescription = tab === 'longFormRender' ? 'long' : 'short';
+  const pdfUrl = derivePdfUrl(template, tab);
 
   return (
     <LetterRenderTabLayout
       leftColumn={<LetterRenderDetails template={template} tab={tab} />}
-      rightColumn={<LetterRenderIframe tab={tab} pdfUrl={pdfUrl} />}
+      rightColumn={
+        <LetterRenderIframe
+          src={pdfUrl}
+          title={interpolate(iframe.title, { tab: tabDescription })}
+          aria-label={interpolate(iframe.ariaLabel, {
+            tab: tabDescription,
+          })}
+        />
+      }
     />
   );
 }

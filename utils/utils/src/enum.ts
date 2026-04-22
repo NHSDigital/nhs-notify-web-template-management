@@ -9,7 +9,7 @@ import type {
   ClientFeatures,
   LetterVersion,
 } from 'nhs-notify-web-template-management-types';
-import { DigitalTemplateType } from './types';
+import { DigitalTemplate, DigitalTemplateType, LetterTemplate } from './types';
 
 /**
  * @typedef {Object} LanguageMetadata
@@ -245,11 +245,36 @@ export const sendDigitalTemplateTestMessageUrl = (
   templateId: string
 ) => `/send-test-${testMessageUrlSegmentMapping(type)}/${templateId}`;
 
+type UrlFormattableLetterTemplate = Pick<LetterTemplate, 'templateType'> &
+  Partial<Pick<LetterTemplate, 'language' | 'letterType'>>;
+
+export type UrlFormattableTemplate =
+  | Pick<DigitalTemplate, 'templateType'>
+  | UrlFormattableLetterTemplate;
+
+export const getFrontendLetterTypeForUrl = (
+  template: UrlFormattableTemplate
+): FrontendSupportedLetterType | undefined => {
+  if (template.templateType !== 'LETTER') {
+    return;
+  }
+
+  if (template.letterType && template.letterType !== 'x0') {
+    return template.letterType;
+  }
+
+  if (template.language && template.language !== 'en') {
+    return 'language';
+  }
+
+  return 'x0';
+};
+
 export const templateTypeToUrlTextMappings = (
-  type: TemplateType,
-  letterType?: FrontendSupportedLetterType
-) =>
-  ({
+  templateType: TemplateType,
+  letterType: FrontendSupportedLetterType = 'x0'
+) => {
+  return {
     NHS_APP: 'nhs-app',
     SMS: 'text-message',
     EMAIL: 'email',
@@ -258,8 +283,9 @@ export const templateTypeToUrlTextMappings = (
       x0: 'standard-english-letter',
       x1: 'large-print-letter',
       language: 'other-language-letter',
-    }[letterType || 'x0'],
-  })[type];
+    }[letterType],
+  }[templateType];
+};
 
 const creationAction = (type: TemplateType) =>
   ({
@@ -275,8 +301,9 @@ export const legacyTemplateCreationPages = (type: TemplateType) =>
 export const createTemplateUrl = (
   templateType: TemplateType,
   letterType?: FrontendSupportedLetterType
-) =>
-  `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
+) => {
+  return `/${creationAction(templateType)}-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
+};
 
 export const getPreviewURL = (template: TemplateDto) => {
   if (
@@ -295,9 +322,11 @@ export const getPreviewURL = (template: TemplateDto) => {
 };
 
 export const messagePlanChooseTemplateUrl = (
-  type: TemplateType,
+  templateType: TemplateType,
   letterType?: FrontendSupportedLetterType
-) => `choose-${templateTypeToUrlTextMappings(type, letterType)}-template`;
+) => {
+  return `choose-${templateTypeToUrlTextMappings(templateType, letterType)}-template`;
+};
 
 const templateStatusCopyAction = (status: TemplateStatus) =>
   (

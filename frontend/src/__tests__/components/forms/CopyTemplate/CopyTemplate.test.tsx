@@ -4,7 +4,7 @@ import { useActionState } from 'react';
 import { mockDeep } from 'jest-mock-extended';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CopyTemplate, ValidCopyType } from '@forms/CopyTemplate/CopyTemplate';
-import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
+import type { TemplateFormState } from '@utils/types';
 import { TemplateDto } from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/amplify-utils');

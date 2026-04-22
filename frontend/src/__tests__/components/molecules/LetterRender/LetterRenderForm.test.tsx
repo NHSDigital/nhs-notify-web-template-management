@@ -5,10 +5,8 @@ import {
   LetterRenderPollingProvider,
   useLetterRenderPolling,
 } from '@providers/letter-render-polling-provider';
-import type {
-  AuthoringLetterTemplate,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
+import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import type { FormState } from '@utils/types';
 
 jest.mock('@providers/letter-render-polling-provider', () => {
   const actual = jest.requireActual(

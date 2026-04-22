@@ -4,10 +4,7 @@ import { useActionState, useState } from 'react';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import content from '@content/content';
-import {
-  ErrorState,
-  templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils';
+import { templateTypeDisplayMappings } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $CopyTemplate, copyTemplateAction } from './server-action';
 import type {
@@ -17,6 +14,7 @@ import type {
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { ErrorState } from '@utils/types';
 
 export type ValidCopyType = Exclude<TemplateType, 'LETTER'>;
 

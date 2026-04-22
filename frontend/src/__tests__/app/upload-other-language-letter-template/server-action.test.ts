@@ -44,7 +44,7 @@ describe('uploadOtherLanguageLetterTemplate', () => {
     );
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      '/preview-letter-template/template-id',
+      '/preview-letter-template/template-id?from=upload',
       RedirectType.push
     );
   });

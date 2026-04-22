@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Container, SummaryList, Tag } from 'nhsuk-react-components';
 import type { LetterVariant } from 'nhs-notify-web-template-management-types';
 import {
@@ -9,17 +10,18 @@ import {
   statusToDisplayMapping,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { DetailSection, DetailsHeader, LockedTemplateWarning } from './common';
-import { ActionLink } from './ActionLink';
-import concatClassNames from '@utils/concat-class-names';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import {
   useCampaignIds,
   useFeatureFlags,
 } from '@providers/client-config-provider';
-import Link from 'next/link';
-import { toKebabCase } from '@utils/kebab-case';
-import styles from './PreviewTemplateDetails.module.scss';
+import { addClassNameToContentBlock } from '@utils/add-classname-to-content-block';
+import concatClassNames from '@utils/concat-class-names';
 import { interpolate } from '@utils/interpolate';
+import { toKebabCase } from '@utils/kebab-case';
+import { DetailSection, DetailsHeader, LockedTemplateWarning } from './common';
+import { ActionLink } from './ActionLink';
+import styles from './PreviewTemplateDetails.module.scss';
 
 type PreviewTemplateDetailsAuthoringLetterProps = {
   template: AuthoringLetterTemplate;
@@ -29,8 +31,14 @@ type PreviewTemplateDetailsAuthoringLetterProps = {
   hideLearnMore?: boolean;
 };
 
-const { rowHeadings, visuallyHidden, externalLinks, actions, links } =
-  content.components.previewTemplateDetails;
+const {
+  rowHeadings,
+  visuallyHidden,
+  externalLinks,
+  actions,
+  links,
+  checkingFilesMessage,
+} = content.components.previewTemplateDetails;
 
 function pagesAndSheetsCount(
   template: AuthoringLetterTemplate,
@@ -83,6 +91,8 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
   const hidePostageRow = unvalidated;
 
   const hideSidesAndPages = pendingValidation || !hasInitialRender;
+
+  const isCheckingFiles = template.templateStatus === 'PENDING_VALIDATION';
 
   return (
     <>
@@ -217,6 +227,16 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
                 >
                   {statusToDisplayMapping(template, features)}
                 </Tag>
+                {isCheckingFiles && (
+                  <ContentRenderer
+                    content={[
+                      addClassNameToContentBlock(
+                        checkingFilesMessage,
+                        'nhsuk-u-padding-top-3 nhsuk-u-padding-right-9 nhsuk-u-margin-right-6'
+                      ),
+                    ]}
+                  />
+                )}
               </SummaryList.Value>
               <ActionLink
                 href={externalLinks.templateStatuses}

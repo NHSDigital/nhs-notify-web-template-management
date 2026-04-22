@@ -1,7 +1,7 @@
 'use server';
 
 import { z } from 'zod/v4';
-import type { FormState } from 'nhs-notify-web-template-management-utils';
+import type { FormState } from '@utils/types';
 import copy from '@content/content';
 import {
   EXAMPLE_RECIPIENT_IDS,

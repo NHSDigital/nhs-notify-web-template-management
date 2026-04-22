@@ -6,13 +6,12 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import {
+  getFrontendLetterTypeForUrl,
   templateTypeToUrlTextMappings,
-  PageComponentProps,
-  isFrontendSupportedLetterType,
-  FrontendSupportedLetterType,
 } from 'nhs-notify-web-template-management-utils';
 import { PreviewTemplateComponent } from '@molecules/PreviewTemplateDetails/common';
 import { interpolate } from '@utils/interpolate';
+import { PageComponentProps } from '@utils/types';
 
 export type MessagePlanPreviewTemplateProps<T extends TemplateDto> =
   PageComponentProps<T> & {
@@ -29,20 +28,10 @@ export function PreviewTemplateFromMessagePlan<T extends TemplateDto>({
 }: Readonly<MessagePlanPreviewTemplateProps<T>>) {
   const content = baseContent.components.previewTemplateFromMessagePlan;
 
-  let letterType: FrontendSupportedLetterType | undefined;
-  if (template.templateType === 'LETTER') {
-    const isForeignLanguage = template.language && template.language !== 'en';
-    if (isForeignLanguage) {
-      letterType = 'language';
-    } else if (isFrontendSupportedLetterType(template.letterType)) {
-      letterType = template.letterType;
-    }
-  }
-
   const backLinkHref = interpolate(content.backLink.href, {
     templateType: templateTypeToUrlTextMappings(
       template.templateType,
-      letterType
+      getFrontendLetterTypeForUrl(template)
     ),
     routingConfigId,
     lockNumber,

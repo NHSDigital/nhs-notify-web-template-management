@@ -7,7 +7,6 @@ import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NH
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import content from '@content/content';
 import {
-  ErrorState,
   getMessageOrderOptions,
   MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
@@ -15,6 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $ChooseMessageOrder, chooseMessageOrderAction } from './server-action';
 import { validate } from '@utils/client-validate-form';
 import { useFeatureFlags } from '@providers/client-config-provider';
+import { ErrorState } from '@utils/types';
 
 export const messageOrderDisplayMappings: Record<MessageOrder, string> = {
   NHSAPP: 'NHS App only',

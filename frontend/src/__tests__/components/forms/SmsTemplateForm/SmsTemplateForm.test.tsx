@@ -2,12 +2,12 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
 import {
-  TemplateFormState,
   SMSTemplate,
   CreateUpdateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import { ErrorCodes } from '@utils/error-codes';
+import { TemplateFormState } from '@utils/types';
 
 jest.mock('react', () => {
   const originalModule = jest.requireActual('react');

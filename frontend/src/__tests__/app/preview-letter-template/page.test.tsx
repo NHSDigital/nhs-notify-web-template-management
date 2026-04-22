@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, getLetterVariantById } from '@utils/form-actions';
@@ -17,6 +17,13 @@ import Page, {
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import content from '@content/content';
 import { RENDER_TIMEOUT_MS } from '@molecules/PollLetterRender/PollLetterRender';
+import {
+  AuthoringLetterFiles,
+  Language,
+  LetterType,
+  RenderDetailsRendered,
+  ValidationErrorDetail,
+} from 'nhs-notify-web-template-management-types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -349,6 +356,28 @@ describe('valid authoring letter template', () => {
       screen.getByRole('tab', { name: 'Long examples' })
     ).toBeInTheDocument();
   });
+
+  it('displays the template saved banner when navigated to from the upload page', async () => {
+    const { asFragment } = render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+        searchParams: Promise.resolve({ from: 'upload' }),
+      })
+    );
+
+    expect(screen.getByRole('status')).toHaveTextContent('Template saved');
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+  it('does not display the template saved banner when not navigated to from the upload page', async () => {
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
 });
 
 describe('authoring letter template with no letter variant set', () => {
@@ -372,6 +401,7 @@ describe('authoring letter initial render states', () => {
   it('displays the loading spinner and hides page content when initialRender is freshly PENDING', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'PENDING_VALIDATION',
       files: {
         ...AUTHORING_LETTER_TEMPLATE.files,
         initialRender: {
@@ -397,6 +427,7 @@ describe('authoring letter initial render states', () => {
   it('shows page content and hides spinner and renderer when initialRender is PENDING, but render request is stale', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'PENDING_VALIDATION',
       files: {
         ...AUTHORING_LETTER_TEMPLATE.files,
         initialRender: {
@@ -408,7 +439,7 @@ describe('authoring letter initial render states', () => {
       },
     });
 
-    render(
+    const { asFragment } = render(
       await Page({
         params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
       })
@@ -429,11 +460,14 @@ describe('authoring letter initial render states', () => {
     expect(screen.getByTestId('preview-template-id')).toHaveTextContent(
       AUTHORING_LETTER_TEMPLATE.id
     );
+
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('shows page content without letter renderer when initialRender is FAILED', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'VALIDATION_FAILED',
       files: {
         ...AUTHORING_LETTER_TEMPLATE.files,
         initialRender: {
@@ -487,102 +521,278 @@ describe('when authoring letter template status is submitted', () => {
 });
 
 describe('authoring letter template with VALIDATION_FAILED status', () => {
-  it('displays error summary with correct error messages when validationErrors are present', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
-    });
+  const validationErrorCases: {
+    name: string;
+    validationError?: ValidationErrorDetail;
+    expectedErrorMessageLines: string[];
+    files: AuthoringLetterFiles;
+  }[] = [
+    {
+      name: 'VIRUS_SCAN_FAILED',
+      validationError: { name: 'VIRUS_SCAN_FAILED' },
+      expectedErrorMessageLines: [
+        'Your file may contain a virus and we could not open it',
+        'Upload a different letter template file',
+      ],
+      files: {
+        docxTemplate: {
+          currentVersion: '4b3a9d7e-b050-4c43-9889-98ff0d5d6c39',
+          fileName: 'eicar-threat-test.docx',
+          virusScanStatus: 'FAILED',
+        },
+        initialRender: {
+          requestedAt: '2026-04-15T11:17:03.849Z',
+          status: 'PENDING',
+        },
+      },
+    },
+    {
+      name: 'MISSING_ADDRESS_LINES',
+      validationError: { name: 'MISSING_ADDRESS_LINES' },
+      expectedErrorMessageLines: [
+        'Your template is missing address personalisation fields',
+        'You must include all fields from {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+        'Upload it as a different letter template file',
+      ],
+      files: {
+        docxTemplate: {
+          currentVersion: '7549a403-dcb2-4f29-97a7-f9e85350c82a',
+          fileName: 'missing-address-line.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          currentVersion: '280c795d-9e86-42b9-a3d5-77d23ebe28a0',
+          fileName: '280c795d-9e86-42b9-a3d5-77d23ebe28a0.pdf',
+          pageCount: 2,
+          status: 'RENDERED',
+        },
+      },
+    },
+    {
+      name: 'UNEXPECTED_ADDRESS_LINES',
+      validationError: { name: 'UNEXPECTED_ADDRESS_LINES' },
+      expectedErrorMessageLines: [
+        'Your template has address personalisation fields we do not recognise',
+        'You must only use {d.address_line_1} to {d.address_line_7}. Use the blank letter template file to set up your template as it includes the correct fields',
+        'Upload it as a different letter template file',
+      ],
+      files: {
+        docxTemplate: {
+          currentVersion: '64bc9454-30cf-4eb0-aaf2-9f0dc1d17ef7',
+          fileName: 'unexpected-address-lines.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          currentVersion: '7114fecd-e1fc-4766-a9a9-cc54bb7eb29f',
+          fileName: '7114fecd-e1fc-4766-a9a9-cc54bb7eb29f.pdf',
+          pageCount: 2,
+          status: 'RENDERED',
+        },
+      },
+    },
+    {
+      name: 'INVALID_MARKERS',
+      validationError: {
+        name: 'INVALID_MARKERS',
+        issues: [
+          '{c.compliment}',
+          '{no.d}',
+          '{d.underscores_to_test_markdown_escapes}',
+        ],
+      },
+      expectedErrorMessageLines: [
+        'You used the following personalisation fields with incorrect formatting:',
+        '{c.compliment}',
+        '{no.d}',
+        '{d.underscores_to_test_markdown_escapes}',
+        'Personalisation fields must start with d. and be inside single curly brackets. For example: {d.fullName}',
+        'They can only contain',
+        'letters (a to z, A to Z)',
+        'numbers (1 to 9)',
+        'dashes',
+        'underscores',
+        'Update your letter template file and upload it again',
+      ],
+      files: {
+        docxTemplate: {
+          currentVersion: 'd17cb7dc-e676-40e9-bdae-daa93f869617',
+          fileName: 'invalid-markers.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          currentVersion: '1a6d0abf-718f-4ec2-9716-6344b611b995',
+          fileName: '1a6d0abf-718f-4ec2-9716-6344b611b995.pdf',
+          pageCount: 2,
+          status: 'RENDERED',
+        },
+      },
+    },
+    {
+      name: 'undefined',
+      validationError: undefined,
+      expectedErrorMessageLines: [
+        'We could not open your file. This may be a technical problem or an issue with your file',
+        'Upload a different letter template file',
+      ],
+      files: {
+        docxTemplate: {
+          currentVersion: 'c4c16eed-9e53-4278-9b57-cc7ec53767b0',
+          fileName: 'random-bytes-zipped.docx',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          status: 'FAILED',
+        },
+      },
+    },
+  ];
 
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+  const letterTypeCases: {
+    letterType: LetterType;
+    language: Language;
+    expectedLink: string;
+  }[] = [
+    {
+      letterType: 'x0',
+      language: 'en',
+      expectedLink: '/templates/upload-standard-english-letter-template',
+    },
+    {
+      letterType: 'x1',
+      language: 'en',
+      expectedLink: '/templates/upload-large-print-letter-template',
+    },
+    {
+      letterType: 'q4',
+      language: 'en',
+      expectedLink: '/templates/upload-british-sign-language-letter-template',
+    },
+    {
+      letterType: 'x0',
+      language: 'es',
+      expectedLink: '/templates/upload-other-language-letter-template',
+    },
+  ];
 
-    expect(redirect).not.toHaveBeenCalled();
-    expect(
-      screen.getByRole('alert', { name: 'There is a problem' })
-    ).toBeInTheDocument();
+  describe.each(validationErrorCases)(
+    'validation error: $name',
+    ({ validationError, expectedErrorMessageLines, files }) => {
+      describe.each(letterTypeCases)(
+        'letterType: $letterType, language: $language',
+        ({ letterType, language, expectedLink }) => {
+          beforeEach(() => {
+            jest.mocked(getTemplate).mockResolvedValue({
+              ...AUTHORING_LETTER_TEMPLATE,
+              letterType,
+              language,
+              templateStatus: 'VALIDATION_FAILED',
+              validationErrors: validationError && [validationError],
+              files,
+            });
+          });
 
-    expect(
-      screen.getByText('The file(s) you uploaded may contain a virus.')
-    ).toBeInTheDocument();
+          it('displays error summary with correct error messages when validationErrors are present', async () => {
+            render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
 
-    expect(
-      screen.getByText(
-        'Create a new letter template to upload your file(s) again or upload different file(s).'
-      )
-    ).toBeInTheDocument();
-  });
+            expect(redirect).not.toHaveBeenCalled();
 
-  it('does not display submit button when validation has failed', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
-    });
+            const errorSummary = screen.getByRole('alert', {
+              name: 'There is a problem',
+            });
 
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+            for (const errorMessage of expectedErrorMessageLines) {
+              expect(
+                within(errorSummary).getByText(errorMessage)
+              ).toBeInTheDocument();
+            }
+          });
 
-    expect(
-      screen.queryByRole('button', { name: 'Submit template' })
-    ).not.toBeInTheDocument();
-  });
+          it('does not display tabbed renderer', async () => {
+            render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
 
-  it('does not display error summary when validationErrors is undefined', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: undefined,
-    });
+            expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+          });
 
-    render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+          if (files.initialRender.status === 'RENDERED') {
+            it('displays initial render iframe when render is available', async () => {
+              const { id, clientId } = AUTHORING_LETTER_TEMPLATE;
+              render(
+                await Page({
+                  params: Promise.resolve({
+                    templateId: AUTHORING_LETTER_TEMPLATE.id,
+                  }),
+                })
+              );
 
-    expect(redirect).not.toHaveBeenCalled();
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: AUTHORING_LETTER_TEMPLATE.name })
-    ).toBeInTheDocument();
-  });
+              const iframe = screen.queryByTitle('Letter preview');
 
-  it('matches snapshot when validationErrors are present', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
-    });
+              expect(iframe).toBeVisible();
+              expect(iframe).toHaveAttribute(
+                'src',
+                `/templates/files/${clientId}/renders/${id}/${(files.initialRender as RenderDetailsRendered).fileName}`
+              );
+            });
+          } else {
+            it('does not display initial render iframe when render is not available', async () => {
+              render(
+                await Page({
+                  params: Promise.resolve({
+                    templateId: AUTHORING_LETTER_TEMPLATE.id,
+                  }),
+                })
+              );
 
-    const { asFragment } = render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+              expect(
+                screen.queryByTitle('Letter preview')
+              ).not.toBeInTheDocument();
+            });
+          }
 
-    expect(asFragment()).toMatchSnapshot();
-  });
+          it('displays "upload different template" button instead of submit button when validation has failed', async () => {
+            render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
 
-  it('matches snapshot when validationErrors is undefined', async () => {
-    jest.mocked(getTemplate).mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      templateStatus: 'VALIDATION_FAILED',
-      validationErrors: undefined,
-    });
+            expect(
+              screen.queryByRole('button', { name: 'Submit template' })
+            ).not.toBeInTheDocument();
 
-    const { asFragment } = render(
-      await Page({
-        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
-      })
-    );
+            expect(
+              screen.getByRole('button', {
+                name: 'Upload a different letter template file',
+              })
+            ).toHaveAttribute('href', expectedLink);
+          });
 
-    expect(asFragment()).toMatchSnapshot();
-  });
+          it('matches snapshot', async () => {
+            const { asFragment } = render(
+              await Page({
+                params: Promise.resolve({
+                  templateId: AUTHORING_LETTER_TEMPLATE.id,
+                }),
+              })
+            );
+
+            expect(asFragment()).toMatchSnapshot();
+          });
+        }
+      );
+    }
+  );
 });

@@ -8,11 +8,11 @@ import type {
 } from 'nhs-notify-web-template-management-types';
 import {
   MESSAGE_ORDER_OPTIONS_LIST,
-  type FormState,
   type MessageOrder,
 } from 'nhs-notify-web-template-management-utils';
-import { createRoutingConfig } from '@utils/message-plans';
 import { $MessagePlanFormData } from '@forms/MessagePlanForm/schema';
+import { createRoutingConfig } from '@utils/message-plans';
+import { FormState } from '@utils/types';
 
 const $CreateMessagePlanFormData = $MessagePlanFormData.extend({
   messageOrder: z.enum(MESSAGE_ORDER_OPTIONS_LIST, {
