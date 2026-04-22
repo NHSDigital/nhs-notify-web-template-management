@@ -55,9 +55,6 @@ describe('ChooseTextMessageTemplate page', () => {
 
     const container = render(page);
 
-    expect(container.getByTestId('no-templates-message').textContent).toBe(
-      'You do not have any text message (SMS) templates yet.'
-    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

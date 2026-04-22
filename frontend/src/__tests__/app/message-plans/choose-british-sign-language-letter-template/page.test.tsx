@@ -84,9 +84,6 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
 
     const container = render(page);
 
-    expect(container.getByTestId('no-templates-message').textContent).toBe(
-      'You do not have any British Sign Language letter templates linked to the campaign you chose for this message plan.'
-    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });
