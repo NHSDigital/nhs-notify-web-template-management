@@ -738,10 +738,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
     });
     const letterTemplate1 = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
-      {
-        ...user1,
-        campaignId: 'campaign-1',
-      },
+      user1,
       'new-name'
     );
     const letterTemplate2 = TemplateFactory.createAuthoringLetterTemplate(
@@ -796,7 +793,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       statusCode: 400,
       technicalMessage: 'Some templates failed validation',
       details: {
-        templateIds: [letterTemplate2.id],
+        templateIds: [letterTemplate1.id, letterTemplate2.id],
       },
     });
   });
