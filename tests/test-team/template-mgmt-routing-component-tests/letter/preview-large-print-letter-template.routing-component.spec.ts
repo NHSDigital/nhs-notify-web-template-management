@@ -15,12 +15,20 @@ import { RoutingPreviewLargePrintLetterTemplatePage } from 'pages/routing/letter
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
+import { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const invalidTemplateId = 'invalid-id';
-const notFoundTemplateId = 'dc67b576-af7d-47b3-97d7-48fa204e7525';
+const notFoundTemplateId = randomUUID();
+
+const templateIds = {
+  EMAIL: randomUUID(),
+  STANDARD_LETTER: randomUUID(),
+  LARGE_PRINT_LETTER: randomUUID(),
+  LARGE_PRINT_LETTER_WITHOUT_VARIANT: randomUUID(),
+};
 
 function createMessagePlans(user: TestUser) {
   return {
@@ -31,38 +39,48 @@ function createMessagePlans(user: TestUser) {
   };
 }
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
-      randomUUID(),
+      templateIds.EMAIL,
       user,
-      'Email template name'
+      `Email template name - ${templateIds.EMAIL}`
     ),
-    STANDARD_LETTER: TemplateFactory.uploadPdfLetterTemplate(
-      randomUUID(),
+    STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.STANDARD_LETTER,
       user,
-      'Standard letter template name'
-    ),
-    LARGE_PRINT_LETTER: TemplateFactory.uploadPdfLetterTemplate(
-      randomUUID(),
-      user,
-      'Large print letter template name',
+      `Standard letter template name - ${templateIds.STANDARD_LETTER}`,
       'SUBMITTED',
-      'PASSED',
-      { letterType: 'x1' }
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
+      }
     ),
-    AUTHORING_LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+    LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LARGE_PRINT_LETTER,
       user,
-      'Authoring large print letter template name',
+      `Large print letter template name - ${templateIds.LARGE_PRINT_LETTER}`,
       'SUBMITTED',
       {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
+        letterVariantId: letterVariant.id,
       }
     ),
+    LARGE_PRINT_LETTER_WITHOUT_VARIANT:
+      TemplateFactory.createAuthoringLetterTemplate(
+        templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT,
+        user,
+        `Large print letter template no variant - ${templateIds.LARGE_PRINT_LETTER_WITHOUT_VARIANT}`,
+        'PROOF_APPROVED',
+        {
+          letterType: 'x1',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
+      ),
   };
 }
 
@@ -74,8 +92,11 @@ test.describe('Routing - Preview large print letter template page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
 
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     messagePlans = createMessagePlans(user);
-    templates = createTemplates(user);
+    templates = createTemplates(user, globalLetterVariant);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
     await templateStorageHelper.seedTemplateData(Object.values(templates));
@@ -160,56 +181,18 @@ test.describe('Routing - Preview large print letter template page', () => {
 
     await expect(previewLargePrintLetterTemplatePage.summaryList).toBeVisible();
 
-    expect(templates.LARGE_PRINT_LETTER.campaignId).toBeTruthy();
-
-    await expect(previewLargePrintLetterTemplatePage.campaignId).toContainText(
-      templates.LARGE_PRINT_LETTER.campaignId!
-    );
-
     await expect(
-      page.getByText(templates.LARGE_PRINT_LETTER.files!.pdfTemplate!.fileName)
+      previewLargePrintLetterTemplatePage.letterPreviewHeading
+    ).toBeVisible();
+    await expect(
+      previewLargePrintLetterTemplatePage.letterPreviewIframe
     ).toBeVisible();
 
     await expect(
-      page.getByText(templates.LARGE_PRINT_LETTER.files!.testDataCsv!.fileName)
-    ).toBeVisible();
-  });
-
-  test('loads the AUTHORING large print letter template', async ({
-    page,
-    baseURL,
-  }) => {
-    const previewLargePrintLetterTemplatePage =
-      new RoutingPreviewLargePrintLetterTemplatePage(page);
-    await previewLargePrintLetterTemplatePage
-      .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-      .setPathParam('templateId', templates.AUTHORING_LARGE_PRINT_LETTER.id)
-      .setSearchParam('lockNumber', '0')
-      .loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-large-print-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LARGE_PRINT_LETTER.id}?lockNumber=0`
-    );
-
-    await expect(
-      previewLargePrintLetterTemplatePage.templateCaption
-    ).toContainText('Template');
-
-    await expect(previewLargePrintLetterTemplatePage.pageHeading).toContainText(
-      templates.AUTHORING_LARGE_PRINT_LETTER.name
-    );
-
-    await expect(previewLargePrintLetterTemplatePage.templateId).toBeVisible();
-    await expect(previewLargePrintLetterTemplatePage.templateId).toContainText(
-      templates.AUTHORING_LARGE_PRINT_LETTER.id
-    );
-
-    await expect(previewLargePrintLetterTemplatePage.summaryList).toBeVisible();
-
-    expect(templates.AUTHORING_LARGE_PRINT_LETTER.campaignId).toBeTruthy();
-
-    await expect(previewLargePrintLetterTemplatePage.campaignId).toContainText(
-      templates.AUTHORING_LARGE_PRINT_LETTER.campaignId!
+      previewLargePrintLetterTemplatePage.letterPreviewIframe
+    ).toHaveAttribute(
+      'src',
+      `/templates/files/${templates.LARGE_PRINT_LETTER.clientId}/renders/${templates.LARGE_PRINT_LETTER.id}/initial-render.pdf`
     );
   });
 
@@ -263,6 +246,25 @@ test.describe('Routing - Preview large print letter template page', () => {
       await previewLargePrintLetterTemplatePage
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
         .setPathParam('templateId', templates.STANDARD_LETTER.id)
+        .setSearchParam('lockNumber', '0')
+        .loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewLargePrintLetterTemplatePage =
+        new RoutingPreviewLargePrintLetterTemplatePage(page);
+
+      await previewLargePrintLetterTemplatePage
+        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+        .setPathParam(
+          'templateId',
+          templates.LARGE_PRINT_LETTER_WITHOUT_VARIANT.id
+        )
         .setSearchParam('lockNumber', '0')
         .loadPage();
 

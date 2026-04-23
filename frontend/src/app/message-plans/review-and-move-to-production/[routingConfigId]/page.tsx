@@ -75,6 +75,7 @@ export default async function ReviewAndMoveMessagePlanPage({
               <MessagePlanCascadePreview
                 messagePlan={messagePlan}
                 templates={templates}
+                letterPreviewHrefBase={`/message-plans/review-and-move-to-production/${routingConfigId}`}
               />
 
               <NHSNotifyForm.Form formId='review-and-move-to-production'>

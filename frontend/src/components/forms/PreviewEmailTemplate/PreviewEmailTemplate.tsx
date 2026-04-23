@@ -56,7 +56,7 @@ export function PreviewEmailTemplate({
                 formAttributes: { onSubmit: formValidate },
               }}
               editPath={`/edit-email-template/${initialState.id}`}
-              previewDetailsComponent={
+              detailsComponent={
                 <PreviewTemplateDetailsEmail template={initialState} />
               }
             />

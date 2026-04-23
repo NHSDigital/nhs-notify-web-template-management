@@ -85,6 +85,7 @@ import {
   RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanPreviewLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
@@ -92,6 +93,7 @@ import {
   RoutingPreviewStandardLetterTemplatePage,
   RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
 } from 'pages/routing';
 
 /**
@@ -174,6 +176,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanPreviewLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
@@ -181,6 +184,7 @@ const allPages: (typeof TemplateMgmtBasePage)[] = [
   RoutingPreviewStandardLetterTemplatePage,
   RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
 ];
 
 test('all app routes have accessibility test coverage', async () => {
