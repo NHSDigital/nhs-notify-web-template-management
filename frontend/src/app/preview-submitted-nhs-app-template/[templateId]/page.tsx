@@ -1,5 +1,3 @@
-'use server';
-
 import {
   TemplatePageProps,
   validateSubmittedNHSAppTemplate,
@@ -8,7 +6,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -33,9 +31,9 @@ const PreviewSubmittedNHSAppTemplatePage = async (props: TemplatePageProps) => {
 
   return (
     <NHSNotifyContainer>
-      <PreviewSubmittedTemplate
-        initialState={validatedTemplate}
-        previewComponent={PreviewTemplateDetailsNhsApp}
+      <PreviewSubmittedDigitalTemplate
+        template={validatedTemplate}
+        detailsComponent={PreviewTemplateDetailsNhsApp}
       />
     </NHSNotifyContainer>
   );

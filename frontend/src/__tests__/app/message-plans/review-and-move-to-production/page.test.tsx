@@ -9,8 +9,8 @@ import {
   EMAIL_TEMPLATE,
   LARGE_PRINT_LETTER_TEMPLATE,
   NHS_APP_TEMPLATE,
-  PDF_LETTER_TEMPLATE,
   SMS_TEMPLATE,
+  AUTHORING_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import { RoutingConfigFactory } from '@testhelpers/routing-config-factory';
 import {
@@ -67,9 +67,21 @@ const templates: MessagePlanTemplates = {
   [appTemplateId]: { ...NHS_APP_TEMPLATE, id: appTemplateId },
   [emailTemplateId]: { ...EMAIL_TEMPLATE, id: emailTemplateId },
   [smsTemplateId]: { ...SMS_TEMPLATE, id: smsTemplateId },
-  [letterTemplateId]: { ...PDF_LETTER_TEMPLATE, id: letterTemplateId },
-  [kuTemplateId]: { ...PDF_LETTER_TEMPLATE, id: kuTemplateId },
-  [sqTemplateId]: { ...PDF_LETTER_TEMPLATE, id: sqTemplateId },
+  [letterTemplateId]: {
+    ...AUTHORING_LETTER_TEMPLATE,
+    id: letterTemplateId,
+    templateStatus: 'PROOF_APPROVED',
+  },
+  [kuTemplateId]: {
+    ...AUTHORING_LETTER_TEMPLATE,
+    id: kuTemplateId,
+    templateStatus: 'PROOF_APPROVED',
+  },
+  [sqTemplateId]: {
+    ...AUTHORING_LETTER_TEMPLATE,
+    id: sqTemplateId,
+    templateStatus: 'PROOF_APPROVED',
+  },
   [largePrintTemplateId]: {
     ...LARGE_PRINT_LETTER_TEMPLATE,
     id: largePrintTemplateId,
@@ -263,7 +275,9 @@ describe('Review and move to production page', () => {
       await renderPage(routingConfig);
 
       expect(
-        screen.getByRole('button', { name: /open all template previews/i })
+        screen.getByRole('button', {
+          name: /open all digital template previews/i,
+        })
       ).toBeInTheDocument();
     });
 
@@ -282,7 +296,9 @@ describe('Review and move to production page', () => {
       await renderPage(routingConfig);
 
       expect(
-        screen.queryByRole('button', { name: /open all template previews/i })
+        screen.queryByRole('button', {
+          name: /open all digital template previews/i,
+        })
       ).not.toBeInTheDocument();
     });
 
@@ -309,7 +325,7 @@ describe('Review and move to production page', () => {
       ).toBeInTheDocument();
     });
 
-    it('renders letter template as link', async () => {
+    it('renders letter templates with a link', async () => {
       const routingConfig = createRoutingConfig({
         cascade: [
           {
@@ -325,13 +341,16 @@ describe('Review and move to production page', () => {
 
       const block = screen.getByTestId('message-plan-block-LETTER');
       const templateName = within(block).getByTestId('template-name');
-      const link = within(templateName).getByRole('link');
 
-      expect(link).toHaveTextContent(templates[letterTemplateId].name);
+      expect(templateName).toHaveTextContent(templates[letterTemplateId].name);
+
+      const link = within(block).getByRole('link');
+      expect(link).toHaveTextContent('Preview template (opens in a new tab)');
       expect(link).toHaveAttribute(
         'href',
-        `/preview-letter-template/${letterTemplateId}`
+        `/message-plans/review-and-move-to-production/${routingConfig.id}/preview-template/${letterTemplateId}`
       );
+      expect(link).toHaveAttribute('target', '_blank');
     });
 
     it('renders fallback conditions between channels', async () => {

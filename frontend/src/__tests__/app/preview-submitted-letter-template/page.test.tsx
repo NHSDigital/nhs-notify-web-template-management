@@ -1,10 +1,6 @@
-/**
- * @jest-environment node
- */
-import PreviewSubmittedLetterTemplatePage, {
+import PreviewSubmittedPdfLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-letter-template/[templateId]/page';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-web-template-management-types';
@@ -16,9 +12,7 @@ import {
   AUTHORING_LETTER_TEMPLATE,
 } from '@testhelpers/helpers';
 import content from '@content/content';
-import PreviewTemplateDetailsPdfLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsPdfLetter';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
-import { NHSNotifyContainer } from '@layouts/container/container';
+import { render } from '@testing-library/react';
 
 const { pageTitle } = content.pages.previewSubmittedLetterTemplate;
 
@@ -28,10 +22,10 @@ jest.mock('next/navigation');
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
-describe('PreviewSubmittedLetterTemplatePage', () => {
+describe('PreviewSubmittedPdfLetterTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should load page with PDF letter template', async () => {
+  it('should render full page with PDF letter template', async () => {
     const templateDTO = {
       createdAt: '2025-01-13T10:19:25.579Z',
       files: {
@@ -52,14 +46,9 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       lockNumber: 1,
     } satisfies TemplateDto;
 
-    const submittedLetterTemplate: LetterTemplate = {
-      ...templateDTO,
-      templateStatus: 'SUBMITTED',
-    };
-
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
-    const page = await PreviewSubmittedLetterTemplatePage({
+    const page = await PreviewSubmittedPdfLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -68,18 +57,14 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     expect(await generateMetadata()).toEqual({
       title: pageTitle,
     });
-    expect(page).toEqual(
-      <NHSNotifyContainer>
-        <PreviewSubmittedTemplate
-          initialState={submittedLetterTemplate}
-          previewComponent={PreviewTemplateDetailsPdfLetter}
-        />
-      </NHSNotifyContainer>
-    );
+
+    const { asFragment } = render(page);
+
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
-    await PreviewSubmittedLetterTemplatePage({
+    await PreviewSubmittedPdfLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -116,7 +101,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
-      await PreviewSubmittedLetterTemplatePage({
+      await PreviewSubmittedPdfLetterTemplatePage({
         params: Promise.resolve({
           templateId: 'template-id',
         }),

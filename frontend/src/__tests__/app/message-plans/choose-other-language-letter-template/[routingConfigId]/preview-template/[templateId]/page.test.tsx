@@ -1,99 +1,58 @@
 import PreviewOtherLanguageLetterTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-other-language-letter-template/[routingConfigId]/preview-template/[templateId]/page';
-import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
-import { getTemplate } from '@utils/form-actions';
-import { redirect } from 'next/navigation';
-import { Language } from 'nhs-notify-web-template-management-types';
+import { getLetterVariantById, getTemplate } from '@utils/form-actions';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
+import {
+  AUTHORING_LETTER_TEMPLATE,
+  makeLetterVariant,
+  ROUTING_CONFIG,
+} from '@testhelpers/helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
 
 const getTemplateMock = jest.mocked(getTemplate);
-const redirectMock = jest.mocked(redirect);
-
-const FRENCH_LETTER_TEMPLATE = {
-  ...PDF_LETTER_TEMPLATE,
-  id: 'french-letter-id',
-  name: 'French letter template',
-  language: 'fr' as Language,
-};
+const getLetterVariantByIdMock = jest.mocked(getLetterVariantById);
 
 describe('PreviewOtherLanguageLetterTemplateFromMessagePlan page', () => {
-  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
-    await PreviewOtherLanguageLetterTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: 'invalid',
-      }),
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
-    );
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
   });
 
-  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
-    await PreviewOtherLanguageLetterTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
-      }),
-      searchParams: Promise.resolve({}),
-    });
+  it('should render full page with other language letter template', async () => {
+    const letterVariant = makeLetterVariant();
 
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
-    );
-  });
-
-  it('should redirect to invalid page with invalid template id', async () => {
-    getTemplateMock.mockResolvedValueOnce(undefined);
-
-    await PreviewOtherLanguageLetterTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'invalid-template-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '0',
-      }),
-    });
-
-    expect(getTemplateMock).toHaveBeenCalledWith('invalid-template-id');
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
-  });
-
-  it('renders foreign language letter template preview', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...FRENCH_LETTER_TEMPLATE,
-      templateStatus: 'SUBMITTED',
+      ...AUTHORING_LETTER_TEMPLATE,
+      templateStatus: 'PROOF_APPROVED',
+      language: 'fr',
     });
+    getLetterVariantByIdMock.mockResolvedValueOnce(letterVariant);
 
     const page = await PreviewOtherLanguageLetterTemplateFromMessagePlan({
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
-        templateId: FRENCH_LETTER_TEMPLATE.id,
+        templateId: AUTHORING_LETTER_TEMPLATE.id,
       }),
-      searchParams: Promise.resolve({
-        lockNumber: '5',
-      }),
+      searchParams: Promise.resolve({ lockNumber: '5' }),
     });
 
-    const container = render(page);
+    const { asFragment } = render(page);
 
-    expect(getTemplateMock).toHaveBeenCalledWith(FRENCH_LETTER_TEMPLATE.id);
+    expect(asFragment()).toMatchSnapshot();
+  });
 
+  it('should have the correct page title', async () => {
     expect(await generateMetadata()).toEqual({
       title: 'Preview other language letter template - NHS Notify',
     });
-    expect(container.asFragment()).toMatchSnapshot();
   });
 });

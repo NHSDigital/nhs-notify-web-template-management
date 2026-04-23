@@ -106,6 +106,7 @@ const BASE_AUTHORING_LETTER_TEMPLATE: Omit<
   'id' | 'name'
 > = {
   clientId: 'client-1',
+  campaignId: 'campaign-1',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: 'x0',
@@ -144,6 +145,13 @@ export const BSL_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   letterType: 'q4',
 } as const;
 
+export const LARGE_PRINT_AUTHORING_TEMPLATE = {
+  ...AUTHORING_LETTER_TEMPLATE,
+  id: 'large-print-authoring-id',
+  name: 'large print authoring letter',
+  letterType: 'x1' as const,
+};
+
 export const ROUTING_CONFIG: RoutingConfig = {
   id: 'fbb81055-79b9-4759-ac07-d191ae57be34',
   name: 'Autumn Campaign Plan',
@@ -176,7 +184,7 @@ export const ROUTING_CONFIG: RoutingConfig = {
       cascadeGroups: ['standard'],
       channel: 'LETTER',
       channelType: 'primary',
-      defaultTemplateId: PDF_LETTER_TEMPLATE.id,
+      defaultTemplateId: AUTHORING_LETTER_TEMPLATE.id,
     },
   ],
   lockNumber: 0,

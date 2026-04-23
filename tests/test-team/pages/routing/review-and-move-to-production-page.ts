@@ -24,7 +24,7 @@ export class RoutingReviewAndMoveToProductionPage extends TemplateMgmtBasePage {
 
     this.messagePlanName = page.getByTestId('plan-name');
     this.previewToggleButton = page.getByRole('button', {
-      name: /^(Open|Close) all template previews$/,
+      name: /^(Open|Close) all digital template previews$/,
     });
     this.detailsSections = page.locator('details');
     this.moveToProductionButton = page.getByTestId('move-to-production-button');
