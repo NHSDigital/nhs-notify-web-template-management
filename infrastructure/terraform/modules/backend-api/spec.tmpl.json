@@ -79,9 +79,6 @@
           },
           {
             "properties": {
-              "campaignId": {
-                "type": "string"
-              },
               "clientId": {
                 "type": "string"
               },
@@ -123,6 +120,9 @@
       },
       "BaseLetterTemplateProperties": {
         "properties": {
+          "campaignId": {
+            "type": "string"
+          },
           "language": {
             "$ref": "#/components/schemas/Language"
           },
@@ -137,6 +137,7 @@
           }
         },
         "required": [
+          "campaignId",
           "letterType",
           "language",
           "templateType"

@@ -38,6 +38,7 @@ const basePdfLetter: PdfLetterTemplate = {
   letterType: 'x0',
   letterVersion: 'PDF',
   language: 'en',
+  campaignId: 'campaign',
   files: {
     pdfTemplate: {
       fileName: 'file.pdf',
@@ -49,6 +50,7 @@ const basePdfLetter: PdfLetterTemplate = {
 
 const baseAuthoringLetter: AuthoringLetterTemplate = {
   ...baseTemplate,
+  campaignId: 'campaign',
   clientId: 'client-id',
   name: 'Authoring Letter',
   templateStatus: 'NOT_YET_SUBMITTED',

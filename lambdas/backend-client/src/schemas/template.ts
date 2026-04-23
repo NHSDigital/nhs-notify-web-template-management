@@ -140,6 +140,7 @@ export const $SmsProperties = schemaFor<SmsProperties>()(
 );
 
 const $BaseLetterTemplateProperties = z.object({
+  campaignId: z.string(),
   templateType: z.literal('LETTER'),
   letterType: z.enum(LETTER_TYPE_LIST),
   language: z.enum(LANGUAGE_LIST),

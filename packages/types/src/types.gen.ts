@@ -22,7 +22,6 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
-  campaignId?: string;
   clientId?: string;
   createdAt: string;
   createdBy?: string;
@@ -34,6 +33,7 @@ export type BaseCreatedTemplate = BaseTemplate & {
 };
 
 export type BaseLetterTemplateProperties = {
+  campaignId: string;
   language: Language;
   letterType: LetterType;
   templateType: 'LETTER';

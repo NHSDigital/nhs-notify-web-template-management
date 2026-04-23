@@ -39,6 +39,7 @@ describe('RequestProofPage', () => {
   test('should load page', async () => {
     const state = {
       id: 'template-id',
+      campaignId: 'campaign',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
@@ -146,6 +147,7 @@ describe('RequestProofPage', () => {
   test('should forbid user from requesting a proof when proofingEnabled is false', async () => {
     const state = {
       id: 'template-id',
+      campaignId: 'campaign',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',

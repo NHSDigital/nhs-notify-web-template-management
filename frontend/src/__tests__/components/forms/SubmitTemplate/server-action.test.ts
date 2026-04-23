@@ -133,6 +133,7 @@ describe('submitTemplate', () => {
     const templateId = '0C63C6B0-C2C7-4D74-A81B-291C1A7BF994';
 
     const template: LetterTemplate = {
+      campaignId: 'campaign',
       createdAt: '2025-01-13T10:19:25.579Z',
       files: {
         pdfTemplate: {

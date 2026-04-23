@@ -214,6 +214,7 @@ describe('Template API - generate letter proof', () => {
 
     const response: AuthoringLetterTemplate = {
       id: 'id',
+      campaignId: 'campaign',
       clientId: 'client-id',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',

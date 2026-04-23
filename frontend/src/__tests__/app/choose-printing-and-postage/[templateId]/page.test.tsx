@@ -21,6 +21,7 @@ jest.mock('@utils/csrf-utils');
 
 const mockTemplate: TemplateDto = {
   id: 'template-123',
+  campaignId: 'campaign',
   name: 'Test Letter Template',
   templateType: 'LETTER',
   letterVersion: 'AUTHORING',
