@@ -408,7 +408,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/1a6d0abf-718f-4ec2-9716-6344b611b995.pdf"
         title="Letter preview"
       />
@@ -684,7 +684,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/1a6d0abf-718f-4ec2-9716-6344b611b995.pdf"
         title="Letter preview"
       />
@@ -960,7 +960,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/1a6d0abf-718f-4ec2-9716-6344b611b995.pdf"
         title="Letter preview"
       />
@@ -1236,7 +1236,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/1a6d0abf-718f-4ec2-9716-6344b611b995.pdf"
         title="Letter preview"
       />
@@ -1472,7 +1472,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/280c795d-9e86-42b9-a3d5-77d23ebe28a0.pdf"
         title="Letter preview"
       />
@@ -1708,7 +1708,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/280c795d-9e86-42b9-a3d5-77d23ebe28a0.pdf"
         title="Letter preview"
       />
@@ -1944,7 +1944,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/280c795d-9e86-42b9-a3d5-77d23ebe28a0.pdf"
         title="Letter preview"
       />
@@ -2180,7 +2180,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/280c795d-9e86-42b9-a3d5-77d23ebe28a0.pdf"
         title="Letter preview"
       />
@@ -2416,7 +2416,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/7114fecd-e1fc-4766-a9a9-cc54bb7eb29f.pdf"
         title="Letter preview"
       />
@@ -2652,7 +2652,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/7114fecd-e1fc-4766-a9a9-cc54bb7eb29f.pdf"
         title="Letter preview"
       />
@@ -2888,7 +2888,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/7114fecd-e1fc-4766-a9a9-cc54bb7eb29f.pdf"
         title="Letter preview"
       />
@@ -3124,7 +3124,7 @@ exports[`authoring letter template with VALIDATION_FAILED status validation erro
       </div>
       <iframe
         aria-label="PDF preview of letter template"
-        class="iframe nhsuk-u-margin-bottom-6"
+        class="letter-render-iframe nhsuk-u-margin-bottom-6"
         src="/templates/files/client-1/renders/authoring-letter-template-id/7114fecd-e1fc-4766-a9a9-cc54bb7eb29f.pdf"
         title="Letter preview"
       />
@@ -4826,7 +4826,7 @@ exports[`valid authoring letter template displays the template saved banner when
                   />
                 </div>
                 <div
-                  class="nhsuk-summary-list__row missing-value"
+                  class="nhsuk-summary-list__row"
                   id="campaign-id"
                 >
                   <dt
@@ -4836,7 +4836,9 @@ exports[`valid authoring letter template displays the template saved banner when
                   </dt>
                   <dd
                     class="nhsuk-summary-list__value"
-                  />
+                  >
+                    campaign-1
+                  </dd>
                   <dd
                     class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
                   >
@@ -5491,7 +5493,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   />
                 </div>
                 <div
-                  class="nhsuk-summary-list__row missing-value"
+                  class="nhsuk-summary-list__row"
                   id="campaign-id"
                 >
                   <dt
@@ -5501,7 +5503,9 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   </dt>
                   <dd
                     class="nhsuk-summary-list__value"
-                  />
+                  >
+                    campaign-1
+                  </dd>
                   <dd
                     class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
                   >

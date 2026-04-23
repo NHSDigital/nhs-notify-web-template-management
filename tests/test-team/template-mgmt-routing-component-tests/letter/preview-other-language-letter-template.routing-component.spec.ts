@@ -15,6 +15,7 @@ import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/let
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
+import { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -25,8 +26,8 @@ const notFoundTemplateId = randomUUID();
 const templateIds = {
   EMAIL: randomUUID(),
   STANDARD_LETTER: randomUUID(),
-  FRENCH_LETTER: randomUUID(),
   AUTHORING_FRENCH_LETTER: randomUUID(),
+  FRENCH_LETTER_WITHOUT_VARIANT: randomUUID(),
 };
 
 function createMessagePlans(user: TestUser) {
@@ -38,38 +39,48 @@ function createMessagePlans(user: TestUser) {
   };
 }
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
       templateIds.EMAIL,
       user,
-      'Email template name'
+      `Email template name - ${templateIds.EMAIL}`
     ),
-    STANDARD_LETTER: TemplateFactory.uploadPdfLetterTemplate(
+    STANDARD_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.STANDARD_LETTER,
       user,
-      'Standard letter template name'
+      `Standard letter template name - ${templateIds.STANDARD_LETTER}`,
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
+      }
     ),
-    FRENCH_LETTER: TemplateFactory.uploadPdfLetterTemplate(
-      templateIds.FRENCH_LETTER,
-      user,
-      'French letter template name',
-      'SUBMITTED',
-      'PASSED',
-      { language: 'fr' }
-    ),
-    AUTHORING_FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+    FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
       templateIds.AUTHORING_FRENCH_LETTER,
       user,
-      'Authoring French letter template name',
+      `French letter template name - ${templateIds.AUTHORING_FRENCH_LETTER}`,
       'SUBMITTED',
       {
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
+        letterVariantId: letterVariant.id,
       }
     ),
+    FRENCH_LETTER_WITHOUT_VARIANT:
+      TemplateFactory.createAuthoringLetterTemplate(
+        templateIds.FRENCH_LETTER_WITHOUT_VARIANT,
+        user,
+        `French letter template no variant - ${templateIds.FRENCH_LETTER_WITHOUT_VARIANT}`,
+        'PROOF_APPROVED',
+        {
+          language: 'fr',
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+        }
+      ),
   };
 }
 
@@ -81,8 +92,11 @@ test.describe('Routing - Preview foreign language letter template page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
 
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     messagePlans = createMessagePlans(user);
-    templates = createTemplates(user);
+    templates = createTemplates(user, globalLetterVariant);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
     await templateStorageHelper.seedTemplateData(Object.values(templates));
@@ -179,62 +193,19 @@ test.describe('Routing - Preview foreign language letter template page', () => {
       previewForeignLanguageLetterTemplatePage.summaryList
     ).toBeVisible();
 
-    expect(templates.FRENCH_LETTER.campaignId).toBeTruthy();
-
     await expect(
-      previewForeignLanguageLetterTemplatePage.campaignId
-    ).toContainText(templates.FRENCH_LETTER.campaignId!);
-
+      previewForeignLanguageLetterTemplatePage.letterPreviewHeading
+    ).toBeVisible();
     await expect(
-      page.getByText(templates.FRENCH_LETTER.files!.pdfTemplate!.fileName)
+      previewForeignLanguageLetterTemplatePage.letterPreviewIframe
     ).toBeVisible();
 
     await expect(
-      page.getByText(templates.FRENCH_LETTER.files!.testDataCsv!.fileName)
-    ).toBeVisible();
-  });
-
-  test('loads the AUTHORING foreign language letter template', async ({
-    page,
-    baseURL,
-  }) => {
-    const previewForeignLanguageLetterTemplatePage =
-      new RoutingPreviewOtherLanguageLetterTemplatePage(page)
-        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_FRENCH_LETTER.id)
-        .setSearchParam('lockNumber', '0');
-    await previewForeignLanguageLetterTemplatePage.loadPage();
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-other-language-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_FRENCH_LETTER.id}?lockNumber=0`
+      previewForeignLanguageLetterTemplatePage.letterPreviewIframe
+    ).toHaveAttribute(
+      'src',
+      `/templates/files/${templates.FRENCH_LETTER.clientId}/renders/${templates.FRENCH_LETTER.id}/initial-render.pdf`
     );
-
-    await expect(
-      previewForeignLanguageLetterTemplatePage.templateCaption
-    ).toBeVisible();
-    await expect(
-      previewForeignLanguageLetterTemplatePage.templateCaption
-    ).toContainText('Template');
-
-    await expect(
-      previewForeignLanguageLetterTemplatePage.pageHeading
-    ).toContainText(templates.AUTHORING_FRENCH_LETTER.name);
-
-    await expect(
-      previewForeignLanguageLetterTemplatePage.templateId
-    ).toBeVisible();
-    await expect(
-      previewForeignLanguageLetterTemplatePage.templateId
-    ).toContainText(templates.AUTHORING_FRENCH_LETTER.id);
-
-    await expect(
-      previewForeignLanguageLetterTemplatePage.summaryList
-    ).toBeVisible();
-
-    expect(templates.AUTHORING_FRENCH_LETTER.campaignId).toBeTruthy();
-
-    await expect(
-      previewForeignLanguageLetterTemplatePage.campaignId
-    ).toContainText(templates.AUTHORING_FRENCH_LETTER.campaignId!);
   });
 
   test.describe('redirects to invalid template page', () => {
@@ -282,6 +253,24 @@ test.describe('Routing - Preview foreign language letter template page', () => {
         new RoutingPreviewOtherLanguageLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.STANDARD_LETTER.id)
+          .setSearchParam('lockNumber', '0');
+
+      await previewForeignLanguageLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewForeignLanguageLetterTemplatePage =
+        new RoutingPreviewOtherLanguageLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam(
+            'templateId',
+            templates.FRENCH_LETTER_WITHOUT_VARIANT.id
+          )
           .setSearchParam('lockNumber', '0');
 
       await previewForeignLanguageLetterTemplatePage.loadPage();

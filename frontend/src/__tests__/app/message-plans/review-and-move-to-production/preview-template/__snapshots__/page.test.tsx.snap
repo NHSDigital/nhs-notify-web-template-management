@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewLetterTemplateFromReviewAndMoveToProduction page should render full page with letter template 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-full"
+        >
+          <div
+            class="nhsuk-u-reading-width"
+          >
+            <span
+              class="nhsuk-caption-l"
+            >
+              Template
+            </span>
+            <h1
+              data-testid="preview-message__heading"
+            >
+              authoring letter template name
+            </h1>
+          </div>
+          <div
+            class="nhs_notify_warning_callout nhsuk-u-padding-4 nhsuk-u-margin-bottom-6 nhsuk-u-reading-width"
+          >
+            <strong
+              class="nhsuk-tag nhsuk-tag--pink nhsuk-u-margin-right-2 nhsuk-u-margin-bottom-3"
+            >
+              Locked
+            </strong>
+            <p>
+              You cannot delete this template because it's used in a message plan that's in production.
+            </p>
+          </div>
+          <div
+            class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+          >
+            <dl
+              class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview authoringLetterDetails"
+            >
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template ID
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value monospace-font"
+                  data-testid="preview-template-id"
+                >
+                  authoring-letter-template-id
+                </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Template type
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  Standard letter
+                </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+                id="campaign-id"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Campaign
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  campaign-1
+                </dd>
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Total pages
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  2
+                </dd>
+                <dd
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Sheets
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  1
+                </dd>
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
+                id="printing-and-postage"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Printing and postage
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  Standard C5
+                </dd>
+                <dd
+                  aria-hidden="true"
+                  class="nhsuk-summary-list__actions"
+                />
+              </div>
+            </dl>
+          </div>
+          <h2
+            class="nhsuk-heading-m"
+          >
+            Example preview
+          </h2>
+          <iframe
+            aria-label="PDF preview of letter template"
+            class="letter-render-iframe nhsuk-u-margin-bottom-6"
+            src="/templates/files/client-1/renders/authoring-letter-template-id/render.pdf"
+            title="Letter preview"
+          />
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;
