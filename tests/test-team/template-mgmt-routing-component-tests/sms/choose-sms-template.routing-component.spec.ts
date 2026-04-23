@@ -79,7 +79,7 @@ test.describe('Routing - Choose sms template page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
     userWithNoSmsTemplates = await context.auth.getTestUser(
-      testUsers.User2.userId
+      testUsers.User6.userId
     );
 
     messagePlans = createMessagePlans(user);

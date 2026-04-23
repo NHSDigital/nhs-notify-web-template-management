@@ -78,7 +78,7 @@ test.describe('Routing - Choose email template page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
     userWithNoEmailTemplates = await context.auth.getTestUser(
-      testUsers.User2.userId
+      testUsers.User3.userId
     );
 
     messagePlans = createMessagePlans(user);

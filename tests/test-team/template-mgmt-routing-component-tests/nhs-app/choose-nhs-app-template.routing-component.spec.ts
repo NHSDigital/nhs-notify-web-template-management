@@ -79,7 +79,7 @@ test.describe('Routing - Choose NHS app template page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
     userWithNoAppTemplates = await context.auth.getTestUser(
-      testUsers.User2.userId
+      testUsers.User8.userId
     );
 
     messagePlans = createMessagePlans(user);
