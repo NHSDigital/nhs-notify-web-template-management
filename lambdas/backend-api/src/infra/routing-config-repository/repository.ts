@@ -348,7 +348,7 @@ export class RoutingConfigRepository {
     }
   }
 
-  async getTemplates(
+  private async getTemplates(
     templateIds: string[],
     clientId: string
   ): Promise<ApplicationResult<TemplateDto[]>> {

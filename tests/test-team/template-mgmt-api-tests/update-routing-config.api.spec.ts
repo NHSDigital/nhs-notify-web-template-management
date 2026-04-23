@@ -679,16 +679,20 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
   test('update fails when adding template with a different campaignId to the routing campaignId', async ({
     request,
   }) => {
-    const { dbEntry } = RoutingConfigFactory.create(user1, {
-      campaignId: 'campaign-1',
+    const { dbEntry } = RoutingConfigFactory.create(userMultiCampaign, {
+      campaignId: 'campaign-id',
     });
     const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
+      userMultiCampaign,
+      'Plan campaign mismatch template',
+      'PROOF_APPROVED',
       {
-        ...user1,
-        campaignId: 'campaign-2',
-      },
-      'new-name'
+        letterVariantId: 'variant',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+        campaignId: 'other-campaign-id',
+      }
     );
 
     await storageHelper.seed([dbEntry]);
@@ -710,7 +714,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
-          Authorization: await user1.getAccessToken(),
+          Authorization: await userMultiCampaign.getAccessToken(),
           'X-Lock-Number': String(dbEntry.lockNumber),
         },
         data: update,
@@ -733,25 +737,31 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
   test('update fails when adding multiple templates where at least one template does not belong to the routing config campaign', async ({
     request,
   }) => {
-    const { dbEntry } = RoutingConfigFactory.create(user1, {
-      campaignId: 'campaign-1',
+    const { dbEntry } = RoutingConfigFactory.create(userMultiCampaign, {
+      campaignId: 'campaign-id',
     });
     const letterTemplate1 = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
-      user1,
-      'new-name',
-      'NOT_YET_SUBMITTED',
+      userMultiCampaign,
+      'Plan campaign mismatch template - matching campaign',
+      'PROOF_APPROVED',
       {
-        campaignId: 'campaign-1',
+        letterVariantId: 'variant',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+        campaignId: 'campaign-id',
       }
     );
     const letterTemplate2 = TemplateFactory.createAuthoringLetterTemplate(
       randomUUID(),
-      user1,
-      'new-name',
-      'NOT_YET_SUBMITTED',
+      userMultiCampaign,
+      'Plan campaign mismatch template - different campaign',
+      'PROOF_APPROVED',
       {
-        campaignId: 'campaign-2',
+        letterVariantId: 'variant',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+        campaignId: 'other-campaign-id',
       }
     );
 
@@ -783,7 +793,7 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
       `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
       {
         headers: {
-          Authorization: await user1.getAccessToken(),
+          Authorization: await userMultiCampaign.getAccessToken(),
           'X-Lock-Number': String(dbEntry.lockNumber),
         },
         data: update,
