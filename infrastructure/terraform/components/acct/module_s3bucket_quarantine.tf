@@ -13,8 +13,6 @@ module "s3bucket_quarantine" {
     bucket = module.s3bucket_access_logs.id
   }
 
-  kms_key_arn = module.kms.key_arn
-
   notification_events = {
     eventbridge = true
   }
