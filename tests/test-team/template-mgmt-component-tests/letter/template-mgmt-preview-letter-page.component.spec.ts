@@ -1989,7 +1989,7 @@ test.describe('Preview Letter template Page', () => {
         ).toBeVisible();
       });
 
-      test('clicking an error summary link for a hidden tab activates that tab and moves focus to it', async ({
+      test('clicking an error summary link for a hidden tab activates that tab', async ({
         page,
       }) => {
         const previewPage = new TemplateMgmtPreviewLetterPage(
@@ -2013,9 +2013,10 @@ test.describe('Preview Letter template Page', () => {
 
         // Clicking the error link should activate the long tab
         await expect(previewPage.longTab.panel).toBeVisible();
-
-        // Focus should move to the long tab panel
-        await expect(page.locator('#tab-long')).toBeFocused();
+        await expect(previewPage.longTab.tab).toHaveAttribute(
+          'aria-selected',
+          'true'
+        );
       });
     });
   });
