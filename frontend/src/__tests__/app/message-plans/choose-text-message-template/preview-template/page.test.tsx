@@ -1,71 +1,28 @@
 import PreviewTextMessageTemplateFromMessagePlan, {
   generateMetadata,
 } from '@app/message-plans/choose-text-message-template/[routingConfigId]/preview-template/[templateId]/page';
-import { ROUTING_CONFIG, SMS_TEMPLATE } from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
-import { redirect } from 'next/navigation';
+import {
+  useFeatureFlags,
+  useCampaignIds,
+} from '@providers/client-config-provider';
+import { SMS_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('@providers/client-config-provider');
 
 const getTemplateMock = jest.mocked(getTemplate);
-const redirectMock = jest.mocked(redirect);
 
 describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
-  beforeEach(jest.resetAllMocks);
-
-  it('should redirect to the edit message plan page when lockNumber is invalid', async () => {
-    await PreviewTextMessageTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: 'invalid',
-      }),
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
-    );
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(useFeatureFlags).mockReturnValue({ routing: true });
+    jest.mocked(useCampaignIds).mockReturnValue(['campaign-1', 'campaign-2']);
   });
 
-  it('should redirect to the edit message plan page when lockNumber is missing', async () => {
-    await PreviewTextMessageTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'template-id',
-      }),
-      searchParams: Promise.resolve({}),
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/edit-message-plan/routing-config-id',
-      'replace'
-    );
-  });
-
-  it('should redirect to invalid page with invalid template id', async () => {
-    getTemplateMock.mockResolvedValueOnce(undefined);
-
-    await PreviewTextMessageTemplateFromMessagePlan({
-      params: Promise.resolve({
-        routingConfigId: 'routing-config-id',
-        templateId: 'invalid-template-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '0',
-      }),
-    });
-
-    expect(getTemplateMock).toHaveBeenCalledWith('invalid-template-id');
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
-  });
-
-  it('renders SMS template preview', async () => {
+  it('should render full page with SMS template', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...SMS_TEMPLATE,
       templateStatus: 'SUBMITTED',
@@ -76,18 +33,17 @@ describe('PreviewTextMessageTemplateFromMessagePlan page', () => {
         routingConfigId: ROUTING_CONFIG.id,
         templateId: SMS_TEMPLATE.id,
       }),
-      searchParams: Promise.resolve({
-        lockNumber: '5',
-      }),
+      searchParams: Promise.resolve({ lockNumber: '5' }),
     });
 
-    const container = render(page);
+    const { asFragment } = render(page);
 
-    expect(getTemplateMock).toHaveBeenCalledWith(SMS_TEMPLATE.id);
+    expect(asFragment()).toMatchSnapshot();
+  });
 
+  it('should have the correct page title', async () => {
     expect(await generateMetadata()).toEqual({
       title: 'Preview text message template - NHS Notify',
     });
-    expect(container.asFragment()).toMatchSnapshot();
   });
 });

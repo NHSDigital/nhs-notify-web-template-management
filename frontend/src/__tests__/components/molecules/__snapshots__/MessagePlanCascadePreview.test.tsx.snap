@@ -8,7 +8,7 @@ exports[`MessagePlanCascadePreview matches snapshot 1`] = `
       class="nhsuk-button nhsuk-button--secondary"
       type="button"
     >
-      Open all template previews
+      Open all digital template previews
     </button>
   </p>
   <ul
@@ -513,12 +513,15 @@ exports[`MessagePlanCascadePreview matches snapshot 1`] = `
           <p
             data-testid="template-name"
           >
-            <a
-              href="/preview-letter-template/letter-template-id"
-            >
-              letter template name
-            </a>
+            authoring letter template name
           </p>
+          <a
+            href="/message-plans/preview-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/authoring-letter-template-id"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Preview template (opens in a new tab)
+          </a>
         </div>
       </div>
     </li>

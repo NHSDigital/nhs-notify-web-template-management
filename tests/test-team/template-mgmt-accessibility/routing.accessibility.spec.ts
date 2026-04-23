@@ -25,6 +25,7 @@ import {
   RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanPreviewLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
@@ -32,6 +33,7 @@ import {
   RoutingPreviewStandardLetterTemplatePage,
   RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
 } from 'pages/routing';
 import { getTestContext } from 'helpers/context/context';
 
@@ -61,6 +63,9 @@ test.describe('Routing', () => {
     userWithMultipleCampaigns = await context.auth.getTestUser(
       testUsers.UserWithMultipleCampaigns.userId
     );
+
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
 
     const createRoutingConfig = (id: string, status: RoutingConfigStatus) =>
       RoutingConfigFactory.createForMessageOrder(user, messageOrder, {
@@ -124,7 +129,7 @@ test.describe('Routing', () => {
         {
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
-          letterVariantId: 'letter-variant-id',
+          letterVariantId: globalLetterVariant.id,
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -136,7 +141,7 @@ test.describe('Routing', () => {
           letterType: 'x1',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
-          letterVariantId: 'letter-variant-id',
+          letterVariantId: globalLetterVariant.id,
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -148,7 +153,7 @@ test.describe('Routing', () => {
           letterType: 'q4',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
-          letterVariantId: 'letter-variant-id',
+          letterVariantId: globalLetterVariant.id,
         }
       ),
       TemplateFactory.createAuthoringLetterTemplate(
@@ -160,7 +165,7 @@ test.describe('Routing', () => {
           language: 'fr',
           shortFormRender: { status: 'RENDERED' },
           longFormRender: { status: 'RENDERED' },
-          letterVariantId: 'letter-variant-id',
+          letterVariantId: globalLetterVariant.id,
         }
       ),
     ]);
@@ -283,6 +288,26 @@ test.describe('Routing', () => {
           .setPathParam('messagePlanId', draftRoutingConfigId)
           .setPathParam('templateId', templateIds.SMS)
           .setSearchParam('lockNumber', '0')
+      ));
+
+    test('Preview message plan / preview letter template', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new RoutingPreviewMessagePlanPreviewLetterTemplatePage(page)
+          .setPathParam('messagePlanId', productionRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER)
+      ));
+
+    test('Review and move to production / preview letter template', async ({
+      page,
+      analyze,
+    }) =>
+      analyze(
+        new RoutingReviewAndMoveToProductionPreviewLetterTemplatePage(page)
+          .setPathParam('messagePlanId', draftRoutingConfigId)
+          .setPathParam('templateId', templateIds.LETTER)
       ));
   });
 

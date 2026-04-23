@@ -662,14 +662,31 @@ const previewLetterTemplate = {
       ) => `${getBasePath()}${createTemplateUrl(templateType, letterType)}`,
     },
   },
-  validationFailedIframe: {
-    title: 'Letter preview',
-    ariaLabel: 'PDF preview of letter template',
-  },
 };
 
 const previewSubmittedLetterTemplate = {
   pageTitle: previewLetterTitle,
+};
+
+const previewMessagePlanPreviewLetter = {
+  pageTitle: previewLetterTitle,
+};
+
+const reviewAndMoveToProductionPreviewLetter = {
+  pageTitle: previewLetterTitle,
+};
+
+const letterRenderIframe = {
+  noPreviewAvailable: 'No preview available',
+  nonpersonalised: {
+    title: 'Letter preview',
+    ariaLabel: 'PDF preview of letter template',
+  },
+  personalised: {
+    title: 'Letter preview - {{tab}} examples',
+    ariaLabel:
+      'PDF preview of letter template with {{tab}} example personalisation data',
+  },
 };
 
 const letterRender = {
@@ -684,6 +701,7 @@ const letterRender = {
     short: 'Short examples',
     long: 'Long examples',
   },
+  examplePreviewHeading: 'Example preview',
   loadingText: 'Loading letter preview',
   pdsSection: {
     heading: 'PDS personalisation fields',
@@ -698,15 +716,6 @@ const letterRender = {
     heading: 'Custom personalisation fields',
   },
   updatePreviewButton: 'Update preview',
-  iframe: {
-    title: 'Letter preview - {{tab}} examples',
-    ariaLabel:
-      'PDF preview of letter template with {{tab}} example personalisation data',
-  },
-};
-
-const letterRenderIframe = {
-  noPreviewAvailable: 'No preview available',
 };
 
 const previewNHSAppTemplate = {
@@ -1605,8 +1614,8 @@ const messagePlanConditionalLetterTemplates = {
 
 const messagePlanCascadePreview = {
   detailsOpenButton: {
-    openText: 'Close all template previews',
-    closedText: 'Open all template previews',
+    openText: 'Close all digital template previews',
+    closedText: 'Open all digital template previews',
   },
   languageFormatsCardHeading: 'Other language letters (optional)',
   accessibleFormatCardHeading: '{{format}} (optional)',
@@ -1614,10 +1623,7 @@ const messagePlanCascadePreview = {
     prefix: 'Preview',
     suffix: 'template',
   },
-  letterTemplateLinks: {
-    previewSubmitted: '/preview-submitted-letter-template/{{id}}',
-    preview: '/preview-letter-template/{{id}}',
-  },
+  letterTemplateLinkText: 'Preview template (opens in a new tab)',
 };
 
 const editMessagePlan = {
@@ -2312,12 +2318,14 @@ const content = {
     previewLargePrintLetterTemplate,
     previewLetterTemplate,
     previewMessagePlan,
+    previewMessagePlanPreviewLetter,
     previewOtherLanguageLetterTemplate,
     previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
     renameMessagePlan,
     reviewAndApproveLetterTemplate,
     reviewAndMoveToProduction,
+    reviewAndMoveToProductionPreviewLetter,
     submitLetterTemplate: submitLetterTemplatePage,
     uploadDocxLetterTemplatePage,
   },
