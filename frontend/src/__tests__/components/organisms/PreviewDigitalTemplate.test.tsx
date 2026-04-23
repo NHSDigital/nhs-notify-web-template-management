@@ -1,15 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
-import {
-  DigitalTemplate,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
+import { DigitalTemplate } from 'nhs-notify-web-template-management-utils';
 import { useFeatureFlags } from '@providers/client-config-provider';
 import {
   NHS_APP_TEMPLATE,
   EMAIL_TEMPLATE,
   SMS_TEMPLATE,
 } from '@testhelpers/helpers';
+import { FormState } from '@utils/types';
 
 jest.mock('@providers/client-config-provider');
 

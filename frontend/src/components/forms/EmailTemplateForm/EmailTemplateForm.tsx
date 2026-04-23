@@ -14,9 +14,8 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import {
   CreateUpdateEmailTemplate,
   EmailTemplate,
-  ErrorState,
-  PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
+import type { ErrorState, PageComponentProps } from '@utils/types';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';

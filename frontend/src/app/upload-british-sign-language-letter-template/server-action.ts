@@ -2,13 +2,11 @@
 
 import { z } from 'zod/v4';
 import { redirect, RedirectType } from 'next/navigation';
-import type {
-  FormState,
-  UploadLetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import type { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
 import { uploadDocxTemplate } from '@utils/form-actions';
+import { FormState } from '@utils/types';
 
 const { errors } = copy.components.uploadDocxLetterTemplateForm;
 
@@ -54,7 +52,7 @@ export async function uploadBSLLetterTemplate(
   const savedTemplate = await uploadDocxTemplate(template, file);
 
   return redirect(
-    `/preview-letter-template/${savedTemplate.id}`,
+    `/preview-letter-template/${savedTemplate.id}?from=upload`,
     RedirectType.push
   );
 }

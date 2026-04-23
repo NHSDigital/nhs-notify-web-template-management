@@ -3,11 +3,9 @@
 import { z } from 'zod';
 import { uploadLetterTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import {
-  UploadLetterTemplate,
-  TemplateFormState,
-} from 'nhs-notify-web-template-management-utils';
+import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { $UploadLetterTemplateForm } from './form-schema';
+import { TemplateFormState } from '@utils/types';
 
 export async function processFormActions(
   formState: TemplateFormState<UploadLetterTemplate>,

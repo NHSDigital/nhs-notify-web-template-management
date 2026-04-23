@@ -6,10 +6,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type {
-  ErrorState,
-  FormState,
-} from 'nhs-notify-web-template-management-utils';
+import type { ErrorState, FormState } from '@utils/types';
 import {
   NHSNotifyFormProvider,
   useNHSNotifyForm,
