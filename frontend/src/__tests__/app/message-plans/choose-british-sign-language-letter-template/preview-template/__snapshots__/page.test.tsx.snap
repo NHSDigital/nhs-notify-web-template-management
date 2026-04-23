@@ -79,7 +79,7 @@ exports[`PreviewBritishSignLanguageLetterTemplateFromMessagePlan page renders Br
                 />
               </div>
               <div
-                class="nhsuk-summary-list__row missing-value"
+                class="nhsuk-summary-list__row"
                 id="campaign-id"
               >
                 <dt
@@ -89,7 +89,9 @@ exports[`PreviewBritishSignLanguageLetterTemplateFromMessagePlan page renders Br
                 </dt>
                 <dd
                   class="nhsuk-summary-list__value"
-                />
+                >
+                  campaign-2
+                </dd>
                 <dd
                   aria-hidden="true"
                   class="nhsuk-summary-list__actions"

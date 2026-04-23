@@ -60,6 +60,21 @@ exports[`PreviewOtherLanguageLetterTemplateFromMessagePlan page renders foreign 
               </div>
               <div
                 class="nhsuk-summary-list__row"
+                id="campaign-id"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Campaign
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  campaign-2
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
               >
                 <dt
                   class="nhsuk-summary-list__key"

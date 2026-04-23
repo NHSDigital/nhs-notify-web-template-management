@@ -13,7 +13,7 @@ import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/Prev
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
-const { pageTitle } = content.pages.previewBritishSignLanguageLetterTemplate;
+const { pageTitle } = content.pages.previewLetterTemplatePage('q4');
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

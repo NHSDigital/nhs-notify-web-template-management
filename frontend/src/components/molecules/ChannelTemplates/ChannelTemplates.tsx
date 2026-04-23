@@ -14,8 +14,7 @@ import type { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { interpolate } from '@utils/interpolate';
 import { ErrorState } from '@utils/types';
 
-const { tableHintText, tableContent } =
-  baseContent.components.chooseChannelTemplate;
+const { tableContent } = baseContent.components.chooseChannelTemplate;
 
 const typeDisplayMappings = (template: TemplateDto): string =>
   template.templateType === 'LETTER'
@@ -27,19 +26,21 @@ export function ChannelTemplates({
   templateList,
   errorState,
   selectedTemplate,
+  hintText,
   lockNumber,
 }: {
   routingConfigId: string;
   templateList: TemplateDto[];
   errorState: ErrorState | null;
   selectedTemplate: string | null;
+  hintText: string;
   lockNumber: number;
 }) {
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
         <HintText className='nhsuk-u-reading-width' data-testid='table-hint'>
-          {tableHintText}
+          {hintText}
         </HintText>
         <Radios
           id='channelTemplate'

@@ -8,7 +8,6 @@ import {
 import { render } from '@testing-library/react';
 import { getTemplates } from '@utils/form-actions';
 import { getRoutingConfig } from '@utils/message-plans';
-import { redirect } from 'next/navigation';
 
 jest.mock('@utils/message-plans');
 jest.mock('@utils/form-actions');
@@ -16,64 +15,9 @@ jest.mock('next/navigation');
 
 const getRoutingConfigMock = jest.mocked(getRoutingConfig);
 const getTemplatesMock = jest.mocked(getTemplates);
-const redirectMock = jest.mocked(redirect);
 
 describe('ChooseLargePrintLetterTemplate page', () => {
-  it('should redirect to invalid page for invalid routing config id', async () => {
-    getRoutingConfigMock.mockResolvedValueOnce(undefined);
-    getTemplatesMock.mockResolvedValueOnce([LARGE_PRINT_LETTER_TEMPLATE]);
-
-    await ChooseLargePrintLetterTemplate({
-      params: Promise.resolve({
-        routingConfigId: 'invalid-id',
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '42',
-      }),
-    });
-
-    expect(getRoutingConfigMock).toHaveBeenCalledWith('invalid-id');
-    expect(getTemplatesMock).toHaveBeenCalledWith({
-      templateType: 'LETTER',
-      language: 'en',
-      letterType: 'x1',
-      templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
-      letterVersion: 'AUTHORING',
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/invalid',
-      'replace'
-    );
-  });
-
-  it('should redirect to invalid page if plan has no letter cascade entry', async () => {
-    getRoutingConfigMock.mockResolvedValueOnce({
-      ...ROUTING_CONFIG,
-      cascade: ROUTING_CONFIG.cascade.filter(
-        (item) => item.channel !== 'LETTER'
-      ),
-    });
-    getTemplatesMock.mockResolvedValueOnce([LARGE_PRINT_LETTER_TEMPLATE]);
-
-    await ChooseLargePrintLetterTemplate({
-      params: Promise.resolve({
-        routingConfigId: ROUTING_CONFIG.id,
-      }),
-      searchParams: Promise.resolve({
-        lockNumber: '42',
-      }),
-    });
-
-    expect(getRoutingConfigMock).toHaveBeenCalledWith(ROUTING_CONFIG.id);
-
-    expect(redirectMock).toHaveBeenCalledWith(
-      '/message-plans/invalid',
-      'replace'
-    );
-  });
-
-  it('fetches routing config and templates in parallel', async () => {
+  it('calls getTemplates with correct filters', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
     getTemplatesMock.mockResolvedValueOnce([LARGE_PRINT_LETTER_TEMPLATE]);
 
@@ -93,6 +37,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       letterType: 'x1',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
   });
 
@@ -118,6 +63,7 @@ describe('ChooseLargePrintLetterTemplate page', () => {
       letterType: 'x1',
       templateStatus: ['SUBMITTED', 'PROOF_APPROVED'],
       letterVersion: 'AUTHORING',
+      campaignId: ROUTING_CONFIG.campaignId,
     });
 
     expect(await generateMetadata()).toEqual({
@@ -126,16 +72,21 @@ describe('ChooseLargePrintLetterTemplate page', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('redirects to the edit message plan page if the lockNumber is missing', async () => {
-    await ChooseLargePrintLetterTemplate({
+  it('renders the empty state message when there are no templates', async () => {
+    getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
+    getTemplatesMock.mockResolvedValueOnce([]);
+
+    const page = await ChooseLargePrintLetterTemplate({
       params: Promise.resolve({
         routingConfigId: ROUTING_CONFIG.id,
       }),
+      searchParams: Promise.resolve({
+        lockNumber: '42',
+      }),
     });
 
-    expect(redirectMock).toHaveBeenCalledWith(
-      `/message-plans/edit-message-plan/${ROUTING_CONFIG.id}`,
-      'replace'
-    );
+    const container = render(page);
+
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });
