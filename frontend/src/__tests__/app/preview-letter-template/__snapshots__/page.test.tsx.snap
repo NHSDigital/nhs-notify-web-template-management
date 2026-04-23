@@ -4624,6 +4624,21 @@ exports[`valid PDF letter template matches snapshot 1`] = `
               </div>
               <div
                 class="nhsuk-summary-list__row"
+                id="campaign-id"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Campaign
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                >
+                  campaign
+                </dd>
+              </div>
+              <div
+                class="nhsuk-summary-list__row"
               >
                 <dt
                   class="nhsuk-summary-list__key"
@@ -4837,7 +4852,7 @@ exports[`valid authoring letter template displays the template saved banner when
                   <dd
                     class="nhsuk-summary-list__value"
                   >
-                    campaign-2
+                    campaign-1
                   </dd>
                   <dd
                     class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
@@ -5504,7 +5519,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
                   <dd
                     class="nhsuk-summary-list__value"
                   >
-                    campaign-2
+                    campaign-1
                   </dd>
                   <dd
                     class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"

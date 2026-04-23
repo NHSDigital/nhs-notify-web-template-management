@@ -83,7 +83,7 @@ exports[`PreviewLetterTemplateFromPreviewMessagePlan page should render full pag
                 <dd
                   class="nhsuk-summary-list__value"
                 >
-                  campaign-2
+                  campaign-1
                 </dd>
                 <dd
                   aria-hidden="true"
