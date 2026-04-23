@@ -96,7 +96,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
           <h2 className='nhsuk-heading-m'>{shortExampleHeading}</h2>
           <LetterRenderIframe
             className={concatClassNames(
-              // styles.iframe,
+              'letter-render-iframe',
               'nhsuk-u-margin-bottom-6'
             )}
             src={getRenderDetails(validatedTemplate, 'shortFormRender').src}
@@ -106,7 +106,7 @@ const ReviewAndApproveLetterTemplatePage = async (props: TemplatePageProps) => {
           <h2 className='nhsuk-heading-m'>{longExampleHeading}</h2>
           <LetterRenderIframe
             className={concatClassNames(
-              // styles.iframe,
+              'letter-render-iframe',
               'nhsuk-u-margin-bottom-6'
             )}
             src={getRenderDetails(validatedTemplate, 'longFormRender').src}

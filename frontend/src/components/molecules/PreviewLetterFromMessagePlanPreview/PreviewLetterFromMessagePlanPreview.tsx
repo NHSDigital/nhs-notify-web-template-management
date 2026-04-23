@@ -11,7 +11,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { getRenderDetails } from '@utils/letter-render';
 
-const { letterRender } = content.components;
+const { letterRenderIframe } = content.components;
 
 export const PreviewLetterFromMessagePlanPreview = async (
   props: MessagePlanAndTemplatePageProps
@@ -49,8 +49,8 @@ export const PreviewLetterFromMessagePlanPreview = async (
             </h2>
             <LetterRenderIframe
               src={pdfUrl}
-              title={letterRender.iframe.nonpersonalised.title}
-              aria-label={letterRender.iframe.nonpersonalised.ariaLabel}
+              title={letterRenderIframe.nonpersonalised.title}
+              aria-label={letterRenderIframe.nonpersonalised.ariaLabel}
               className='letter-render-iframe nhsuk-u-margin-bottom-6'
             />
           </div>

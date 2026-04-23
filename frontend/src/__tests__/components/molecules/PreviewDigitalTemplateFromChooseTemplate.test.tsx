@@ -81,6 +81,7 @@ describe('PreviewDigitalTemplateFromChooseTemplate', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
+  // each channel page which uses this component has its own snapshot test
   it('renders Email template preview', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...EMAIL_TEMPLATE,

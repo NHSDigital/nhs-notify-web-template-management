@@ -662,10 +662,6 @@ const previewLetterTemplate = {
       ) => `${getBasePath()}${createTemplateUrl(templateType, letterType)}`,
     },
   },
-  validationFailedIframe: {
-    title: 'Letter preview',
-    ariaLabel: 'PDF preview of letter template',
-  },
 };
 
 const previewSubmittedLetterTemplate = {
@@ -678,6 +674,19 @@ const previewMessagePlanPreviewLetter = {
 
 const reviewAndMoveToProductionPreviewLetter = {
   pageTitle: previewLetterTitle,
+};
+
+const letterRenderIframe = {
+  noPreviewAvailable: 'No preview available',
+  nonpersonalised: {
+    title: 'Letter preview',
+    ariaLabel: 'PDF preview of letter template',
+  },
+  personalised: {
+    title: 'Letter preview - {{tab}} examples',
+    ariaLabel:
+      'PDF preview of letter template with {{tab}} example personalisation data',
+  },
 };
 
 const letterRender = {
@@ -707,21 +716,6 @@ const letterRender = {
     heading: 'Custom personalisation fields',
   },
   updatePreviewButton: 'Update preview',
-  iframe: {
-    nonpersonalised: {
-      title: 'Letter preview',
-      ariaLabel: 'PDF preview of letter template',
-    },
-    personalised: {
-      title: 'Letter preview - {{tab}} examples',
-      ariaLabel:
-        'PDF preview of letter template with {{tab}} example personalisation data',
-    },
-  },
-};
-
-const letterRenderIframe = {
-  noPreviewAvailable: 'No preview available',
 };
 
 const previewNHSAppTemplate = {

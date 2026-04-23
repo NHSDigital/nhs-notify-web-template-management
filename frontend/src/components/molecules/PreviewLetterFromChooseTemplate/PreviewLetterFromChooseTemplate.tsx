@@ -22,7 +22,8 @@ type PreviewLetterFromChooseTemplateProps = MessagePlanAndTemplatePageProps & {
   validateTemplate: (template?: TemplateDto) => LetterTemplate | undefined;
 };
 
-const { previewTemplateFromMessagePlan, letterRender } = content.components;
+const { previewTemplateFromMessagePlan, letterRender, letterRenderIframe } =
+  content.components;
 
 export const PreviewLetterFromChooseTemplate = async (
   props: PreviewLetterFromChooseTemplateProps
@@ -92,8 +93,8 @@ export const PreviewLetterFromChooseTemplate = async (
             </h2>
             <LetterRenderIframe
               src={pdfUrl}
-              title={letterRender.iframe.nonpersonalised.title}
-              aria-label={letterRender.iframe.nonpersonalised.ariaLabel}
+              title={letterRenderIframe.nonpersonalised.title}
+              aria-label={letterRenderIframe.nonpersonalised.ariaLabel}
               className='letter-render-iframe nhsuk-u-margin-bottom-6'
             />
             <Link
