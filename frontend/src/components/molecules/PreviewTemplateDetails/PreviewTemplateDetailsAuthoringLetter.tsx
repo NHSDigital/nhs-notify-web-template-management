@@ -148,10 +148,7 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
 
           {/* Campaign */}
           {!hideCampaignRow && (
-            <SummaryList.Row
-              id='campaign-id'
-              className={template.campaignId ? undefined : 'missing-value'}
-            >
+            <SummaryList.Row id='campaign-id'>
               <SummaryList.Key>{rowHeadings.campaignId}</SummaryList.Key>
               <SummaryList.Value>{template.campaignId}</SummaryList.Value>
               <ActionLink

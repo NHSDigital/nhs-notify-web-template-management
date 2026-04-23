@@ -156,6 +156,7 @@ describe('letter version is not AUTHORING', () => {
       name: 'PDF Letter Template',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
+      campaignId: 'campaign',
       lockNumber: 5,
       language: 'en',
       letterType: 'x0',

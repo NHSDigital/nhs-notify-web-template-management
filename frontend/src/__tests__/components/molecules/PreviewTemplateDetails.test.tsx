@@ -477,19 +477,6 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       expect(screen.getByText('campaign-1')).toBeInTheDocument();
       expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
     });
-
-    it('shows link when campaignId is missing', () => {
-      jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
-
-      render(
-        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-      );
-
-      expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
-      expect(
-        screen.getByTestId('campaign-action').closest('.missing-value')
-      ).toBeInTheDocument();
-    });
   });
 
   describe('PENDING_VALIDATION status', () => {

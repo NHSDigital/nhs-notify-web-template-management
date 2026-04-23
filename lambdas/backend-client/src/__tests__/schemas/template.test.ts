@@ -284,6 +284,7 @@ describe('Template schemas', () => {
   describe('$PdfLetterProperties', () => {
     const validPdfProofingLetter = {
       templateType: 'LETTER',
+      campaignId: 'my-campaign',
       letterType: 'x0',
       language: 'en',
       letterVersion: 'PDF',
@@ -316,6 +317,7 @@ describe('Template schemas', () => {
   describe('$AuthoringLetterProperties', () => {
     const validAuthoringLetter = {
       clientId: 'client-id',
+      campaignId: 'lettercampaign',
       templateType: 'LETTER',
       letterType: 'x0',
       language: 'en',
@@ -363,6 +365,7 @@ describe('Template schemas', () => {
 
       expect(result.success).toBe(false);
       expect(result.error?.flatten().fieldErrors).toEqual({
+        campaignId: expect.arrayContaining([expect.any(String)]),
         files: expect.arrayContaining([expect.any(String)]),
         clientId: expect.arrayContaining([expect.any(String)]),
       });
@@ -494,6 +497,7 @@ describe('Template schemas', () => {
       letterType: 'x0',
       language: 'en',
       letterVersion: 'PDF',
+      campaignId: 'campaign',
       files: {
         pdfTemplate: {
           fileName: 'test.pdf',
@@ -515,6 +519,7 @@ describe('Template schemas', () => {
         templateType: 'LETTER',
         letterType: 'x0',
         language: 'en',
+        campaignId: 'campaign',
         files: {
           pdfTemplate: {
             fileName: 'test.pdf',
@@ -541,6 +546,7 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
+        campaignId: 'campaign',
         files: {
           initialRender: {
             fileName: 'render.pdf',
@@ -665,6 +671,7 @@ describe('Template schemas', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
         letterType: 'x0',
         language: 'en',
+        campaignId: 'campaign',
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',
         files: {
@@ -697,6 +704,7 @@ describe('Template schemas', () => {
         letterVersion: 'PDF',
         createdAt: '2024-01-01T00:00:00Z',
         updatedAt: '2024-01-01T00:00:00Z',
+        campaignId: 'campaign',
         files: {
           pdfTemplate: {
             currentVersion: '1',
@@ -726,6 +734,7 @@ describe('Template schemas', () => {
         language: 'en',
         letterVersion: 'AUTHORING',
         letterVariantId: 'variant-123',
+        campaignId: 'campaign',
         files: {
           initialRender: {
             fileName: 'render.pdf',

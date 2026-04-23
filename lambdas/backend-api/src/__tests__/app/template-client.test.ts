@@ -5416,6 +5416,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         id: templateId,
+        campaignId: 'campaign',
         clientId: user.clientId,
         createdAt: NOW,
         updatedAt: NOW,
@@ -5464,6 +5465,7 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         id: templateId,
         clientId: user.clientId,
+        campaignId: 'campaign',
         createdAt: NOW,
         updatedAt: NOW,
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -5547,6 +5549,7 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         id: templateId,
         clientId: user.clientId,
+        campaignId: 'campaign',
         createdAt: NOW,
         updatedAt: NOW,
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -5628,6 +5631,7 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         id: templateId,
         clientId: user.clientId,
+        campaignId: 'campaign',
         createdAt: NOW,
         updatedAt: NOW,
         templateStatus: 'NOT_YET_SUBMITTED',
