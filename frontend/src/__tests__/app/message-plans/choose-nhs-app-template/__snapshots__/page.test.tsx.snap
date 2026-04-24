@@ -269,7 +269,7 @@ exports[`ChooseNHSAppTemplate page renders NHS App template selection 1`] = `
 </DocumentFragment>
 `;
 
-exports[`ChooseNHSAppTemplate page renders the empty state message when there are no templates 1`] = `
+exports[`ChooseNHSAppTemplate page renders the empty version when there are no templates 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-width-container"

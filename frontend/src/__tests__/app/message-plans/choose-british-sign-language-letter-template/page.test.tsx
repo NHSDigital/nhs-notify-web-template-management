@@ -69,7 +69,7 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('renders the empty state message when there are no templates', async () => {
+  it('renders the empty version when there are no templates', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
     getTemplatesMock.mockResolvedValueOnce([]);
 
@@ -84,6 +84,9 @@ describe('ChooseBritishSignLanguageLetterTemplate page', () => {
 
     const container = render(page);
 
+    expect(container.getByTestId('no-templates-message').textContent).toContain(
+      'British Sign Language letter'
+    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });
