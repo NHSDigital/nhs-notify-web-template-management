@@ -50,7 +50,7 @@ test.describe('PUT /v1/contact-details', () => {
     await contactDetailHelper.cleanup();
   });
 
-  test.describe('email verification', () => {
+  test.describe('email contact details', () => {
     test('saves normalized email contact detail and sends otp', async ({
       request,
     }) => {
@@ -85,7 +85,7 @@ test.describe('PUT /v1/contact-details', () => {
       contactDetailHelper.addAdHoc(body.data);
     });
 
-    test('creates a new request for email verification when old request has not been verified', async ({
+    test('overwrites existing email contact detail when old one has not been verified', async ({
       request,
     }) => {
       const email = generateEmailAddress();
@@ -251,7 +251,7 @@ test.describe('PUT /v1/contact-details', () => {
     });
   });
 
-  test.describe('sms verification', () => {
+  test.describe('sms contact details', () => {
     for (const locale of ['GB', 'GG', 'IM', 'JE'] as Locale[]) {
       test(`saves normalized sms contact detail and sends otp (${locale})`, async ({
         request,
@@ -289,7 +289,7 @@ test.describe('PUT /v1/contact-details', () => {
       });
     }
 
-    test('creates a new request for sms verification when old request has not been verified', async ({
+    test('overwrites existing sms contact details when old one has not been verified', async ({
       request,
     }) => {
       const num = generateMobileNumber();
