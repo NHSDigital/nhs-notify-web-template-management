@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import type { MouseEventHandler } from 'react';
 import { ErrorSummary, HintText } from 'nhsuk-react-components';
 import content from '@content/content';
 import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
@@ -6,49 +7,16 @@ import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { addClassNameToContentBlock } from '@utils/add-classname-to-content-block';
 import { ErrorState } from '@utils/types';
 
-/**
- * Handles clicks on error summary links that point to form fields inside unselected NHS UK tab panels.
- * If the target field is inside a hidden tab panel (`nhsuk-tabs__panel--hidden`), the default
- * navigation is prevented, the correct tab is activated by programmatically clicking its tab link,
- * and then focus is moved to the field once the panel becomes visible.
- */
-function handleErrorLinkClick(e: MouseEvent) {
-  if (!(e.target instanceof HTMLElement)) return;
-  const link = e.target.closest('a[href^="#"]');
-  if (!link) return;
-
-  const href = link.getAttribute('href');
-  /* istanbul ignore next — `closest('a[href^="#"]')` guarantees href is non-null */
-  if (!href) return;
-
-  const fieldId = href.slice(1);
-  const target = document.querySelector<HTMLElement>(`#${CSS.escape(fieldId)}`);
-  if (!target) return;
-
-  const panel = target.closest<HTMLElement>('.nhsuk-tabs__panel');
-  if (!panel?.classList.contains('nhsuk-tabs__panel--hidden')) return;
-
-  e.preventDefault();
-
-  const panelId = panel.id;
-  const tabLink = document.querySelector<HTMLAnchorElement>(
-    `[aria-controls="${panelId}"].nhsuk-tabs__tab`
-  );
-  tabLink?.click();
-
-  requestAnimationFrame(() => {
-    document.querySelector<HTMLElement>(`#${CSS.escape(fieldId)}`)?.focus();
-  });
-}
-
 export type NhsNotifyErrorSummaryProps = {
   hint?: string;
   errorState?: ErrorState;
+  onItemClick?: (fieldId: string) => MouseEventHandler<HTMLAnchorElement>;
 };
 
 export const NhsNotifyErrorSummary = ({
   hint,
   errorState = {},
+  onItemClick,
 }: NhsNotifyErrorSummaryProps) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
@@ -57,14 +25,6 @@ export const NhsNotifyErrorSummary = ({
       errorSummaryRef.current.focus();
       errorSummaryRef.current.scrollIntoView();
     }
-  }, [errorState]);
-
-  // handle error link clicks to fields inside hidden tab panels
-  useEffect(() => {
-    const el = errorSummaryRef.current;
-    if (!el) return;
-    el.addEventListener('click', handleErrorLinkClick);
-    return () => el.removeEventListener('click', handleErrorLinkClick);
   }, [errorState]);
 
   const { fieldErrors, formErrors } = errorState;
@@ -84,6 +44,7 @@ export const NhsNotifyErrorSummary = ({
         <ErrorSummary.Item
           href={`#${id}`}
           key={`field-error-summary-${id}-${error.slice(0, 5)}`}
+          onClick={onItemClick?.(id)}
         >
           {renderErrorItem(error)}
         </ErrorSummary.Item>
