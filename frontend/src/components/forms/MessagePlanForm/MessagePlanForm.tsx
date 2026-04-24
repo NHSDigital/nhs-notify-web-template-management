@@ -36,9 +36,6 @@ export function MessagePlanForm({
   const [name, handleNameChange] = useTextInput<HTMLInputElement>(
     initialState.name
   );
-  const [_, handleCampaignIdChange] = useTextInput<HTMLSelectElement>(
-    initialState.campaignId
-  );
 
   const nameError = state.errorState?.fieldErrors?.name?.join(',');
 
@@ -112,7 +109,6 @@ export function MessagePlanForm({
               <NHSNotifyForm.Select
                 id='campaignId'
                 name='campaignId'
-                onChange={handleCampaignIdChange}
                 data-testid='campaign-id-field'
                 aria-describedby='campaignId--hint campaignId--error-message'
                 aria-labelledby='campaignId--label'
