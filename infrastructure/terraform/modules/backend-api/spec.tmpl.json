@@ -29,6 +29,9 @@
           },
           {
             "properties": {
+              "campaignId": {
+                "type": "string"
+              },
               "clientId": {
                 "type": "string"
               },
@@ -64,6 +67,7 @@
               }
             },
             "required": [
+              "campaignId",
               "clientId",
               "files",
               "letterVersion"
@@ -120,9 +124,6 @@
       },
       "BaseLetterTemplateProperties": {
         "properties": {
-          "campaignId": {
-            "type": "string"
-          },
           "language": {
             "$ref": "#/components/schemas/Language"
           },
@@ -137,7 +138,6 @@
           }
         },
         "required": [
-          "campaignId",
           "letterType",
           "language",
           "templateType"
@@ -514,6 +514,7 @@
               }
             },
             "required": [
+              "campaignId",
               "letterVersion"
             ]
           }
@@ -537,6 +538,7 @@
               }
             },
             "required": [
+              "campaignId",
               "letterVersion"
             ]
           }
@@ -890,6 +892,9 @@
           },
           {
             "properties": {
+              "campaignId": {
+                "type": "string"
+              },
               "files": {
                 "$ref": "#/components/schemas/PdfLetterFiles"
               },

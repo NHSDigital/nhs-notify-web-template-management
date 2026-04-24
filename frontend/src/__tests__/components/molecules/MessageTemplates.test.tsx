@@ -42,7 +42,6 @@ const messageTemplatesProps: {
       templateType: 'LETTER',
       templateStatus: 'SUBMITTED',
       name: 'Template 3',
-      campaignId: 'campaign',
       createdAt: '2021-02-01T00:00:00.000Z',
       letterType: 'x0',
       letterVersion: 'PDF',
@@ -62,7 +61,6 @@ const messageTemplatesProps: {
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template 4',
-      campaignId: 'campaign',
       createdAt: '2021-02-01T00:00:00.000Z',
       letterType: 'x0',
       letterVersion: 'PDF',
@@ -117,7 +115,6 @@ describe('MessageTemplates component', () => {
           templateList: [
             {
               id: '1',
-              campaignId: 'campaign',
               clientId: 'client-id',
               templateType: 'LETTER',
               templateStatus: 'PROOF_APPROVED',

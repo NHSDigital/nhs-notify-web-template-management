@@ -140,7 +140,6 @@ export const $SmsProperties = schemaFor<SmsProperties>()(
 );
 
 const $BaseLetterTemplateProperties = z.object({
-  campaignId: z.string(),
   templateType: z.literal('LETTER'),
   letterType: z.enum(LETTER_TYPE_LIST),
   language: z.enum(LANGUAGE_LIST),
@@ -150,6 +149,7 @@ export const $CreatePdfLetterProperties =
   schemaFor<CreatePdfLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
       letterVersion: z.literal('PDF'),
     })
   );
@@ -157,6 +157,7 @@ export const $CreatePdfLetterProperties =
 export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
   z.object({
     ...$BaseLetterTemplateProperties.shape,
+    campaignId: z.string().optional(),
     files: $PdfLetterFiles,
     letterVersion: z.literal('PDF'),
     personalisationParameters: z.array(z.string()).optional(),
@@ -180,6 +181,7 @@ export const $CreateAuthoringLetterProperties =
   schemaFor<CreateAuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
       letterVersion: z.literal('AUTHORING'),
     })
   );
@@ -188,6 +190,7 @@ export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
       customPersonalisation: z.array(z.string()).optional(),
       files: $AuthoringLetterFiles,
       clientId: z.string(),

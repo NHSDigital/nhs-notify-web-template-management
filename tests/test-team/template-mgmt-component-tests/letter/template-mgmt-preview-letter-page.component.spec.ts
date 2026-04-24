@@ -131,6 +131,15 @@ function createTemplates(
       templateStatus: 'PROOF_APPROVED',
       id: '321B92CF-AECC-4938-B4CA-B00E4797327A',
     },
+    pdfNoCampaign: {
+      ...TemplateFactory.uploadPdfLetterTemplate(
+        'A1B2C3D4-0000-0000-0000-PDF0CAMPAIGN0',
+        user,
+        'pdf-no-campaign',
+        'NOT_YET_SUBMITTED'
+      ),
+      campaignId: undefined,
+    } as Template,
     withProofs,
     authoringInvalid: {
       id: 'preview-page-invalid-authoring-letter',
@@ -355,260 +364,276 @@ test.describe('Preview Letter template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('when user visits page, then page is loaded, can click to go to submit page', async ({
-    page,
-  }) => {
-    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-      page
-    ).setPathParam('templateId', templates.notYetSubmitted.id);
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.notYetSubmitted.name
-    );
-
-    if (!templates.notYetSubmitted.campaignId) {
-      throw new Error('Test data misconfiguration');
-    }
-
-    await expect(previewLetterTemplatePage.campaignId).toContainText(
-      templates.notYetSubmitted.campaignId
-    );
-
-    await previewLetterTemplatePage.clickContinueButton();
-
-    const submitPage = new TemplateMgmtSubmitLetterPage(page)
-      .setPathParam('templateId', templates.notYetSubmitted.id)
-      .setSearchParam(
-        'lockNumber',
-        String(templates.notYetSubmitted.lockNumber)
-      );
-
-    await expect(page).toHaveURL(submitPage.getUrl());
-  });
-
-  test('when proofingEnabled is false, user can click to go submit page', async ({
-    page,
-  }) => {
-    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-      page
-    ).setPathParam('templateId', templates.proofingDisabled.id);
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.proofingDisabled.name
-    );
-
-    await previewLetterTemplatePage.clickContinueButton();
-
-    const submitPage = new TemplateMgmtSubmitLetterPage(page)
-      .setPathParam('templateId', templates.proofingDisabled.id)
-      .setSearchParam(
-        'lockNumber',
-        String(templates.proofingDisabled.lockNumber)
-      );
-
-    await expect(page).toHaveURL(submitPage.getUrl());
-  });
-
-  test('when template is pending a proof request, user can click to go to request page', async ({
-    page,
-  }) => {
-    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-      page
-    ).setPathParam('templateId', templates.pendingProofRequest.id);
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.pendingProofRequest.name
-    );
-
-    await previewLetterTemplatePage.clickContinueButton();
-
-    const requestProofPage = new TemplateMgmtRequestProofPage(page)
-      .setPathParam('templateId', templates.pendingProofRequest.id)
-      .setSearchParam(
-        'lockNumber',
-        String(templates.pendingProofRequest.lockNumber)
-      );
-
-    await expect(page).toHaveURL(requestProofPage.getUrl());
-  });
-
-  test('when status is not actionable (PENDING_UPLOAD), no continue button is displayed', async ({
-    page,
-  }) => {
-    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-      page
-    ).setPathParam('templateId', templates.pendingUpload.id);
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.pendingUpload.name
-    );
-
-    await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
-    await expect(previewLetterTemplatePage.continueButton).toBeHidden();
-  });
-
-  test('when status is not actionable (PROOF_APPROVED), no continue button is displayed', async ({
-    page,
-  }) => {
-    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-      page
-    ).setPathParam('templateId', templates.proofApproved.id);
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.proofApproved.name
-    );
-
-    await expect(previewLetterTemplatePage.statusTag).toContainText(
-      'Proof approved'
-    );
-
-    await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
-    await expect(previewLetterTemplatePage.continueButton).toBeHidden();
-  });
-
-  test.describe('Error handling', () => {
-    test('when user visits page with missing data, then an invalid template error is displayed', async ({
-      baseURL,
+  test.describe('PDF letter (legacy)', () => {
+    test('when user visits page, then page is loaded, can click to go to submit page', async ({
       page,
     }) => {
       const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
         page
-      ).setPathParam('templateId', templates.empty.id);
-
-      await previewLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
-    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-        page
-      ).setPathParam('templateId', 'fake-template-id');
-
-      await previewLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
-    test('when user visits page with pending files, submit is unavailable', async ({
-      page,
-    }) => {
-      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-        page
-      ).setPathParam('templateId', templates.pending.id);
+      ).setPathParam('templateId', templates.notYetSubmitted.id);
 
       await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
 
       await expect(previewLetterTemplatePage.pageHeading).toContainText(
-        'test-pending-template-letter'
+        templates.notYetSubmitted.name
+      );
+
+      if (!templates.notYetSubmitted.campaignId) {
+        throw new Error('Test data misconfiguration');
+      }
+
+      await expect(previewLetterTemplatePage.campaignId).toContainText(
+        templates.notYetSubmitted.campaignId
+      );
+
+      await previewLetterTemplatePage.clickContinueButton();
+
+      const submitPage = new TemplateMgmtSubmitLetterPage(page)
+        .setPathParam('templateId', templates.notYetSubmitted.id)
+        .setSearchParam(
+          'lockNumber',
+          String(templates.notYetSubmitted.lockNumber)
+        );
+
+      await expect(page).toHaveURL(submitPage.getUrl());
+    });
+
+    test('when proofingEnabled is false, user can click to go submit page', async ({
+      page,
+    }) => {
+      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+        page
+      ).setPathParam('templateId', templates.proofingDisabled.id);
+
+      await previewLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+      await expect(previewLetterTemplatePage.pageHeading).toContainText(
+        templates.proofingDisabled.name
+      );
+
+      await previewLetterTemplatePage.clickContinueButton();
+
+      const submitPage = new TemplateMgmtSubmitLetterPage(page)
+        .setPathParam('templateId', templates.proofingDisabled.id)
+        .setSearchParam(
+          'lockNumber',
+          String(templates.proofingDisabled.lockNumber)
+        );
+
+      await expect(page).toHaveURL(submitPage.getUrl());
+    });
+
+    test('when template is pending a proof request, user can click to go to request page', async ({
+      page,
+    }) => {
+      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+        page
+      ).setPathParam('templateId', templates.pendingProofRequest.id);
+
+      await previewLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+      await expect(previewLetterTemplatePage.pageHeading).toContainText(
+        templates.pendingProofRequest.name
+      );
+
+      await previewLetterTemplatePage.clickContinueButton();
+
+      const requestProofPage = new TemplateMgmtRequestProofPage(page)
+        .setPathParam('templateId', templates.pendingProofRequest.id)
+        .setSearchParam(
+          'lockNumber',
+          String(templates.pendingProofRequest.lockNumber)
+        );
+
+      await expect(page).toHaveURL(requestProofPage.getUrl());
+    });
+
+    test('when status is not actionable (PENDING_UPLOAD), no continue button is displayed', async ({
+      page,
+    }) => {
+      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+        page
+      ).setPathParam('templateId', templates.pendingUpload.id);
+
+      await previewLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+      await expect(previewLetterTemplatePage.pageHeading).toContainText(
+        templates.pendingUpload.name
       );
 
       await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
       await expect(previewLetterTemplatePage.continueButton).toBeHidden();
     });
 
-    test('when user visits page with failed virus scan, submit is unavailable and an error is displayed', async ({
+    test('when status is not actionable (PROOF_APPROVED), no continue button is displayed', async ({
       page,
     }) => {
-      const errorMessage = 'The file(s) you uploaded may contain a virus.';
-
       const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
         page
-      ).setPathParam('templateId', templates.virus.id);
+      ).setPathParam('templateId', templates.proofApproved.id);
 
       await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
 
       await expect(previewLetterTemplatePage.pageHeading).toContainText(
-        'test-virus-template-letter'
+        templates.proofApproved.name
       );
 
-      await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
-      await expect(previewLetterTemplatePage.errorSummary).toContainText(
-        errorMessage
+      await expect(previewLetterTemplatePage.statusTag).toContainText(
+        'Proof approved'
       );
+
+      await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
       await expect(previewLetterTemplatePage.continueButton).toBeHidden();
     });
 
-    test('when user visits page with failed validation, submit is unavailable and an error is displayed', async ({
-      page,
-    }) => {
-      const errorMessage =
-        'The personalisation fields in your files are missing or do not match.';
-
+    test('can view a PDF letter without a campaign', async ({ page }) => {
       const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
         page
-      ).setPathParam('templateId', templates.invalid.id);
+      ).setPathParam('templateId', templates.pdfNoCampaign.id);
 
       await previewLetterTemplatePage.loadPage();
 
       await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
 
       await expect(previewLetterTemplatePage.pageHeading).toContainText(
-        'test-invalid-template-letter'
-      );
-
-      await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
-      await expect(previewLetterTemplatePage.errorSummary).toContainText(
-        errorMessage
-      );
-      await expect(previewLetterTemplatePage.continueButton).toBeHidden();
-    });
-
-    test('when the template has proofs, only those passing the virus scan are displayed', async ({
-      page,
-    }) => {
-      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
-        page
-      ).setPathParam('templateId', templates.withProofs.id);
-
-      await previewLetterTemplatePage.loadPage();
-
-      await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
-
-      await expect(previewLetterTemplatePage.pageHeading).toContainText(
-        templates.withProofs.name
-      );
-
-      await expect(previewLetterTemplatePage.pdfLinks).toHaveCount(1);
-
-      const pdfLink = previewLetterTemplatePage.pdfLinks.first();
-
-      await expect(pdfLink).toHaveText('b.pdf');
-      await expect(pdfLink).toHaveAttribute(
-        'href',
-        // eslint-disable-next-line security/detect-non-literal-regexp
-        new RegExp(
-          `^/templates/files/[^/]+/proofs/${templates.withProofs.id}/b.pdf$`
-        )
+        templates.pdfNoCampaign.name
       );
     });
+
+    test.describe('Error handling', () => {
+      test('when user visits page with missing data, then an invalid template error is displayed', async ({
+        baseURL,
+        page,
+      }) => {
+        const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.empty.id);
+
+        await previewLetterTemplatePage.loadPage();
+
+        await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+      });
+
+      test('when user visits page with pending files, submit is unavailable', async ({
+        page,
+      }) => {
+        const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.pending.id);
+
+        await previewLetterTemplatePage.loadPage();
+
+        await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+        await expect(previewLetterTemplatePage.pageHeading).toContainText(
+          'test-pending-template-letter'
+        );
+
+        await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
+        await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+      });
+
+      test('when user visits page with failed virus scan, submit is unavailable and an error is displayed', async ({
+        page,
+      }) => {
+        const errorMessage = 'The file(s) you uploaded may contain a virus.';
+
+        const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.virus.id);
+
+        await previewLetterTemplatePage.loadPage();
+
+        await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+        await expect(previewLetterTemplatePage.pageHeading).toContainText(
+          'test-virus-template-letter'
+        );
+
+        await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
+        await expect(previewLetterTemplatePage.errorSummary).toContainText(
+          errorMessage
+        );
+        await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+      });
+
+      test('when user visits page with failed validation, submit is unavailable and an error is displayed', async ({
+        page,
+      }) => {
+        const errorMessage =
+          'The personalisation fields in your files are missing or do not match.';
+
+        const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.invalid.id);
+
+        await previewLetterTemplatePage.loadPage();
+
+        await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+        await expect(previewLetterTemplatePage.pageHeading).toContainText(
+          'test-invalid-template-letter'
+        );
+
+        await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
+        await expect(previewLetterTemplatePage.errorSummary).toContainText(
+          errorMessage
+        );
+        await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+      });
+
+      test('when the template has proofs, only those passing the virus scan are displayed', async ({
+        page,
+      }) => {
+        const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.withProofs.id);
+
+        await previewLetterTemplatePage.loadPage();
+
+        await expect(page).toHaveURL(previewLetterTemplatePage.getUrl());
+
+        await expect(previewLetterTemplatePage.pageHeading).toContainText(
+          templates.withProofs.name
+        );
+
+        await expect(previewLetterTemplatePage.pdfLinks).toHaveCount(1);
+
+        const pdfLink = previewLetterTemplatePage.pdfLinks.first();
+
+        await expect(pdfLink).toHaveText('b.pdf');
+        await expect(pdfLink).toHaveAttribute(
+          'href',
+          // eslint-disable-next-line security/detect-non-literal-regexp
+          new RegExp(
+            `^/templates/files/[^/]+/proofs/${templates.withProofs.id}/b.pdf$`
+          )
+        );
+      });
+    });
+  });
+
+  test('when user visits page with a fake template, then an invalid template error is displayed', async ({
+    baseURL,
+    page,
+  }) => {
+    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(
+      page
+    ).setPathParam('templateId', 'fake-template-id');
+
+    await previewLetterTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });
 
   test.describe('AUTHORING letter', () => {
@@ -752,20 +777,6 @@ test.describe('Preview Letter template Page', () => {
         'href',
         'https://nhsdigitallive.service-now.com/csm'
       );
-    });
-
-    test('when user visits page with missing data, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
-        'templateId',
-        templates.authoringInvalid.id
-      );
-
-      await previewPage.loadPage();
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('hides campaign Edit link when template has campaignId (single-campaign client)', async ({
@@ -1315,6 +1326,19 @@ test.describe('Preview Letter template Page', () => {
     });
 
     test.describe('Validation errors for AUTHORING letters', () => {
+      test('when user visits page with missing data, then an invalid template error is displayed', async ({
+        baseURL,
+        page,
+      }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam('templateId', templates.authoringInvalid.id);
+
+        await previewPage.loadPage();
+
+        await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+      });
+
       test('displays virus scan failed error when status is VALIDATION_FAILED with VIRUS_SCAN_FAILED', async ({
         page,
       }) => {
