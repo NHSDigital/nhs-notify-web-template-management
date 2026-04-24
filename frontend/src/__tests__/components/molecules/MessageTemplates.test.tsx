@@ -39,55 +39,39 @@ const messageTemplatesProps: {
     },
     {
       id: '3',
-      clientId: 'client-id',
       templateType: 'LETTER',
       templateStatus: 'SUBMITTED',
       name: 'Template 3',
-      campaignId: 'campaign',
       createdAt: '2021-02-01T00:00:00.000Z',
       letterType: 'x0',
-      letterVersion: 'AUTHORING',
+      letterVersion: 'PDF',
       language: 'en',
       updatedAt: '2021-02-01T00:00:00.000Z',
       lockNumber: 1,
       files: {
-        docxTemplate: {
-          currentVersion: 'version-id',
-          fileName: 'template.docx',
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: '8BAC',
           virusScanStatus: 'PASSED',
-        },
-        initialRender: {
-          fileName: 'render.pdf',
-          currentVersion: 'v1',
-          status: 'RENDERED',
-          pageCount: 2,
         },
       },
     },
     {
       id: '4',
-      clientId: 'client-id',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template 4',
-      campaignId: 'campaign',
       createdAt: '2021-02-01T00:00:00.000Z',
       letterType: 'x0',
-      letterVersion: 'AUTHORING',
+      letterVersion: 'PDF',
       language: 'fr',
       updatedAt: '2021-02-01T00:00:00.000Z',
       lockNumber: 1,
       files: {
-        docxTemplate: {
-          currentVersion: 'version-id',
-          fileName: 'template.docx',
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: '8BAC',
           virusScanStatus: 'PASSED',
-        },
-        initialRender: {
-          fileName: 'render.pdf',
-          currentVersion: 'v1',
-          status: 'RENDERED',
-          pageCount: 2,
         },
       },
     },
@@ -127,48 +111,77 @@ describe('MessageTemplates component', () => {
   it('matches snapshot with proof approved status', () => {
     const container = render(
       <MessageTemplates
-        templateList={[
-          {
-            id: '2',
-            clientId: 'client-id',
-            templateType: 'LETTER',
-            templateStatus: 'PROOF_APPROVED',
-            name: 'Template 2',
-            createdAt: '2021-02-01T00:00:00.000Z',
-            letterType: 'x0',
-            letterVersion: 'AUTHORING',
-            language: 'en',
-            updatedAt: '2021-02-01T00:00:00.000Z',
-            lockNumber: 1,
-            files: {
-              docxTemplate: {
-                currentVersion: 'version-id',
-                fileName: 'template.docx',
-                virusScanStatus: 'PASSED',
-              },
-              initialRender: {
-                fileName: 'render.pdf',
-                currentVersion: 'v1',
-                status: 'RENDERED',
-                pageCount: 2,
-              },
-              shortFormRender: {
-                fileName: 'short-render.pdf',
-                currentVersion: 'v1',
-                status: 'RENDERED',
-                pageCount: 2,
-              },
-              longFormRender: {
-                fileName: 'long-render.pdf',
-                currentVersion: 'v1',
-                status: 'RENDERED',
-                pageCount: 2,
+        {...{
+          templateList: [
+            {
+              id: '1',
+              clientId: 'client-id',
+              templateType: 'LETTER',
+              templateStatus: 'PROOF_APPROVED',
+              name: 'Template 1',
+              createdAt: '2021-02-01T00:00:00.000Z',
+              letterType: 'x0',
+              letterVersion: 'PDF',
+              language: 'en',
+              updatedAt: '2021-02-01T00:00:00.000Z',
+              lockNumber: 1,
+              files: {
+                pdfTemplate: {
+                  fileName: 'template.pdf',
+                  currentVersion: '8BAC',
+                  virusScanStatus: 'PASSED',
+                },
+                proofs: {
+                  p: {
+                    fileName: 'p.pdf',
+                    supplier: 'MBA',
+                    virusScanStatus: 'PASSED',
+                  },
+                },
               },
             },
-            letterVariantId: '2',
-            campaignId: 'campaign-id',
-          },
-        ]}
+            {
+              id: '2',
+              clientId: 'client-id',
+              templateType: 'LETTER',
+              templateStatus: 'PROOF_APPROVED',
+              name: 'Template 2',
+              createdAt: '2021-02-01T00:00:00.000Z',
+              letterType: 'x0',
+              letterVersion: 'AUTHORING',
+              language: 'en',
+              updatedAt: '2021-02-01T00:00:00.000Z',
+              lockNumber: 1,
+              files: {
+                docxTemplate: {
+                  currentVersion: 'version-id',
+                  fileName: 'template.docx',
+                  virusScanStatus: 'PASSED',
+                },
+                initialRender: {
+                  fileName: 'render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+                shortFormRender: {
+                  fileName: 'short-render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+                longFormRender: {
+                  fileName: 'long-render.pdf',
+                  currentVersion: 'v1',
+                  status: 'RENDERED',
+                  pageCount: 2,
+                },
+              },
+              letterVariantId: '2',
+              campaignId: 'campaign-id',
+            },
+          ],
+        }}
       />
     );
 
