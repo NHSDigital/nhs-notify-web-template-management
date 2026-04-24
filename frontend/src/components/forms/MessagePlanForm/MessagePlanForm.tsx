@@ -1,23 +1,23 @@
 'use client';
 
-import { PropsWithChildren } from 'react';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
+import content from '@content/content';
+import { useTextInput } from '@hooks/use-text-input.hook';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { useNHSNotifyForm } from '@providers/form-provider';
 import classNames from 'classnames';
 import Link from 'next/link';
+import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
 import {
   Details,
   HintText,
   Label,
-  Select,
   TextInput,
   WarningCallout,
 } from 'nhsuk-react-components';
-import type { RoutingConfig } from 'nhs-notify-web-template-management-types';
-import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import content from '@content/content';
-import { useTextInput } from '@hooks/use-text-input.hook';
-import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { useNHSNotifyForm } from '@providers/form-provider';
-import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { PropsWithChildren } from 'react';
 
 const formContent = content.components.messagePlanForm;
 
@@ -36,12 +36,11 @@ export function MessagePlanForm({
   const [name, handleNameChange] = useTextInput<HTMLInputElement>(
     initialState.name
   );
-  const [campaignId, handleCampaignIdChange] = useTextInput<HTMLSelectElement>(
+  const [_, handleCampaignIdChange] = useTextInput<HTMLSelectElement>(
     initialState.campaignId
   );
 
   const nameError = state.errorState?.fieldErrors?.name?.join(',');
-  const campaignIdError = state.errorState?.fieldErrors?.campaignId?.join(',');
 
   return (
     <NHSNotifyFormWrapper formId='message-plan' action={action}>
@@ -90,33 +89,38 @@ export function MessagePlanForm({
               <p data-testid='single-campaign-id'>{campaignIds[0]}</p>
             </>
           ) : (
-            <>
+            <NHSNotifyForm.FormGroup htmlFor='campaignId'>
               <Label htmlFor='campaignId' size='s'>
                 {formContent.fields.campaignId.label}
               </Label>
               <HintText>{formContent.fields.campaignId.hintMulti}</HintText>
-              <WarningCallout className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'>
+              <WarningCallout
+                className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'
+                data-testid='campaign-warning-callout'
+              >
                 <WarningCallout.Label>
                   {formContent.fields.campaignId.warningCallout.heading}
                 </WarningCallout.Label>
                 <p>{formContent.fields.campaignId.warningCallout.content}</p>
               </WarningCallout>
-              <Select
+              <NHSNotifyForm.ErrorMessage
+                htmlFor='campaignId'
+                id='campaignId--error-message'
+              />
+              <NHSNotifyForm.Select
                 id='campaignId'
                 name='campaignId'
-                defaultValue={campaignId}
                 onChange={handleCampaignIdChange}
-                error={campaignIdError}
                 data-testid='campaign-id-field'
               >
-                <Select.Option />
+                <option />
                 {campaignIds.map((id) => (
-                  <Select.Option key={id} value={id}>
+                  <option key={id} value={id}>
                     {id}
-                  </Select.Option>
+                  </option>
                 ))}
-              </Select>
-            </>
+              </NHSNotifyForm.Select>
+            </NHSNotifyForm.FormGroup>
           )}
         </div>
       )}

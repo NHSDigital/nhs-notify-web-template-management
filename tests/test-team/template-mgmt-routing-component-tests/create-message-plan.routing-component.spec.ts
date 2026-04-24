@@ -40,9 +40,9 @@ test.afterAll(async () => {
 
 test.describe('Create Message Plan Page', () => {
   test.describe('with a valid message order', () => {
-    const messageOrder = 'NHSAPP';
-
     test.describe('single campaign client', () => {
+      const messageOrder = 'NHSAPP';
+
       test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
         page,
       }) => {
@@ -101,114 +101,140 @@ test.describe('Create Message Plan Page', () => {
           'Error: Message plan name too long'
         );
       });
-    });
-  });
 
-  test.describe('client has multiple campaigns', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-
-    test.beforeEach(async ({ page }) => {
-      await loginAsUser(userWithMultipleCampaigns, page);
-    });
-
-    test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
-      page,
-    }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-        page
-      ).setSearchParam('messageOrder', 'NHSAPP');
-
-      await createMessagePlanPage.loadPage();
-
-      await createMessagePlanPage.nameField.fill('My Message Plan');
-
-      await expect(createMessagePlanPage.singleCampaignIdElement).toHaveCount(
-        0
-      );
-
-      await createMessagePlanPage.campaignIdSelector.selectOption(
-        userWithMultipleCampaigns.campaignIds?.at(0) as string
-      );
-
-      await createMessagePlanPage.clickSubmit();
-
-      await expect(page).toHaveURL(editMessagePlanRegexp);
-
-      const urlParts = page.url().match(editMessagePlanRegexp);
-
-      routingConfigStorageHelper.addAdHocKey({
-        id: urlParts![1],
-        clientId: userWithMultipleCampaigns.clientId,
-      });
-    });
-
-    test('displays error if campaign id is not selected', async ({ page }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-        page
-      ).setSearchParam('messageOrder', 'NHSAPP');
-
-      await createMessagePlanPage.loadPage();
-
-      await createMessagePlanPage.nameField.fill('My Message Plan');
-
-      await createMessagePlanPage.clickSubmit();
-
-      await expect(createMessagePlanPage.campaignIdFieldError).toHaveText(
-        'Error: Select a campaign'
-      );
-    });
-  });
-
-  test.describe('client has no campaign id', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-
-    test.beforeEach(async ({ page }) => {
-      await loginAsUser(userWithoutCampaignId, page);
-    });
-
-    test('redirects to invalid config page', async ({ baseURL, page }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-        page
-      ).setSearchParam('messageOrder', 'NHSAPP');
-
-      await createMessagePlanPage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/campaign-id-required`
-      );
-    });
-  });
-
-  for (const { messageOrder } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS)
-    test.describe(`with the messageOrder query parameter set to ${messageOrder}`, () => {
-      test('common page tests', async ({ page, baseURL }) => {
+      test('displays no warning callout', async ({ page }) => {
         const createMessagePlanPage = new RoutingCreateMessagePlanPage(
           page
         ).setSearchParam('messageOrder', messageOrder);
 
         await createMessagePlanPage.loadPage();
 
-        await expect(page).toHaveURL(
-          `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(messageOrder)}`
-        );
-        await expect(createMessagePlanPage.pageHeading).toHaveText(
-          'Create a message plan'
-        );
-
-        const props = {
-          page: createMessagePlanPage,
-          baseURL,
-          expectedUrl: 'templates/message-plans/choose-message-order',
-        };
-
-        await assertSkipToMainContent(props);
-        await assertHeaderLogoLink(props);
-        await assertFooterLinks(props);
-        await assertSignOutLink(props);
-        await assertBackLinkTopNotPresent(props);
-        await assertAndClickBackLinkBottom(props);
+        await expect(
+          createMessagePlanPage.warningCalloutElement
+        ).not.toBeAttached();
       });
     });
+
+    test.describe('client has multiple campaigns', () => {
+      test.use({ storageState: { cookies: [], origins: [] } });
+
+      test.beforeEach(async ({ page }) => {
+        await loginAsUser(userWithMultipleCampaigns, page);
+      });
+
+      test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
+        page,
+      }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', 'NHSAPP');
+
+        await createMessagePlanPage.loadPage();
+
+        await createMessagePlanPage.nameField.fill('My Message Plan');
+
+        await expect(createMessagePlanPage.singleCampaignIdElement).toHaveCount(
+          0
+        );
+
+        await createMessagePlanPage.campaignIdSelector.selectOption(
+          userWithMultipleCampaigns.campaignIds?.at(0) as string
+        );
+
+        await createMessagePlanPage.clickSubmit();
+
+        await expect(page).toHaveURL(editMessagePlanRegexp);
+
+        const urlParts = page.url().match(editMessagePlanRegexp);
+
+        routingConfigStorageHelper.addAdHocKey({
+          id: urlParts![1],
+          clientId: userWithMultipleCampaigns.clientId,
+        });
+      });
+
+      test('displays error if campaign id is not selected', async ({
+        page,
+      }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', 'NHSAPP');
+
+        await createMessagePlanPage.loadPage();
+
+        await createMessagePlanPage.nameField.fill('My Message Plan');
+
+        await createMessagePlanPage.clickSubmit();
+
+        await expect(createMessagePlanPage.campaignIdFieldError).toHaveText(
+          'Error: Select a campaign'
+        );
+      });
+
+      test('displays edit campaign warning callout', async ({ page }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', 'NHSAPP');
+
+        await createMessagePlanPage.loadPage();
+
+        await expect(
+          createMessagePlanPage.warningCalloutElement
+        ).toBeAttached();
+      });
+    });
+
+    test.describe('client has no campaign id', () => {
+      test.use({ storageState: { cookies: [], origins: [] } });
+
+      test.beforeEach(async ({ page }) => {
+        await loginAsUser(userWithoutCampaignId, page);
+      });
+
+      test('redirects to invalid config page', async ({ baseURL, page }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', 'NHSAPP');
+
+        await createMessagePlanPage.loadPage();
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/message-plans/campaign-id-required`
+        );
+      });
+    });
+
+    for (const { messageOrder } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS)
+      test.describe(`with the messageOrder query parameter set to ${messageOrder}`, () => {
+        test('common page tests', async ({ page, baseURL }) => {
+          const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+            page
+          ).setSearchParam('messageOrder', messageOrder);
+
+          await createMessagePlanPage.loadPage();
+
+          await expect(page).toHaveURL(
+            `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(messageOrder)}`
+          );
+          await expect(createMessagePlanPage.pageHeading).toHaveText(
+            'Create a message plan'
+          );
+
+          const props = {
+            page: createMessagePlanPage,
+            baseURL,
+            expectedUrl: 'templates/message-plans/choose-message-order',
+          };
+
+          await assertSkipToMainContent(props);
+          await assertHeaderLogoLink(props);
+          await assertFooterLinks(props);
+          await assertSignOutLink(props);
+          await assertBackLinkTopNotPresent(props);
+          await assertAndClickBackLinkBottom(props);
+        });
+      });
+  });
 
   test.describe('with no messageOrder query parameter set', () => {
     test('redirects to message order page', async ({ page, baseURL }) => {
