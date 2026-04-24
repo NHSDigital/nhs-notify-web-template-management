@@ -141,12 +141,12 @@ export type CountSuccess = {
 };
 
 export type CreateAuthoringLetterProperties = BaseLetterTemplateProperties & {
-  campaignId?: string;
+  campaignId: string;
   letterVersion: 'AUTHORING';
 };
 
 export type CreatePdfLetterProperties = BaseLetterTemplateProperties & {
-  campaignId?: string;
+  campaignId: string;
   letterVersion: 'PDF';
 };
 
