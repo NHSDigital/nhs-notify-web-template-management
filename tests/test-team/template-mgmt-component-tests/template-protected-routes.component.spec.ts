@@ -16,12 +16,14 @@ import { RoutingMessagePlanCampaignIdRequiredPage } from '../pages/routing/campa
 import { RoutingMessagePlansPage } from '../pages/routing/message-plans-page';
 import { RoutingPreviewEmailTemplatePage } from 'pages/routing/email/preview-email-page';
 import { RoutingPreviewLargePrintLetterTemplatePage } from 'pages/routing/letter/preview-large-print-letter-template-page';
+import { RoutingPreviewMessagePlanPreviewLetterTemplatePage } from 'pages/routing/preview-message-plan-letter-template-page';
 import { RoutingPreviewMessagePlanPage } from 'pages/routing/preview-message-plan-page';
 import { RoutingPreviewNhsAppTemplatePage } from 'pages/routing/nhs-app/preview-nhs-app-page';
 import { RoutingPreviewOtherLanguageLetterTemplatePage } from 'pages/routing/letter/preview-other-language-letter-template-page';
 import { RoutingPreviewSmsTemplatePage } from 'pages/routing/sms/preview-sms-template-page';
 import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/preview-standard-letter-page';
 import { RoutingRenameMessagePlanPage } from 'pages/routing/rename-message-plan-page';
+import { RoutingReviewAndMoveToProductionPreviewLetterTemplatePage } from 'pages/routing/review-and-move-to-production-letter-template-page';
 import {
   RoutingChooseBritishSignLanguageLetterTemplatePage,
   RoutingPreviewBritishSignLanguageLetterTemplatePage,
@@ -93,6 +95,7 @@ const protectedPages = [
   RoutingPreviewBritishSignLanguageLetterTemplatePage,
   RoutingPreviewEmailTemplatePage,
   RoutingPreviewLargePrintLetterTemplatePage,
+  RoutingPreviewMessagePlanPreviewLetterTemplatePage,
   RoutingPreviewMessagePlanPage,
   RoutingPreviewNhsAppTemplatePage,
   RoutingPreviewOtherLanguageLetterTemplatePage,
@@ -100,6 +103,7 @@ const protectedPages = [
   RoutingPreviewStandardLetterTemplatePage,
   RoutingRenameMessagePlanPage,
   RoutingReviewAndMoveToProductionPage,
+  RoutingReviewAndMoveToProductionPreviewLetterTemplatePage,
   TemplateMgmtChoosePage,
   TemplateMgmtChoosePrintingAndPostagePage,
   TemplateMgmtCopyPage,

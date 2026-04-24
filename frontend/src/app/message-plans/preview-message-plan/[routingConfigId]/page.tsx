@@ -111,6 +111,7 @@ export default async function PreviewMessagePlanPage({
             <MessagePlanCascadePreview
               messagePlan={messagePlan}
               templates={templates}
+              letterPreviewHrefBase={`/message-plans/preview-message-plan/${routingConfigId}`}
             />
 
             <div className='nhsuk-form-group'>

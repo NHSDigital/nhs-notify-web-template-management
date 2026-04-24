@@ -1,5 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import type { Channel } from 'nhs-notify-web-template-management-types';
+import type {
+  Channel,
+  LetterVariant,
+} from 'nhs-notify-web-template-management-types';
 import { test, expect } from '@playwright/test';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
@@ -20,7 +23,7 @@ import { getTestContext } from 'helpers/context/context';
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   const templateIds = {
     NHSAPP: randomUUID(),
     EMAIL: randomUUID(),
@@ -55,9 +58,9 @@ function createTemplates(user: TestUser) {
       `Test Letter template - ${templateIds.LETTER}`,
       'SUBMITTED',
       {
+        letterVariantId: letterVariant.id,
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
       }
     ),
     LARGE_PRINT_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -69,7 +72,7 @@ function createTemplates(user: TestUser) {
         letterType: 'x1',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
+        letterVariantId: letterVariant.id,
       }
     ),
     BSL_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -81,7 +84,7 @@ function createTemplates(user: TestUser) {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
+        letterVariantId: letterVariant.id,
       }
     ),
     FRENCH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -93,7 +96,7 @@ function createTemplates(user: TestUser) {
         language: 'fr',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
+        letterVariantId: letterVariant.id,
       }
     ),
     SPANISH_LETTER: TemplateFactory.createAuthoringLetterTemplate(
@@ -105,7 +108,7 @@ function createTemplates(user: TestUser) {
         language: 'es',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: 'letter-variant-id',
+        letterVariantId: letterVariant.id,
       }
     ),
   };
@@ -119,7 +122,11 @@ test.describe('Routing - Review and Move to Production page', () => {
   test.beforeAll(async () => {
     const context = getTestContext();
     user = await context.auth.getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user);
+
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
+    templates = createTemplates(user, globalLetterVariant);
 
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
@@ -235,7 +242,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       }
 
       await expect(reviewPage.previewToggleButton).toHaveText(
-        'Open all template previews'
+        'Open all digital template previews'
       );
 
       await reviewPage.previewToggleButton.click();
@@ -245,7 +252,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       }
 
       await expect(reviewPage.previewToggleButton).toHaveText(
-        'Close all template previews'
+        'Close all digital template previews'
       );
 
       await reviewPage.previewToggleButton.click();
@@ -255,7 +262,7 @@ test.describe('Routing - Review and Move to Production page', () => {
       }
 
       await expect(reviewPage.previewToggleButton).toHaveText(
-        'Open all template previews'
+        'Open all digital template previews'
       );
     });
 
@@ -297,37 +304,48 @@ test.describe('Routing - Review and Move to Production page', () => {
         templateBlock.defaultTemplateCard.previewTemplateSummary
       ).toBeHidden();
 
-      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+      await expect(templateBlock.defaultTemplateCard.templateName).toHaveText(
         templates.LETTER.name
+      );
+      await expect(templateBlock.defaultTemplateCard.templateLink).toHaveText(
+        'Preview template (opens in a new tab)'
       );
       await expect(
         templateBlock.defaultTemplateCard.templateLink
       ).toHaveAttribute(
         'href',
-        `/templates/preview-submitted-letter-template/${templates.LETTER.id}`
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.LETTER.id}`
       );
 
       await expect(
+        templateBlock.defaultTemplateCard.templateLink
+      ).toHaveAttribute('target', '_blank');
+
+      await expect(
         templateBlock.getAccessibilityFormatCard('x1').templateLink
-      ).toHaveText(templates.LARGE_PRINT_LETTER.name);
+      ).toHaveText('Preview template (opens in a new tab)');
 
       await expect(
         templateBlock.getAccessibilityFormatCard('x1').templateLink
       ).toHaveAttribute(
         'href',
-        `/templates/preview-letter-template/${templates.LARGE_PRINT_LETTER.id}`
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.LARGE_PRINT_LETTER.id}`
       );
 
       await expect(
         templateBlock.getAccessibilityFormatCard('q4').templateLink
-      ).toHaveText(templates.BSL_LETTER.name);
+      ).toHaveText('Preview template (opens in a new tab)');
 
       await expect(
         templateBlock.getAccessibilityFormatCard('q4').templateLink
       ).toHaveAttribute(
         'href',
-        `/templates/preview-letter-template/${templates.BSL_LETTER.id}`
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.BSL_LETTER.id}`
       );
+
+      await expect(
+        templateBlock.getAccessibilityFormatCard('q4').templateLink
+      ).toHaveAttribute('target', '_blank');
 
       for (const [index, language] of (
         ['FRENCH_LETTER', 'SPANISH_LETTER'] satisfies (keyof ReturnType<
@@ -335,13 +353,27 @@ test.describe('Routing - Review and Move to Production page', () => {
         >)[]
       ).entries()) {
         const links = await templateBlock.getLanguagesCard().templateLink.all();
-        await expect(links[index]).toHaveText(templates[language].name);
+        await expect(links[index]).toHaveText(
+          'Preview template (opens in a new tab)'
+        );
 
         await expect(links[index]).toHaveAttribute(
           'href',
-          `/templates/preview-letter-template/${templates[language].id}`
+          `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates[language].id}`
         );
+        await expect(links[index]).toHaveAttribute('target', '_blank');
       }
+
+      const [newTab] = await Promise.all([
+        page.context().waitForEvent('page'),
+        templateBlock.defaultTemplateCard.templateLink.click(),
+      ]);
+
+      await expect(newTab).toHaveURL(
+        `/templates/message-plans/review-and-move-to-production/${dbEntry.id}/preview-template/${templates.LETTER.id}`
+      );
+
+      await newTab.close();
     });
   });
 
