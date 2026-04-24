@@ -2366,7 +2366,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       }
     },
@@ -2426,7 +2426,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       },
       "get": {
@@ -2489,7 +2489,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       },
       "patch": {
@@ -2655,7 +2655,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       }
     },
@@ -3092,7 +3092,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       }
     },
@@ -3199,7 +3199,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_TEMPLATES_LAMBDA_ARN}/invocations"
         }
       }
     }
