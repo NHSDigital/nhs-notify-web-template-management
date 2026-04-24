@@ -42,6 +42,11 @@ output "s3_buckets" {
       bucket = module.s3bucket_shared_files.bucket
       id     = module.s3bucket_shared_files.id
     }
+    quarantine = {
+      arn    = module.s3bucket_quarantine.arn
+      bucket = module.s3bucket_quarantine.bucket
+      id     = module.s3bucket_quarantine.id
+    }
   }
 }
 

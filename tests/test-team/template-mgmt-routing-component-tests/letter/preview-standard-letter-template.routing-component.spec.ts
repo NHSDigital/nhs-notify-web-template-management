@@ -15,12 +15,19 @@ import { RoutingPreviewStandardLetterTemplatePage } from 'pages/routing/letter/p
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { RoutingConfigStorageHelper } from 'helpers/db/routing-config-storage-helper';
 import { getTestContext } from 'helpers/context/context';
+import { LetterVariant } from 'nhs-notify-web-template-management-types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
 
 const invalidTemplateId = 'invalid-id';
-const notFoundTemplateId = 'dc67b576-af7d-47b3-97d7-48fa204e7525';
+const notFoundTemplateId = randomUUID();
+
+const templateIds = {
+  EMAIL: randomUUID(),
+  LETTER: randomUUID(),
+  LETTER_WITHOUT_VARIANT: randomUUID(),
+};
 
 function createMessagePlans(user: TestUser) {
   return {
@@ -31,22 +38,33 @@ function createMessagePlans(user: TestUser) {
   };
 }
 
-function createTemplates(user: TestUser) {
+function createTemplates(user: TestUser, letterVariant: LetterVariant) {
   return {
     EMAIL: TemplateFactory.createEmailTemplate(
-      randomUUID(),
+      templateIds.EMAIL,
       user,
-      'Email template name'
+      `Email template name - ${templateIds.EMAIL}`
     ),
-    LETTER: TemplateFactory.uploadPdfLetterTemplate(
-      randomUUID(),
+    LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LETTER,
       user,
-      'Letter template name'
+      `Letter template name - ${templateIds.LETTER}`,
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: letterVariant.id,
+      }
     ),
-    AUTHORING_LETTER: TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
+    LETTER_WITHOUT_VARIANT: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.LETTER_WITHOUT_VARIANT,
       user,
-      'Authoring letter template name'
+      `Letter template no variant - ${templateIds.LETTER_WITHOUT_VARIANT}`,
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+      }
     ),
   };
 }
@@ -59,8 +77,11 @@ test.describe('Routing - Preview Letter template page', () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
 
+    const [globalLetterVariant] =
+      await context.letterVariants.getGlobalLetterVariants();
+
     messagePlans = createMessagePlans(user);
-    templates = createTemplates(user);
+    templates = createTemplates(user, globalLetterVariant);
 
     await routingConfigStorageHelper.seed(Object.values(messagePlans));
     await templateStorageHelper.seedTemplateData(Object.values(templates));
@@ -88,7 +109,7 @@ test.describe('Routing - Preview Letter template page', () => {
     await assertAndClickBackLinkTop(props);
   });
 
-  test('loads the Letter template', async ({ page, baseURL }) => {
+  test('loads the letter template', async ({ page, baseURL }) => {
     const previewLetterTemplatePage =
       new RoutingPreviewStandardLetterTemplatePage(page)
         .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
@@ -111,44 +132,20 @@ test.describe('Routing - Preview Letter template page', () => {
       templates.LETTER.campaignId!
     );
 
-    await expect(
-      page.getByText(templates.LETTER.files!.pdfTemplate!.fileName)
-    ).toBeVisible();
-
-    await expect(
-      page.getByText(templates.LETTER.files!.testDataCsv!.fileName)
-    ).toBeVisible();
-  });
-
-  test('loads the AUTHORING letter template', async ({ page, baseURL }) => {
-    const previewLetterTemplatePage =
-      new RoutingPreviewStandardLetterTemplatePage(page)
-        .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
-        .setPathParam('templateId', templates.AUTHORING_LETTER.id)
-        .setSearchParam('lockNumber', '0');
-
-    await previewLetterTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/message-plans/choose-standard-english-letter-template/${messagePlans.LETTER_ROUTING_CONFIG.id}/preview-template/${templates.AUTHORING_LETTER.id}?lockNumber=0`
-    );
-
-    await expect(previewLetterTemplatePage.pageHeading).toContainText(
-      templates.AUTHORING_LETTER.name
-    );
-
-    expect(templates.AUTHORING_LETTER.campaignId).toBeTruthy();
-
-    await expect(previewLetterTemplatePage.campaignId).toContainText(
-      templates.AUTHORING_LETTER.campaignId!
-    );
-
     await expect(previewLetterTemplatePage.templateId).toBeVisible();
     await expect(previewLetterTemplatePage.templateId).toContainText(
-      templates.AUTHORING_LETTER.id
+      templates.LETTER.id
     );
 
     await expect(previewLetterTemplatePage.summaryList).toBeVisible();
+
+    await expect(previewLetterTemplatePage.letterPreviewHeading).toBeVisible();
+    await expect(previewLetterTemplatePage.letterPreviewIframe).toBeVisible();
+
+    await expect(previewLetterTemplatePage.letterPreviewIframe).toHaveAttribute(
+      'src',
+      `/templates/files/${templates.LETTER.clientId}/renders/${templates.LETTER.id}/initial-render.pdf`
+    );
   });
 
   test.describe('redirects to invalid template page', () => {
@@ -181,6 +178,21 @@ test.describe('Routing - Preview Letter template page', () => {
         new RoutingPreviewStandardLetterTemplatePage(page)
           .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
           .setPathParam('templateId', templates.EMAIL.id)
+          .setSearchParam('lockNumber', '0');
+
+      await previewLetterTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when template does not have a letterVariantId', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewLetterTemplatePage =
+        new RoutingPreviewStandardLetterTemplatePage(page)
+          .setPathParam('messagePlanId', messagePlans.LETTER_ROUTING_CONFIG.id)
+          .setPathParam('templateId', templates.LETTER_WITHOUT_VARIANT.id)
           .setSearchParam('lockNumber', '0');
 
       await previewLetterTemplatePage.loadPage();

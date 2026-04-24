@@ -18,7 +18,10 @@ import content from '@content/content';
 import { getRenderDetails } from '@utils/letter-render';
 import { interpolate } from '@utils/interpolate';
 
-const { loadingText, iframe } = content.components.letterRender;
+const {
+  letterRender: { loadingText },
+  letterRenderIframe: { personalised: iframe },
+} = content.components;
 
 type LetterRenderTabProps = {
   template: AuthoringLetterTemplate;
@@ -89,8 +92,12 @@ function LetterRenderTabContent({
         {hideEditActions ? (
           <LetterRenderIframe
             src={pdfUrl}
-            title={interpolate(iframe.title, { tab: tabDescription })}
-            aria-label={interpolate(iframe.ariaLabel, { tab: tabDescription })}
+            title={interpolate(iframe.title, {
+              tab: tabDescription,
+            })}
+            aria-label={interpolate(iframe.ariaLabel, {
+              tab: tabDescription,
+            })}
           />
         ) : (
           <PollLetterRender
@@ -101,7 +108,9 @@ function LetterRenderTabContent({
           >
             <LetterRenderIframe
               src={pdfUrl}
-              title={interpolate(iframe.title, { tab: tabDescription })}
+              title={interpolate(iframe.title, {
+                tab: tabDescription,
+              })}
               aria-label={interpolate(iframe.ariaLabel, {
                 tab: tabDescription,
               })}

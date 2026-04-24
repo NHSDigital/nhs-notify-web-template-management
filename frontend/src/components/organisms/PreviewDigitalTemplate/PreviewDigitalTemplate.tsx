@@ -39,7 +39,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
       )}
       {features.routing ? (
         <>
-          {props.previewDetailsComponent}
+          {props.detailsComponent}
 
           <Link href={editPath} passHref legacyBehavior>
             <Button secondary data-testid='edit-template-button'>
@@ -69,7 +69,7 @@ export function PreviewDigitalTemplate(props: PreviewTemplateProps) {
       ) : (
         <>
           <NhsNotifyErrorSummary errorState={props.form.state.errorState} />
-          {props.previewDetailsComponent}
+          {props.detailsComponent}
           <NHSNotifyRadioButtonForm
             {...props.form}
             legend={{

@@ -101,7 +101,7 @@ exports[`full cascade plan matches snapshot 1`] = `
               class="nhsuk-button nhsuk-button--secondary"
               type="button"
             >
-              Open all template previews
+              Open all digital template previews
             </button>
           </p>
           <ul
@@ -606,12 +606,15 @@ exports[`full cascade plan matches snapshot 1`] = `
                   <p
                     data-testid="template-name"
                   >
-                    <a
-                      href="/preview-submitted-letter-template/278e1a92-353f-42a3-b08d-565ea1c9d763"
-                    >
-                      letter template name
-                    </a>
+                    authoring letter template name
                   </p>
+                  <a
+                    href="/message-plans/preview-message-plan/39ee95ca-0500-4fe0-b1d6-c7f1b28bc267/preview-template/278e1a92-353f-42a3-b08d-565ea1c9d763"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Preview template (opens in a new tab)
+                  </a>
                 </div>
               </div>
               <ul
@@ -719,12 +722,15 @@ exports[`full cascade plan matches snapshot 1`] = `
                       <p
                         data-testid="template-name"
                       >
-                        <a
-                          href="/preview-submitted-letter-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
-                        >
-                          large print letter template name
-                        </a>
+                        large print letter template name
                       </p>
+                      <a
+                        href="/message-plans/preview-message-plan/39ee95ca-0500-4fe0-b1d6-c7f1b28bc267/preview-template/72ebc15c-d950-4e2e-99d4-3de7f174fba6"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Preview template (opens in a new tab)
+                      </a>
                     </div>
                   </div>
                 </li>
@@ -747,12 +753,15 @@ exports[`full cascade plan matches snapshot 1`] = `
                       <p
                         data-testid="template-name"
                       >
-                        <a
-                          href="/preview-submitted-letter-template/a4e82c0f-3b91-47d5-86e2-5c9f1a7d3b04"
-                        >
-                          British Sign Language letter template name
-                        </a>
+                        British Sign Language letter template name
                       </p>
+                      <a
+                        href="/message-plans/preview-message-plan/39ee95ca-0500-4fe0-b1d6-c7f1b28bc267/preview-template/a4e82c0f-3b91-47d5-86e2-5c9f1a7d3b04"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Preview template (opens in a new tab)
+                      </a>
                     </div>
                   </div>
                 </li>
@@ -773,25 +782,31 @@ exports[`full cascade plan matches snapshot 1`] = `
                         Other language letters (optional)
                       </h3>
                       <p
-                        class="nhsuk-u-margin-bottom-0"
                         data-testid="template-name"
                       >
-                        <a
-                          href="/preview-submitted-letter-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
-                        >
-                          letter template name
-                        </a>
+                        authoring letter template name
                       </p>
+                      <a
+                        class="nhsuk-u-margin-bottom-0"
+                        href="/message-plans/preview-message-plan/39ee95ca-0500-4fe0-b1d6-c7f1b28bc267/preview-template/31399023-08a2-4dc7-81c7-e25b284b2aab"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Preview template (opens in a new tab)
+                      </a>
                       <p
-                        class="nhsuk-u-margin-bottom-0"
                         data-testid="template-name"
                       >
-                        <a
-                          href="/preview-submitted-letter-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
-                        >
-                          letter template name
-                        </a>
+                        authoring letter template name
                       </p>
+                      <a
+                        class="nhsuk-u-margin-bottom-0"
+                        href="/message-plans/preview-message-plan/39ee95ca-0500-4fe0-b1d6-c7f1b28bc267/preview-template/35746144-cac4-4e1f-b92b-4f58e9f1154f"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Preview template (opens in a new tab)
+                      </a>
                     </div>
                   </div>
                 </li>
