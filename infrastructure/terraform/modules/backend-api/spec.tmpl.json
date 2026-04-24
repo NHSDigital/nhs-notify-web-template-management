@@ -472,6 +472,91 @@
         ],
         "type": "object"
       },
+      "ContactDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ContactDetailInput"
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "status": {
+                "$ref": "#/components/schemas/ContactDetailStatus"
+              }
+            },
+            "required": [
+              "clientId",
+              "id",
+              "status"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "ContactDetailInput": {
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContactDetailType"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ],
+        "type": "object"
+      },
+      "ContactDetailInputNormalized": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ContactDetailInput"
+          },
+          {
+            "properties": {
+              "rawValue": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "rawValue"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "ContactDetailStatus": {
+        "enum": [
+          "PENDING_VERIFICATION",
+          "VERIFIED"
+        ],
+        "type": "string"
+      },
+      "ContactDetailSuccess": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ContactDetail"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "ContactDetailType": {
+        "enum": [
+          "EMAIL",
+          "SMS"
+        ],
+        "type": "string"
+      },
       "CountSuccess": {
         "properties": {
           "data": {
@@ -1489,6 +1574,69 @@
         }
       }
     },
+    "/v1/contact-details": {
+      "post": {
+        "description": "Add new unverified contact details and send an OTP for verification",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactDetailInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactDetailSuccess"
+                }
+              }
+            },
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Add new unverified contact details and send an OTP for verification",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_CONTACT_DETAILS_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
     "/v1/docx-letter-template": {
       "post": {
         "description": "Create a DOCX letter template",
@@ -2218,7 +2366,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       }
     },
@@ -2278,7 +2426,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       },
       "get": {
@@ -2341,7 +2489,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       },
       "patch": {
@@ -2507,7 +2655,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       }
     },
@@ -2944,7 +3092,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_TEMPLATE_LAMBDA_ARN}/invocations"
         }
       }
     },
@@ -3051,7 +3199,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_TEMPLATES_LAMBDA_ARN}/invocations"
         }
       }
     }

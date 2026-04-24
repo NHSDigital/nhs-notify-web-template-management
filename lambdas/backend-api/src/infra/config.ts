@@ -3,6 +3,9 @@ import { z } from 'zod/v4';
 const $Env = z.object({
   CLIENT_CONFIG_SSM_KEY_PREFIX: z.string(),
   CLIENT_CONFIG_TTL_SECONDS: z.string().pipe(z.coerce.number()),
+  CONTACT_DETAILS_OTP_SECRET_PATH: z.string(),
+  CONTACT_DETAILS_TABLE_NAME: z.string(),
+  CONTACT_DETAILS_UNVERIFIED_TTL_SECONDS: z.string().pipe(z.coerce.number()),
   DEFAULT_LETTER_SUPPLIER: z.string(),
   ENVIRONMENT: z.string(),
   LETTER_VARIANT_CACHE_TTL_MS: z.string().pipe(z.coerce.number()),
@@ -28,6 +31,10 @@ export function loadConfig() {
   return {
     clientConfigSsmKeyPrefix: env.CLIENT_CONFIG_SSM_KEY_PREFIX,
     clientConfigTtlSeconds: env.CLIENT_CONFIG_TTL_SECONDS,
+    contactDetailsOtpSecretPath: env.CONTACT_DETAILS_OTP_SECRET_PATH,
+    contactDetailsTableName: env.CONTACT_DETAILS_TABLE_NAME,
+    contactDetailsUnverifiedTtlSeconds:
+      env.CONTACT_DETAILS_UNVERIFIED_TTL_SECONDS,
     defaultLetterSupplier: env.DEFAULT_LETTER_SUPPLIER,
     downloadBucket: env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
     environment: env.ENVIRONMENT,
@@ -44,3 +51,5 @@ export function loadConfig() {
     letterVariantTableName: env.LETTER_VARIANT_TABLE_NAME,
   };
 }
+
+export type Config = ReturnType<typeof loadConfig>;
