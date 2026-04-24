@@ -1973,6 +1973,11 @@ const messagePlanForm = {
       label: 'Campaign',
       hintSingle: 'This message plan will link to your only campaign:',
       hintMulti: 'Choose which campaign this message plan will link to',
+      warningCallout: {
+        heading: 'Important',
+        content:
+          'You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.',
+      },
     },
   },
   submitButton: 'Save and continue',

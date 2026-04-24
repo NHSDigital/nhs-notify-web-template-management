@@ -102,7 +102,7 @@ exports[`renders errors 1`] = `
       class="nhsuk-form-group nhsuk-u-margin-bottom-6"
     >
       <div
-        class="nhsuk-form-group nhsuk-form-group--error"
+        class="nhsuk-form-group"
       >
         <label
           class="nhsuk-label nhsuk-label--s"
@@ -117,27 +117,37 @@ exports[`renders errors 1`] = `
         >
           Choose which campaign this message plan will link to
         </div>
-        <span
-          class="nhsuk-error-message"
-          id="campaignId--error-message"
+        <div
+          class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
+          data-testid="campaign-warning-callout"
         >
-          <span
-            class="nhsuk-u-visually-hidden"
+          <h3
+            class="nhsuk-warning-callout__label"
           >
-            Error: 
-          </span>
-          CampaignId error
-        </span>
+            <span
+              role="text"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Important: 
+              </span>
+              Important
+            </span>
+          </h3>
+          <p>
+            You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
+          </p>
+        </div>
         <select
           aria-describedby="campaignId--hint campaignId--error-message"
-          class="nhsuk-select nhsuk-select--error"
+          aria-labelledby="campaignId--label"
+          class="nhsuk-select"
           data-testid="campaign-id-field"
           id="campaignId"
           name="campaignId"
         >
-          <option
-            selected=""
-          />
+          <option />
           <option
             value="campaign-id"
           >
@@ -419,16 +429,37 @@ exports[`renders form with select for multiple campaign ids 1`] = `
         >
           Choose which campaign this message plan will link to
         </div>
+        <div
+          class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
+          data-testid="campaign-warning-callout"
+        >
+          <h3
+            class="nhsuk-warning-callout__label"
+          >
+            <span
+              role="text"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Important: 
+              </span>
+              Important
+            </span>
+          </h3>
+          <p>
+            You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
+          </p>
+        </div>
         <select
-          aria-describedby="campaignId--hint"
+          aria-describedby="campaignId--hint campaignId--error-message"
+          aria-labelledby="campaignId--label"
           class="nhsuk-select"
           data-testid="campaign-id-field"
           id="campaignId"
           name="campaignId"
         >
-          <option
-            selected=""
-          />
+          <option />
           <option
             value="campaign-1"
           >

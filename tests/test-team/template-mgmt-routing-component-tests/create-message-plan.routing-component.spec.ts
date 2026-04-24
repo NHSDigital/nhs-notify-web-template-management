@@ -60,6 +60,11 @@ test.describe('Create Message Plan Page', () => {
 
         await expect(createMessagePlanPage.campaignIdSelector).toHaveCount(0);
 
+        await expect(
+          createMessagePlanPage.warningCalloutElement,
+          'No warning callout is displayed'
+        ).not.toBeAttached();
+
         await createMessagePlanPage.clickSubmit();
 
         await expect(page).toHaveURL(editMessagePlanRegexp);
@@ -102,80 +107,87 @@ test.describe('Create Message Plan Page', () => {
         );
       });
     });
-  });
 
-  test.describe('client has multiple campaigns', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
+    test.describe('client has multiple campaigns', () => {
+      test.use({ storageState: { cookies: [], origins: [] } });
 
-    test.beforeEach(async ({ page }) => {
-      await loginAsUser(userWithMultipleCampaigns, page);
-    });
+      test.beforeEach(async ({ page }) => {
+        await loginAsUser(userWithMultipleCampaigns, page);
+      });
 
-    test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
-      page,
-    }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-        page
-      ).setSearchParam('messageOrder', 'NHSAPP');
+      test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
+        page,
+      }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', messageOrder);
 
-      await createMessagePlanPage.loadPage();
+        await createMessagePlanPage.loadPage();
 
-      await createMessagePlanPage.nameField.fill('My Message Plan');
+        await createMessagePlanPage.nameField.fill('My Message Plan');
 
-      await expect(createMessagePlanPage.singleCampaignIdElement).toHaveCount(
-        0
-      );
+        await expect(createMessagePlanPage.singleCampaignIdElement).toHaveCount(
+          0
+        );
 
-      await createMessagePlanPage.campaignIdSelector.selectOption(
-        userWithMultipleCampaigns.campaignIds?.at(0) as string
-      );
+        await createMessagePlanPage.campaignIdSelector.selectOption(
+          userWithMultipleCampaigns.campaignIds?.at(0) as string
+        );
 
-      await createMessagePlanPage.clickSubmit();
+        await expect(
+          createMessagePlanPage.warningCalloutElement,
+          'Warning callout is displayed'
+        ).toBeAttached();
 
-      await expect(page).toHaveURL(editMessagePlanRegexp);
+        await createMessagePlanPage.clickSubmit();
 
-      const urlParts = page.url().match(editMessagePlanRegexp);
+        await expect(page).toHaveURL(editMessagePlanRegexp);
 
-      routingConfigStorageHelper.addAdHocKey({
-        id: urlParts![1],
-        clientId: userWithMultipleCampaigns.clientId,
+        const urlParts = page.url().match(editMessagePlanRegexp);
+
+        routingConfigStorageHelper.addAdHocKey({
+          id: urlParts![1],
+          clientId: userWithMultipleCampaigns.clientId,
+        });
+      });
+
+      test('displays error if campaign id is not selected', async ({
+        page,
+      }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', messageOrder);
+
+        await createMessagePlanPage.loadPage();
+
+        await createMessagePlanPage.nameField.fill('My Message Plan');
+
+        await createMessagePlanPage.clickSubmit();
+
+        await expect(createMessagePlanPage.campaignIdFieldError).toHaveText(
+          'Error: Select a campaign'
+        );
       });
     });
 
-    test('displays error if campaign id is not selected', async ({ page }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-        page
-      ).setSearchParam('messageOrder', 'NHSAPP');
+    test.describe('client has no campaign id', () => {
+      test.use({ storageState: { cookies: [], origins: [] } });
 
-      await createMessagePlanPage.loadPage();
+      test.beforeEach(async ({ page }) => {
+        await loginAsUser(userWithoutCampaignId, page);
+      });
 
-      await createMessagePlanPage.nameField.fill('My Message Plan');
+      test('redirects to invalid config page', async ({ baseURL, page }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', 'NHSAPP');
 
-      await createMessagePlanPage.clickSubmit();
+        await createMessagePlanPage.loadPage();
 
-      await expect(createMessagePlanPage.campaignIdFieldError).toHaveText(
-        'Error: Select a campaign'
-      );
-    });
-  });
-
-  test.describe('client has no campaign id', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-
-    test.beforeEach(async ({ page }) => {
-      await loginAsUser(userWithoutCampaignId, page);
-    });
-
-    test('redirects to invalid config page', async ({ baseURL, page }) => {
-      const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-        page
-      ).setSearchParam('messageOrder', 'NHSAPP');
-
-      await createMessagePlanPage.loadPage();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/message-plans/campaign-id-required`
-      );
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/message-plans/campaign-id-required`
+        );
+      });
     });
   });
 
