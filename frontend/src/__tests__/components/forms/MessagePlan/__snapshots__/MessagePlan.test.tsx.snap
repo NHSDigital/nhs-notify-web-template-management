@@ -107,11 +107,13 @@ exports[`renders errors 1`] = `
         <label
           class="nhsuk-label nhsuk-label--s"
           for="campaignId"
+          id="campaignId--label"
         >
           Campaign
         </label>
         <div
           class="nhsuk-hint"
+          id="campaignId--hint"
         >
           Choose which campaign this message plan will link to
         </div>
@@ -138,6 +140,8 @@ exports[`renders errors 1`] = `
           </p>
         </div>
         <select
+          aria-describedby="campaignId--hint campaignId--error-message"
+          aria-labelledby="campaignId--label"
           class="nhsuk-select"
           data-testid="campaign-id-field"
           id="campaignId"
@@ -415,11 +419,13 @@ exports[`renders form with select for multiple campaign ids 1`] = `
         <label
           class="nhsuk-label nhsuk-label--s"
           for="campaignId"
+          id="campaignId--label"
         >
           Campaign
         </label>
         <div
           class="nhsuk-hint"
+          id="campaignId--hint"
         >
           Choose which campaign this message plan will link to
         </div>
@@ -446,6 +452,8 @@ exports[`renders form with select for multiple campaign ids 1`] = `
           </p>
         </div>
         <select
+          aria-describedby="campaignId--hint campaignId--error-message"
+          aria-labelledby="campaignId--label"
           class="nhsuk-select"
           data-testid="campaign-id-field"
           id="campaignId"
