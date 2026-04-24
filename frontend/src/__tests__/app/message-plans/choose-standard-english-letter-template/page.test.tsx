@@ -50,7 +50,7 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('renders the empty state message when there are no templates', async () => {
+  it('renders the empty version when there are no templates', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
     getTemplatesMock.mockResolvedValueOnce([]);
 
@@ -65,6 +65,9 @@ describe('ChooseStandardEnglishLetterTemplate page', () => {
 
     const container = render(page);
 
+    expect(container.getByTestId('no-templates-message').textContent).toContain(
+      'standard English letter'
+    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });
