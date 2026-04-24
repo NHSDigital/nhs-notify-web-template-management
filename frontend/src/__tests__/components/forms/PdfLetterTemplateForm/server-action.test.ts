@@ -1,7 +1,7 @@
 import { getMockFormData } from '@testhelpers/helpers';
 import { uploadLetterTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { processFormActions } from '@forms/LetterTemplateForm/server-action';
+import { processFormActions } from '@forms/PdfLetterTemplateForm/server-action';
 import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/amplify-utils');

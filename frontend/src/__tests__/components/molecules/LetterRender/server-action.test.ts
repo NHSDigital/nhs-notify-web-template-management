@@ -116,7 +116,9 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.fields?.['personalisation|appointmentDate']).toBe('');
-    expect(result.errorState).toBeUndefined();
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'custom-appointmentDate-shortFormRender'
+    );
   });
 
   it('clears previous errorState on successful submission', async () => {
@@ -144,8 +146,13 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
+    expect(
+      result.errorState?.fieldErrors?.[
+        'system-personalisation-pack-id-shortFormRender'
+      ]
+    ).toContain('Choose example recipient');
     expect(result.fields?.systemPersonalisationPackId).toBe('');
   });
 
@@ -158,7 +165,7 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
   });
 
@@ -170,10 +177,26 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
     expect(result.fields?.systemPersonalisationPackId).toBe(
       'invalid-recipient-id'
+    );
+  });
+
+  it('error key for recipient includes the tab value', async () => {
+    const formData = buildFormData({
+      systemPersonalisationPackId: '',
+      tab: 'longFormRender',
+    });
+
+    const result = await updateLetterPreview({}, formData);
+
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'system-personalisation-pack-id-longFormRender'
+    );
+    expect(result.errorState?.fieldErrors).not.toHaveProperty(
+      'system-personalisation-pack-id-shortFormRender'
     );
   });
 
@@ -186,9 +209,72 @@ describe('updateLetterPreview', () => {
     const result = await updateLetterPreview({}, formData);
 
     expect(result.errorState?.fieldErrors).toHaveProperty(
-      'systemPersonalisationPackId'
+      'system-personalisation-pack-id-shortFormRender'
     );
     expect(result.fields?.systemPersonalisationPackId).toBe('long-1');
+  });
+
+  it('returns validation error for an empty custom personalisation field', async () => {
+    const formData = buildFormData({
+      systemPersonalisationPackId: 'short-1',
+      'personalisation|appointmentDate': '',
+    });
+
+    const result = await updateLetterPreview({}, formData);
+
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'custom-appointmentDate-shortFormRender'
+    );
+    expect(
+      result.errorState?.fieldErrors?.['custom-appointmentDate-shortFormRender']
+    ).toContain('Enter example data for appointmentDate');
+    expect(mockGenerateLetterProof).not.toHaveBeenCalled();
+  });
+
+  it('returns validation errors for multiple empty custom personalisation fields', async () => {
+    const formData = buildFormData({
+      systemPersonalisationPackId: 'short-1',
+      'personalisation|appointmentDate': '',
+      'personalisation|clinicName': '',
+    });
+
+    const result = await updateLetterPreview({}, formData);
+
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'custom-appointmentDate-shortFormRender'
+    );
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'custom-clinicName-shortFormRender'
+    );
+    expect(mockGenerateLetterProof).not.toHaveBeenCalled();
+  });
+
+  it('returns validation errors for both missing recipient and empty custom fields', async () => {
+    const formData = buildFormData({
+      systemPersonalisationPackId: '',
+      'personalisation|appointmentDate': '',
+    });
+
+    const result = await updateLetterPreview({}, formData);
+
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'system-personalisation-pack-id-shortFormRender'
+    );
+    expect(result.errorState?.fieldErrors).toHaveProperty(
+      'custom-appointmentDate-shortFormRender'
+    );
+    expect(mockGenerateLetterProof).not.toHaveBeenCalled();
+  });
+
+  it('does not return error for a non-empty custom personalisation field', async () => {
+    const formData = buildFormData({
+      'personalisation|appointmentDate': '2025-01-15',
+    });
+
+    const result = await updateLetterPreview({}, formData);
+
+    expect(result.errorState).toBeUndefined();
+    expect(mockGenerateLetterProof).toHaveBeenCalledTimes(1);
   });
 
   it('preserves custom field values on validation error', async () => {

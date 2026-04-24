@@ -10,7 +10,6 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/
   );
 
-  public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
   public readonly uploadDifferentTemplateButton: Locator;
   public readonly statusTag: Locator;
@@ -41,7 +40,6 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   constructor(page: Page) {
     super(page);
 
-    this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
     this.statusTag = page.getByTestId('status-tag');
     this.uploadDifferentTemplateButton = page.getByRole('button', {
@@ -110,6 +108,8 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
       tabSpinner,
       getCustomFieldInput: (fieldName: string): Locator =>
         panel.locator(`input[id="custom-${fieldName}-${variant}"]`),
+      getInlineError: (fieldId: string): Locator =>
+        panel.locator(`[data-testid="error-${fieldId}"]`),
       getRecipientOptions: (): Locator => recipientSelect.locator('option'),
 
       async clickTab() {

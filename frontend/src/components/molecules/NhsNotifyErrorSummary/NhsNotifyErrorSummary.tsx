@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import type { MouseEventHandler } from 'react';
 import { ErrorSummary, HintText } from 'nhsuk-react-components';
 import content from '@content/content';
 import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
@@ -9,11 +10,13 @@ import { ErrorState } from '@utils/types';
 export type NhsNotifyErrorSummaryProps = {
   hint?: string;
   errorState?: ErrorState;
+  onItemClick?: (fieldId: string) => MouseEventHandler<HTMLAnchorElement>;
 };
 
 export const NhsNotifyErrorSummary = ({
   hint,
   errorState = {},
+  onItemClick,
 }: NhsNotifyErrorSummaryProps) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
@@ -41,6 +44,7 @@ export const NhsNotifyErrorSummary = ({
         <ErrorSummary.Item
           href={`#${id}`}
           key={`field-error-summary-${id}-${error.slice(0, 5)}`}
+          onClick={onItemClick?.(id)}
         >
           {renderErrorItem(error)}
         </ErrorSummary.Item>
