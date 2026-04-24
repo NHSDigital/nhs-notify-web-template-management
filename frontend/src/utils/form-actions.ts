@@ -15,7 +15,12 @@ import type {
   LetterProofRequest,
 } from 'nhs-notify-web-template-management-types';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  EmailTemplate,
+  LetterTemplate,
+  NHSAppTemplate,
+  SMSTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { sortAscByUpdatedAt } from './sort';
 
 export async function createTemplate(
@@ -293,6 +298,21 @@ export async function getTemplate(
 }
 
 export async function getTemplates(
+  filters: NonNullable<TemplateFilter> & { templateType: 'LETTER' }
+): Promise<LetterTemplate[]>;
+export async function getTemplates(
+  filters: NonNullable<TemplateFilter> & { templateType: 'SMS' }
+): Promise<SMSTemplate[]>;
+export async function getTemplates(
+  filters: NonNullable<TemplateFilter> & { templateType: 'EMAIL' }
+): Promise<EmailTemplate[]>;
+export async function getTemplates(
+  filters: NonNullable<TemplateFilter> & { templateType: 'NHS_APP' }
+): Promise<NHSAppTemplate[]>;
+export async function getTemplates(
+  filters?: TemplateFilter
+): Promise<TemplateDto[]>;
+export async function getTemplates(
   filters?: TemplateFilter
 ): Promise<TemplateDto[]> {
   const { accessToken } = await getSessionServer();
@@ -322,20 +342,6 @@ export async function getTemplates(
   });
 
   return sortAscByUpdatedAt(valid);
-}
-
-/**
- * Gets all foreign language (non-English) letter templates
- */
-export async function getForeignLanguageLetterTemplates(
-  filters?: TemplateFilter
-): Promise<LetterTemplate[]> {
-  return (await getTemplates({
-    templateType: 'LETTER',
-    letterType: 'x0',
-    excludeLanguage: 'en',
-    ...filters,
-  })) as LetterTemplate[];
 }
 
 export async function getLetterVariantsForTemplate(

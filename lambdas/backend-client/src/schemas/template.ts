@@ -357,4 +357,5 @@ export const $TemplateFilter = z.object({
   excludeLanguage: $Language.optional(),
   letterType: $LetterType.optional(),
   letterVersion: z.enum(['AUTHORING', 'PDF']).optional(),
+  campaignId: z.string().optional(),
 }) satisfies z.ZodType<TemplateFilter>;

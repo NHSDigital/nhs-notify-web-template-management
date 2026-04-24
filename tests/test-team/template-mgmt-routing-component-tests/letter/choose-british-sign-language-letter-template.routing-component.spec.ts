@@ -11,6 +11,7 @@ import {
 import {
   assertChooseTemplatePageWithTemplatesAvailable,
   assertChooseTemplatePageWithPreviousSelection,
+  assertChooseTemplatePageWithNoTemplates,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
@@ -32,6 +33,7 @@ const templateIds = {
   BSL_LETTER_NOT_SUBMITTED: randomUUID(),
   STANDARD_LETTER: randomUUID(),
   LARGE_PRINT_LETTER: randomUUID(),
+  DIFFERENT_CAMPAIGN_LETTER: randomUUID(),
   APP: randomUUID(),
 };
 
@@ -40,6 +42,7 @@ const routingConfigIds = {
   withBSLSelected: randomUUID(),
   validationError: randomUUID(),
   nonLetter: randomUUID(),
+  withNoTemplates: randomUUID(),
   invalid: 'invalid-id',
   notFound: randomUUID(),
 };
@@ -114,6 +117,19 @@ function getTemplates(
         letterVariantId: 'letter-variant-id',
       }
     ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.DIFFERENT_CAMPAIGN_LETTER,
+      user,
+      'Different campaign BSL letter',
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        letterType: 'q4',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
+      }
+    ),
     APP: TemplateFactory.createNhsAppTemplate(
       templateIds.APP,
       user,
@@ -155,6 +171,15 @@ function getRoutingConfigs(
       {
         id: routingConfigIds.nonLetter,
         name: 'Test message plan with no letter channel',
+      }
+    ).dbEntry,
+    withNoTemplates: RoutingConfigFactory.createForMessageOrder(
+      user,
+      'LETTER',
+      {
+        id: routingConfigIds.withNoTemplates,
+        name: 'Test message plan with no matching BSL templates',
+        campaignId: 'no-matching-campaign',
       }
     ).dbEntry,
   };
@@ -227,10 +252,6 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
       routingConfigs.valid.name
     );
 
-    await expect(chooseBSLLetterTemplatePage.pageHeading).toHaveText(
-      'Choose a British Sign Language letter template'
-    );
-
     const table = chooseBSLLetterTemplatePage.templatesTable;
 
     for (const template of [
@@ -256,6 +277,9 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
 
     await expect(
       table.getByText(templates.BSL_LETTER_NOT_SUBMITTED.name)
+    ).toBeHidden();
+    await expect(
+      table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
     ).toBeHidden();
     await expect(table.getByText(templates.STANDARD_LETTER.name)).toBeHidden();
     await expect(
@@ -407,6 +431,28 @@ test.describe('Routing - Choose British Sign Language letter template page', () 
       new RoutingEditMessagePlanPage(page).alternativeLetterFormats()
         .britishSignLanguage.templateName
     ).toHaveText(templates.BSL_LETTER_APPROVED.name);
+  });
+
+  test('user sees the no templates version of the page when no BSL letter templates match the campaign filter', async ({
+    page,
+  }) => {
+    const chooseBSLLetterTemplatePage =
+      new RoutingChooseBritishSignLanguageLetterTemplatePage(page);
+    await chooseBSLLetterTemplatePage
+      .setPathParam('messagePlanId', routingConfigs.withNoTemplates.id)
+      .setSearchParam(
+        'lockNumber',
+        String(routingConfigs.withNoTemplates.lockNumber)
+      )
+      .loadPage();
+
+    await expect(chooseBSLLetterTemplatePage.messagePlanName).toHaveText(
+      routingConfigs.withNoTemplates.name
+    );
+
+    await assertChooseTemplatePageWithNoTemplates({
+      page: chooseBSLLetterTemplatePage,
+    });
   });
 
   test.describe('redirects to invalid message plan page', () => {

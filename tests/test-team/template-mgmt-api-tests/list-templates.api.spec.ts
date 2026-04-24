@@ -2,7 +2,9 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { type TestUser, testUsers } from '../helpers/auth/cognito-auth-helper';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
+import { TemplateFactory } from 'helpers/factories/template-factory';
 import { getTestContext } from 'helpers/context/context';
+import { randomUUID } from 'node:crypto';
 
 test.describe('GET /v1/templates', () => {
   const context = getTestContext();
@@ -201,6 +203,78 @@ test.describe('GET /v1/templates', () => {
       statusCode: 200,
       data: [created2.data],
     });
+  });
+
+  test('filters templates by campaignId query parameter', async ({
+    request,
+  }) => {
+    const campaignId = `test-campaign-${randomUUID()}`;
+    const otherCampaignId = `test-campaign-${randomUUID()}`;
+
+    const templateWithMatchingCampaign =
+      TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Letter template - matching campaign',
+        'SUBMITTED',
+        {
+          campaignId,
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
+        }
+      );
+
+    const templateWithOtherCampaign =
+      TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Letter template - other campaign',
+        'SUBMITTED',
+        {
+          campaignId: otherCampaignId,
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
+        }
+      );
+
+    const templateWithNoCampaign =
+      TemplateFactory.createAuthoringLetterTemplate(
+        randomUUID(),
+        user1,
+        'Letter template - no campaign',
+        'SUBMITTED',
+        {
+          campaignId: null,
+          shortFormRender: { status: 'RENDERED' },
+          longFormRender: { status: 'RENDERED' },
+          letterVariantId: 'letter-variant-id',
+        }
+      );
+
+    await templateStorageHelper.seedTemplateData([
+      templateWithMatchingCampaign,
+      templateWithOtherCampaign,
+      templateWithNoCampaign,
+    ]);
+
+    const response = await request.get(
+      `${process.env.API_BASE_URL}/v1/templates?campaignId=${campaignId}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(200);
+
+    const responseBody = await response.json();
+
+    expect(responseBody.statusCode).toBe(200);
+    expect(responseBody.data).toHaveLength(1);
+    expect(responseBody.data[0].id).toBe(templateWithMatchingCampaign.id);
   });
 
   test('user belonging to the same client as the creator can list creators templates', async ({

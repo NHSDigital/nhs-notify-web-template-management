@@ -88,7 +88,7 @@ exports[`ChooseLanguageLetterTemplates error handling when duplicate languages a
                 class="nhsuk-hint nhsuk-u-reading-width"
                 data-testid="table-hint"
               >
-                Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
+                Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.
               </div>
               <div
                 class="nhsuk-form-group nhsuk-form-group--error"
@@ -575,7 +575,7 @@ exports[`ChooseLanguageLetterTemplates error handling when no template is select
                 class="nhsuk-hint nhsuk-u-reading-width"
                 data-testid="table-hint"
               >
-                Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
+                Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.
               </div>
               <div
                 class="nhsuk-form-group nhsuk-form-group--error"
@@ -1032,7 +1032,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders auth
                 class="nhsuk-hint nhsuk-u-reading-width"
                 data-testid="table-hint"
               >
-                Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
+                Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.
               </div>
               <div
                 class="nhsuk-form-group"
@@ -1281,7 +1281,7 @@ exports[`ChooseLanguageLetterTemplates when templates are available renders mult
                 class="nhsuk-hint nhsuk-u-reading-width"
                 data-testid="table-hint"
               >
-                Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
+                Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.
               </div>
               <div
                 class="nhsuk-form-group"
@@ -1766,7 +1766,7 @@ exports[`ChooseLanguageLetterTemplates when there are language templates presele
                 class="nhsuk-hint nhsuk-u-reading-width"
                 data-testid="table-hint"
               >
-                Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
+                Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.
               </div>
               <div
                 class="nhsuk-form-group"
@@ -2212,7 +2212,7 @@ exports[`ChooseLanguageLetterTemplates when there are no language templates pres
                 class="nhsuk-hint nhsuk-u-reading-width"
                 data-testid="table-hint"
               >
-                Choose all the templates that you want to include in this message plan. You can only choose one template for each language.
+                Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.
               </div>
               <div
                 class="nhsuk-form-group"
@@ -2651,7 +2651,7 @@ exports[`ChooseLanguageLetterTemplates when there are no templates renders corre
             class="nhsuk-body"
             data-testid="no-templates-message"
           >
-            You do not have any other language letter templates yet.
+            You do not have any other language letter templates linked to the campaign you chose for this message plan.
           </p>
           <div
             class="nhsuk-form-group"
