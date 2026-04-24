@@ -25,7 +25,10 @@ test('renders form with single campaign id displayed', () => {
       campaignIds={['campaign-id']}
     />
   );
+  const warningCallout = screen.queryByTestId('campaign-warning-callout');
+
   expect(container.asFragment()).toMatchSnapshot();
+  expect(warningCallout).not.toBeInTheDocument();
 });
 
 test('renders form with select for multiple campaign ids', () => {
@@ -38,7 +41,10 @@ test('renders form with select for multiple campaign ids', () => {
       campaignIds={['campaign-1', 'campaign-2']}
     />
   );
+  const warningCallout = screen.queryByTestId('campaign-warning-callout');
+
   expect(container.asFragment()).toMatchSnapshot();
+  expect(warningCallout).toBeInTheDocument();
 });
 
 test('renders form with children', () => {
