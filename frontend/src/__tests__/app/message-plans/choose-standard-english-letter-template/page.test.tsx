@@ -1,7 +1,10 @@
 import ChooseStandardEnglishLetterTemplate, {
   generateMetadata,
 } from '@app/message-plans/choose-standard-english-letter-template/[routingConfigId]/page';
-import { PDF_LETTER_TEMPLATE, ROUTING_CONFIG } from '@testhelpers/helpers';
+import {
+  AUTHORING_LETTER_TEMPLATE,
+  ROUTING_CONFIG,
+} from '@testhelpers/helpers';
 import { render } from '@testing-library/react';
 import { getTemplates } from '@utils/form-actions';
 import { getRoutingConfig } from '@utils/message-plans';
@@ -16,7 +19,9 @@ const getTemplatesMock = jest.mocked(getTemplates);
 describe('ChooseStandardEnglishLetterTemplate page', () => {
   it('renders letter template selection', async () => {
     getRoutingConfigMock.mockResolvedValueOnce(ROUTING_CONFIG);
-    getTemplatesMock.mockResolvedValueOnce([PDF_LETTER_TEMPLATE]);
+    getTemplatesMock.mockResolvedValueOnce([
+      { ...AUTHORING_LETTER_TEMPLATE, templateStatus: 'PROOF_APPROVED' },
+    ]);
 
     const page = await ChooseStandardEnglishLetterTemplate({
       params: Promise.resolve({

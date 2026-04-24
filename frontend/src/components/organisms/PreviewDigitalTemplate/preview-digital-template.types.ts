@@ -7,7 +7,7 @@ import { DigitalTemplate } from 'nhs-notify-web-template-management-utils';
 export type PreviewTemplateProps = {
   sectionHeading: string | undefined;
   template: DigitalTemplate;
-  previewDetailsComponent: React.ReactElement<
+  detailsComponent: React.ReactElement<
     | typeof PreviewTemplateDetailsEmail
     | typeof PreviewTemplateDetailsNhsApp
     | typeof PreviewTemplateDetailsSms

@@ -1,5 +1,3 @@
-'use server';
-
 import {
   TemplatePageProps,
   validateSubmittedSMSTemplate,
@@ -8,7 +6,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
-import { PreviewSubmittedTemplate } from '@molecules/PreviewSubmittedTemplate/PreviewSubmittedTemplate';
+import { PreviewSubmittedDigitalTemplate } from '@molecules/PreviewSubmittedDigitalTemplate/PreviewSubmittedDigitalTemplate';
 import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { NHSNotifyContainer } from '@layouts/container/container';
 
@@ -33,9 +31,9 @@ const PreviewSubmittedSMSTemplatePage = async (props: TemplatePageProps) => {
 
   return (
     <NHSNotifyContainer>
-      <PreviewSubmittedTemplate
-        initialState={validatedTemplate}
-        previewComponent={PreviewTemplateDetailsSms}
+      <PreviewSubmittedDigitalTemplate
+        template={validatedTemplate}
+        detailsComponent={PreviewTemplateDetailsSms}
       />
     </NHSNotifyContainer>
   );

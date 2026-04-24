@@ -27,7 +27,6 @@ import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { LetterRenderIframe } from '@molecules/LetterRender/LetterRenderIframe';
-import styles from './page.module.scss';
 import concatClassNames from '@utils/concat-class-names';
 import { getRenderDetails } from '@utils/letter-render';
 
@@ -40,8 +39,9 @@ const {
   uploadSuccessBanner,
   validationErrorMessages,
   defaultValidationErrorMessage,
-  validationFailedIframe,
 } = content.pages.previewLetterTemplate;
+
+const iframe = content.components.letterRenderIframe.nonpersonalised;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -162,12 +162,12 @@ export default async function PreviewLetterTemplatePage({
                 ) : (
                   <LetterRenderIframe
                     className={concatClassNames(
-                      styles.iframe,
+                      'letter-render-iframe',
                       'nhsuk-u-margin-bottom-6'
                     )}
                     src={initialRender.src}
-                    title={validationFailedIframe.title}
-                    aria-label={validationFailedIframe.ariaLabel}
+                    title={iframe.title}
+                    aria-label={iframe.ariaLabel}
                   />
                 ))}
               <NHSNotifyContainer fullWidth={showTabbedRenderer}>
