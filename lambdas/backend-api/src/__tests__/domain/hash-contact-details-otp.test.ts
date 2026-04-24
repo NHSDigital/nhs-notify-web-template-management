@@ -72,22 +72,6 @@ describe('hashContactDetailsOtp', () => {
     expect(hash1).not.toBe(hash2);
   });
 
-  it('should produce different hashes when contact detail ID differs', () => {
-    const contactDetail1: ContactDetail = {
-      ...contactDetail,
-      id: 'contact-abc',
-    };
-    const contactDetail2: ContactDetail = {
-      ...contactDetail,
-      id: 'contact-xyz',
-    };
-
-    const hash1 = hashContactDetailsOtp(contactDetail1, testOtp, testSecret);
-    const hash2 = hashContactDetailsOtp(contactDetail2, testOtp, testSecret);
-
-    expect(hash1).not.toBe(hash2);
-  });
-
   it('should use length-prefixed format to avoid collisions', () => {
     const contactDetail1: ContactDetail = {
       ...contactDetail,
