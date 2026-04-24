@@ -20,6 +20,7 @@ jest.mock('@providers/letter-render-polling-provider', () => {
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
+  campaignId: 'campaign',
   clientId: 'client-123',
   name: 'Test Letter',
   templateStatus: 'NOT_YET_SUBMITTED',

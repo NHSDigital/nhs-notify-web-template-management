@@ -138,6 +138,7 @@ describe('form-actions', () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
+      campaignId: 'campaign',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
@@ -200,6 +201,7 @@ describe('form-actions', () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
+      campaignId: 'campaign',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
@@ -318,6 +320,7 @@ describe('form-actions', () => {
   test('uploadDocxTemplate', async () => {
     const responseData = {
       templateType: 'LETTER',
+      campaignId: 'campaign',
       clientId: 'client-id',
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -524,6 +527,7 @@ describe('form-actions', () => {
   test('patchTemplate', async () => {
     const responseData: AuthoringLetterTemplate = {
       id: 'template-123',
+      campaignId: 'campaign',
       clientId: 'client1',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -899,6 +903,7 @@ describe('form-actions', () => {
     test('approveTemplate successfully', async () => {
       const responseData = {
         id: 'id',
+        campaignId: 'campaign',
         clientId: 'client-id',
         templateType: 'LETTER',
         templateStatus: 'PROOF_APPROVED',
@@ -1068,6 +1073,7 @@ describe('form-actions', () => {
         id: 'new-template-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',
+        campaignId: 'campaign',
         letterType: 'x1',
         language: 'ar',
         letterVersion: 'PDF',
@@ -1295,6 +1301,7 @@ describe('form-actions', () => {
       const responseData = {
         templateType: 'LETTER',
         id: 'template-id',
+        campaignId: 'campaign',
         clientId: 'client-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',

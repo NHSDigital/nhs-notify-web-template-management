@@ -4,6 +4,7 @@ import type { AuthoringLetterTemplate } from 'nhs-notify-web-template-management
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
+  campaignId: 'campaign',
   clientId: 'client-123',
   name: 'Test Letter',
   templateStatus: 'NOT_YET_SUBMITTED',

@@ -19,6 +19,7 @@ const NOW = new Date('2025-06-15T12:00:00.000Z');
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
+  campaignId: 'campaign',
   clientId: 'client-id',
   name: 'Test Authoring Letter',
   templateType: 'LETTER',

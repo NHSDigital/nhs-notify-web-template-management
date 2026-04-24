@@ -158,6 +158,7 @@ describe('Template API - request proof', () => {
 
     const response: LetterTemplate = {
       id: 'id',
+      campaignId: 'campaign',
       templateType: 'LETTER',
       templateStatus: 'WAITING_FOR_PROOF',
       name: 'template-name',

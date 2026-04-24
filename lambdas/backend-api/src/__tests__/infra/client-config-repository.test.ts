@@ -107,7 +107,8 @@ describe('ClientConfigRepository', () => {
           cache
         );
 
-        const jsonString = '{"campaignId":"test","features":{"proofing":true}}';
+        const jsonString =
+          '{"campaignIds":["test1","test2"],"features":{"proofing":true}}';
         const mockSSMResponse = {
           Parameter: {
             Value: jsonString,
@@ -119,7 +120,7 @@ describe('ClientConfigRepository', () => {
 
         expect(result).toEqual({
           data: {
-            campaignId: 'test',
+            campaignIds: ['test1', 'test2'],
             features: { proofing: true },
           },
         });

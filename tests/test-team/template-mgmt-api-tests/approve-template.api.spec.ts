@@ -430,48 +430,6 @@ test.describe('PATCH /v1/template/:templateId/approve', () => {
     });
   });
 
-  test('returns 400 - cannot approve template without campaignId', async ({
-    request,
-  }) => {
-    const [letterVariant] =
-      await context.letterVariants.getGlobalLetterVariants();
-
-    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
-      userLetterAuthoring,
-      'no campaign',
-      'NOT_YET_SUBMITTED',
-      {
-        letterVariantId: letterVariant.id,
-        campaignId: null,
-        shortFormRender: { status: 'RENDERED' },
-        longFormRender: { status: 'RENDERED' },
-      }
-    );
-
-    await templateStorageHelper.seedTemplateData([letterTemplate]);
-
-    const { id, lockNumber } = letterTemplate;
-
-    const response = await request.patch(
-      `${process.env.API_BASE_URL}/v1/template/${id}/approve`,
-      {
-        headers: {
-          Authorization: await userLetterAuthoring.getAccessToken(),
-          'X-Lock-Number': String(lockNumber),
-        },
-      }
-    );
-
-    const data = await response.json();
-    expect(response.status(), JSON.stringify(data)).toBe(400);
-
-    expect(data).toEqual({
-      statusCode: 400,
-      technicalMessage: 'Template cannot be approved',
-    });
-  });
-
   test('returns 400 - cannot approve template without letterVariantId', async ({
     request,
   }) => {

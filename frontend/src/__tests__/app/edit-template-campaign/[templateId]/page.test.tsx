@@ -45,6 +45,7 @@ const mockTemplate: TemplateDto = {
 
 const mockPdfTemplate: PdfLetterTemplate = {
   id: 'template-123',
+  campaignId: 'campaign',
   name: 'PDF Letter Template',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
