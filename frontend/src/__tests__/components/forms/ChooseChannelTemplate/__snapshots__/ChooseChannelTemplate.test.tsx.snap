@@ -1808,7 +1808,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
               <dd
                 class="nhsuk-summary-list__value"
               >
-                letter template name
+                authoring letter template name
               </dd>
             </div>
           </dl>
@@ -1898,19 +1898,19 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                             class="nhsuk-radios__item"
                           >
                             <input
-                              aria-labelledby="channelTemplate-letter-template-id-name"
+                              aria-labelledby="channelTemplate-authoring-letter-template-id-name"
                               checked=""
                               class="nhsuk-radios__input"
-                              data-testid="letter-template-id-radio"
-                              id="channelTemplate-letter-template-id"
+                              data-testid="authoring-letter-template-id-radio"
+                              id="channelTemplate-authoring-letter-template-id"
                               name="channelTemplate"
                               type="radio"
-                              value="letter-template-id"
+                              value="authoring-letter-template-id"
                             />
                             <label
                               class="nhsuk-label nhsuk-radios__label"
-                              for="channelTemplate-letter-template-id"
-                              id="channelTemplate-letter-template-id--label"
+                              for="channelTemplate-authoring-letter-template-id"
+                              id="channelTemplate-authoring-letter-template-id--label"
                             >
                                
                             </label>
@@ -1918,7 +1918,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                         </td>
                         <td
                           class="nhsuk-table__cell"
-                          id="channelTemplate-letter-template-id-name"
+                          id="channelTemplate-authoring-letter-template-id-name"
                           role="cell"
                         >
                           <span
@@ -1927,7 +1927,7 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                           >
                             Name 
                           </span>
-                          letter template name
+                          authoring letter template name
                         </td>
                         <td
                           class="nhsuk-table__cell"
@@ -1968,8 +1968,8 @@ exports[`ChooseChannelTemplate renders letter form 1`] = `
                           <a
                             aria-label="Preview"
                             class="nhsuk-u-margin-bottom-2 nhsuk-link"
-                            data-testid="letter-template-id-preview-link"
-                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/letter-template-id?lockNumber=42"
+                            data-testid="authoring-letter-template-id-preview-link"
+                            href="/message-plans/choose-standard-english-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/authoring-letter-template-id?lockNumber=42"
                             id="preview-template-link-0"
                           >
                             Preview

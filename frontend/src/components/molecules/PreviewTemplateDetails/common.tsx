@@ -15,16 +15,6 @@ import Link from 'next/link';
 import { interpolate } from '@utils/interpolate';
 import { NHSNotifyWarningCallout } from '@atoms/NHSNotifyWarningCallout/NHSNotifyWarningCallout';
 
-export type PreviewTemplateComponent<T extends TemplateDto> = ({
-  template,
-  hideStatus,
-  hideEditActions,
-}: {
-  template: T;
-  hideStatus?: boolean;
-  hideEditActions?: boolean;
-}) => JSX.Element;
-
 type ContentPreviewField = {
   heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
   id: string;
