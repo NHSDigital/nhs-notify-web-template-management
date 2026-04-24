@@ -40,9 +40,9 @@ test.afterAll(async () => {
 
 test.describe('Create Message Plan Page', () => {
   test.describe('with a valid message order', () => {
-    test.describe('single campaign client', () => {
-      const messageOrder = 'NHSAPP';
+    const messageOrder = 'NHSAPP';
 
+    test.describe('single campaign client', () => {
       test('creates a message plan and redirects to the edit message plan page for the created message plan', async ({
         page,
       }) => {
@@ -59,6 +59,11 @@ test.describe('Create Message Plan Page', () => {
         );
 
         await expect(createMessagePlanPage.campaignIdSelector).toHaveCount(0);
+
+        await expect(
+          createMessagePlanPage.warningCalloutElement,
+          'No warning callout is displayed'
+        ).not.toBeAttached();
 
         await createMessagePlanPage.clickSubmit();
 
@@ -101,18 +106,6 @@ test.describe('Create Message Plan Page', () => {
           'Error: Message plan name too long'
         );
       });
-
-      test('displays no warning callout', async ({ page }) => {
-        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-          page
-        ).setSearchParam('messageOrder', messageOrder);
-
-        await createMessagePlanPage.loadPage();
-
-        await expect(
-          createMessagePlanPage.warningCalloutElement
-        ).not.toBeAttached();
-      });
     });
 
     test.describe('client has multiple campaigns', () => {
@@ -127,7 +120,7 @@ test.describe('Create Message Plan Page', () => {
       }) => {
         const createMessagePlanPage = new RoutingCreateMessagePlanPage(
           page
-        ).setSearchParam('messageOrder', 'NHSAPP');
+        ).setSearchParam('messageOrder', messageOrder);
 
         await createMessagePlanPage.loadPage();
 
@@ -140,6 +133,11 @@ test.describe('Create Message Plan Page', () => {
         await createMessagePlanPage.campaignIdSelector.selectOption(
           userWithMultipleCampaigns.campaignIds?.at(0) as string
         );
+
+        await expect(
+          createMessagePlanPage.warningCalloutElement,
+          'Warning callout is displayed'
+        ).toBeAttached();
 
         await createMessagePlanPage.clickSubmit();
 
@@ -158,7 +156,7 @@ test.describe('Create Message Plan Page', () => {
       }) => {
         const createMessagePlanPage = new RoutingCreateMessagePlanPage(
           page
-        ).setSearchParam('messageOrder', 'NHSAPP');
+        ).setSearchParam('messageOrder', messageOrder);
 
         await createMessagePlanPage.loadPage();
 
@@ -169,18 +167,6 @@ test.describe('Create Message Plan Page', () => {
         await expect(createMessagePlanPage.campaignIdFieldError).toHaveText(
           'Error: Select a campaign'
         );
-      });
-
-      test('displays edit campaign warning callout', async ({ page }) => {
-        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-          page
-        ).setSearchParam('messageOrder', 'NHSAPP');
-
-        await createMessagePlanPage.loadPage();
-
-        await expect(
-          createMessagePlanPage.warningCalloutElement
-        ).toBeAttached();
       });
     });
 
@@ -203,38 +189,38 @@ test.describe('Create Message Plan Page', () => {
         );
       });
     });
-
-    for (const { messageOrder } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS)
-      test.describe(`with the messageOrder query parameter set to ${messageOrder}`, () => {
-        test('common page tests', async ({ page, baseURL }) => {
-          const createMessagePlanPage = new RoutingCreateMessagePlanPage(
-            page
-          ).setSearchParam('messageOrder', messageOrder);
-
-          await createMessagePlanPage.loadPage();
-
-          await expect(page).toHaveURL(
-            `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(messageOrder)}`
-          );
-          await expect(createMessagePlanPage.pageHeading).toHaveText(
-            'Create a message plan'
-          );
-
-          const props = {
-            page: createMessagePlanPage,
-            baseURL,
-            expectedUrl: 'templates/message-plans/choose-message-order',
-          };
-
-          await assertSkipToMainContent(props);
-          await assertHeaderLogoLink(props);
-          await assertFooterLinks(props);
-          await assertSignOutLink(props);
-          await assertBackLinkTopNotPresent(props);
-          await assertAndClickBackLinkBottom(props);
-        });
-      });
   });
+
+  for (const { messageOrder } of ROUTING_CONFIG_MESSAGE_ORDER_OPTION_MAPPINGS)
+    test.describe(`with the messageOrder query parameter set to ${messageOrder}`, () => {
+      test('common page tests', async ({ page, baseURL }) => {
+        const createMessagePlanPage = new RoutingCreateMessagePlanPage(
+          page
+        ).setSearchParam('messageOrder', messageOrder);
+
+        await createMessagePlanPage.loadPage();
+
+        await expect(page).toHaveURL(
+          `${baseURL}/templates/message-plans/create-message-plan?messageOrder=${encodeURIComponent(messageOrder)}`
+        );
+        await expect(createMessagePlanPage.pageHeading).toHaveText(
+          'Create a message plan'
+        );
+
+        const props = {
+          page: createMessagePlanPage,
+          baseURL,
+          expectedUrl: 'templates/message-plans/choose-message-order',
+        };
+
+        await assertSkipToMainContent(props);
+        await assertHeaderLogoLink(props);
+        await assertFooterLinks(props);
+        await assertSignOutLink(props);
+        await assertBackLinkTopNotPresent(props);
+        await assertAndClickBackLinkBottom(props);
+      });
+    });
 
   test.describe('with no messageOrder query parameter set', () => {
     test('redirects to message order page', async ({ page, baseURL }) => {
