@@ -158,11 +158,13 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
                 <label
                   class="nhsuk-label nhsuk-label--s"
                   for="campaignId"
+                  id="campaignId--label"
                 >
                   Campaign
                 </label>
                 <div
                   class="nhsuk-hint"
+                  id="campaignId--hint"
                 >
                   Choose which campaign this message plan will link to
                 </div>
@@ -200,6 +202,8 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
                   Campaign Id Error
                 </span>
                 <select
+                  aria-describedby="campaignId--hint campaignId--error-message"
+                  aria-labelledby="campaignId--label"
                   class="nhsuk-select nhsuk-select--error"
                   data-testid="campaign-id-field"
                   id="campaignId"
@@ -366,11 +370,13 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
                 <label
                   class="nhsuk-label nhsuk-label--s"
                   for="campaignId"
+                  id="campaignId--label"
                 >
                   Campaign
                 </label>
                 <div
                   class="nhsuk-hint"
+                  id="campaignId--hint"
                 >
                   Choose which campaign this message plan will link to
                 </div>
@@ -397,6 +403,8 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
                   </p>
                 </div>
                 <select
+                  aria-describedby="campaignId--hint campaignId--error-message"
+                  aria-labelledby="campaignId--label"
                   class="nhsuk-select"
                   data-testid="campaign-id-field"
                   id="campaignId"

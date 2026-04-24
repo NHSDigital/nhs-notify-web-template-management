@@ -90,10 +90,12 @@ export function MessagePlanForm({
             </>
           ) : (
             <NHSNotifyForm.FormGroup htmlFor='campaignId'>
-              <Label htmlFor='campaignId' size='s'>
+              <Label htmlFor='campaignId' id='campaignId--label' size='s'>
                 {formContent.fields.campaignId.label}
               </Label>
-              <HintText>{formContent.fields.campaignId.hintMulti}</HintText>
+              <HintText id='campaignId--hint'>
+                {formContent.fields.campaignId.hintMulti}
+              </HintText>
               <WarningCallout
                 className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'
                 data-testid='campaign-warning-callout'
@@ -112,6 +114,8 @@ export function MessagePlanForm({
                 name='campaignId'
                 onChange={handleCampaignIdChange}
                 data-testid='campaign-id-field'
+                aria-describedby='campaignId--hint campaignId--error-message'
+                aria-labelledby='campaignId--label'
               >
                 <option />
                 {campaignIds.map((id) => (
