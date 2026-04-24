@@ -150,7 +150,6 @@ export const $CreatePdfLetterProperties =
   schemaFor<CreatePdfLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
-      campaignId: z.string(),
       letterVersion: z.literal('PDF'),
     })
   );
@@ -181,7 +180,6 @@ export const $CreateAuthoringLetterProperties =
   schemaFor<CreateAuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
-      campaignId: z.string(),
       letterVersion: z.literal('AUTHORING'),
     })
   );
@@ -305,7 +303,6 @@ const $BaseTemplateDto = schemaFor<
 >()(
   z.object({
     ...$BaseTemplateSchema.shape,
-    campaignId: z.string().optional(),
     clientId: z.string().optional(),
     createdAt: z.string(),
     lockNumber: $LockNumber.default(0),

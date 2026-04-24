@@ -139,50 +139,6 @@ test.describe('GET /v1/template/:id/letter-variants', () => {
     });
   });
 
-  test('returns 200 with global and client scoped variants when template has no campaign id', async ({
-    request,
-  }) => {
-    const globalVariants =
-      await context.letterVariants.getGlobalLetterVariants();
-
-    const clientVariants =
-      await context.letterVariants.getClientScopedLetterVariants(
-        user1.clientId
-      );
-
-    const template = TemplateFactory.createAuthoringLetterTemplate(
-      randomUUID(),
-      user1,
-      'Letter Template',
-      'NOT_YET_SUBMITTED',
-      { campaignId: null }
-    );
-
-    await templateStorageHelper.seedTemplateData([template]);
-
-    const response = await request.get(
-      `${process.env.API_BASE_URL}/v1/template/${template.id}/letter-variants`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-        },
-      }
-    );
-
-    expect(response.status()).toBe(200);
-
-    const body = await response.json();
-
-    expect(body).toEqual({
-      statusCode: 200,
-      data: expect.arrayContaining([...globalVariants, ...clientVariants]),
-    });
-
-    expect(body.data).toHaveLength(
-      globalVariants.length + clientVariants.length
-    );
-  });
-
   test('returns 200 with global, client scoped, and campaign scoped variants when template has campaign id', async ({
     request,
   }) => {

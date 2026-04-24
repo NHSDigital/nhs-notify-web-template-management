@@ -779,20 +779,6 @@ test.describe('Preview Letter template Page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('shows campaign Edit link when template has no campaignId', async ({
-      page,
-    }) => {
-      const previewPage = new TemplateMgmtPreviewLetterPage(page).setPathParam(
-        'templateId',
-        templates.authoringNoCampaign.id
-      );
-
-      await previewPage.loadPage();
-
-      await expect(previewPage.campaignAction).toBeVisible();
-      await expect(previewPage.campaignAction).toHaveText(/Edit/);
-    });
-
     test('hides campaign Edit link when template has campaignId (single-campaign client)', async ({
       page,
     }) => {

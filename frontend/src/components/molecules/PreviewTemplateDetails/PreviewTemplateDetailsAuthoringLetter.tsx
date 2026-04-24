@@ -84,15 +84,12 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
 
   const hideEditName = hideAllEditActions;
 
-  const hideEditCampaignLink =
-    hideAllEditActions || (template.campaignId && hasSingleCampaign);
+  const hideEditCampaignLink = hideAllEditActions || hasSingleCampaign;
 
   const hideCampaignRow = unvalidated;
   const hidePostageRow = unvalidated;
 
   const hideSidesAndPages = pendingValidation || !hasInitialRender;
-
-  const isCheckingFiles = template.templateStatus === 'PENDING_VALIDATION';
 
   return (
     <>
@@ -224,7 +221,7 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
                 >
                   {statusToDisplayMapping(template, features)}
                 </Tag>
-                {isCheckingFiles && (
+                {pendingValidation && (
                   <ContentRenderer
                     content={[
                       addClassNameToContentBlock(
