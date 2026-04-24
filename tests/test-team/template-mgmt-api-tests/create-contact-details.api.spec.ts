@@ -207,7 +207,7 @@ test.describe('PUT /v1/contact-details', () => {
     }) => {
       const email = generateEmailAddress();
 
-      // Seed a verified email address for one client
+      // Seed a verified email address for one user
       const contactDetail = makeVerifiedContactDetail({
         type: 'EMAIL',
         value: email,
@@ -216,7 +216,7 @@ test.describe('PUT /v1/contact-details', () => {
 
       await contactDetailHelper.seed([contactDetail]);
 
-      // Request verification of the same email address for a different client
+      // Request verification of the same email address for a different user
       const response = await request.post(
         `${process.env.API_BASE_URL}/v1/contact-details`,
         {
@@ -413,7 +413,7 @@ test.describe('PUT /v1/contact-details', () => {
     }) => {
       const num = generateMobileNumber();
 
-      // Seed a verified phone number for one client
+      // Seed a verified phone number for one user
       const contactDetail = makeVerifiedContactDetail({
         type: 'SMS',
         value: num,
@@ -422,7 +422,7 @@ test.describe('PUT /v1/contact-details', () => {
 
       await contactDetailHelper.seed([contactDetail]);
 
-      // Request verification of the same number for a different client
+      // Request verification of the same number for a different user
       const response = await request.post(
         `${process.env.API_BASE_URL}/v1/contact-details`,
         {
