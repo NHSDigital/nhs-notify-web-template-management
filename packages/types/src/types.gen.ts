@@ -12,6 +12,7 @@ export type AuthoringLetterFiles = {
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
   clientId: string;
   customPersonalisation?: Array<string>;
   files: AuthoringLetterFiles;
@@ -33,7 +34,6 @@ export type BaseCreatedTemplate = BaseTemplate & {
 };
 
 export type BaseLetterTemplateProperties = {
-  campaignId: string;
   language: Language;
   letterType: LetterType;
   templateType: 'LETTER';
@@ -141,10 +141,12 @@ export type CountSuccess = {
 };
 
 export type CreateAuthoringLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
   letterVersion: 'AUTHORING';
 };
 
 export type CreatePdfLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
   letterVersion: 'PDF';
 };
 
@@ -273,6 +275,7 @@ export type PdfLetterFiles = {
 };
 
 export type PdfLetterProperties = BaseLetterTemplateProperties & {
+  campaignId?: string;
   files: PdfLetterFiles;
   letterVersion: 'PDF';
   personalisationParameters?: Array<string>;
