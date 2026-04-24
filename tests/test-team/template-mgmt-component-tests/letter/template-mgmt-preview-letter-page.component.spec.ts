@@ -156,17 +156,6 @@ function createTemplates(
         initialRender: { pageCount: 4 },
       }
     ),
-    authoringNoCampaign: TemplateFactory.createAuthoringLetterTemplate(
-      'B2C3D4E5-F6A7-8901-BCDE-F23456789012',
-      user,
-      'authoring-letter-no-campaign',
-      'NOT_YET_SUBMITTED',
-      {
-        letterVariantId: 'variant-456',
-        campaignId: null,
-        initialRender: { pageCount: 4 },
-      }
-    ),
     authoringWithInitialRender: TemplateFactory.createAuthoringLetterTemplate(
       'D4E5F6A7-B8C9-0123-DEFA-456789012345',
       user,
