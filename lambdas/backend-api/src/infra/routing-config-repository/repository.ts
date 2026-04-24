@@ -97,7 +97,8 @@ export class RoutingConfigRepository {
     id: string,
     updateData: UpdateRoutingConfig,
     user: User,
-    lockNumber: number
+    lockNumber: number,
+    expectedCampaignId: string
   ): Promise<ApplicationResult<RoutingConfig>> {
     const { cascade, cascadeGroupOverrides, name } = updateData;
 
@@ -139,7 +140,14 @@ export class RoutingConfigRepository {
                   id: templateId,
                   owner: this.clientOwnerKey(user.clientId),
                 },
-                ConditionExpression: 'attribute_exists(id)',
+                ConditionExpression:
+                  'attribute_exists(id) AND (templateType <> :letter OR campaignId = :expectedCampaignId)',
+                ExpressionAttributeValues: {
+                  ':expectedCampaignId': expectedCampaignId,
+                  ':letter': 'LETTER',
+                },
+                ReturnValuesOnConditionCheckFailure:
+                  ReturnValuesOnConditionCheckFailure.ALL_OLD,
               },
             })),
           ],
@@ -551,16 +559,32 @@ export class RoutingConfigRepository {
       );
     }
 
-    const templatesMissing = templateReasons.some(
-      (r) => r.Code === 'ConditionalCheckFailed'
-    );
+    const notFoundTemplateIds: string[] = [];
+    const invalidTemplateIds: string[] = [];
 
-    if (templatesMissing) {
+    for (const [index, reason] of templateReasons.entries()) {
+      if (reason?.Code !== 'ConditionalCheckFailed') continue;
+      const templateId = templateIds[index];
+      if (reason.Item) {
+        invalidTemplateIds.push(templateId);
+      } else {
+        notFoundTemplateIds.push(templateId);
+      }
+    }
+    if (notFoundTemplateIds.length > 0) {
       return failure(
         ErrorCase.ROUTING_CONFIG_TEMPLATES_NOT_FOUND,
         'Some templates not found',
         err,
-        { templateIds: templateIds.join(',') }
+        { templateIds: notFoundTemplateIds.join(',') }
+      );
+    }
+    if (invalidTemplateIds.length > 0) {
+      return failure(
+        ErrorCase.ROUTING_CONFIG_TEMPLATES_INVALID,
+        'Some templates failed validation',
+        err,
+        { templateIds: invalidTemplateIds.join(',') }
       );
     }
 
