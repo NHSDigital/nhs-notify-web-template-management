@@ -292,7 +292,7 @@ curl -X DELETE --location "${APIG_STAGE}/v1/routing-configuration/${ROUTING_CONF
 --header "X-Lock-Number: $CURRENT_LOCK_NUMBER"
 ```
 
-### POST - /v1/contact-details - Request contact details verification
+### POST - /v1/contact-details - Add new unverified contact details and send an OTP for verification
 
 ```bash
 curl -X POST --location "${APIG_STAGE}/v1/contact-details" \

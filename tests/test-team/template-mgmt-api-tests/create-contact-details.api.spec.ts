@@ -202,7 +202,7 @@ test.describe('PUT /v1/contact-details', () => {
       });
     });
 
-    test('allows verification of email address that is already verified for another user', async ({
+    test('allows adding an email address that is already verified for another user', async ({
       request,
     }) => {
       const email = generateEmailAddress();
@@ -408,7 +408,7 @@ test.describe('PUT /v1/contact-details', () => {
       });
     });
 
-    test('allows verification of sms that is already verified for another user', async ({
+    test('allows adding sms contact detail that is already verified for another user', async ({
       request,
     }) => {
       const num = generateMobileNumber();

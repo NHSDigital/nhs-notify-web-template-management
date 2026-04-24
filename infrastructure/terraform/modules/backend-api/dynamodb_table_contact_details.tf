@@ -1,5 +1,5 @@
-resource "aws_dynamodb_table" "client_contact_details" {
-  name = "${local.csi}-client-contact-details"
+resource "aws_dynamodb_table" "contact_details" {
+  name = "${local.csi}-contact-details"
 
   billing_mode = "PAY_PER_REQUEST"
 

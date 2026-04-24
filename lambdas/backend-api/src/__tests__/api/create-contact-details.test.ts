@@ -4,7 +4,7 @@ import type {
   ContactDetail,
   ContactDetailInput,
 } from 'nhs-notify-web-template-management-types';
-import { createHandler } from '@backend-api/api/request-contact-details-verification';
+import { createHandler } from '@backend-api/api/create-contact-details';
 import type { ContactDetailsClient } from '@backend-api/app/contact-details-client';
 
 function setup() {
@@ -15,7 +15,7 @@ function setup() {
   return { handler, mocks };
 }
 
-describe('Contact Details Verification Request Handler', () => {
+describe('Create Contact Details Handler', () => {
   beforeEach(jest.resetAllMocks);
 
   test.each([
@@ -42,16 +42,14 @@ describe('Contact Details Verification Request Handler', () => {
         }),
       });
 
-      expect(
-        mocks.contactDetailsClient.requestVerification
-      ).not.toHaveBeenCalled();
+      expect(mocks.contactDetailsClient.create).not.toHaveBeenCalled();
     }
   );
 
   test('should return 400 - Invalid request when no body', async () => {
     const { handler, mocks } = setup();
 
-    mocks.contactDetailsClient.requestVerification.mockResolvedValueOnce({
+    mocks.contactDetailsClient.create.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 400,
@@ -87,16 +85,16 @@ describe('Contact Details Verification Request Handler', () => {
       }),
     });
 
-    expect(mocks.contactDetailsClient.requestVerification).toHaveBeenCalledWith(
+    expect(mocks.contactDetailsClient.create).toHaveBeenCalledWith(
       {},
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' }
     );
   });
 
-  test('should return error when verification request fails', async () => {
+  test('should return error when create request fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.contactDetailsClient.requestVerification.mockResolvedValueOnce({
+    mocks.contactDetailsClient.create.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 500,
@@ -125,13 +123,13 @@ describe('Contact Details Verification Request Handler', () => {
       }),
     });
 
-    expect(mocks.contactDetailsClient.requestVerification).toHaveBeenCalledWith(
+    expect(mocks.contactDetailsClient.create).toHaveBeenCalledWith(
       { id: 1 },
       { internalUserId: 'user-1234', clientId: 'nhs-notify-client-id' }
     );
   });
 
-  test('should return verification request details', async () => {
+  test('should return created contact details', async () => {
     const { handler, mocks } = setup();
 
     const input: ContactDetailInput = {
@@ -145,7 +143,7 @@ describe('Contact Details Verification Request Handler', () => {
       status: 'PENDING_VERIFICATION',
     };
 
-    mocks.contactDetailsClient.requestVerification.mockResolvedValueOnce({
+    mocks.contactDetailsClient.create.mockResolvedValueOnce({
       data: response,
     });
 
@@ -166,12 +164,9 @@ describe('Contact Details Verification Request Handler', () => {
       body: JSON.stringify({ statusCode: 201, data: response }),
     });
 
-    expect(mocks.contactDetailsClient.requestVerification).toHaveBeenCalledWith(
-      input,
-      {
-        internalUserId: 'user-1234',
-        clientId: 'notify-client-id',
-      }
-    );
+    expect(mocks.contactDetailsClient.create).toHaveBeenCalledWith(input, {
+      internalUserId: 'user-1234',
+      clientId: 'notify-client-id',
+    });
   });
 });

@@ -17,6 +17,7 @@ npx esbuild \
     src/approve-template.ts \
     src/copy-scanned-object-to-internal.ts \
     src/count-routing-configs.ts \
+    src/create-contact-details.ts \
     src/create-routing-config.ts \
     src/create.ts \
     src/delete-failed-scanned-object.ts \
@@ -35,7 +36,6 @@ npx esbuild \
     src/patch-template.ts \
     src/process-proof.ts \
     src/proof.ts \
-    src/request-contact-details-verification.ts \
     src/set-letter-upload-virus-scan-status.ts \
     src/submit-routing-config.ts \
     src/submit.ts \

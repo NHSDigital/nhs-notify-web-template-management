@@ -55,5 +55,5 @@ output "letter_variants_table_name" {
 }
 
 output "contact_details_table_name" {
-  value = aws_dynamodb_table.client_contact_details.name
+  value = aws_dynamodb_table.contact_details.name
 }

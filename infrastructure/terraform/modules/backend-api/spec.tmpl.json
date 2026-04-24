@@ -1576,7 +1576,7 @@
     },
     "/v1/contact-details": {
       "post": {
-        "description": "Request contact detail verification",
+        "description": "Add new unverified contact details and send an OTP for verification",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1620,7 +1620,7 @@
             "authorizer": []
           }
         ],
-        "summary": "Request contact detail verification",
+        "summary": "Add new unverified contact details and send an OTP for verification",
         "x-amazon-apigateway-integration": {
           "contentHandling": "CONVERT_TO_TEXT",
           "credentials": "${APIG_EXECUTION_ROLE_ARN}",
@@ -1633,7 +1633,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${REQUEST_CONTACT_DETAILS_VERIFICATION_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_CONTACT_DETAILS_LAMBDA_ARN}/invocations"
         }
       }
     },

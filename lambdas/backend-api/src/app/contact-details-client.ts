@@ -12,10 +12,7 @@ export class ContactDetailsClient {
     private otpService: OtpService
   ) {}
 
-  async requestVerification(
-    payload: unknown,
-    user: User
-  ): Promise<Result<ContactDetail>> {
+  async create(payload: unknown, user: User): Promise<Result<ContactDetail>> {
     const validation = await validate($ContactDetailInputNormalized, payload);
 
     if (validation.error) return validation;

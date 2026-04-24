@@ -43,7 +43,7 @@ function setup() {
 }
 
 describe('ContactDetailsClient', () => {
-  describe('requestVerification', () => {
+  describe('create', () => {
     it.each([
       {
         input: { type: 'EMAIL', value: ' TEST@nhs.net ' },
@@ -80,7 +80,7 @@ describe('ContactDetailsClient', () => {
       async ({ input, validated, expected }) => {
         const { client, mocks } = setup();
 
-        const result = await client.requestVerification(input, USER);
+        const result = await client.create(input, USER);
 
         expect(result).toEqual({ data: expected });
 
@@ -96,7 +96,7 @@ describe('ContactDetailsClient', () => {
     it('returns payload validation error result', async () => {
       const { client } = setup();
 
-      const result = await client.requestVerification({}, USER);
+      const result = await client.create({}, USER);
 
       expect(result.data).toBeUndefined();
       expect(result.error?.errorMeta.code).toBe(400);
@@ -119,7 +119,7 @@ describe('ContactDetailsClient', () => {
 
       mocks.otpService.generate.mockResolvedValueOnce(error);
 
-      const result = await client.requestVerification(
+      const result = await client.create(
         {
           type: 'SMS',
           value: '07890123456',
@@ -144,7 +144,7 @@ describe('ContactDetailsClient', () => {
 
       mocks.contactDetailsRepo.putContactDetail.mockResolvedValueOnce(error);
 
-      const result = await client.requestVerification(
+      const result = await client.create(
         {
           type: 'SMS',
           value: '07890123456',
@@ -169,7 +169,7 @@ describe('ContactDetailsClient', () => {
 
       mocks.otpService.send.mockResolvedValueOnce(error);
 
-      const result = await client.requestVerification(
+      const result = await client.create(
         {
           type: 'SMS',
           value: '07890123456',
