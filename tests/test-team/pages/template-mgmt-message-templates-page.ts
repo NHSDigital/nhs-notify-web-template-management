@@ -30,4 +30,16 @@ export class TemplateMgmtMessageTemplatesPage extends TemplateMgmtBasePage {
 
     return statusCell.textContent();
   }
+
+  async copyTemplate(templateId: string) {
+    const templateRow = await this.getTemplatesTableRowByTemplateId(templateId);
+
+    await templateRow.getByText('Copy', { exact: true }).click();
+  }
+
+  async deleteTemplate(templateId: string) {
+    const templateRow = await this.getTemplatesTableRowByTemplateId(templateId);
+
+    await templateRow.getByText('Delete', { exact: true }).click();
+  }
 }
