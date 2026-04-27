@@ -11,6 +11,7 @@ import {
 import {
   assertChooseTemplatePageWithPreviousSelection,
   assertChooseTemplatePageWithTemplatesAvailable,
+  assertChooseTemplatePageWithNoTemplates,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
@@ -35,6 +36,14 @@ function createMessagePlans(user: TestUser) {
     NON_LETTER_ROUTING_CONFIG: RoutingConfigFactory.createForMessageOrder(
       user,
       'NHSAPP'
+    ).dbEntry,
+    NO_TEMPLATES_ROUTING_CONFIG: RoutingConfigFactory.createForMessageOrder(
+      user,
+      'LETTER',
+      {
+        name: 'Test message plan with no matching standard templates',
+        campaignId: 'no-matching-campaign',
+      }
     ).dbEntry,
   };
 }
@@ -99,6 +108,18 @@ function createTemplates(user: TestUser) {
       'SUBMITTED',
       {
         letterType: 'x1',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
+      }
+    ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      user,
+      'Different campaign letter template',
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
         letterVariantId: 'letter-variant-id',
@@ -218,6 +239,9 @@ test.describe('Routing - Choose letter template page', () => {
       }
 
       // template filtering checks
+      await expect(
+        table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
+      ).toBeHidden();
       await expect(table.getByText(templates.FRENCH_LETTER.name)).toBeHidden();
       await expect(
         table.getByText(templates.ACCESSIBLE_LETTER.name)
@@ -248,7 +272,7 @@ test.describe('Routing - Choose letter template page', () => {
 
       await expect(chooseLetterTemplatePage.errorSummary).toBeVisible();
       await expect(chooseLetterTemplatePage.errorSummaryList).toHaveText([
-        'Choose a letter template',
+        'Choose a standard English letter template',
       ]);
     });
 
@@ -287,6 +311,25 @@ test.describe('Routing - Choose letter template page', () => {
         templates.LETTER2.id
       );
       await expect(selectedRadio).toBeChecked();
+    });
+  });
+
+  test('user sees the no templates version of the page when no standard English letter templates match the campaign filter', async ({
+    page,
+  }) => {
+    const plan = messagePlans.NO_TEMPLATES_ROUTING_CONFIG;
+    const chooseLetterTemplatePage =
+      new RoutingChooseStandardLetterTemplatePage(page)
+        .setPathParam('messagePlanId', plan.id)
+        .setSearchParam('lockNumber', String(plan.lockNumber));
+    await chooseLetterTemplatePage.loadPage();
+
+    await expect(chooseLetterTemplatePage.messagePlanName).toHaveText(
+      plan.name
+    );
+
+    await assertChooseTemplatePageWithNoTemplates({
+      page: chooseLetterTemplatePage,
     });
   });
 

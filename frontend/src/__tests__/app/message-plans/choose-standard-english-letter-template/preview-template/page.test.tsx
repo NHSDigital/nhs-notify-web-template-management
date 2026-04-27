@@ -51,7 +51,7 @@ describe('PreviewStandardEnglishLetterTemplateFromMessagePlan page', () => {
 
   it('should have the correct page title', async () => {
     expect(await generateMetadata()).toEqual({
-      title: 'Preview letter template - NHS Notify',
+      title: 'Preview standard English letter template - NHS Notify',
     });
   });
 });

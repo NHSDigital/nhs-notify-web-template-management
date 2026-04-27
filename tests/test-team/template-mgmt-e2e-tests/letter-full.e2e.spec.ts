@@ -24,7 +24,7 @@ function create(
   templateStorageHelper: TemplateStorageHelper,
   user: TestUser,
   expectedPostCreationStatus: 'NOT_YET_SUBMITTED' | 'PENDING_PROOF_REQUEST',
-  campaignId?: string
+  selectCampaignIdFromChoices?: string
 ) {
   return test.step('upload PDF and test data, files are validated', async () => {
     const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
@@ -33,9 +33,9 @@ function create(
 
     await createTemplatePage.nameInput.fill('Valid Letter Template');
 
-    if (campaignId) {
+    if (selectCampaignIdFromChoices) {
       await page.selectOption('#letterTemplateCampaignId', {
-        value: campaignId,
+        value: selectCampaignIdFromChoices,
       });
     }
 

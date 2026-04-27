@@ -256,7 +256,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with i
         />
       </div>
       <div
-        class="nhsuk-summary-list__row missing-value"
+        class="nhsuk-summary-list__row"
         id="campaign-id"
       >
         <dt
@@ -266,7 +266,9 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with i
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        />
+        >
+          campaign
+        </dd>
         <dd
           class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
@@ -426,7 +428,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with l
         />
       </div>
       <div
-        class="nhsuk-summary-list__row missing-value"
+        class="nhsuk-summary-list__row"
         id="campaign-id"
       >
         <dt
@@ -436,7 +438,9 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot with l
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        />
+        >
+          campaign
+        </dd>
         <dd
           class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
@@ -646,7 +650,7 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         />
       </div>
       <div
-        class="nhsuk-summary-list__row missing-value"
+        class="nhsuk-summary-list__row"
         id="campaign-id"
       >
         <dt
@@ -656,7 +660,9 @@ exports[`PreviewTemplateDetailsAuthoringLetter snapshots matches snapshot withou
         </dt>
         <dd
           class="nhsuk-summary-list__value"
-        />
+        >
+          campaign
+        </dd>
         <dd
           class="nhsuk-summary-list__actions nhsuk-u-padding-right-4"
         >
@@ -1655,6 +1661,21 @@ exports[`PreviewTemplateDetailsPdfLetter matches snapshot when test data CSV is 
       </div>
       <div
         class="nhsuk-summary-list__row"
+        id="campaign-id"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Campaign
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          campaign
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
       >
         <dt
           class="nhsuk-summary-list__key"
@@ -1763,6 +1784,21 @@ exports[`PreviewTemplateDetailsPdfLetter matches snapshot with proofs (failed vi
           data-testid="preview-template-id"
         >
           template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+        id="campaign-id"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Campaign
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          campaign
         </dd>
       </div>
       <div
@@ -1996,6 +2032,21 @@ exports[`PreviewTemplateDetailsPdfLetter matches snapshot without proofs 1`] = `
           data-testid="preview-template-id"
         >
           template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+        id="campaign-id"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Campaign
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          campaign
         </dd>
       </div>
       <div

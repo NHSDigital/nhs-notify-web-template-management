@@ -29,6 +29,9 @@
           },
           {
             "properties": {
+              "campaignId": {
+                "type": "string"
+              },
               "clientId": {
                 "type": "string"
               },
@@ -64,6 +67,7 @@
               }
             },
             "required": [
+              "campaignId",
               "clientId",
               "files",
               "letterVersion"
@@ -79,9 +83,6 @@
           },
           {
             "properties": {
-              "campaignId": {
-                "type": "string"
-              },
               "clientId": {
                 "type": "string"
               },
@@ -891,6 +892,9 @@
           },
           {
             "properties": {
+              "campaignId": {
+                "type": "string"
+              },
               "files": {
                 "$ref": "#/components/schemas/PdfLetterFiles"
               },
@@ -3001,6 +3005,14 @@
             "name": "letterVersion",
             "schema": {
               "$ref": "#/components/schemas/LetterVersion"
+            }
+          },
+          {
+            "description": "Filter by a single campaign ID",
+            "in": "query",
+            "name": "campaignId",
+            "schema": {
+              "type": "string"
             }
           }
         ],

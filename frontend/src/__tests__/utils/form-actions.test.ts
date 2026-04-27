@@ -13,7 +13,6 @@ import {
   patchTemplate,
   getTemplate,
   getTemplates,
-  getForeignLanguageLetterTemplates,
   uploadLetterTemplate,
   setTemplateToDeleted,
   setTemplateToSubmitted,
@@ -34,7 +33,6 @@ import {
   templateApiClient,
   letterVariantApiClient,
 } from 'nhs-notify-backend-client';
-import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
@@ -138,6 +136,7 @@ describe('form-actions', () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
+      campaignId: 'campaign',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
@@ -200,6 +199,7 @@ describe('form-actions', () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
+      campaignId: 'campaign',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
@@ -318,6 +318,7 @@ describe('form-actions', () => {
   test('uploadDocxTemplate', async () => {
     const responseData = {
       templateType: 'LETTER',
+      campaignId: 'campaign',
       clientId: 'client-id',
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -524,6 +525,7 @@ describe('form-actions', () => {
   test('patchTemplate', async () => {
     const responseData: AuthoringLetterTemplate = {
       id: 'template-123',
+      campaignId: 'campaign',
       clientId: 'client1',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -782,58 +784,6 @@ describe('form-actions', () => {
     expect(response).toEqual([validTemplate]);
   });
 
-  describe('getForeignLanguageLetterTemplates', () => {
-    test('passes filters through to getTemplates', async () => {
-      const polishTemplate: TemplateDto = {
-        ...PDF_LETTER_TEMPLATE,
-        id: 'polish-1',
-        name: 'Polish Template',
-        language: 'pl',
-      };
-
-      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
-        data: [polishTemplate],
-      });
-
-      const response = await getForeignLanguageLetterTemplates({
-        templateStatus: ['SUBMITTED'],
-      });
-
-      expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        excludeLanguage: 'en',
-        templateStatus: ['SUBMITTED'],
-      });
-      expect(response).toEqual([polishTemplate]);
-    });
-
-    test('filters out English templates using excludeLanguage', async () => {
-      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
-        data: [],
-      });
-
-      const response = await getForeignLanguageLetterTemplates();
-
-      expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        excludeLanguage: 'en',
-      });
-      expect(response).toEqual([]);
-    });
-
-    test('returns empty array when no templates exist', async () => {
-      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
-        data: [],
-      });
-
-      const response = await getForeignLanguageLetterTemplates();
-
-      expect(response).toEqual([]);
-    });
-  });
-
   describe('setTemplateToSubmitted', () => {
     test('submitTemplate successfully', async () => {
       const responseData = {
@@ -899,6 +849,7 @@ describe('form-actions', () => {
     test('approveTemplate successfully', async () => {
       const responseData = {
         id: 'id',
+        campaignId: 'campaign',
         clientId: 'client-id',
         templateType: 'LETTER',
         templateStatus: 'PROOF_APPROVED',
@@ -1068,6 +1019,7 @@ describe('form-actions', () => {
         id: 'new-template-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',
+        campaignId: 'campaign',
         letterType: 'x1',
         language: 'ar',
         letterVersion: 'PDF',
@@ -1295,6 +1247,7 @@ describe('form-actions', () => {
       const responseData = {
         templateType: 'LETTER',
         id: 'template-id',
+        campaignId: 'campaign',
         clientId: 'client-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',

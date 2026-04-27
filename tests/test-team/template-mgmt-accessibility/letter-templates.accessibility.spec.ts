@@ -66,7 +66,7 @@ test.beforeAll(async () => {
   const authoringWithRenders = TemplateFactory.createAuthoringLetterTemplate(
     templateIds.AUTHORING_WITH_RENDERS,
     authoringEnabledWithMultipleCampaignsUser,
-    `Authoring letter template - ${templateIds.AUTHORING}`,
+    `Authoring letter template - ${templateIds.AUTHORING_WITH_RENDERS}`,
     'NOT_YET_SUBMITTED',
     {
       longFormRender: { status: 'RENDERED' },

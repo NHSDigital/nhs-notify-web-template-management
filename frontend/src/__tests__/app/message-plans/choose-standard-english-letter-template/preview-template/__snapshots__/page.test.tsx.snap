@@ -102,7 +102,7 @@ exports[`PreviewStandardEnglishLetterTemplateFromMessagePlan page should render 
                 <dd
                   class="nhsuk-summary-list__value"
                 >
-                  campaign-1
+                  campaign-2
                 </dd>
                 <dd
                   aria-hidden="true"

@@ -13,7 +13,7 @@ describe('ClientConfiguration', () => {
     axiosMock.onGet('/v1/client-configuration').reply(200, {
       statusCode: 200,
       clientConfiguration: {
-        campaignId: 'example-campaignId',
+        campaignIds: ['example-campaignId'],
         features: {
           proofing: true,
         },
@@ -24,7 +24,7 @@ describe('ClientConfiguration', () => {
 
     expect(notifyClientConfig).toEqual({
       data: {
-        campaignId: 'example-campaignId',
+        campaignIds: ['example-campaignId'],
         features: {
           proofing: true,
         },
@@ -68,7 +68,7 @@ describe('ClientConfiguration', () => {
     axiosMock.onGet('/v1/client-configuration').reply(200, {
       statusCode: 200,
       clientConfiguration: {
-        campaignId: 10_000,
+        campaignIds: [10_000],
         features: {
           proofing: true,
         },
@@ -83,7 +83,7 @@ describe('ClientConfiguration', () => {
           details: expect.arrayContaining([
             expect.objectContaining({
               message: 'Invalid input: expected string, received number',
-              path: ['campaignId'],
+              path: ['campaignIds', 0],
             }),
           ]),
         }),

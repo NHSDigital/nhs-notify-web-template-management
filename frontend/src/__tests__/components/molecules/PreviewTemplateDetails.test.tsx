@@ -38,6 +38,7 @@ const basePdfLetter: PdfLetterTemplate = {
   letterType: 'x0',
   letterVersion: 'PDF',
   language: 'en',
+  campaignId: 'campaign',
   files: {
     pdfTemplate: {
       fileName: 'file.pdf',
@@ -49,6 +50,7 @@ const basePdfLetter: PdfLetterTemplate = {
 
 const baseAuthoringLetter: AuthoringLetterTemplate = {
   ...baseTemplate,
+  campaignId: 'campaign',
   clientId: 'client-id',
   name: 'Authoring Letter',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -474,19 +476,6 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
 
       expect(screen.getByText('campaign-1')).toBeInTheDocument();
       expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
-    });
-
-    it('shows link when campaignId is missing', () => {
-      jest.mocked(useCampaignIds).mockReturnValue(['single-campaign']);
-
-      render(
-        <PreviewTemplateDetailsAuthoringLetter template={baseAuthoringLetter} />
-      );
-
-      expect(screen.getByTestId('campaign-action')).toBeInTheDocument();
-      expect(
-        screen.getByTestId('campaign-action').closest('.missing-value')
-      ).toBeInTheDocument();
     });
   });
 

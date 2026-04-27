@@ -11,14 +11,17 @@ import {
 import {
   assertChooseTemplatePageWithPreviousSelection,
   assertChooseTemplatePageWithTemplatesAvailable,
+  assertChooseTemplatePageWithNoTemplates,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
+import { loginAsUser } from 'helpers/auth/login-as-user';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseEmailTemplatePage } from 'pages/routing/email/choose-email-template-page';
 import { getTestContext } from 'helpers/context/context';
+import { RoutingConfigDbEntry, Template } from 'helpers/types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -67,16 +70,38 @@ function createTemplates(user: TestUser) {
 test.describe('Routing - Choose email template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
+  let userWithNoEmailTemplates: TestUser;
+  let routingConfigForUserWithNoEmailTemplates: RoutingConfigDbEntry;
+  let templateForUserWithNoEmailTemplates: Template;
 
   test.beforeAll(async () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
+    userWithNoEmailTemplates = await context.auth.getTestUser(
+      testUsers.User3.userId
+    );
 
     messagePlans = createMessagePlans(user);
     templates = createTemplates(user);
+    routingConfigForUserWithNoEmailTemplates =
+      RoutingConfigFactory.createForMessageOrder(
+        userWithNoEmailTemplates,
+        'NHSAPP,EMAIL'
+      ).dbEntry;
+    templateForUserWithNoEmailTemplates = TemplateFactory.createNhsAppTemplate(
+      randomUUID(),
+      userWithNoEmailTemplates,
+      'NHS App template for user with no email templates'
+    );
 
-    await routingConfigStorageHelper.seed(Object.values(messagePlans));
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
+    await routingConfigStorageHelper.seed([
+      ...Object.values(messagePlans),
+      routingConfigForUserWithNoEmailTemplates,
+    ]);
+    await templateStorageHelper.seedTemplateData([
+      ...Object.values(templates),
+      templateForUserWithNoEmailTemplates,
+    ]);
   });
 
   test.afterAll(async () => {
@@ -287,6 +312,36 @@ test.describe('Routing - Choose email template page', () => {
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.EMAIL_ROUTING_CONFIG.id}`
       );
+    });
+  });
+
+  test.describe('user with no email templates', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test('user sees the no templates version of the page when no email templates are available', async ({
+      page,
+    }) => {
+      await loginAsUser(userWithNoEmailTemplates, page);
+
+      const chooseEmailTemplatePage = new RoutingChooseEmailTemplatePage(page);
+      await chooseEmailTemplatePage
+        .setPathParam(
+          'messagePlanId',
+          routingConfigForUserWithNoEmailTemplates.id
+        )
+        .setSearchParam(
+          'lockNumber',
+          String(routingConfigForUserWithNoEmailTemplates.lockNumber)
+        )
+        .loadPage();
+
+      await expect(chooseEmailTemplatePage.messagePlanName).toHaveText(
+        routingConfigForUserWithNoEmailTemplates.name
+      );
+
+      await assertChooseTemplatePageWithNoTemplates({
+        page: chooseEmailTemplatePage,
+      });
     });
   });
 });

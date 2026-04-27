@@ -33,6 +33,7 @@ describe('CopyTemplatePage', () => {
 
   const letterTemplate: LetterTemplate = {
     id: 'template-id',
+    campaignId: 'campaign',
     templateType: 'LETTER',
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
