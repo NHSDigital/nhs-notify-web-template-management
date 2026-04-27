@@ -59,6 +59,7 @@ describe('NHS Notify button', () => {
   });
 
   it('allows clicks with 1000ms intervals', async () => {
+    jest.useFakeTimers();
     const onClick = jest.fn();
 
     render(
@@ -70,11 +71,12 @@ describe('NHS Notify button', () => {
     const button = screen.getByTestId('button');
 
     fireEvent.click(button);
-    await new Promise((res) => setTimeout(res, 1000));
+    jest.advanceTimersByTime(1000);
     fireEvent.click(button);
-    await new Promise((res) => setTimeout(res, 500));
+    jest.advanceTimersByTime(500);
     fireEvent.click(button);
 
     expect(onClick).toHaveBeenCalledTimes(2);
+    jest.useRealTimers();
   });
 });
