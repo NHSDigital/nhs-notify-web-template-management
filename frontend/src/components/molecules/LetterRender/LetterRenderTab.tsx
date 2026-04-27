@@ -135,7 +135,6 @@ function LetterRenderTabForm({
 }) {
   const personalisedRender = template.files[tab];
   const formState = deriveFormState(template, personalisedRender);
-  const tabDescription = tab === 'longFormRender' ? 'long' : 'short';
   const pdfUrl = derivePdfUrl(template, tab);
 
   return (
@@ -146,7 +145,6 @@ function LetterRenderTabForm({
       <LetterRenderTabFormInner
         template={template}
         tab={tab}
-        tabDescription={tabDescription}
         pdfUrl={pdfUrl}
       />
     </NHSNotifyFormProvider>
