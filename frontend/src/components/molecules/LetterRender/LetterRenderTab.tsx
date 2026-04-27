@@ -142,11 +142,7 @@ function LetterRenderTabForm({
       initialState={formState}
       serverAction={updateLetterPreview}
     >
-      <LetterRenderTabFormInner
-        template={template}
-        tab={tab}
-        pdfUrl={pdfUrl}
-      />
+      <LetterRenderTabFormInner template={template} tab={tab} pdfUrl={pdfUrl} />
     </NHSNotifyFormProvider>
   );
 }
