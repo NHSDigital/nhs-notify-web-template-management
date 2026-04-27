@@ -29,6 +29,7 @@ describe('ChannelTemplates', () => {
         selectedTemplate={null}
         routingConfigId='abc'
         lockNumber={5}
+        hintText='Choose one option'
       />
     );
 
@@ -48,6 +49,7 @@ describe('ChannelTemplates', () => {
         selectedTemplate={EMAIL_TEMPLATE.id}
         routingConfigId='abc'
         lockNumber={5}
+        hintText='Choose one option'
       />
     );
 
@@ -74,6 +76,7 @@ describe('ChannelTemplates', () => {
         selectedTemplate={null}
         routingConfigId='abc'
         lockNumber={5}
+        hintText='Choose one option'
       />
     );
 
@@ -91,6 +94,7 @@ describe('ChannelTemplates', () => {
         selectedTemplate={AUTHORING_LETTER_TEMPLATE.id}
         routingConfigId='abc'
         lockNumber={5}
+        hintText='Choose one option'
       />
     );
 

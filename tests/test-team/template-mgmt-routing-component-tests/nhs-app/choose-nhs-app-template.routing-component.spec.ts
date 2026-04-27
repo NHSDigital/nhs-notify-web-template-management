@@ -12,6 +12,7 @@ import {
 import {
   assertChooseTemplatePageWithPreviousSelection,
   assertChooseTemplatePageWithTemplatesAvailable,
+  assertChooseTemplatePageWithNoTemplates,
 } from '../routing-common.steps';
 import { RoutingConfigFactory } from 'helpers/factories/routing-config-factory';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
@@ -20,6 +21,8 @@ import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { randomUUID } from 'node:crypto';
 import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseNhsAppTemplatePage } from 'pages/routing/nhs-app/choose-nhs-app-template-page';
+import { loginAsUser } from 'helpers/auth/login-as-user';
+import { RoutingConfigDbEntry, Template } from 'helpers/types';
 
 const routingConfigStorageHelper = new RoutingConfigStorageHelper();
 const templateStorageHelper = new TemplateStorageHelper();
@@ -68,16 +71,38 @@ function createTemplates(user: TestUser) {
 test.describe('Routing - Choose NHS app template page', () => {
   let messagePlans: ReturnType<typeof createMessagePlans>;
   let templates: ReturnType<typeof createTemplates>;
+  let userWithNoAppTemplates: TestUser;
+  let routingConfigForUserWithNoAppTemplates: RoutingConfigDbEntry;
+  let templateForUserWithNoAppTemplates: Template;
 
   test.beforeAll(async () => {
     const context = getTestContext();
     const user = await context.auth.getTestUser(testUsers.User1.userId);
+    userWithNoAppTemplates = await context.auth.getTestUser(
+      testUsers.User8.userId
+    );
 
     messagePlans = createMessagePlans(user);
     templates = createTemplates(user);
+    routingConfigForUserWithNoAppTemplates =
+      RoutingConfigFactory.createForMessageOrder(
+        userWithNoAppTemplates,
+        'NHSAPP'
+      ).dbEntry;
+    templateForUserWithNoAppTemplates = TemplateFactory.createEmailTemplate(
+      randomUUID(),
+      userWithNoAppTemplates,
+      'Email template for user with no app templates'
+    );
 
-    await routingConfigStorageHelper.seed(Object.values(messagePlans));
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
+    await routingConfigStorageHelper.seed([
+      ...Object.values(messagePlans),
+      routingConfigForUserWithNoAppTemplates,
+    ]);
+    await templateStorageHelper.seedTemplateData([
+      ...Object.values(templates),
+      templateForUserWithNoAppTemplates,
+    ]);
   });
 
   test.afterAll(async () => {
@@ -286,6 +311,38 @@ test.describe('Routing - Choose NHS app template page', () => {
       await expect(page).toHaveURL(
         `${baseURL}/templates/message-plans/edit-message-plan/${messagePlans.APP_ROUTING_CONFIG.id}`
       );
+    });
+  });
+
+  test.describe('user with no app templates', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test('user sees a message when no NHS App templates are available and can go to create templates', async ({
+      page,
+    }) => {
+      await loginAsUser(userWithNoAppTemplates, page);
+
+      const chooseNhsAppTemplatePage = new RoutingChooseNhsAppTemplatePage(
+        page
+      );
+      await chooseNhsAppTemplatePage
+        .setPathParam(
+          'messagePlanId',
+          routingConfigForUserWithNoAppTemplates.id
+        )
+        .setSearchParam(
+          'lockNumber',
+          String(routingConfigForUserWithNoAppTemplates.lockNumber)
+        )
+        .loadPage();
+
+      await expect(chooseNhsAppTemplatePage.messagePlanName).toHaveText(
+        routingConfigForUserWithNoAppTemplates.name
+      );
+
+      await assertChooseTemplatePageWithNoTemplates({
+        page: chooseNhsAppTemplatePage,
+      });
     });
   });
 });

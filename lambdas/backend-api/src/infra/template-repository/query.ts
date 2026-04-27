@@ -18,6 +18,7 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
   private excludeLanguages: Language[] = [];
   private includeLetterTypes: LetterType[] = [];
   private includeLetterVersions: LetterVersion[] = [];
+  private includeCampaignIds: string[] = [];
 
   constructor(
     docClient: DynamoDBDocumentClient,
@@ -67,6 +68,11 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
     return this;
   }
 
+  campaignId(...campaignIds: string[]) {
+    this.includeCampaignIds.push(...campaignIds);
+    return this;
+  }
+
   protected addFilters(): void {
     this.addFilterToQuery('templateStatus', 'INCLUDE', this.includeStatuses);
     this.addFilterToQuery('templateStatus', 'EXCLUDE', this.excludeStatuses);
@@ -79,5 +85,6 @@ export class TemplateQuery extends AbstractQuery<TemplateDto> {
       'INCLUDE',
       this.includeLetterVersions
     );
+    this.addFilterToQuery('campaignId', 'INCLUDE', this.includeCampaignIds);
   }
 }

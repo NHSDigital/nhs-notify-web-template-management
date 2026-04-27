@@ -3154,6 +3154,14 @@
             "schema": {
               "$ref": "#/components/schemas/LetterVersion"
             }
+          },
+          {
+            "description": "Filter by a single campaign ID",
+            "in": "query",
+            "name": "campaignId",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
