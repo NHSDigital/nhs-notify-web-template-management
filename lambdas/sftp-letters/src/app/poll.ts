@@ -10,7 +10,8 @@ export class App {
     private readonly sftpSupplierClientRepository: SftpSupplierClientRepository,
     private readonly logger: Logger,
     private readonly s3Repository: S3Repository,
-    private readonly sftpEnvironment: string
+    private readonly sftpEnvironment: string,
+    private readonly environment: string
   ) {}
 
   async poll(supplier: string) {
@@ -18,7 +19,7 @@ export class App {
       await this.sftpSupplierClientRepository.getClient(supplier);
 
     const baseSftpPath = `${baseDownloadDir}/${this.sftpEnvironment}/proofs`;
-    const baseS3Path = `proofs/${supplier}`;
+    const baseS3Path = `${this.environment}/proofs/${supplier}`;
 
     const basePathLogger = this.logger.child({ baseSftpPath, baseS3Path });
 

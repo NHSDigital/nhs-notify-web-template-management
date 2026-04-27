@@ -20,7 +20,8 @@ const setup = () => {
   const letterUploadRepository = new LetterUploadRepository(
     quarantineBucketName,
     internalBucketName,
-    'download-bucket'
+    'download-bucket',
+    'test-env'
   );
 
   return { letterUploadRepository, mocks: { s3Client } };
@@ -61,7 +62,7 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
+        Key: `test-env/pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
           'client-id': clientId,
@@ -73,7 +74,7 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `test-data/${clientId}/${templateId}/${versionId}.csv`,
+        Key: `test-env/test-data/${clientId}/${templateId}/${versionId}.csv`,
         Body: new Uint8Array(await csvBytes.arrayBuffer()),
         Metadata: {
           'client-id': clientId,
@@ -98,7 +99,7 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
+        Key: `test-env/pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
           'client-id': clientId,

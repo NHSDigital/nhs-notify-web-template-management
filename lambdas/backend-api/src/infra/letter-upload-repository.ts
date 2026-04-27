@@ -33,6 +33,15 @@ const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
 });
 
 export class LetterUploadRepository extends LetterFileRepository {
+  constructor(
+    quarantineBucketName: string,
+    internalBucketName: string,
+    downloadBucketName: string,
+    private readonly environment: string
+  ) {
+    super(quarantineBucketName, internalBucketName, downloadBucketName);
+  }
+
   async upload(
     templateId: string,
     user: User,
@@ -41,12 +50,12 @@ export class LetterUploadRepository extends LetterFileRepository {
     fileType: 'pdf-template' | 'docx-template',
     testDataFile?: File
   ): Promise<ApplicationResult<null>> {
-    const pdfKey = this.key(fileType, user.clientId, templateId, versionId);
+    const templateKey = `${this.environment}/${this.key(fileType, user.clientId, templateId, versionId)}`;
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
         Bucket: this.quarantineBucketName,
-        Key: pdfKey,
+        Key: templateKey,
         Body: await file.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
@@ -59,12 +68,12 @@ export class LetterUploadRepository extends LetterFileRepository {
     ];
 
     if (testDataFile) {
-      const csvKey = this.key(
+      const csvKey = `${this.environment}/${this.key(
         'test-data',
         user.clientId,
         templateId,
         versionId
-      );
+      )}`;
 
       commands.push(
         new PutObjectCommand({
