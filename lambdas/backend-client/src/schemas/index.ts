@@ -1,5 +1,6 @@
 export * from './client';
 export * from './constants';
+export * from './contact-details';
 export * from './letter-variant';
 export * from './render-request';
 export * from './routing-config';

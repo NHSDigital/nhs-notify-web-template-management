@@ -81,3 +81,7 @@ output "proof_requests_table_name" {
 output "letter_variants_table_name" {
   value = module.backend_api.letter_variants_table_name
 }
+
+output "contact_details_table_name" {
+  value = module.backend_api.contact_details_table_name
+}

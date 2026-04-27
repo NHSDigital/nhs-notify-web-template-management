@@ -53,3 +53,7 @@ output "proof_requests_table_name" {
 output "letter_variants_table_name" {
   value = aws_dynamodb_table.letter_variants.name
 }
+
+output "contact_details_table_name" {
+  value = aws_dynamodb_table.contact_details.name
+}
