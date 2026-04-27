@@ -675,4 +675,141 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId', () => {
         'Lock number mismatch - Routing configuration has been modified since last read',
     });
   });
+
+  test('update fails when adding template with a different campaignId to the routing campaignId', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(userMultiCampaign, {
+      campaignId: 'campaign-id',
+    });
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userMultiCampaign,
+      'Plan campaign mismatch template',
+      'PROOF_APPROVED',
+      {
+        letterVariantId: 'variant',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+        campaignId: 'other-campaign-id',
+      }
+    );
+
+    await storageHelper.seed([dbEntry]);
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const update = {
+      cascade: [
+        {
+          cascadeGroups: ['accessible'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: letterTemplate.id,
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await userMultiCampaign.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+        data: update,
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Some templates failed validation',
+      details: {
+        templateIds: letterTemplate.id,
+      },
+    });
+  });
+
+  test('update fails when adding multiple templates where at least one template does not belong to the routing config campaign', async ({
+    request,
+  }) => {
+    const { dbEntry } = RoutingConfigFactory.create(userMultiCampaign, {
+      campaignId: 'campaign-id',
+    });
+    const letterTemplate1 = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userMultiCampaign,
+      'Plan campaign mismatch template - matching campaign',
+      'PROOF_APPROVED',
+      {
+        letterVariantId: 'variant',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+        campaignId: 'campaign-id',
+      }
+    );
+    const letterTemplate2 = TemplateFactory.createAuthoringLetterTemplate(
+      randomUUID(),
+      userMultiCampaign,
+      'Plan campaign mismatch template - different campaign',
+      'PROOF_APPROVED',
+      {
+        letterVariantId: 'variant',
+        longFormRender: { status: 'RENDERED' },
+        shortFormRender: { status: 'RENDERED' },
+        campaignId: 'other-campaign-id',
+      }
+    );
+
+    await storageHelper.seed([dbEntry]);
+    await templateStorageHelper.seedTemplateData([
+      letterTemplate1,
+      letterTemplate2,
+    ]);
+
+    const update = {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: letterTemplate1.id,
+        },
+        {
+          cascadeGroups: ['standard'],
+          channel: 'LETTER',
+          channelType: 'secondary',
+          defaultTemplateId: letterTemplate2.id,
+        },
+      ],
+      cascadeGroupOverrides: [],
+    };
+
+    const updateResponse = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}`,
+      {
+        headers: {
+          Authorization: await userMultiCampaign.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+        data: update,
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+
+    const updated = await updateResponse.json();
+
+    expect(updated).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Some templates failed validation',
+      details: {
+        templateIds: letterTemplate2.id,
+      },
+    });
+  });
 });
