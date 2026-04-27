@@ -200,7 +200,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
       user1,
       'Old template name',
       'NOT_YET_SUBMITTED',
-      { letterVariantId: letterVariant.id, campaignId: user1.campaignIds?.[0] }
+      { letterVariantId: letterVariant.id }
     );
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -257,7 +257,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'Old template name',
         'NOT_YET_SUBMITTED',
         {
-          campaignId: user1.campaignIds?.[0],
           letterVariantId: letterVariant.id,
         }
       );
@@ -315,7 +314,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'NOT_YET_SUBMITTED',
         {
           letterVariantId: letterVariant.id,
-          campaignId: user1.campaignIds?.[0],
         }
       );
 
@@ -373,7 +371,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'NOT_YET_SUBMITTED',
         {
           letterVariantId: letterVariant.id,
-          campaignId: user1.campaignIds?.[0],
         }
       );
 
@@ -425,7 +422,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'NOT_YET_SUBMITTED',
         {
           letterVariantId: 'letter-variant',
-          campaignId: user1.campaignIds?.[0],
         }
       );
 
@@ -467,7 +463,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'NOT_YET_SUBMITTED',
         {
           letterVariantId: letterVariant.id,
-          campaignId: user1.campaignIds?.[0],
         }
       );
 
@@ -525,7 +520,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'NOT_YET_SUBMITTED',
         {
           letterVariantId: globalVariant.id,
-          campaignId: user1.campaignIds?.[0],
         }
       );
 
@@ -584,7 +578,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'NOT_YET_SUBMITTED',
         {
           letterVariantId: globalVariant.id,
-          campaignId: user1.campaignIds?.[0],
         }
       );
 
@@ -637,10 +630,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
         randomUUID(),
         user1,
         'Template name',
-        'NOT_YET_SUBMITTED',
-        {
-          campaignId: user1.campaignIds?.[0],
-        }
+        'NOT_YET_SUBMITTED'
       );
 
       await templateStorageHelper.seedTemplateData([template]);
@@ -681,10 +671,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
         randomUUID(),
         user1,
         'Template name',
-        'NOT_YET_SUBMITTED',
-        {
-          campaignId: user1.campaignIds?.[0],
-        }
+        'NOT_YET_SUBMITTED'
       );
 
       await templateStorageHelper.seedTemplateData([template]);
@@ -719,10 +706,7 @@ test.describe('PATCH /v1/template/:templateId', () => {
         randomUUID(),
         user1,
         'Template name',
-        'NOT_YET_SUBMITTED',
-        {
-          campaignId: user1.campaignIds?.[0],
-        }
+        'NOT_YET_SUBMITTED'
       );
 
       await templateStorageHelper.seedTemplateData([template]);
@@ -771,7 +755,6 @@ test.describe('PATCH /v1/template/:templateId', () => {
         'NOT_YET_SUBMITTED',
         {
           letterVariantId: campaign0Variant.id,
-          campaignId: user1.campaignIds?.[0],
         }
       );
 

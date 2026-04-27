@@ -68,7 +68,6 @@ export const PDF_LETTER_TEMPLATE: PdfLetterTemplate = {
   letterType: 'x0',
   language: 'en',
   letterVersion: 'PDF',
-  campaignId: 'campaign',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
@@ -77,6 +76,7 @@ export const PDF_LETTER_TEMPLATE: PdfLetterTemplate = {
     },
   },
   name: 'letter template name',
+  campaignId: 'campaign-2',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   lockNumber: 1,
@@ -89,7 +89,6 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
   letterType: 'x1',
   language: 'en',
   letterVersion: 'PDF',
-  campaignId: 'campaign',
   files: {
     pdfTemplate: {
       fileName: 'large-print-template.pdf',
@@ -98,6 +97,7 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
     },
   },
   name: 'large print letter template name',
+  campaignId: 'campaign-2',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   lockNumber: 1,
@@ -138,6 +138,7 @@ export const AUTHORING_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   ...BASE_AUTHORING_LETTER_TEMPLATE,
   id: 'authoring-letter-template-id',
   name: 'authoring letter template name',
+  campaignId: 'campaign-2',
 } as const;
 
 export const BSL_LETTER_TEMPLATE: AuthoringLetterTemplate = {
@@ -145,6 +146,7 @@ export const BSL_LETTER_TEMPLATE: AuthoringLetterTemplate = {
   id: 'bsl-letter-template-id',
   name: 'British Sign Language letter template name',
   letterType: 'q4',
+  campaignId: 'campaign-2',
 } as const;
 
 export const LARGE_PRINT_AUTHORING_TEMPLATE = {

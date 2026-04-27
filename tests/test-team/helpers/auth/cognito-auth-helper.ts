@@ -32,7 +32,6 @@ type TestUserStaticDetails = {
 
 type TestUserDynamicDetails = {
   email: string;
-  campaignId?: string;
   campaignIds?: string[];
   clientName?: string;
   identityAttributes?: Partial<Record<UserIdentityAttributes, string>>;
