@@ -551,7 +551,7 @@ test.describe('Routing - Edit Message Plan page', () => {
     await expect(alternativeLetterFormats.fallbackConditions).toBeVisible();
 
     const listItems = await alternativeLetterFormats.listItems;
-    expect(await listItems.count()).toBe(3);
+    await expect(listItems).toHaveCount(3);
 
     const largePrintItem = alternativeLetterFormats.largePrint;
     const bslItem = alternativeLetterFormats.britishSignLanguage;
@@ -648,7 +648,7 @@ test.describe('Routing - Edit Message Plan page', () => {
       await expect(alternativeLetterFormats.fallbackConditions).toBeVisible();
 
       const listItems = await alternativeLetterFormats.listItems;
-      expect(await listItems.count()).toBe(3);
+      await expect(listItems).toHaveCount(3);
     });
 
     const largePrintItem = alternativeLetterFormats.largePrint;
@@ -680,8 +680,8 @@ test.describe('Routing - Edit Message Plan page', () => {
     });
 
     await test.step('foreign language templates are displayed with names and change link', async () => {
-      const templateNames = await otherLanguagesItem.templateNames.all();
-      expect(templateNames).toHaveLength(2);
+      const templateNames = otherLanguagesItem.templateNames;
+      await expect(templateNames).toHaveCount(2);
 
       await expect(templateNames[0]).toHaveText(templates.FRENCH_LETTER.name);
       await expect(templateNames[1]).toHaveText(templates.SPANISH_LETTER.name);
@@ -766,8 +766,8 @@ test.describe('Routing - Edit Message Plan page', () => {
         'You must choose a template for each message.'
       );
 
-      const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks).toHaveLength(4);
+      const errorLinks = editMessagePlanPage.errorLinks;
+      await expect(errorLinks).toHaveCount(4);
 
       await expect(errorLinks[0]).toHaveText(
         'You have not chosen a template for your first message'
@@ -818,8 +818,8 @@ test.describe('Routing - Edit Message Plan page', () => {
         'You must choose a template for each message.'
       );
 
-      const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks).toHaveLength(2);
+      const errorLinks = editMessagePlanPage.errorLinks;
+      await expect(errorLinks).toHaveCount(2);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
       await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
     });
@@ -846,8 +846,8 @@ test.describe('Routing - Edit Message Plan page', () => {
       await editMessagePlanPage.clickMoveToProduction();
       await expect(editMessagePlanPage.errorSummaryHeading).toBeVisible();
 
-      const errorLinks = await editMessagePlanPage.errorLinks.all();
-      expect(errorLinks).toHaveLength(1);
+      const errorLinks = editMessagePlanPage.errorLinks;
+      await expect(errorLinks).toHaveCount(1);
       await expect(errorLinks[0]).toHaveAttribute('href', '#channel-EMAIL');
     });
 

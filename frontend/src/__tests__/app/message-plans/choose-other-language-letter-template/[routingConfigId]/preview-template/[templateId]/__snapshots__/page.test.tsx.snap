@@ -63,21 +63,6 @@ exports[`PreviewOtherLanguageLetterTemplateFromMessagePlan page should render fu
               </div>
               <div
                 class="nhsuk-summary-list__row"
-                id="campaign-id"
-              >
-                <dt
-                  class="nhsuk-summary-list__key"
-                >
-                  Campaign
-                </dt>
-                <dd
-                  class="nhsuk-summary-list__value"
-                >
-                  campaign-2
-                </dd>
-              </div>
-              <div
-                class="nhsuk-summary-list__row"
               >
                 <dt
                   class="nhsuk-summary-list__key"
@@ -105,7 +90,7 @@ exports[`PreviewOtherLanguageLetterTemplateFromMessagePlan page should render fu
                 <dd
                   class="nhsuk-summary-list__value"
                 >
-                  campaign-1
+                  campaign-2
                 </dd>
                 <dd
                   aria-hidden="true"

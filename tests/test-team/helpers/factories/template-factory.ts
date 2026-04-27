@@ -144,7 +144,6 @@ export const TemplateFactory = {
       validationErrors?: Array<{ name: string; issues?: string[] }>;
     }
   ): Template => {
-
     const files: Record<string, unknown> = {};
 
     if (options?.docxTemplate !== false) {
