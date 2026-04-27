@@ -683,8 +683,12 @@ test.describe('Routing - Edit Message Plan page', () => {
       const templateNames = otherLanguagesItem.templateNames;
       await expect(templateNames).toHaveCount(2);
 
-      await expect(templateNames[0]).toHaveText(templates.FRENCH_LETTER.name);
-      await expect(templateNames[1]).toHaveText(templates.SPANISH_LETTER.name);
+      await expect(templateNames.nth(0)).toHaveText(
+        templates.FRENCH_LETTER.name
+      );
+      await expect(templateNames.nth(1)).toHaveText(
+        templates.SPANISH_LETTER.name
+      );
 
       await expect(otherLanguagesItem.changeTemplateLink).toBeVisible();
       await expect(otherLanguagesItem.changeTemplateLink).toHaveAttribute(
@@ -769,25 +773,31 @@ test.describe('Routing - Edit Message Plan page', () => {
       const errorLinks = editMessagePlanPage.errorLinks;
       await expect(errorLinks).toHaveCount(4);
 
-      await expect(errorLinks[0]).toHaveText(
+      await expect(errorLinks.nth(0)).toHaveText(
         'You have not chosen a template for your first message'
       );
-      await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
+      await expect(errorLinks.nth(0)).toHaveAttribute(
+        'href',
+        '#channel-NHSAPP'
+      );
 
-      await expect(errorLinks[1]).toHaveText(
+      await expect(errorLinks.nth(1)).toHaveText(
         'You have not chosen a template for your second message'
       );
-      await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
+      await expect(errorLinks.nth(1)).toHaveAttribute('href', '#channel-EMAIL');
 
-      await expect(errorLinks[2]).toHaveText(
+      await expect(errorLinks.nth(2)).toHaveText(
         'You have not chosen a template for your third message'
       );
-      await expect(errorLinks[2]).toHaveAttribute('href', '#channel-SMS');
+      await expect(errorLinks.nth(2)).toHaveAttribute('href', '#channel-SMS');
 
-      await expect(errorLinks[3]).toHaveText(
+      await expect(errorLinks.nth(3)).toHaveText(
         'You have not chosen a template for your fourth message'
       );
-      await expect(errorLinks[3]).toHaveAttribute('href', '#channel-LETTER');
+      await expect(errorLinks.nth(3)).toHaveAttribute(
+        'href',
+        '#channel-LETTER'
+      );
     });
 
     await test.step('clicking an error link navigates to the relevant channel section', async () => {
@@ -820,8 +830,11 @@ test.describe('Routing - Edit Message Plan page', () => {
 
       const errorLinks = editMessagePlanPage.errorLinks;
       await expect(errorLinks).toHaveCount(2);
-      await expect(errorLinks[0]).toHaveAttribute('href', '#channel-NHSAPP');
-      await expect(errorLinks[1]).toHaveAttribute('href', '#channel-EMAIL');
+      await expect(errorLinks.nth(0)).toHaveAttribute(
+        'href',
+        '#channel-NHSAPP'
+      );
+      await expect(errorLinks.nth(1)).toHaveAttribute('href', '#channel-EMAIL');
     });
 
     await test.step('selecting NHS App template', async () => {
@@ -848,7 +861,7 @@ test.describe('Routing - Edit Message Plan page', () => {
 
       const errorLinks = editMessagePlanPage.errorLinks;
       await expect(errorLinks).toHaveCount(1);
-      await expect(errorLinks[0]).toHaveAttribute('href', '#channel-EMAIL');
+      await expect(errorLinks.nth(0)).toHaveAttribute('href', '#channel-EMAIL');
     });
 
     await test.step('selecting Email template', async () => {
