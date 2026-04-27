@@ -8,13 +8,7 @@ export function NHSNotifyButton({
   ...rest
 }: React.ComponentProps<typeof Button>) {
   return (
-    <Button
-      preventDoubleClick
-      debounceTimeout={5000}
-      onClick={() => {}}
-      href={href}
-      {...rest}
-    >
+    <Button preventDoubleClick onClick={() => {}} href={href} {...rest}>
       {children}
     </Button>
   );
