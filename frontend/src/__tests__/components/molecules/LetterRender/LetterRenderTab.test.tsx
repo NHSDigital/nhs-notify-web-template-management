@@ -26,6 +26,7 @@ function Provider({ children }: PropsWithChildren) {
 
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
+  campaignId: 'campaign',
   clientId: 'client-456',
   name: 'Test Letter',
   templateStatus: 'NOT_YET_SUBMITTED',

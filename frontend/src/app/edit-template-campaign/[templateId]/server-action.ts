@@ -19,7 +19,7 @@ const $FormSchema = z.object({
 });
 
 export async function editTemplateCampaign(
-  state: FormState,
+  _state: FormState,
   form: FormData
 ): Promise<FormState> {
   const result = $FormSchema.safeParse(Object.fromEntries(form.entries()));

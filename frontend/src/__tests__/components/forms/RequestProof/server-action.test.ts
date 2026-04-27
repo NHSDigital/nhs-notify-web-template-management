@@ -18,6 +18,7 @@ const requestTemplateProofMock = jest.mocked(requestTemplateProof);
 
 const mockLetterTemplate = (id: string) =>
   ({
+    campaignId: 'campaign',
     templateType: 'LETTER',
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'name',

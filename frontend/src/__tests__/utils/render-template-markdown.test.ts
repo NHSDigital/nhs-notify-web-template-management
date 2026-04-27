@@ -68,6 +68,7 @@ test('sms template', () => {
 
 test('throws error for unsupported template type', () => {
   const template: LetterTemplate = {
+    campaignId: 'campaign',
     createdAt: '',
     id: '',
     lockNumber: 0,

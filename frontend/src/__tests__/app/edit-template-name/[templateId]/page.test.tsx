@@ -19,6 +19,7 @@ jest.mock('@utils/csrf-utils');
 
 const mockTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
+  campaignId: 'campaign',
   name: 'Original Template Name',
   templateType: 'LETTER',
   letterVersion: 'AUTHORING',
@@ -50,6 +51,7 @@ const mockPdfTemplate: PdfLetterTemplate = {
   name: 'PDF Letter Template',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
+  campaignId: 'campaign',
   lockNumber: 5,
   language: 'en',
   letterType: 'x0',
