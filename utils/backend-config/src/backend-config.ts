@@ -6,6 +6,7 @@ export type BackendConfig = {
   apiBaseUrl: string;
   awsAccountId: string;
   clientSsmPathPrefix: string;
+  contactDetailsTableName: string;
   environment: string;
   eventsSnsTopicArn: string;
   letterVariantsTableName: string;
@@ -31,11 +32,12 @@ export const BackendConfigHelper = {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
       awsAccountId: process.env.AWS_ACCOUNT_ID ?? '',
       clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
+      contactDetailsTableName: process.env.CONTACT_DETAILS_TABLE_NAME ?? '',
       environment: process.env.ENVIRONMENT ?? '',
       eventsSnsTopicArn: process.env.EVENTS_SNS_TOPIC_ARN ?? '',
+      letterVariantsTableName: process.env.LETTER_VARIANTS_TABLE_NAME ?? '',
       proofRequestsTableName: process.env.PROOF_REQUESTS_TABLE_NAME ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
-      letterVariantsTableName: process.env.LETTER_VARIANTS_TABLE_NAME ?? '',
       routingConfigTableName: process.env.ROUTING_CONFIG_TABLE_NAME ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
       sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
@@ -58,6 +60,7 @@ export const BackendConfigHelper = {
     process.env.API_BASE_URL = config.apiBaseUrl;
     process.env.AWS_ACCOUNT_ID = config.awsAccountId;
     process.env.CLIENT_SSM_PATH_PREFIX = config.clientSsmPathPrefix;
+    process.env.CONTACT_DETAILS_TABLE_NAME = config.contactDetailsTableName;
     process.env.ENVIRONMENT = config.environment;
     process.env.EVENTS_SNS_TOPIC_ARN = config.eventsSnsTopicArn;
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
@@ -89,6 +92,8 @@ export const BackendConfigHelper = {
       awsAccountId: deployment.aws_account_id ?? '',
       clientSsmPathPrefix:
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
+      contactDetailsTableName:
+        outputsFileContent.contact_details_table_name?.value ?? '',
       environment: deployment.environment ?? '',
       eventsSnsTopicArn: outputsFileContent.events_sns_topic_arn?.value ?? '',
       proofRequestsTableName:

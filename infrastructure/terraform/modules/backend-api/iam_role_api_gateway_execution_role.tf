@@ -53,6 +53,7 @@ data "aws_iam_policy_document" "api_gateway_execution_policy" {
       module.upload_docx_letter_template_lambda.function_arn,
       module.upload_letter_template_lambda.function_arn,
       module.count_routing_configs_lambda.function_arn,
+      module.create_contact_details_lambda.function_arn,
       module.create_template_lambda.function_arn,
       module.create_routing_config_lambda.function_arn,
       module.delete_routing_config_lambda.function_arn,
