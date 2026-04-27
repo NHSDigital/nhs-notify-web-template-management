@@ -183,7 +183,7 @@ export const TemplateFactory = {
     }
 
     return TemplateFactory.create({
-      campaignId: options?.campaignId ?? 'campaign-id',
+      campaignId: options?.campaignId ?? user.campaignIds?.[0] ?? 'campaign',
       clientId: user.clientId,
       files,
       id,

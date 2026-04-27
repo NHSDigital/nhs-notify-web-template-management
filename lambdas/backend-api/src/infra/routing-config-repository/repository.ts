@@ -239,18 +239,25 @@ export class RoutingConfigRepository {
     }
 
     const invalidLetterTemplateIds = templates
-      .filter(
-        (t) =>
-          t.templateType === 'LETTER' &&
+      .filter((t) => {
+        const isLetter = t.templateType === 'LETTER';
+
+        const statusInvalid =
+          isLetter &&
           t.templateStatus !== 'PROOF_APPROVED' &&
-          t.templateStatus !== 'SUBMITTED'
-      )
+          t.templateStatus !== 'SUBMITTED';
+
+        const campaignInvalid =
+          isLetter && t.campaignId !== existingConfig.data.campaignId;
+
+        return statusInvalid || campaignInvalid;
+      })
       .map((t) => t.id);
 
     if (invalidLetterTemplateIds.length > 0) {
       return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Letter templates must have status PROOF_APPROVED or SUBMITTED',
+        ErrorCase.ROUTING_CONFIG_TEMPLATES_INVALID,
+        'Some templates failed validation',
         undefined,
         { templateIds: invalidLetterTemplateIds.join(',') }
       );
