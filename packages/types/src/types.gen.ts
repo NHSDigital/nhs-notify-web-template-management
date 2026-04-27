@@ -12,6 +12,7 @@ export type AuthoringLetterFiles = {
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
   clientId: string;
   customPersonalisation?: Array<string>;
   files: AuthoringLetterFiles;
@@ -22,7 +23,6 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
-  campaignId?: string;
   clientId?: string;
   createdAt: string;
   createdBy?: string;
@@ -275,6 +275,7 @@ export type PdfLetterFiles = {
 };
 
 export type PdfLetterProperties = BaseLetterTemplateProperties & {
+  campaignId?: string;
   files: PdfLetterFiles;
   letterVersion: 'PDF';
   personalisationParameters?: Array<string>;

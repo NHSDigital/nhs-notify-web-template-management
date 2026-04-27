@@ -199,6 +199,7 @@ describe('Template API - Patch', () => {
     };
     const response: TemplateDto = {
       id: '1-2-3',
+      campaignId: 'campaign',
       clientId: 'nhs-notify-client-id',
       name: 'Updated Template Name',
       templateType: 'LETTER',

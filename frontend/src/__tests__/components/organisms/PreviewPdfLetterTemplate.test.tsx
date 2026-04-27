@@ -12,6 +12,7 @@ jest.mock('@providers/client-config-provider', () => ({
 
 const baseTemplate: PdfLetterTemplate = {
   id: 'template-123',
+  campaignId: 'campaign',
   name: 'Test Letter Template',
   templateStatus: 'NOT_YET_SUBMITTED',
   templateType: 'LETTER',

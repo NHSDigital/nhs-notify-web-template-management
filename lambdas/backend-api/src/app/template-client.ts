@@ -1128,17 +1128,12 @@ export class TemplateClient {
         template.clientId,
         filters
       ),
+      this.letterVariantRepository.getCampaignScopedLetterVariants(
+        template.clientId,
+        template.campaignId,
+        filters
+      ),
     ];
-
-    if (template.campaignId) {
-      queries.push(
-        this.letterVariantRepository.getCampaignScopedLetterVariants(
-          template.clientId,
-          template.campaignId,
-          filters
-        )
-      );
-    }
 
     const variants: LetterVariant[] = [];
 

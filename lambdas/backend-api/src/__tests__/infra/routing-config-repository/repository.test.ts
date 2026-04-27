@@ -924,6 +924,7 @@ describe('RoutingConfigRepository', () => {
             {
               id: 'letter-template-id',
               owner: clientOwnerKey,
+              campaignId: 'camp_id',
               name: 'Test Letter Template',
               templateType: 'LETTER',
               templateStatus: 'NOT_YET_SUBMITTED',
