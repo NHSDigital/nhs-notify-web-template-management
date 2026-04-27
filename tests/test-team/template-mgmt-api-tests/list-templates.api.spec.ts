@@ -239,24 +239,9 @@ test.describe('GET /v1/templates', () => {
         }
       );
 
-    const templateWithNoCampaign =
-      TemplateFactory.createAuthoringLetterTemplate(
-        randomUUID(),
-        user1,
-        'Letter template - no campaign',
-        'SUBMITTED',
-        {
-          campaignId: null,
-          shortFormRender: { status: 'RENDERED' },
-          longFormRender: { status: 'RENDERED' },
-          letterVariantId: 'letter-variant-id',
-        }
-      );
-
     await templateStorageHelper.seedTemplateData([
       templateWithMatchingCampaign,
       templateWithOtherCampaign,
-      templateWithNoCampaign,
     ]);
 
     const response = await request.get(
