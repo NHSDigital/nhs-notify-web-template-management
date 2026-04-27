@@ -19,6 +19,7 @@ Then run `npm install @nhsdigital/nhs-notify-event-schemas-template-management`
 
 ## Events
 
+- `ContactDetailVerificationRequested`
 - `ProofRequested`
 - `RoutingConfigCompleted`
 - `RoutingConfigDeleted`

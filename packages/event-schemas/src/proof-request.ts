@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // eslint-disable-next-line security/detect-unsafe-regex
-const UUID_REGEX = /^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/;
+export const UUID_REGEX = /^[\dA-Fa-f]{8}(?:-[\dA-Fa-f]{4}){3}-[\dA-Fa-f]{12}$/;
 
 const $BaseProofRequestEventData = z.object({
   id: z.string().regex(UUID_REGEX).meta({

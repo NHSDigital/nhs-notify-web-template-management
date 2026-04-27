@@ -10,6 +10,9 @@ locals {
   client_ssm_path_prefix  = "/${var.csi}/clients"
   client_ssm_path_pattern = "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter${local.client_ssm_path_prefix}/*"
 
+  event_sns_topic_arn = coalesce(var.sns_topic_arn, aws_sns_topic.main.arn)
+  event_source        = "//notify.nhs.uk/${var.component}/${var.group}/${var.environment}"
+
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
     APIG_EXECUTION_ROLE_ARN                       = aws_iam_role.api_gateway_execution_role.arn
     APPROVE_TEMPLATE_LAMBDA_ARN                   = module.approve_template_lambda.function_arn
@@ -48,6 +51,8 @@ locals {
     CONTACT_DETAILS_UNVERIFIED_TTL_SECONDS  = 60 * 60
     DEFAULT_LETTER_SUPPLIER                 = local.default_letter_supplier_name
     ENVIRONMENT                             = var.environment
+    EVENT_SOURCE                            = local.event_source
+    EVENT_TOPIC_ARN                         = local.event_sns_topic_arn
     LETTER_VARIANT_CACHE_TTL_MS             = 300000
     LETTER_VARIANT_TABLE_NAME               = aws_dynamodb_table.letter_variants.name
     NODE_OPTIONS                            = "--enable-source-maps"

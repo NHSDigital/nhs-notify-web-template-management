@@ -1,3 +1,4 @@
+export * from './contact-detail-verification-requested';
 export * from './proof-requested';
 export * from './routing-config-completed';
 export * from './routing-config-deleted';

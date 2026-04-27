@@ -25,13 +25,13 @@ module "lambda_event_publisher" {
   }
 
   lambda_env_vars = {
-    EVENT_SOURCE               = "//notify.nhs.uk/${var.component}/${var.group}/${var.environment}"
+    EVENT_SOURCE               = local.event_source
     INTERNAL_BUCKET_NAME       = module.s3bucket_internal.id
     PROOF_REQUESTS_TABLE_NAME  = aws_dynamodb_table.proof_requests.name
     ROUTING_CONFIG_TABLE_NAME  = aws_dynamodb_table.routing_configuration.name
     SHARED_FILES_BUCKET_NAME   = var.shared_files_bucket_name
     SHARED_FILES_BUCKET_PREFIX = "template-mgmt/${var.csi}"
-    SNS_TOPIC_ARN              = coalesce(var.sns_topic_arn, aws_sns_topic.main.arn)
+    SNS_TOPIC_ARN              = local.event_sns_topic_arn
     TEMPLATES_TABLE_NAME       = aws_dynamodb_table.templates.name
   }
 
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "event_publisher" {
     ]
 
     resources = [
-      coalesce(var.sns_topic_arn, aws_sns_topic.main.arn)
+      local.event_sns_topic_arn
     ]
   }
 
