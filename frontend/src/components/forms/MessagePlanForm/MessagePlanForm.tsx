@@ -97,7 +97,7 @@ export function MessagePlanForm({
                 className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'
                 data-testid='campaign-warning-callout'
               >
-                <WarningCallout.Label>
+                <WarningCallout.Label headingLevel='h2'>
                   {formContent.fields.campaignId.warningCallout.heading}
                 </WarningCallout.Label>
                 <p>{formContent.fields.campaignId.warningCallout.content}</p>

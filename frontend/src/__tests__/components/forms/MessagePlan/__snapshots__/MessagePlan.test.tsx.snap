@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders errors 1`] = `
+exports[`Message plan form renders errors 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
@@ -102,7 +102,7 @@ exports[`renders errors 1`] = `
       class="nhsuk-form-group nhsuk-u-margin-bottom-6"
     >
       <div
-        class="nhsuk-form-group"
+        class="nhsuk-form-group nhsuk-form-group--error"
       >
         <label
           class="nhsuk-label nhsuk-label--s"
@@ -121,7 +121,7 @@ exports[`renders errors 1`] = `
           class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
           data-testid="campaign-warning-callout"
         >
-          <h3
+          <h2
             class="nhsuk-warning-callout__label"
           >
             <span
@@ -134,15 +134,26 @@ exports[`renders errors 1`] = `
               </span>
               Important
             </span>
-          </h3>
+          </h2>
           <p>
             You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
           </p>
         </div>
+        <span
+          class="nhsuk-error-message"
+          id="campaignId--error-message"
+        >
+          <span
+            class="nhsuk-u-visually-hidden"
+          >
+            Error: 
+          </span>
+          CampaignId error
+        </span>
         <select
           aria-describedby="campaignId--hint campaignId--error-message"
           aria-labelledby="campaignId--label"
-          class="nhsuk-select"
+          class="nhsuk-select nhsuk-select--error"
           data-testid="campaign-id-field"
           id="campaignId"
           name="campaignId"
@@ -184,7 +195,7 @@ exports[`renders errors 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders form with children 1`] = `
+exports[`Message plan form renders form with children 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
@@ -324,7 +335,7 @@ exports[`renders form with children 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders form with select for multiple campaign ids 1`] = `
+exports[`Message plan form renders form with select for multiple campaign ids 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
@@ -433,7 +444,7 @@ exports[`renders form with select for multiple campaign ids 1`] = `
           class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
           data-testid="campaign-warning-callout"
         >
-          <h3
+          <h2
             class="nhsuk-warning-callout__label"
           >
             <span
@@ -446,7 +457,7 @@ exports[`renders form with select for multiple campaign ids 1`] = `
               </span>
               Important
             </span>
-          </h3>
+          </h2>
           <p>
             You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
           </p>
@@ -496,7 +507,7 @@ exports[`renders form with select for multiple campaign ids 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders form with single campaign id displayed 1`] = `
+exports[`Message plan form renders form with single campaign id displayed 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"

@@ -172,7 +172,7 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
                   class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
                   data-testid="campaign-warning-callout"
                 >
-                  <h3
+                  <h2
                     class="nhsuk-warning-callout__label"
                   >
                     <span
@@ -185,7 +185,7 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
                       </span>
                       Important
                     </span>
-                  </h3>
+                  </h2>
                   <p>
                     You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
                   </p>
@@ -384,7 +384,7 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
                   class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
                   data-testid="campaign-warning-callout"
                 >
-                  <h3
+                  <h2
                     class="nhsuk-warning-callout__label"
                   >
                     <span
@@ -397,7 +397,7 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
                       </span>
                       Important
                     </span>
-                  </h3>
+                  </h2>
                   <p>
                     You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
                   </p>
