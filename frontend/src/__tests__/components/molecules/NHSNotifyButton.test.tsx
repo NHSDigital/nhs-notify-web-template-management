@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 describe('NHS Notify button', () => {
+  afterEach(() => jest.useRealTimers());
   it('renders component correctly as a button', () => {
     render(
       <NHSNotifyButton data-testid='button'> Button text</NHSNotifyButton>
@@ -77,6 +78,5 @@ describe('NHS Notify button', () => {
     fireEvent.click(button);
 
     expect(onClick).toHaveBeenCalledTimes(2);
-    jest.useRealTimers();
   });
 });
