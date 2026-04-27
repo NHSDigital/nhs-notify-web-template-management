@@ -68,7 +68,6 @@ export const PDF_LETTER_TEMPLATE: PdfLetterTemplate = {
   letterType: 'x0',
   language: 'en',
   letterVersion: 'PDF',
-  campaignId: 'campaign',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
@@ -90,7 +89,6 @@ export const LARGE_PRINT_LETTER_TEMPLATE: PdfLetterTemplate = {
   letterType: 'x1',
   language: 'en',
   letterVersion: 'PDF',
-  campaignId: 'campaign',
   files: {
     pdfTemplate: {
       fileName: 'large-print-template.pdf',
