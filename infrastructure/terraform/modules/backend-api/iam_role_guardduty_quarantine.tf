@@ -1,3 +1,4 @@
+# TODO: CCM-12777: delete after production deploy
 resource "aws_iam_role" "guardduty_quarantine" {
   name               = "${local.csi}-guardduty-quarantine"
   description        = "IAM Role for GuardDuty to provide S3 malware protection"

@@ -8,8 +8,18 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_passed_for_uploa
     resources   = [aws_guardduty_malware_protection_plan.quarantine.arn]
     detail = {
       s3ObjectDetails = {
-        bucketName = [module.s3bucket_quarantine.id]
-        objectKey  = [{ prefix = "pdf-template/" }, { prefix = "test-data/" }]
+        bucketName = [
+          data.aws_s3_bucket.quarantine.id,
+          # TODO: CCM-12777: delete
+          module.s3bucket_quarantine.id
+        ]
+        objectKey = [
+          { prefix = "${var.environment}/pdf-template/" },
+          { prefix = "${var.environment}/test-data/" },
+          # TODO: CCM-12777: delete
+          { prefix = "pdf-template/" },
+          { prefix = "test-data/" }
+        ]
       }
       scanResultDetails = {
         scanResultStatus = ["NO_THREATS_FOUND"]

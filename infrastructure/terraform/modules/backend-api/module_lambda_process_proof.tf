@@ -93,7 +93,9 @@ data "aws_iam_policy_document" "process_proof" {
       "s3:GetObjectVersionTagging",
     ]
 
-    resources = ["${module.s3bucket_quarantine.arn}/*"]
+    resources = [
+      "${data.aws_s3_bucket.quarantine.arn}/${var.environment}/*",
+    ]
   }
 
   statement {

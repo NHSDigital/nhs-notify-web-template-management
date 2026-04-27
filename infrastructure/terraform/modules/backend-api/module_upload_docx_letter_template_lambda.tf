@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "upload_docx_letter_template_lambda_policy" {
     ]
 
     resources = [
-      "${module.s3bucket_quarantine.arn}/docx-template/*",
+      "${data.aws_s3_bucket.quarantine.arn}/${var.environment}/docx-template/*",
     ]
   }
 
