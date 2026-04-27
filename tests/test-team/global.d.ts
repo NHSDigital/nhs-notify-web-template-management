@@ -6,6 +6,7 @@ declare global {
       CLIENT_SSM_PATH_PREFIX: string;
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
+      CONTACT_DETAILS_TABLE_NAME: string;
       ENVIRONMENT: string;
       EVENTS_SNS_TOPIC_ARN: string;
       LETTER_VARIANTS_TABLE_NAME: string;
