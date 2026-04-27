@@ -1017,9 +1017,9 @@ describe('RoutingConfigRepository', () => {
           [TEMPLATE_TABLE_NAME]: [
             makeTemplateMock({
               id: 'letter-template-id',
+              campaignId: 'camp_id',
               templateType: 'LETTER',
               templateStatus: 'NOT_YET_SUBMITTED',
-              campaignId: 'camp_id',
             }),
           ],
         },
