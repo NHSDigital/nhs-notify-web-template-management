@@ -236,6 +236,7 @@ describe('Template API - List', () => {
 
     const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
       id: 'id',
+      campaignId: 'campaign',
       templateType: 'LETTER',
       name: 'name',
       createdAt: new Date().toISOString(),
@@ -298,6 +299,7 @@ describe('Template API - List', () => {
 
     const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
       id: 'id',
+      campaignId: 'campaign',
       templateType: 'LETTER',
       name: 'name',
       createdAt: new Date().toISOString(),

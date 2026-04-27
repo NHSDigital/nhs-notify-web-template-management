@@ -27,7 +27,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
             <h1
               class="nhsuk-heading-xl"
             >
-              Choose a letter template
+              Choose a standard English letter template
             </h1>
           </div>
           <form
@@ -80,7 +80,7 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
                   class="nhsuk-hint nhsuk-u-reading-width"
                   data-testid="table-hint"
                 >
-                  Choose one option
+                  Choose one option. You can only choose templates linked to the same campaign as your message plan.
                 </div>
                 <div
                   class="nhsuk-form-group"
@@ -255,6 +255,106 @@ exports[`ChooseStandardEnglishLetterTemplate page renders letter template select
               </button>
               <a
                 class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
+                data-testid="back-link-bottom"
+                href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
+              >
+                Go back
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ChooseStandardEnglishLetterTemplate page renders the empty version when there are no templates 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-width-container"
+  >
+    <main
+      class="nhsuk-main-wrapper"
+      id="maincontent"
+      role="main"
+    >
+      <div
+        class="nhsuk-grid-row"
+      >
+        <div
+          class="nhsuk-grid-column-full"
+        >
+          <div
+            class="nhsuk-u-reading-width"
+          >
+            <span
+              class="nhsuk-caption-l"
+            >
+              Autumn Campaign Plan
+            </span>
+            <h1
+              class="nhsuk-heading-xl"
+            >
+              Choose a standard English letter template
+            </h1>
+          </div>
+          <form
+            action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+          >
+            <input
+              name="form-id"
+              readonly=""
+              type="hidden"
+              value="choose-channel-template"
+            />
+            <input
+              name="csrf_token"
+              readonly=""
+              type="hidden"
+              value="no_token"
+            />
+            <input
+              name="lockNumber"
+              readonly=""
+              type="hidden"
+              value="42"
+            />
+            <dl
+              class="nhsuk-summary-list"
+              data-testid="previous-selection-details"
+            >
+              <div
+                class="nhsuk-summary-list__row"
+              >
+                <dt
+                  class="nhsuk-summary-list__key"
+                >
+                  Previously selected template
+                </dt>
+                <dd
+                  class="nhsuk-summary-list__value"
+                />
+              </div>
+            </dl>
+            <p
+              data-testid="no-templates-message"
+            >
+              You do not have any standard English letter templates linked to the campaign you chose for this message plan.
+            </p>
+            <div
+              class="nhsuk-form-group"
+              data-testid="channel-template-actions"
+            >
+              <a
+                class="nhsuk-u-font-size-19 nhsuk-body-m fit-content"
+                data-testid="go-to-templates-link"
+                href="/message-templates"
+              >
+                Go to templates
+              </a>
+              <a
+                class="nhsuk-u-font-size-19"
                 data-testid="back-link-bottom"
                 href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
               >

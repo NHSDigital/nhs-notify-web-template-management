@@ -12,6 +12,7 @@ export type AuthoringLetterFiles = {
 };
 
 export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
+  campaignId: string;
   clientId: string;
   customPersonalisation?: Array<string>;
   files: AuthoringLetterFiles;
@@ -22,7 +23,6 @@ export type AuthoringLetterProperties = BaseLetterTemplateProperties & {
 };
 
 export type BaseCreatedTemplate = BaseTemplate & {
-  campaignId?: string;
   clientId?: string;
   createdAt: string;
   createdBy?: string;
@@ -275,6 +275,7 @@ export type PdfLetterFiles = {
 };
 
 export type PdfLetterProperties = BaseLetterTemplateProperties & {
+  campaignId?: string;
   files: PdfLetterFiles;
   letterVersion: 'PDF';
   personalisationParameters?: Array<string>;
@@ -1205,6 +1206,10 @@ export type GetV1TemplatesData = {
      * Filter by a single letter version
      */
     letterVersion?: LetterVersion;
+    /**
+     * Filter by a single campaign ID
+     */
+    campaignId?: string;
   };
   url: '/v1/templates';
 };

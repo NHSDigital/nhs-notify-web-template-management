@@ -155,6 +155,68 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
     expect(updated.data.createdAt).toEqual(dbEntry.createdAt);
   });
 
+  test('returns 200 when LETTER template has PROOF_APPROVED status and matching campaignId', async ({
+    request,
+  }) => {
+    const letterTemplateId = randomUUID();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      letterTemplateId,
+      user1,
+      'Test Letter Template',
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { dbEntry, apiResponse } = RoutingConfigFactory.create(user1, {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: letterTemplateId,
+        },
+      ],
+    });
+
+    await storageHelper.seed([dbEntry]);
+
+    const start = new Date();
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(200);
+
+    const updated = await response.json();
+
+    expect(updated).toEqual({
+      statusCode: 200,
+      data: {
+        ...apiResponse,
+        status: 'COMPLETED' satisfies RoutingConfigStatus,
+        updatedAt: expect.stringMatching(isoDateRegExp),
+        lockNumber: dbEntry.lockNumber + 1,
+      },
+    });
+
+    expect(updated.data.updatedAt).toBeDateRoughlyBetween([start, new Date()]);
+    expect(updated.data.createdAt).toEqual(dbEntry.createdAt);
+  });
+
   test('returns 400 - cannot submit a COMPLETED routing config', async ({
     request,
   }) => {
@@ -619,8 +681,61 @@ test.describe('PATCH /v1/routing-configuration/:routingConfigId/submit', () => {
 
     expect(await response.json()).toEqual({
       statusCode: 400,
-      technicalMessage:
-        'Letter templates must have status PROOF_APPROVED or SUBMITTED',
+      technicalMessage: 'Some templates failed validation',
+      details: {
+        templateIds: letterTemplateId,
+      },
+    });
+  });
+
+  test('returns 400 if LETTER template has mismatched campaignId', async ({
+    request,
+  }) => {
+    const letterTemplateId = randomUUID();
+
+    const letterTemplate = TemplateFactory.createAuthoringLetterTemplate(
+      letterTemplateId,
+      user1,
+      'Test Letter Template',
+      'PROOF_APPROVED',
+      {
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
+        campaignId: 'mismatched-campaign-id',
+      }
+    );
+
+    await templateStorageHelper.seedTemplateData([letterTemplate]);
+
+    const { dbEntry } = RoutingConfigFactory.create(user1, {
+      cascade: [
+        {
+          cascadeGroups: ['standard'],
+          channel: 'LETTER',
+          channelType: 'primary',
+          defaultTemplateId: letterTemplateId,
+        },
+      ],
+    });
+
+    await storageHelper.seed([dbEntry]);
+
+    const response = await request.patch(
+      `${process.env.API_BASE_URL}/v1/routing-configuration/${dbEntry.id}/submit`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'X-Lock-Number': String(dbEntry.lockNumber),
+        },
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Some templates failed validation',
       details: {
         templateIds: letterTemplateId,
       },

@@ -157,6 +157,7 @@ export const $CreatePdfLetterProperties =
 export const $PdfLetterProperties = schemaFor<PdfLetterProperties>()(
   z.object({
     ...$BaseLetterTemplateProperties.shape,
+    campaignId: z.string().optional(),
     files: $PdfLetterFiles,
     letterVersion: z.literal('PDF'),
     personalisationParameters: z.array(z.string()).optional(),
@@ -189,6 +190,7 @@ export const $AuthoringLetterProperties =
   schemaFor<AuthoringLetterProperties>()(
     z.object({
       ...$BaseLetterTemplateProperties.shape,
+      campaignId: z.string(),
       customPersonalisation: z.array(z.string()).optional(),
       files: $AuthoringLetterFiles,
       clientId: z.string(),
@@ -304,7 +306,6 @@ const $BaseTemplateDto = schemaFor<
 >()(
   z.object({
     ...$BaseTemplateSchema.shape,
-    campaignId: z.string().optional(),
     clientId: z.string().optional(),
     createdAt: z.string(),
     lockNumber: $LockNumber.default(0),
@@ -357,4 +358,5 @@ export const $TemplateFilter = z.object({
   excludeLanguage: $Language.optional(),
   letterType: $LetterType.optional(),
   letterVersion: z.enum(['AUTHORING', 'PDF']).optional(),
+  campaignId: z.string().optional(),
 }) satisfies z.ZodType<TemplateFilter>;

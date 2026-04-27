@@ -93,7 +93,6 @@ export type UpdateTemplatePayload = TypeSpecificProperties & {
 };
 
 export type Template = TypeSpecificProperties & {
-  campaignId?: string;
   clientId?: string;
   createdAt: string;
   id: string;

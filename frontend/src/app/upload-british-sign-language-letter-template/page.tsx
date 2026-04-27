@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: content.pageTitle,
 };
 
-export default async function UploadLargePrintLetterTemplatePage() {
+export default async function UploadBritishSignLanguageLetterTemplatePage() {
   const client = await fetchClient();
 
   if (!client?.features.letterAuthoring) {

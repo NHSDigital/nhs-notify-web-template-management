@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
+exports[`ChooseTemplateFromMessagePlan - channel variant calls templateListFetcher with campaignId and renders 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-width-container"
@@ -80,7 +80,7 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
                   class="nhsuk-hint nhsuk-u-reading-width"
                   data-testid="table-hint"
                 >
-                  Choose one option
+                  Select one template.
                 </div>
                 <div
                   class="nhsuk-form-group"
@@ -269,7 +269,7 @@ exports[`ChooseEmailTemplate page renders Email template selection 1`] = `
 </DocumentFragment>
 `;
 
-exports[`ChooseEmailTemplate page renders the empty version when there are no templates 1`] = `
+exports[`ChooseTemplateFromMessagePlan - language variant calls templateListFetcher with campaignId and renders 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-width-container"
@@ -296,7 +296,7 @@ exports[`ChooseEmailTemplate page renders the empty version when there are no te
             <h1
               class="nhsuk-heading-xl"
             >
-              Choose an email template
+              Choose other language letter templates
             </h1>
           </div>
           <form
@@ -306,7 +306,7 @@ exports[`ChooseEmailTemplate page renders the empty version when there are no te
               name="form-id"
               readonly=""
               type="hidden"
-              value="choose-channel-template"
+              value="choose-language-letter-templates"
             />
             <input
               name="csrf_token"
@@ -320,41 +320,194 @@ exports[`ChooseEmailTemplate page renders the empty version when there are no te
               type="hidden"
               value="42"
             />
-            <dl
-              class="nhsuk-summary-list"
-              data-testid="previous-selection-details"
+            <div
+              class="nhsuk-grid-row"
             >
               <div
-                class="nhsuk-summary-list__row"
+                class="nhsuk-grid-column-full"
               >
-                <dt
-                  class="nhsuk-summary-list__key"
+                <div
+                  class="nhsuk-hint nhsuk-u-reading-width"
+                  data-testid="table-hint"
                 >
-                  Previously selected template
-                </dt>
-                <dd
-                  class="nhsuk-summary-list__value"
-                />
+                  Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.
+                </div>
+                <div
+                  class="nhsuk-form-group"
+                >
+                  <div
+                    class="nhsuk-checkboxes"
+                    id="language-templates"
+                  >
+                    <table
+                      class="nhsuk-table-responsive"
+                      data-testid="language-templates-table"
+                      id="language-templates-table"
+                    >
+                      <thead
+                        class="nhsuk-table__head"
+                        role="rowgroup"
+                      >
+                        <tr
+                          class="nhsuk-table__row"
+                        >
+                          <th
+                            class="nhsuk-table__header"
+                            data-testid="language-templates-table-header-template-select"
+                            scope="col"
+                          >
+                            Select
+                          </th>
+                          <th
+                            class="nhsuk-table__header"
+                            data-testid="language-templates-table-header-template-name"
+                            scope="col"
+                          >
+                            Name
+                          </th>
+                          <th
+                            class="nhsuk-table__header"
+                            data-testid="language-templates-table-header-template-type"
+                            scope="col"
+                          >
+                            Type
+                          </th>
+                          <th
+                            class="nhsuk-table__header"
+                            data-testid="language-templates-table-header-template-last-edited"
+                            scope="col"
+                          >
+                            Last edited
+                          </th>
+                          <th
+                            class="nhsuk-table__header"
+                            data-testid="language-templates-table-header-template-action"
+                            scope="col"
+                          />
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="nhsuk-table__body"
+                      >
+                        <tr
+                          class="nhsuk-table__row"
+                        >
+                          <td
+                            class="nhsuk-table__cell"
+                            role="cell"
+                          >
+                            <span
+                              aria-hidden="true"
+                              class="nhsuk-table-responsive__heading"
+                            >
+                              Select 
+                            </span>
+                            <div
+                              class="nhsuk-checkboxes__item"
+                            >
+                              <input
+                                class="nhsuk-checkboxes__input"
+                                data-checkbox-exclusive-group="language-templates"
+                                data-testid="french-letter-id-checkbox"
+                                id="template-french-letter-id"
+                                name="template_french-letter-id"
+                                type="checkbox"
+                                value="french-letter-id:fr"
+                              />
+                              <label
+                                class="nhsuk-label nhsuk-checkboxes__label"
+                                for="template-french-letter-id"
+                                id="template-french-letter-id--label"
+                              >
+                                 
+                              </label>
+                            </div>
+                          </td>
+                          <td
+                            class="nhsuk-table__cell"
+                            role="cell"
+                          >
+                            <span
+                              aria-hidden="true"
+                              class="nhsuk-table-responsive__heading"
+                            >
+                              Name 
+                            </span>
+                            <label
+                              class="nhsuk-label nhsuk-checkboxes__label nhsuk-u-margin-0 nhsuk-u-padding-0"
+                              for="template-french-letter-id"
+                            >
+                              French letter template
+                            </label>
+                          </td>
+                          <td
+                            class="nhsuk-table__cell"
+                            role="cell"
+                          >
+                            <span
+                              aria-hidden="true"
+                              class="nhsuk-table-responsive__heading"
+                            >
+                              Type 
+                            </span>
+                            Standard letter - French
+                          </td>
+                          <td
+                            class="nhsuk-table__cell"
+                            role="cell"
+                          >
+                            <span
+                              aria-hidden="true"
+                              class="nhsuk-table-responsive__heading"
+                            >
+                              Last edited 
+                            </span>
+                            13th Jan 2025
+                            <br />
+                            10:19
+                          </td>
+                          <td
+                            class="nhsuk-table__cell"
+                            role="cell"
+                          >
+                            <span
+                              aria-hidden="true"
+                              class="nhsuk-table-responsive__heading"
+                            >
+                               
+                            </span>
+                            <a
+                              aria-label="Preview French letter template"
+                              class="nhsuk-u-margin-bottom-2 nhsuk-link"
+                              data-testid="french-letter-id-preview-link"
+                              href="/message-plans/choose-other-language-letter-template/fbb81055-79b9-4759-ac07-d191ae57be34/preview-template/french-letter-id?lockNumber=42"
+                              id="preview-template-link-0"
+                            >
+                              Preview
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-            </dl>
-            <p
-              data-testid="no-templates-message"
-            >
-              You do not have any email templates yet.
-            </p>
+            </div>
             <div
               class="nhsuk-form-group"
               data-testid="channel-template-actions"
             >
-              <a
-                class="nhsuk-u-font-size-19 nhsuk-body-m fit-content"
-                data-testid="go-to-templates-link"
-                href="/message-templates"
+              <button
+                aria-disabled="false"
+                class="nhsuk-button"
+                data-testid="submit-button"
+                id="channel-template-submit-button"
+                type="submit"
               >
-                Go to templates
-              </a>
+                Save and continue
+              </button>
               <a
-                class="nhsuk-u-font-size-19"
+                class="nhsuk-u-font-size-19 inline-block nhsuk-u-margin-left-4 nhsuk-u-padding-top-3"
                 data-testid="back-link-bottom"
                 href="/message-plans/edit-message-plan/fbb81055-79b9-4759-ac07-d191ae57be34"
               >

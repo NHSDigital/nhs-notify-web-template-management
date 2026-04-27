@@ -82,6 +82,7 @@ const setup = () => {
     excludeLanguage: jest.fn().mockReturnThis(),
     letterType: jest.fn().mockReturnThis(),
     letterVersion: jest.fn().mockReturnThis(),
+    campaignId: jest.fn().mockReturnThis(),
   });
 
   return {
@@ -2042,6 +2043,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         id: templateId,
+        campaignId: 'campaign',
         clientId: user.clientId,
         name: 'Updated Template Name',
         templateType: 'LETTER',
@@ -2179,6 +2181,7 @@ describe('templateClient', () => {
 
         const template: TemplateDto = {
           id: templateId,
+          campaignId: 'campaign',
           clientId: user.clientId,
           name: 'Updated Name',
           templateType: 'LETTER',
@@ -2275,6 +2278,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         id: templateId,
+        campaignId: 'campaign',
         clientId: user.clientId,
         name: 'Updated Name',
         templateType: 'LETTER',
@@ -2503,6 +2507,7 @@ describe('templateClient', () => {
 
         const template: TemplateDto = {
           id: 'template-id',
+          campaignId: 'campaign',
           templateType: 'LETTER',
           name: 'nhsapp-template',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -3014,6 +3019,7 @@ describe('templateClient', () => {
 
         const template: TemplateDto = {
           id: 'template-id',
+          campaignId: 'campaign',
           templateType: 'LETTER',
           name: 'nhsapp-template',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -3294,6 +3300,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         id: templateId,
+        campaignId: 'campaign',
         clientId: user.clientId,
         name: 'Updated Name',
         templateType: 'LETTER',
@@ -3766,6 +3773,7 @@ describe('templateClient', () => {
       expect(queryMock.language).not.toHaveBeenCalled();
       expect(queryMock.letterType).not.toHaveBeenCalled();
       expect(queryMock.letterVersion).not.toHaveBeenCalled();
+      expect(queryMock.campaignId).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         data: [template],
@@ -3808,6 +3816,7 @@ describe('templateClient', () => {
         excludeLanguage: 'fr',
         letterType: 'x0',
         letterVersion: 'AUTHORING',
+        campaignId: 'campaign-2',
       };
 
       const template: TemplateDto = {
@@ -3838,6 +3847,7 @@ describe('templateClient', () => {
       expect(queryMock.excludeLanguage).toHaveBeenCalledWith('fr');
       expect(queryMock.letterType).toHaveBeenCalledWith('x0');
       expect(queryMock.letterVersion).toHaveBeenCalledWith('AUTHORING');
+      expect(queryMock.campaignId).toHaveBeenCalledWith('campaign-2');
 
       expect(result).toEqual({
         data: [template],
@@ -3857,6 +3867,7 @@ describe('templateClient', () => {
 
         const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
           id: templateId,
+          campaignId: 'campaign',
           templateType: 'LETTER',
           name: 'name',
           language: 'en',
@@ -3897,6 +3908,7 @@ describe('templateClient', () => {
 
         const template: Extract<TemplateDto, { templateType: 'LETTER' }> = {
           id: templateId,
+          campaignId: 'campaign',
           templateType: 'LETTER',
           name: 'name',
           language: 'en',
@@ -5408,6 +5420,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         id: templateId,
+        campaignId: 'campaign',
         clientId: user.clientId,
         createdAt: NOW,
         updatedAt: NOW,
@@ -5456,6 +5469,7 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         id: templateId,
         clientId: user.clientId,
+        campaignId: 'campaign',
         createdAt: NOW,
         updatedAt: NOW,
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -5539,6 +5553,7 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         id: templateId,
         clientId: user.clientId,
+        campaignId: 'campaign',
         createdAt: NOW,
         updatedAt: NOW,
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -5620,6 +5635,7 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         id: templateId,
         clientId: user.clientId,
+        campaignId: 'campaign',
         createdAt: NOW,
         updatedAt: NOW,
         templateStatus: 'NOT_YET_SUBMITTED',

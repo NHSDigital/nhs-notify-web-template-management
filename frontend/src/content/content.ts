@@ -1676,60 +1676,44 @@ const messagePlanBlock = {
   title: '{{ordinal}} message',
 };
 
-const chooseNhsAppTemplate = {
-  pageTitle: generatePageTitle('Choose an NHS App template'),
-  pageHeading: 'Choose an NHS App template',
-  noTemplatesText: 'You do not have any NHS App templates yet.',
+const digitalTemplateDisplayMappings: Record<DigitalTemplateType, string> = {
+  NHS_APP: 'NHS App',
+  EMAIL: 'email',
+  SMS: 'text message (SMS)',
 };
 
-const chooseEmailTemplate = {
-  pageTitle: generatePageTitle('Choose an email template'),
-  pageHeading: 'Choose an email template',
-  noTemplatesText: 'You do not have any email templates yet.',
+const chooseDigitalTemplatePage = (type: DigitalTemplateType) => {
+  const display = digitalTemplateDisplayMappings[type];
+  return {
+    pageTitle: generatePageTitle(
+      `Choose ${article(display)} ${display} template`
+    ),
+    pageHeading: `Choose ${article(display)} ${display} template`,
+    hintText: 'Choose one option',
+    noTemplatesText: `You do not have any ${display} templates yet.`,
+  };
 };
 
-const chooseTextMessageTemplate = {
-  pageTitle: generatePageTitle('Choose a text message (SMS) template'),
-  pageHeading: 'Choose a text message (SMS) template',
-  noTemplatesText: 'You do not have any text message (SMS) templates yet.',
+const chooseLetterTemplatePage = (
+  type: Exclude<FrontendSupportedLetterType, 'language'>
+) => {
+  const display = docxLetterDisplayMappings[type];
+  return {
+    pageTitle: generatePageTitle(
+      `Choose ${article(display)} ${display} letter template`
+    ),
+    pageHeading: `Choose ${article(display)} ${display} letter template`,
+    hintText:
+      'Choose one option. You can only choose templates linked to the same campaign as your message plan.',
+    noTemplatesText: `You do not have any ${display} letter templates linked to the campaign you chose for this message plan.`,
+  };
 };
 
-const chooseStandardEnglishLetterTemplate = {
-  pageTitle: generatePageTitle('Choose a letter template'),
-  pageHeading: 'Choose a letter template',
-  noTemplatesText: 'You do not have any standard letter templates yet.',
-};
-
-const chooseLargePrintLetterTemplate = {
-  pageTitle: generatePageTitle('Choose a large print letter template'),
-  pageHeading: 'Choose a large print letter template',
-  noTemplatesText: 'You do not have any large print letter templates yet.',
-};
-
-const chooseBritishSignLanguageLetterTemplate = {
+const previewLetterTemplatePage = (type: FrontendSupportedLetterType) => ({
   pageTitle: generatePageTitle(
-    'Choose a British Sign Language letter template'
+    `Preview ${docxLetterDisplayMappings[type]} letter template`
   ),
-  pageHeading: 'Choose a British Sign Language letter template',
-  noTemplatesText:
-    'You do not have any British Sign Language letter templates yet.',
-};
-
-const previewStandardEnglishLetterTemplate = {
-  pageTitle: previewLetterTitle,
-};
-
-const previewLargePrintLetterTemplate = {
-  pageTitle: generatePageTitle('Preview large print letter template'),
-};
-
-const previewBritishSignLanguageLetterTemplate = {
-  pageTitle: generatePageTitle('Preview British Sign Language letter template'),
-};
-
-const previewOtherLanguageLetterTemplate = {
-  pageTitle: generatePageTitle('Preview other language letter template'),
-};
+});
 
 const chooseOtherLanguageLetterTemplate = {
   pageTitle: generatePageTitle('Choose other language letter templates'),
@@ -1739,7 +1723,6 @@ const chooseOtherLanguageLetterTemplate = {
 const chooseChannelTemplate = {
   errorHintText: 'You have not chosen a template',
   previousSelectionLabel: 'Previously selected template',
-  tableHintText: 'Choose one option',
   tableContent: {
     selectHeading: 'Select',
     nameHeading: 'Name',
@@ -1780,9 +1763,10 @@ const chooseLanguageLetterTemplates = {
     },
   },
   previousSelectionLabel: 'Previously selected templates',
-  noTemplatesText: 'You do not have any other language letter templates yet.',
+  noTemplatesText:
+    'You do not have any other language letter templates linked to the campaign you chose for this message plan.',
   tableHintText:
-    'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.',
+    'Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.',
   tableContent: chooseChannelTemplate.tableContent,
   actions: chooseChannelTemplate.actions,
 };
@@ -2080,7 +2064,7 @@ const docxLetterDisplayMappings: Record<FrontendSupportedLetterType, string> = {
   language: 'other language',
 };
 
-const article = (noun: string) => (/^[aeiou]/i.test(noun) ? 'an' : 'a');
+const article = (noun: string) => (/^([aeiou]|nhs)/i.test(noun) ? 'an' : 'a');
 
 const uploadDocxLetterTemplatePage = (type: FrontendSupportedLetterType) => {
   const display = docxLetterDisplayMappings[type];
@@ -2292,14 +2276,10 @@ const content = {
     viewSubmittedTemplate,
   },
   pages: {
-    chooseBritishSignLanguageLetterTemplate,
-    chooseEmailTemplate,
-    chooseLargePrintLetterTemplate,
-    chooseNhsAppTemplate,
+    chooseDigitalTemplatePage,
+    chooseLetterTemplatePage,
     chooseOtherLanguageLetterTemplate,
     choosePrintingAndPostagePage,
-    chooseStandardEnglishLetterTemplate,
-    chooseTextMessageTemplate,
     createMessagePlan,
     deleteTemplateErrorPage,
     editMessagePlan,
@@ -2314,13 +2294,10 @@ const content = {
     messagePlanInvalidConfiguration,
     messagePlansPage,
     messageTemplates,
-    previewBritishSignLanguageLetterTemplate,
-    previewLargePrintLetterTemplate,
     previewLetterTemplate,
+    previewLetterTemplatePage,
     previewMessagePlan,
     previewMessagePlanPreviewLetter,
-    previewOtherLanguageLetterTemplate,
-    previewStandardEnglishLetterTemplate,
     previewSubmittedLetterTemplate,
     renameMessagePlan,
     reviewAndApproveLetterTemplate,

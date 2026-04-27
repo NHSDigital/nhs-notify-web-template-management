@@ -40,7 +40,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -59,7 +58,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -77,7 +75,6 @@ export const TemplateFactory = {
     templateStatus: string = 'NOT_YET_SUBMITTED'
   ): Template => {
     return TemplateFactory.create({
-      campaignId: user.campaignId,
       clientId: user.clientId,
       id,
       message: 'test-message',
@@ -137,7 +134,7 @@ export const TemplateFactory = {
       letterType?: LetterType;
       language?: Language;
       letterVariantId?: string;
-      campaignId?: string | null;
+      campaignId?: string;
       docxTemplate?: Partial<File> | false;
       initialRender?: Partial<RenderFile> | false;
       shortFormRender?: Partial<RenderFile> | false;
@@ -147,11 +144,6 @@ export const TemplateFactory = {
       validationErrors?: Array<{ name: string; issues?: string[] }>;
     }
   ): Template => {
-    const campaignId =
-      options?.campaignId === null
-        ? undefined
-        : (options?.campaignId ?? 'campaign-id');
-
     const files: Record<string, unknown> = {};
 
     if (options?.docxTemplate !== false) {
@@ -188,7 +180,7 @@ export const TemplateFactory = {
     }
 
     return TemplateFactory.create({
-      ...(campaignId && { campaignId }),
+      campaignId: options?.campaignId ?? user.campaignIds?.[0] ?? 'campaign',
       clientId: user.clientId,
       files,
       id,

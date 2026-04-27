@@ -61,17 +61,65 @@ const makeTemplateMock = (
     templateType?: 'SMS' | 'EMAIL' | 'NHS_APP' | 'LETTER';
     templateStatus?: string;
     lockNumber?: number;
+    campaignId?: string;
+    clientId?: string;
   } = {}
-) => ({
-  id: overrides.id ?? 'template-id',
-  name: 'Test Template',
-  templateType: overrides.templateType ?? 'SMS',
-  templateStatus: overrides.templateStatus ?? 'NOT_YET_SUBMITTED',
-  lockNumber: overrides.lockNumber ?? 1,
-  message: 'Test message content',
-  createdAt: date.toISOString(),
-  updatedAt: date.toISOString(),
-});
+) => {
+  const templateType = overrides.templateType ?? 'SMS';
+  const clientId = overrides.clientId ?? user.clientId;
+
+  const base = {
+    id: overrides.id ?? 'template-id',
+    owner: `CLIENT#${clientId}`,
+    clientId,
+    name: 'Test Template',
+    templateType,
+    templateStatus: overrides.templateStatus ?? 'NOT_YET_SUBMITTED',
+    lockNumber: overrides.lockNumber ?? 1,
+    createdAt: date.toISOString(),
+    updatedAt: date.toISOString(),
+  };
+
+  if (templateType === 'LETTER') {
+    return {
+      ...base,
+      campaignId: overrides.campaignId ?? 'campaign-1',
+      letterType: 'x0',
+      language: 'en',
+      letterVersion: 'AUTHORING',
+      files: {
+        docxTemplate: {
+          fileName: 'test.docx',
+          currentVersion: '1',
+          virusScanStatus: 'PASSED',
+        },
+        initialRender: {
+          status: 'RENDERED',
+          fileName: 'initial.pdf',
+          currentVersion: '1',
+          pageCount: 1,
+        },
+        longFormRender: {
+          status: 'RENDERED',
+          fileName: 'long-form.pdf',
+          currentVersion: '1',
+          pageCount: 2,
+        },
+        shortFormRender: {
+          status: 'RENDERED',
+          fileName: 'short-form.pdf',
+          currentVersion: '1',
+          pageCount: 1,
+        },
+      },
+    };
+  }
+
+  return {
+    ...base,
+    message: 'Test message content',
+  };
+};
 
 function setup() {
   dynamo.reset();
@@ -452,6 +500,52 @@ describe('RoutingConfigRepository', () => {
           },
         ],
       });
+    });
+
+    test('succeeds when LETTER template has valid status (PROOF_APPROVED) and matching campaignId', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLetter: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        campaignId: 'campaign-1',
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: 'letter-template-id',
+          },
+        ],
+      };
+
+      const completed: RoutingConfig = {
+        ...routingConfigWithLetter,
+        status: 'COMPLETED',
+        lockNumber: 3,
+      };
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithLetter })
+        .resolvesOnce({ Item: completed });
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [
+            makeTemplateMock({
+              id: 'letter-template-id',
+              templateType: 'LETTER',
+              templateStatus: 'PROOF_APPROVED',
+              campaignId: 'campaign-1',
+            }),
+          ],
+        },
+      });
+      mocks.dynamo.on(TransactWriteCommand).resolvesOnce({});
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({ data: completed });
     });
 
     test('returns failure on client error during initial get', async () => {
@@ -917,30 +1011,16 @@ describe('RoutingConfigRepository', () => {
       mocks.dynamo
         .on(GetCommand)
         .resolvesOnce({ Item: routingConfigWithLetter });
-      // LETTER template with invalid status (not PROOF_APPROVED or SUBMITTED)
+
       mocks.dynamo.on(BatchGetCommand).resolvesOnce({
         Responses: {
           [TEMPLATE_TABLE_NAME]: [
-            {
+            makeTemplateMock({
               id: 'letter-template-id',
-              owner: clientOwnerKey,
-              name: 'Test Letter Template',
+              campaignId: 'camp_id',
               templateType: 'LETTER',
               templateStatus: 'NOT_YET_SUBMITTED',
-              lockNumber: 1,
-              letterType: 'x0',
-              language: 'en',
-              letterVersion: 'PDF',
-              files: {
-                pdfTemplate: {
-                  fileName: 'test.pdf',
-                  currentVersion: '1',
-                  virusScanStatus: 'PASSED',
-                },
-              },
-              createdAt: date.toISOString(),
-              updatedAt: date.toISOString(),
-            },
+            }),
           ],
         },
       });
@@ -951,8 +1031,56 @@ describe('RoutingConfigRepository', () => {
         error: {
           errorMeta: {
             code: 400,
-            description:
-              'Letter templates must have status PROOF_APPROVED or SUBMITTED',
+            description: 'Some templates failed validation',
+            details: { templateIds: 'letter-template-id' },
+          },
+        },
+      });
+
+      expect(mocks.dynamo).not.toHaveReceivedCommand(TransactWriteCommand);
+    });
+
+    test('returns 400 failure if LETTER template has campaignId not matching routing config', async () => {
+      const { repo, mocks } = setup();
+
+      const routingConfigWithLetter: RoutingConfig = {
+        ...routingConfig,
+        lockNumber: 2,
+        campaignId: 'campaign-1',
+        cascade: [
+          {
+            cascadeGroups: ['standard'],
+            channel: 'LETTER',
+            channelType: 'primary',
+            defaultTemplateId: 'letter-template-id',
+          },
+        ],
+      };
+
+      mocks.dynamo
+        .on(GetCommand)
+        .resolvesOnce({ Item: routingConfigWithLetter });
+
+      mocks.dynamo.on(BatchGetCommand).resolvesOnce({
+        Responses: {
+          [TEMPLATE_TABLE_NAME]: [
+            makeTemplateMock({
+              id: 'letter-template-id',
+              templateType: 'LETTER',
+              templateStatus: 'PROOF_APPROVED',
+              campaignId: 'different-campaign',
+            }),
+          ],
+        },
+      });
+
+      const result = await repo.submit(routingConfig.id, user, 2);
+
+      expect(result).toEqual({
+        error: {
+          errorMeta: {
+            code: 400,
+            description: 'Some templates failed validation',
             details: { templateIds: 'letter-template-id' },
           },
         },

@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 import content from '@content/content';
 import { PreviewLetterFromChooseTemplate } from '@molecules/PreviewLetterFromChooseTemplate/PreviewLetterFromChooseTemplate';
 
-const { pageTitle } = content.pages.previewLargePrintLetterTemplate;
+const { pageTitle } = content.pages.previewLetterTemplatePage('x1');
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
