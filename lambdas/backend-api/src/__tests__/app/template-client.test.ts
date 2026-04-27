@@ -82,6 +82,7 @@ const setup = () => {
     excludeLanguage: jest.fn().mockReturnThis(),
     letterType: jest.fn().mockReturnThis(),
     letterVersion: jest.fn().mockReturnThis(),
+    campaignId: jest.fn().mockReturnThis(),
   });
 
   return {
@@ -3772,6 +3773,7 @@ describe('templateClient', () => {
       expect(queryMock.language).not.toHaveBeenCalled();
       expect(queryMock.letterType).not.toHaveBeenCalled();
       expect(queryMock.letterVersion).not.toHaveBeenCalled();
+      expect(queryMock.campaignId).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         data: [template],
@@ -3814,6 +3816,7 @@ describe('templateClient', () => {
         excludeLanguage: 'fr',
         letterType: 'x0',
         letterVersion: 'AUTHORING',
+        campaignId: 'campaign-2',
       };
 
       const template: TemplateDto = {
@@ -3844,6 +3847,7 @@ describe('templateClient', () => {
       expect(queryMock.excludeLanguage).toHaveBeenCalledWith('fr');
       expect(queryMock.letterType).toHaveBeenCalledWith('x0');
       expect(queryMock.letterVersion).toHaveBeenCalledWith('AUTHORING');
+      expect(queryMock.campaignId).toHaveBeenCalledWith('campaign-2');
 
       expect(result).toEqual({
         data: [template],

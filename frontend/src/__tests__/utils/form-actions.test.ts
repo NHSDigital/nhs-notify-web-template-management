@@ -13,7 +13,6 @@ import {
   patchTemplate,
   getTemplate,
   getTemplates,
-  getForeignLanguageLetterTemplates,
   uploadLetterTemplate,
   setTemplateToDeleted,
   setTemplateToSubmitted,
@@ -34,7 +33,6 @@ import {
   templateApiClient,
   letterVariantApiClient,
 } from 'nhs-notify-backend-client';
-import { PDF_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const mockedTemplateClient = jest.mocked(templateApiClient);
@@ -784,58 +782,6 @@ describe('form-actions', () => {
     const response = await getTemplates();
 
     expect(response).toEqual([validTemplate]);
-  });
-
-  describe('getForeignLanguageLetterTemplates', () => {
-    test('passes filters through to getTemplates', async () => {
-      const polishTemplate: TemplateDto = {
-        ...PDF_LETTER_TEMPLATE,
-        id: 'polish-1',
-        name: 'Polish Template',
-        language: 'pl',
-      };
-
-      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
-        data: [polishTemplate],
-      });
-
-      const response = await getForeignLanguageLetterTemplates({
-        templateStatus: ['SUBMITTED'],
-      });
-
-      expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        excludeLanguage: 'en',
-        templateStatus: ['SUBMITTED'],
-      });
-      expect(response).toEqual([polishTemplate]);
-    });
-
-    test('filters out English templates using excludeLanguage', async () => {
-      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
-        data: [],
-      });
-
-      const response = await getForeignLanguageLetterTemplates();
-
-      expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token', {
-        templateType: 'LETTER',
-        letterType: 'x0',
-        excludeLanguage: 'en',
-      });
-      expect(response).toEqual([]);
-    });
-
-    test('returns empty array when no templates exist', async () => {
-      mockedTemplateClient.listTemplates.mockResolvedValueOnce({
-        data: [],
-      });
-
-      const response = await getForeignLanguageLetterTemplates();
-
-      expect(response).toEqual([]);
-    });
   });
 
   describe('setTemplateToSubmitted', () => {

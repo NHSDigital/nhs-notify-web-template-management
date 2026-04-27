@@ -95,7 +95,7 @@ const propsByChannel = {
     templateList: [SMS_TEMPLATE],
   },
   LETTER: {
-    pageHeading: 'Choose a letter template',
+    pageHeading: 'Choose a standard English letter template"',
     cascadeIndex: 3,
     templateList: [
       { ...AUTHORING_LETTER_TEMPLATE, templateStatus: 'PROOF_APPROVED' },
@@ -116,6 +116,7 @@ const renderComponent = (overrides = {}) => {
     messagePlan: ROUTING_CONFIG,
     lockNumber: 42,
     noTemplatesText: 'You do not have any templates yet.',
+    hintText: 'Choose one option',
     ...propsByChannel.NHSAPP,
   };
 

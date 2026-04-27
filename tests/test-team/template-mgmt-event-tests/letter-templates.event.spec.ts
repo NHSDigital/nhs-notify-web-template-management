@@ -69,14 +69,14 @@ test.describe('Event publishing - Letters', () => {
         since: start,
         match: eventWithId(templateId),
       });
-      expect(events.length).toBe(1);
+      expect(events).toHaveLength(1);
 
       const draftEvents = events.filter(
         ({ record }) =>
           record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
-      expect(draftEvents.length, JSON.stringify(events)).toBe(1);
+      expect(draftEvents, JSON.stringify(events)).toHaveLength(1);
     }).toPass({ timeout: 90_000 });
   });
 
@@ -125,7 +125,7 @@ test.describe('Event publishing - Letters', () => {
         since: start,
         match: eventWithId(templateId),
       });
-      expect(events.length).toBe(1);
+      expect(events).toHaveLength(1);
 
       const completedEvents = events.filter(
         ({ record }) =>
@@ -133,7 +133,7 @@ test.describe('Event publishing - Letters', () => {
           'uk.nhs.notify.template-management.TemplateCompleted.v1'
       );
 
-      expect(completedEvents.length, JSON.stringify(events)).toBe(1);
+      expect(completedEvents, JSON.stringify(events)).toHaveLength(1);
     }).toPass({ timeout: 90_000 });
   });
 
@@ -186,7 +186,7 @@ test.describe('Event publishing - Letters', () => {
         since: start,
         match: eventWithId(templateId),
       });
-      expect(events.length).toBe(2);
+      expect(events).toHaveLength(2);
 
       const draftEvents = events.filter(
         ({ record }) =>
@@ -198,8 +198,8 @@ test.describe('Event publishing - Letters', () => {
           record.type === 'uk.nhs.notify.template-management.TemplateDrafted.v1'
       );
 
-      expect(draftEvents.length, JSON.stringify(events)).toBe(1);
-      expect(completedEvents.length, JSON.stringify(events)).toBe(1);
+      expect(draftEvents, JSON.stringify(events)).toHaveLength(1);
+      expect(completedEvents, JSON.stringify(events)).toHaveLength(1);
     }).toPass({ timeout: 90_000 });
   });
 
@@ -241,7 +241,7 @@ test.describe('Event publishing - Letters', () => {
         since: start,
         match: eventWithId(templateId),
       });
-      expect(events.length).toBe(0);
+      expect(events).toHaveLength(0);
     }).toPass({ timeout: 90_000 });
   });
 });

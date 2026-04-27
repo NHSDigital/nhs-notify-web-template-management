@@ -161,7 +161,7 @@ describe('ChooseLanguageLetterTemplates', () => {
       renderComponent();
 
       const hintText = screen.getByText(
-        'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.'
+        'Choose all the templates that you want to include in this message plan. You can only choose one template per language and they must be linked to the same campaign as your message plan.'
       );
       expect(hintText).toBeInTheDocument();
       expect(hintText).toHaveClass('nhsuk-hint');
@@ -190,14 +190,14 @@ describe('ChooseLanguageLetterTemplates', () => {
   });
 
   describe('when there are no templates', () => {
-    it('displays "You do not have any other language letter templates" message', () => {
+    it('displays no templates message', () => {
       renderComponent({
         templateList: [],
       });
 
       expect(
         screen.getByText(
-          'You do not have any other language letter templates yet.'
+          'You do not have any other language letter templates linked to the campaign you chose for this message plan.'
         )
       ).toBeInTheDocument();
       expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();

@@ -26,11 +26,12 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
   const {
     messagePlan,
     pageHeading,
-    noTemplatesText,
     templateList,
     cascadeIndex,
     lockNumber,
     accessibleFormat,
+    noTemplatesText,
+    hintText,
   } = props;
 
   const [state, action] = useActionState(chooseChannelTemplateAction, {
@@ -105,6 +106,7 @@ export function ChooseChannelTemplate(props: ChooseChannelTemplateProps) {
                 templateList={templateList}
                 errorState={activeErrorState || null}
                 selectedTemplate={selectedTemplateId}
+                hintText={hintText}
                 lockNumber={lockNumber}
               />
             ) : (

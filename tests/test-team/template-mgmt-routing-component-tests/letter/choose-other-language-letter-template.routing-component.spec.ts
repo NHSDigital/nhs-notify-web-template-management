@@ -19,7 +19,6 @@ import { TemplateFactory } from 'helpers/factories/template-factory';
 import { RoutingChooseOtherLanguageLetterTemplatePage } from 'pages/routing/letter/choose-other-language-letter-template-page';
 import { RoutingConfigDbEntry, Template } from 'helpers/types';
 import type { Language } from 'nhs-notify-web-template-management-types';
-import { loginAsUser } from 'helpers/auth/login-as-user';
 import { getTestContext } from 'helpers/context/context';
 import { RoutingEditMessagePlanPage } from 'pages/routing';
 
@@ -42,6 +41,7 @@ const templateIds = {
   NHSAPP: randomUUID(),
   LETTER: randomUUID(),
   LARGE_PRINT_LETTER: randomUUID(),
+  DIFFERENT_CAMPAIGN_LETTER: randomUUID(),
   ...languageTemplates,
 };
 
@@ -52,6 +52,7 @@ const routingConfigIds = {
   validationError: randomUUID(),
   forUserWithNoTemplates: randomUUID(),
   nonLetter: randomUUID(),
+  withNoTemplates: randomUUID(),
   invalid: 'invalid-id',
   notFound: randomUUID(),
 };
@@ -143,6 +144,19 @@ function getTemplates(
         letterVariantId: 'letter-variant-id',
       }
     ),
+    DIFFERENT_CAMPAIGN_LETTER: TemplateFactory.createAuthoringLetterTemplate(
+      templateIds.DIFFERENT_CAMPAIGN_LETTER,
+      user,
+      `Test Different Campaign Letter template - ${templateIds.DIFFERENT_CAMPAIGN_LETTER}`,
+      'SUBMITTED',
+      {
+        campaignId: 'different-campaign',
+        language: 'fr',
+        shortFormRender: { status: 'RENDERED' },
+        longFormRender: { status: 'RENDERED' },
+        letterVariantId: 'letter-variant-id',
+      }
+    ),
   };
 }
 
@@ -198,6 +212,15 @@ function getRoutingConfigs(
         name: 'Test message plan with no letter channel',
       }
     ).dbEntry,
+    withNoTemplates: RoutingConfigFactory.createForMessageOrder(
+      user,
+      'LETTER',
+      {
+        id: routingConfigIds.withNoTemplates,
+        name: 'Test message plan with no matching language templates',
+        campaignId: 'no-matching-campaign',
+      }
+    ).dbEntry,
   };
 }
 
@@ -212,7 +235,6 @@ const getLanguageDisplayName = (language: Language): string => {
 
 test.describe('Routing - Choose other language letter templates page', () => {
   let user: TestUser;
-  let userWithNoTemplates: TestUser;
 
   let templates: Record<keyof typeof templateIds, Template>;
   let routingConfigs: Record<
@@ -222,28 +244,16 @@ test.describe('Routing - Choose other language letter templates page', () => {
     >,
     RoutingConfigDbEntry
   >;
-  let routingConfigForUserWithNoTemplates: RoutingConfigDbEntry;
 
   test.beforeAll(async () => {
     const context = getTestContext();
     user = await context.auth.getTestUser(testUsers.User1.userId);
-    userWithNoTemplates = await context.auth.getTestUser(
-      testUsers.User2.userId
-    );
 
     templates = getTemplates(user);
 
     routingConfigs = getRoutingConfigs(user);
-    routingConfigForUserWithNoTemplates =
-      RoutingConfigFactory.createForMessageOrder(
-        userWithNoTemplates,
-        'LETTER'
-      ).dbEntry;
 
-    await routingConfigStorageHelper.seed([
-      ...Object.values(routingConfigs),
-      routingConfigForUserWithNoTemplates,
-    ]);
+    await routingConfigStorageHelper.seed(Object.values(routingConfigs));
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
@@ -292,16 +302,6 @@ test.describe('Routing - Choose other language letter templates page', () => {
       chooseOtherLanguageLetterTemplatePage.messagePlanName
     ).toHaveText(routingConfigs.valid.name);
 
-    await expect(chooseOtherLanguageLetterTemplatePage.pageHeading).toHaveText(
-      'Choose other language letter templates'
-    );
-
-    await expect(
-      chooseOtherLanguageLetterTemplatePage.tableHintText
-    ).toHaveText(
-      'Choose all the templates that you want to include in this message plan. You can only choose one template for each language.'
-    );
-
     const table = chooseOtherLanguageLetterTemplatePage.templatesTable;
 
     for (const templateKey in languageTemplatesToDisplay) {
@@ -340,6 +340,9 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await expect(
       table.getByText(templates.LARGE_PRINT_LETTER.name)
     ).toBeHidden();
+    await expect(
+      table.getByText(templates.DIFFERENT_CAMPAIGN_LETTER.name)
+    ).toBeHidden();
 
     await expect(
       chooseOtherLanguageLetterTemplatePage.saveAndContinueButton
@@ -353,43 +356,6 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.valid.id}`
     );
-  });
-
-  test.describe('user with no templates', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-
-    test('user sees a message when no foreign language templates are available and can go to create templates', async ({
-      page,
-      baseURL,
-    }) => {
-      await loginAsUser(userWithNoTemplates, page);
-
-      const chooseOtherLanguageLetterTemplatePage =
-        new RoutingChooseOtherLanguageLetterTemplatePage(page);
-      await chooseOtherLanguageLetterTemplatePage
-        .setPathParam('messagePlanId', routingConfigForUserWithNoTemplates.id)
-        .setSearchParam(
-          'lockNumber',
-          String(routingConfigForUserWithNoTemplates.lockNumber)
-        )
-        .loadPage();
-
-      await assertChooseTemplatePageWithNoTemplates({
-        page: chooseOtherLanguageLetterTemplatePage,
-      });
-
-      await expect(
-        chooseOtherLanguageLetterTemplatePage.messagePlanName
-      ).toHaveText(routingConfigForUserWithNoTemplates.name);
-
-      await expect(
-        chooseOtherLanguageLetterTemplatePage.noTemplatesMessage
-      ).toHaveText('You do not have any other language letter templates yet.');
-
-      await chooseOtherLanguageLetterTemplatePage.goToTemplatesLink.click();
-
-      await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
-    });
   });
 
   test('user can choose multiple templates for a message plan that has no language templates', async ({
@@ -681,6 +647,28 @@ test.describe('Routing - Choose other language letter templates page', () => {
     await page.waitForURL(
       `${baseURL}/templates/message-plans/edit-message-plan/${routingConfigs.validationError.id}`
     );
+  });
+
+  test('user sees the no templates version of the page when no foreign language letter templates match the campaign filter', async ({
+    page,
+  }) => {
+    const chooseOtherLanguageLetterTemplatePage =
+      new RoutingChooseOtherLanguageLetterTemplatePage(page);
+    await chooseOtherLanguageLetterTemplatePage
+      .setPathParam('messagePlanId', routingConfigs.withNoTemplates.id)
+      .setSearchParam(
+        'lockNumber',
+        String(routingConfigs.withNoTemplates.lockNumber)
+      )
+      .loadPage();
+
+    await expect(
+      chooseOtherLanguageLetterTemplatePage.messagePlanName
+    ).toHaveText(routingConfigs.withNoTemplates.name);
+
+    await assertChooseTemplatePageWithNoTemplates({
+      page: chooseOtherLanguageLetterTemplatePage,
+    });
   });
 
   test.describe('redirects to invalid message plan page', () => {
