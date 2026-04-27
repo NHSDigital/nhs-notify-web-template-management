@@ -899,11 +899,19 @@ const getReadyToApproveLetterTemplate: {
     content: [
       {
         type: 'text',
-        text: 'You cannot change your template settings after you approve this template.',
+        text: 'After you approve this template, you cannot edit the:',
       },
       {
         type: 'text',
-        text: 'If you need to make changes, edit your original template file on your computer then upload it as a new template.',
+        text: markdownList('ul', [
+          'campaign',
+          'printing and postage option',
+          'letter template file',
+        ]),
+      },
+      {
+        type: 'text',
+        text: 'If you need to make changes later, upload your letter template file as a new template.',
       },
     ],
   },

@@ -72,10 +72,21 @@ exports[`GetReadyToApproveLetterTemplatePage matches snapshot 1`] = `
               </span>
             </h3>
             <p>
-              You cannot change your template settings after you approve this template.
+              After you approve this template, you cannot edit the:
             </p>
+            <ul>
+              <li>
+                campaign
+              </li>
+              <li>
+                printing and postage option
+              </li>
+              <li>
+                letter template file
+              </li>
+            </ul>
             <p>
-              If you need to make changes, edit your original template file on your computer then upload it as a new template.
+              If you need to make changes later, upload your letter template file as a new template.
             </p>
           </div>
           <div
