@@ -562,7 +562,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
                 Enter a template name
               </span>
               <input
-                class="nhsuk-input nhsuk-u-margin-bottom-2"
+                class="nhsuk-input nhsuk-input--error nhsuk-u-margin-bottom-2"
                 id="name"
                 name="name"
                 type="text"
@@ -812,7 +812,7 @@ exports[`client has multiple campaign ids renders errors when blank form is subm
               </span>
               <input
                 accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                class="file-upload nhsuk-input"
+                class="file-upload nhsuk-input nhsuk-input--error"
                 id="file"
                 name="file"
                 type="file"
@@ -1441,7 +1441,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
                 Enter a template name
               </span>
               <input
-                class="nhsuk-input nhsuk-u-margin-bottom-2"
+                class="nhsuk-input nhsuk-input--error nhsuk-u-margin-bottom-2"
                 id="name"
                 name="name"
                 type="text"
@@ -1675,7 +1675,7 @@ exports[`client has one campaign id renders errors when blank form is submitted 
               </span>
               <input
                 accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                class="file-upload nhsuk-input"
+                class="file-upload nhsuk-input nhsuk-input--error"
                 id="file"
                 name="file"
                 type="file"

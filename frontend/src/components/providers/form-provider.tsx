@@ -12,7 +12,7 @@ type NHSNotifyFormActionState = ReturnType<
   typeof useActionState<FormState, FormData>
 >;
 
-const FormContext = createContext<NHSNotifyFormActionState | null>(null);
+export const FormContext = createContext<NHSNotifyFormActionState | null>(null);
 
 export function useNHSNotifyForm() {
   const context = useContext(FormContext);

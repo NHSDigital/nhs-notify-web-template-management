@@ -8,7 +8,6 @@ import {
   isRightToLeft,
   languageMapping,
 } from 'nhs-notify-web-template-management-utils';
-import { FileUploadInput } from '@atoms/FileUpload/FileUpload';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
@@ -18,8 +17,6 @@ import { useNHSNotifyForm } from '@providers/form-provider';
 const content = copy.components.uploadDocxLetterTemplateForm;
 
 export function NameField() {
-  const [state] = useNHSNotifyForm();
-
   return (
     <NHSNotifyForm.FormGroup className='nhsuk-u-margin-bottom-6' htmlFor='name'>
       <Label size='s' htmlFor='name'>
@@ -29,12 +26,11 @@ export function NameField() {
 
       <TemplateNameGuidance className='nhsuk-u-margin-top-3' />
       <NHSNotifyForm.ErrorMessage htmlFor='name' />
-      <input
+      <NHSNotifyForm.Input
         type='text'
         id='name'
         name='name'
-        className='nhsuk-input nhsuk-u-margin-bottom-2'
-        defaultValue={state.fields?.name}
+        className='nhsuk-u-margin-bottom-2'
       />
     </NHSNotifyForm.FormGroup>
   );
@@ -88,7 +84,7 @@ export function FileField() {
         <ContentRenderer content={content.fields.file.hint} />
       </HintText>
       <NHSNotifyForm.ErrorMessage htmlFor='file' />
-      <FileUploadInput
+      <NHSNotifyForm.FileUploadInput
         id='file'
         name='file'
         accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document'

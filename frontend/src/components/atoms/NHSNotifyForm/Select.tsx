@@ -7,12 +7,16 @@ import { useNHSNotifyForm } from '@providers/form-provider';
 export function NHSNotifyFormSelect({
   children,
   className,
+  id,
   name,
   ...props
-}: Omit<HTMLProps<HTMLSelectElement>, 'defaultValue'>) {
+}: Omit<HTMLProps<HTMLSelectElement>, 'defaultValue'> & {
+  id: string;
+  name: string;
+}) {
   const [state] = useNHSNotifyForm();
 
-  const error = Boolean(name && state.errorState?.fieldErrors?.[name]?.length);
+  const error = Boolean(state.errorState?.fieldErrors?.[id]?.length);
 
   return (
     <select
@@ -23,8 +27,9 @@ export function NHSNotifyFormSelect({
         },
         className
       )}
-      defaultValue={name && state.fields?.[name]}
-      key={name && state.fields?.[name]}
+      defaultValue={state.fields?.[name]}
+      key={state.fields?.[name]}
+      id={id}
       name={name}
       {...props}
     >
