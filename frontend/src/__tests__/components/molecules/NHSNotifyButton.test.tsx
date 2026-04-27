@@ -57,4 +57,24 @@ describe('NHS Notify button', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('allows clicks with 1000ms intervals', async () => {
+    const onClick = jest.fn();
+
+    render(
+      <NHSNotifyButton data-testid='button' onClick={onClick}>
+        Button text
+      </NHSNotifyButton>
+    );
+
+    const button = screen.getByTestId('button');
+
+    fireEvent.click(button);
+    await new Promise((res) => setTimeout(res, 1000));
+    fireEvent.click(button);
+    await new Promise((res) => setTimeout(res, 500));
+    fireEvent.click(button);
+
+    expect(onClick).toHaveBeenCalledTimes(2);
+  });
 });
