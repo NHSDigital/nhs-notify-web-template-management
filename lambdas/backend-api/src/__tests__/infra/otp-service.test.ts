@@ -130,7 +130,8 @@ describe('OtpService', () => {
         actualError: error,
         errorMeta: {
           code: 500,
-          description: 'Unable to publish event',
+          description:
+            'Unable to publish ContactDetailVerificationRequested event',
         },
       });
 
@@ -159,7 +160,8 @@ describe('OtpService', () => {
         actualError: error,
         errorMeta: {
           code: 500,
-          description: 'Unable to publish event',
+          description:
+            'Unable to publish ContactDetailVerificationRequested event',
         },
       });
     });

@@ -85,7 +85,7 @@ data "aws_iam_policy_document" "create_contact_details" {
     ]
 
     resources = [
-      local.event_sns_topic_arn
+      var.events_sns_topic_arn
     ]
   }
 }

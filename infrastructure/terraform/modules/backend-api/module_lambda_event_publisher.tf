@@ -31,7 +31,7 @@ module "lambda_event_publisher" {
     ROUTING_CONFIG_TABLE_NAME  = aws_dynamodb_table.routing_configuration.name
     SHARED_FILES_BUCKET_NAME   = var.shared_files_bucket_name
     SHARED_FILES_BUCKET_PREFIX = "template-mgmt/${var.csi}"
-    SNS_TOPIC_ARN              = local.event_sns_topic_arn
+    SNS_TOPIC_ARN              = var.events_sns_topic_arn
     TEMPLATES_TABLE_NAME       = aws_dynamodb_table.templates.name
   }
 
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "event_publisher" {
     ]
 
     resources = [
-      local.event_sns_topic_arn
+      var.events_sns_topic_arn
     ]
   }
 

@@ -40,7 +40,11 @@ export class OtpService {
 
       return { data: undefined };
     } catch (error) {
-      return failure(ErrorCase.INTERNAL, 'Unable to publish event', error);
+      return failure(
+        ErrorCase.INTERNAL,
+        'Unable to publish ContactDetailVerificationRequested event',
+        error
+      );
     }
   }
 }

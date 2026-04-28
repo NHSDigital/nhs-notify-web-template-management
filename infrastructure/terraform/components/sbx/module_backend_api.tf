@@ -27,7 +27,7 @@ module "backend_api" {
 
   kms_key_arn = data.aws_kms_key.sandbox.arn
 
-  sns_topic_arn = module.eventpub.sns_topic.arn
+  events_sns_topic_arn = module.eventpub.sns_topic.arn
 
   send_to_firehose = false
 
