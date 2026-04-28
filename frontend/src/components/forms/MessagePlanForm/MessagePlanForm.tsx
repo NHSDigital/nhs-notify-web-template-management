@@ -97,10 +97,12 @@ export function MessagePlanForm({
                 className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'
                 data-testid='campaign-warning-callout'
               >
-                <WarningCallout.Label headingLevel='h2'>
+                <div className='nhsuk-warning-callout__label nhsuk-heading-m'>
                   {formContent.fields.campaignId.warningCallout.heading}
-                </WarningCallout.Label>
-                <p>{formContent.fields.campaignId.warningCallout.content}</p>
+                </div>
+                <p id='campaignId--warning'>
+                  {formContent.fields.campaignId.warningCallout.content}
+                </p>
               </WarningCallout>
               <NHSNotifyForm.ErrorMessage
                 htmlFor='campaignId'
@@ -110,7 +112,7 @@ export function MessagePlanForm({
                 id='campaignId'
                 name='campaignId'
                 data-testid='campaign-id-field'
-                aria-describedby='campaignId--hint campaignId--error-message'
+                aria-describedby='campaignId--hint campaignId--error-message campaignId--warning'
                 aria-labelledby='campaignId--label'
               >
                 <option />
