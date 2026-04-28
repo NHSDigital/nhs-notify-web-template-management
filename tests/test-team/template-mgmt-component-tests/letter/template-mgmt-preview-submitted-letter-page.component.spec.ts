@@ -37,7 +37,7 @@ function createTemplates(user: TestUser) {
   };
 
   const authoringValid = TemplateFactory.createAuthoringLetterTemplate(
-    'e8b5f3a1-2c4d-4e6f-8a9b-1c2d3e4f5a6b',
+    '905a8fdc-10c9-431f-ad52-d1e8d00eb2b0',
     user,
     'authoring-letter-template-preview-submitted',
     'SUBMITTED',
