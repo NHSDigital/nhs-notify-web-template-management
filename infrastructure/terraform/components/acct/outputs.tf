@@ -76,3 +76,7 @@ output "ses_testing_config" {
 output "kms_key_arn" {
   value = module.kms.key_arn
 }
+
+output "guardduty_protection_plan_quarantine_arn" {
+  value = aws_guardduty_malware_protection_plan.quarantine.arn
+}
