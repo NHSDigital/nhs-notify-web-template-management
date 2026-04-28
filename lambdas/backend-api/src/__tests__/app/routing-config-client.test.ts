@@ -770,6 +770,8 @@ describe('RoutingConfigClient', () => {
     test('returns updated routing config', async () => {
       const { client, mocks } = setup();
 
+      const campaignId = 'campaign-1';
+
       const update: UpdateRoutingConfig = {
         cascade: [
           ...routingConfig.cascade,
@@ -801,6 +803,10 @@ describe('RoutingConfigClient', () => {
         },
       });
 
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        data: routingConfig,
+      });
+
       mocks.routingConfigRepository.update.mockResolvedValueOnce({
         data: updated,
       });
@@ -816,7 +822,8 @@ describe('RoutingConfigClient', () => {
         routingConfig.id,
         update,
         user,
-        42
+        42,
+        campaignId
       );
 
       expect(result).toEqual({
@@ -956,6 +963,10 @@ describe('RoutingConfigClient', () => {
         },
       });
 
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        data: routingConfig,
+      });
+
       const result = await client.updateRoutingConfig(
         routingConfig.id,
         update,
@@ -1006,6 +1017,51 @@ describe('RoutingConfigClient', () => {
           errorMeta: {
             code: 400,
             description: 'Invalid lock number provided',
+          },
+        },
+      });
+    });
+
+    test('returns routingConfig error without updating when routing config fetch fails', async () => {
+      const { client, mocks } = setup();
+
+      const update = {
+        cascade: routingConfig.cascade,
+        cascadeGroupOverrides: routingConfig.cascadeGroupOverrides,
+        name: routingConfig.name,
+      } as unknown as UpdateRoutingConfig;
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          features: { routing: true },
+          campaignIds: [routingConfig.campaignId],
+        },
+      });
+
+      mocks.routingConfigRepository.get.mockResolvedValueOnce({
+        error: {
+          actualError: new Error('Routing config not found'),
+          errorMeta: {
+            code: 404,
+            description: 'Routing config not found',
+          },
+        },
+      });
+
+      const result = await client.updateRoutingConfig(
+        routingConfig.id,
+        update,
+        user,
+        '42'
+      );
+
+      expect(mocks.routingConfigRepository.update).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        error: {
+          actualError: new Error('Routing config not found'),
+          errorMeta: {
+            code: 404,
+            description: 'Routing config not found',
           },
         },
       });
