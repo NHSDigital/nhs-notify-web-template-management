@@ -74,13 +74,17 @@ describe('createHandler', () => {
   it('errors if the key has invalid number of segments', async () => {
     const { handler, mocks } = setup();
 
+    const objectKey = 'only/two';
+
     const event = makeS3ObjectCreatedEvent({
       object: {
-        key: 'only/two',
+        key: objectKey,
       },
     });
 
-    await expect(handler(event)).rejects.toThrow('Unexpected object key');
+    await expect(handler(event)).rejects.toThrow(
+      `Invalid object key "${objectKey}": expected 4 or 5 path segments, got ${objectKey.split('/').length}`
+    );
 
     expect(mocks.sqsClient.send).not.toHaveBeenCalled();
   });

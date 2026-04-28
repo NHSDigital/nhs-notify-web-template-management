@@ -1,16 +1,26 @@
 import { LetterProofRepository } from '../../infra/letter-proof-repository';
 
 describe('parseQuarantineKey', () => {
-  test('parses key', () => {
-    const parsedKey = LetterProofRepository.parseQuarantineKey(
-      'proofs/supplier/template-id/proof.pdf'
-    );
+  test.each([
+    'proofs/supplier/template-id/proof.pdf',
+    'test-env/proofs/supplier/template-id/proof.pdf',
+  ])('parses key', (objectKey) => {
+    const parsedKey = LetterProofRepository.parseQuarantineKey(objectKey);
 
     expect(parsedKey).toEqual({
       templateId: 'template-id',
       fileName: 'proof.pdf',
       supplier: 'supplier',
     });
+  });
+
+  test.each([
+    'too-short/test-env/example.pdf',
+    'too-long/test-env/proofs/supplier/template-id/proof.pdf',
+  ])('errors when objectKey is an unexpected length: %p', (objectKey) => {
+    expect(() => LetterProofRepository.parseQuarantineKey(objectKey)).toThrow(
+      `Invalid object key "${objectKey}": expected 4 or 5 path segments, got ${objectKey.split('/').length}`
+    );
   });
 
   test('errors on wrong file extension', () => {
