@@ -84,8 +84,6 @@ export class EventSubscriber {
     since: Date;
     match?: ZodType<T>;
   }): Promise<Event<T>[]> {
-    this.trimCached(since);
-
     const received: Message[] = [];
 
     let polledCount = 0;
@@ -159,14 +157,6 @@ export class EventSubscriber {
     }) as Event<T>[];
 
     return filtered.sort((a, b) => a.time.getTime() - b.time.getTime());
-  }
-
-  private trimCached(since: Date) {
-    for (const [id, { time }] of this.messages) {
-      if (time < since) {
-        this.messages.delete(id);
-      }
-    }
   }
 
   async teardown() {
