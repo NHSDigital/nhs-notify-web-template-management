@@ -78,7 +78,6 @@ function createTemplates(user: TestUser, letterVariant: LetterVariant) {
         letterType: 'q4',
         shortFormRender: { status: 'RENDERED' },
         longFormRender: { status: 'RENDERED' },
-        letterVariantId: letterVariant.id,
       }
     ),
   };
