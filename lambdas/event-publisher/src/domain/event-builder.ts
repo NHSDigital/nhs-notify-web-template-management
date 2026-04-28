@@ -20,10 +20,7 @@ type EventBuilderOutput =
     }
   | undefined;
 
-export class EventBuilder extends NHSNotifyEventBuilder<
-  PublishableEventRecord,
-  EventBuilderOutput
-> {
+export class EventBuilder extends NHSNotifyEventBuilder {
   constructor(
     private readonly templatesTableName: string,
     private readonly routingConfigTableName: string,
