@@ -91,11 +91,17 @@ export class RoutingConfigClient {
 
     if (validationResult.error) return validationResult;
 
+    // Fetch routing config
+    const routingConfig = await this.getRoutingConfig(routingConfigId, user);
+
+    if (routingConfig.error) return routingConfig;
+
     return this.routingConfigRepository.update(
       routingConfigId,
       validationResult.data,
       user,
-      lockNumberValidation.data
+      lockNumberValidation.data,
+      routingConfig.data.campaignId
     );
   }
 
