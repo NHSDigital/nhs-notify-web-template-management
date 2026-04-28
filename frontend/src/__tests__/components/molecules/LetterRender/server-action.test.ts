@@ -53,6 +53,7 @@ describe('updateLetterPreview', () => {
         templateId,
         lockNumber: '1',
         tab: 'shortFormRender',
+        pollingTimestamp: '2026-03-11T14:30:00.000Z',
       },
     });
   });
@@ -84,6 +85,7 @@ describe('updateLetterPreview', () => {
       templateId,
       lockNumber: '1',
       tab: 'shortFormRender',
+      pollingTimestamp: '2026-03-11T14:30:00.000Z',
     });
     expect(result.errorState).toBeUndefined();
   });

@@ -186,6 +186,20 @@ export default async function PreviewLetterTemplatePage({
                         name='lockNumber'
                         value={validatedTemplate.lockNumber}
                       />
+                      <input
+                        type='hidden'
+                        name='shortFormRenderStatus'
+                        value={
+                          validatedTemplate.files.shortFormRender?.status ?? ''
+                        }
+                      />
+                      <input
+                        type='hidden'
+                        name='longFormRenderStatus'
+                        value={
+                          validatedTemplate.files.longFormRender?.status ?? ''
+                        }
+                      />
                       <LetterSubmitButton>
                         {approveButtonText}
                       </LetterSubmitButton>

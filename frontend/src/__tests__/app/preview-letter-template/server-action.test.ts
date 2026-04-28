@@ -1,53 +1,28 @@
 /**
  * @jest-environment node
  */
-import { TemplateDto } from 'nhs-notify-web-template-management-types';
 import { submitAuthoringLetterAction } from '@app/preview-letter-template/[templateId]/server-action';
 import { redirect } from 'next/navigation';
-import { getTemplate } from '@utils/form-actions';
-import {
-  AUTHORING_LETTER_TEMPLATE,
-  getMockFormData,
-} from '@testhelpers/helpers';
+import { AUTHORING_LETTER_TEMPLATE } from '@testhelpers/helpers';
 import content from '@content/content';
 
 jest.mock('next/navigation');
-jest.mock('@utils/form-actions');
 
 const redirectMock = jest.mocked(redirect);
-const getTemplateMock = jest.mocked(getTemplate);
 
 const { approveErrors } = content.pages.previewLetterTemplate;
-
-const TEMPLATE_WITH_BOTH_RENDERS = {
-  ...AUTHORING_LETTER_TEMPLATE,
-  files: {
-    ...AUTHORING_LETTER_TEMPLATE.files,
-    shortFormRender: {
-      status: 'RENDERED' as const,
-      fileName: 'short.pdf',
-      currentVersion: 'v1',
-      pageCount: 2,
-    },
-    longFormRender: {
-      status: 'RENDERED' as const,
-      fileName: 'long.pdf',
-      currentVersion: 'v1',
-      pageCount: 2,
-    },
-  },
-};
 
 describe('submitAuthoringLetterAction', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    getTemplateMock.mockResolvedValue(TEMPLATE_WITH_BOTH_RENDERS);
   });
 
   it('should redirect to get-ready-to-approve-letter-template page with valid form data', async () => {
     const formData = new FormData();
     formData.append('templateId', AUTHORING_LETTER_TEMPLATE.id);
     formData.append('lockNumber', '1');
+    formData.append('shortFormRenderStatus', 'RENDERED');
+    formData.append('longFormRenderStatus', 'RENDERED');
 
     await submitAuthoringLetterAction({}, formData);
 
@@ -98,39 +73,12 @@ describe('submitAuthoringLetterAction', () => {
     expect(redirectMock).not.toHaveBeenCalled();
   });
 
-  it('should redirect to invalid-template page when template validation fails', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      id: 'template-id',
-    } as unknown as TemplateDto);
-
-    const formData = getMockFormData({
-      templateId: '992fe769-f8b3-43a9-84f1-6e10d0480bb6',
-      lockNumber: '300',
-    });
-
-    await submitAuthoringLetterAction({}, formData);
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
-  });
-
   it('should return error when short example has not been generated', async () => {
-    getTemplateMock.mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      files: {
-        ...AUTHORING_LETTER_TEMPLATE.files,
-        shortFormRender: undefined,
-        longFormRender: {
-          status: 'RENDERED' as const,
-          fileName: 'long.pdf',
-          currentVersion: 'v1',
-          pageCount: 2,
-        },
-      },
-    });
-
     const formData = new FormData();
     formData.append('templateId', AUTHORING_LETTER_TEMPLATE.id);
     formData.append('lockNumber', '1');
+    formData.append('shortFormRenderStatus', '');
+    formData.append('longFormRenderStatus', 'RENDERED');
 
     const result = await submitAuthoringLetterAction({}, formData);
 
@@ -142,23 +90,11 @@ describe('submitAuthoringLetterAction', () => {
   });
 
   it('should return error when long example has not been generated', async () => {
-    getTemplateMock.mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      files: {
-        ...AUTHORING_LETTER_TEMPLATE.files,
-        shortFormRender: {
-          status: 'RENDERED' as const,
-          fileName: 'short.pdf',
-          currentVersion: 'v1',
-          pageCount: 2,
-        },
-        longFormRender: undefined,
-      },
-    });
-
     const formData = new FormData();
     formData.append('templateId', AUTHORING_LETTER_TEMPLATE.id);
     formData.append('lockNumber', '1');
+    formData.append('shortFormRenderStatus', 'RENDERED');
+    formData.append('longFormRenderStatus', '');
 
     const result = await submitAuthoringLetterAction({}, formData);
 
@@ -170,11 +106,11 @@ describe('submitAuthoringLetterAction', () => {
   });
 
   it('should return errors for both missing examples', async () => {
-    getTemplateMock.mockResolvedValue(AUTHORING_LETTER_TEMPLATE);
-
     const formData = new FormData();
     formData.append('templateId', AUTHORING_LETTER_TEMPLATE.id);
     formData.append('lockNumber', '1');
+    formData.append('shortFormRenderStatus', '');
+    formData.append('longFormRenderStatus', '');
 
     const result = await submitAuthoringLetterAction({}, formData);
 
@@ -188,23 +124,11 @@ describe('submitAuthoringLetterAction', () => {
   });
 
   it('should return error when short render exists but is not RENDERED status', async () => {
-    getTemplateMock.mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      files: {
-        ...AUTHORING_LETTER_TEMPLATE.files,
-        shortFormRender: { status: 'FAILED' as const },
-        longFormRender: {
-          status: 'RENDERED' as const,
-          fileName: 'long.pdf',
-          currentVersion: 'v1',
-          pageCount: 2,
-        },
-      },
-    });
-
     const formData = new FormData();
     formData.append('templateId', AUTHORING_LETTER_TEMPLATE.id);
     formData.append('lockNumber', '1');
+    formData.append('shortFormRenderStatus', 'FAILED');
+    formData.append('longFormRenderStatus', 'RENDERED');
 
     const result = await submitAuthoringLetterAction({}, formData);
 
@@ -215,23 +139,11 @@ describe('submitAuthoringLetterAction', () => {
   });
 
   it('should return error when long render exists but is not RENDERED status', async () => {
-    getTemplateMock.mockResolvedValue({
-      ...AUTHORING_LETTER_TEMPLATE,
-      files: {
-        ...AUTHORING_LETTER_TEMPLATE.files,
-        shortFormRender: {
-          status: 'RENDERED' as const,
-          fileName: 'short.pdf',
-          currentVersion: 'v1',
-          pageCount: 2,
-        },
-        longFormRender: { status: 'FAILED' as const },
-      },
-    });
-
     const formData = new FormData();
     formData.append('templateId', AUTHORING_LETTER_TEMPLATE.id);
     formData.append('lockNumber', '1');
+    formData.append('shortFormRenderStatus', 'RENDERED');
+    formData.append('longFormRenderStatus', 'FAILED');
 
     const result = await submitAuthoringLetterAction({}, formData);
 

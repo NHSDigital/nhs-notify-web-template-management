@@ -67,7 +67,7 @@ const renderedRender: RenderDetails = {
 function renderComponent(
   template: AuthoringLetterTemplate,
   mode: RenderKey,
-  forcePolling?: boolean
+  startPollingTimestamp?: string
 ) {
   return render(
     <LetterRenderPollingProvider>
@@ -75,7 +75,7 @@ function renderComponent(
         template={template}
         mode={mode}
         loadingElement={<h1>{'loading'}</h1>}
-        forcePolling={forcePolling}
+        startPollingTimestamp={startPollingTimestamp}
       >
         <div data-testid='page-content'>content</div>
       </PollLetterRender>
@@ -87,7 +87,7 @@ function rerenderComponent(
   rerender: (ui: React.ReactElement) => void,
   template: AuthoringLetterTemplate,
   mode: RenderKey,
-  forcePolling?: boolean
+  startPollingTimestamp?: string
 ) {
   return rerender(
     <LetterRenderPollingProvider>
@@ -95,7 +95,7 @@ function rerenderComponent(
         template={template}
         mode={mode}
         loadingElement={<h1>{'loading'}</h1>}
-        forcePolling={forcePolling}
+        startPollingTimestamp={startPollingTimestamp}
       >
         <div data-testid='page-content'>content</div>
       </PollLetterRender>
@@ -269,14 +269,16 @@ describe('PollLetterRender', () => {
     expect(mockRefresh).toHaveBeenCalledTimes(10);
   });
 
-  describe('forcePolling', () => {
-    it('shows loading element when forcePolling is true even if render is RENDERED', () => {
+  describe('startPollingTimestamp', () => {
+    const pollingTimestamp = NOW.toISOString();
+
+    it('shows loading element when startPollingTimestamp is set even if render is RENDERED', () => {
       const template: AuthoringLetterTemplate = {
         ...baseTemplate,
         files: { ...baseTemplate.files, longFormRender: renderedRender },
       };
 
-      renderComponent(template, 'longFormRender', true);
+      renderComponent(template, 'longFormRender', pollingTimestamp);
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
@@ -285,16 +287,21 @@ describe('PollLetterRender', () => {
       expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
     });
 
-    it('initiates polling when forcePolling transitions from false to true', () => {
+    it('initiates polling when startPollingTimestamp transitions from undefined to a value', () => {
       const { rerender } = renderComponent(
         baseTemplate,
         'longFormRender',
-        false
+        undefined
       );
 
       expect(screen.getByTestId('page-content')).toBeInTheDocument();
 
-      rerenderComponent(rerender, baseTemplate, 'longFormRender', true);
+      rerenderComponent(
+        rerender,
+        baseTemplate,
+        'longFormRender',
+        pollingTimestamp
+      );
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
@@ -303,32 +310,36 @@ describe('PollLetterRender', () => {
       expect(screen.queryByTestId('page-content')).not.toBeInTheDocument();
     });
 
-    it('does not stop polling while forcePolling is true even if shouldPoll returns false', () => {
+    it('does not stop polling while startPollingTimestamp is set and template has not been updated', () => {
       const template: AuthoringLetterTemplate = {
         ...baseTemplate,
         files: { ...baseTemplate.files, longFormRender: renderedRender },
       };
 
-      const { rerender } = renderComponent(template, 'longFormRender', true);
+      const { rerender } = renderComponent(
+        template,
+        'longFormRender',
+        pollingTimestamp
+      );
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
       ).toBeInTheDocument();
 
-      rerenderComponent(rerender, template, 'longFormRender', true);
+      rerenderComponent(rerender, template, 'longFormRender', pollingTimestamp);
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
       ).toBeInTheDocument();
     });
 
-    it('stops polling after timeout even with when forcePolling is true', () => {
+    it('stops polling after timeout even with startPollingTimestamp set', () => {
       const template: AuthoringLetterTemplate = {
         ...baseTemplate,
         files: { ...baseTemplate.files, longFormRender: pendingRender },
       };
 
-      const { rerender } = renderComponent(template, 'longFormRender', true);
+      renderComponent(template, 'longFormRender', pollingTimestamp);
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
@@ -338,13 +349,11 @@ describe('PollLetterRender', () => {
         jest.advanceTimersByTime(RENDER_TIMEOUT_MS);
       });
 
-      rerenderComponent(rerender, template, 'longFormRender', false);
-
       expect(screen.getByTestId('page-content')).toBeInTheDocument();
       expect(screen.queryByRole('status')).not.toBeInTheDocument();
     });
 
-    it('keeps polling after forcePolling transitions from true to false until template is updated', () => {
+    it('keeps polling via startPollingTimestamp until template updatedAt catches up', () => {
       const pendingTemplate: AuthoringLetterTemplate = {
         ...baseTemplate,
         files: { ...baseTemplate.files, shortFormRender: pendingRender },
@@ -352,42 +361,58 @@ describe('PollLetterRender', () => {
 
       const renderedTemplate: AuthoringLetterTemplate = {
         ...baseTemplate,
+        updatedAt: new Date(NOW.getTime() + 1000).toISOString(),
         files: { ...baseTemplate.files, shortFormRender: renderedRender },
       };
 
       const { rerender } = renderComponent(
         baseTemplate,
         'shortFormRender',
-        true
+        pollingTimestamp
       );
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
       ).toBeInTheDocument();
 
-      // server action is no longer pending so forcePolling becomes false
-      rerenderComponent(rerender, baseTemplate, 'shortFormRender', false);
+      // template has not been updated yet — still polling
+      rerenderComponent(
+        rerender,
+        baseTemplate,
+        'shortFormRender',
+        pollingTimestamp
+      );
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
       ).toBeInTheDocument();
 
       // template is updated to PENDING
-      rerenderComponent(rerender, pendingTemplate, 'shortFormRender', false);
+      rerenderComponent(
+        rerender,
+        pendingTemplate,
+        'shortFormRender',
+        pollingTimestamp
+      );
 
       expect(
         screen.getByRole('heading', { name: 'loading' })
       ).toBeInTheDocument();
 
-      // template is RENDERED
-      rerenderComponent(rerender, renderedTemplate, 'shortFormRender', false);
+      // template is RENDERED with updatedAt after startPollingTimestamp
+      rerenderComponent(
+        rerender,
+        renderedTemplate,
+        'shortFormRender',
+        pollingTimestamp
+      );
 
       expect(screen.getByTestId('page-content')).toBeInTheDocument();
       expect(screen.queryByRole('status')).not.toBeInTheDocument();
     });
 
-    it('calls router.refresh while forcePolling is active', () => {
-      renderComponent(baseTemplate, 'shortFormRender', true);
+    it('calls router.refresh while startPollingTimestamp is active', () => {
+      renderComponent(baseTemplate, 'shortFormRender', pollingTimestamp);
 
       expect(mockRefresh).not.toHaveBeenCalled();
 

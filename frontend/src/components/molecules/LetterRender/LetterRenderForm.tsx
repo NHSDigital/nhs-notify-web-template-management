@@ -14,6 +14,7 @@ import { useLetterRenderError } from '@providers/letter-render-error-provider';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
+import { useNHSNotifyForm } from '@providers/form-provider';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
@@ -23,6 +24,7 @@ type LetterRenderFormProps = {
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
   const { isAnyTabPolling } = useLetterRenderPolling();
+  const isPending = useNHSNotifyForm()[2];
   const { setParentErrorState } = useLetterRenderError();
 
   const exampleRecipients =
@@ -100,7 +102,7 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         type='submit'
         secondary
         className='nhsuk-u-margin-top-4'
-        disabled={isAnyTabPolling}
+        disabled={isPending || isAnyTabPolling}
         onClick={() => setParentErrorState(undefined)}
       >
         {copy.updatePreviewButton}

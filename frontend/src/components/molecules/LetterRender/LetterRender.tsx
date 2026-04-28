@@ -39,20 +39,20 @@ export function LetterRender({
           <Tabs.ListItem id='tab-short'>{copy.tabs.short}</Tabs.ListItem>
           <Tabs.ListItem id='tab-long'>{copy.tabs.long}</Tabs.ListItem>
         </Tabs.List>
-        <Tabs.Contents id='tab-short'>
+        <div className='nhsuk-tabs__panel' id='tab-short' tabIndex={-1}>
           <LetterRenderTab
             template={template}
             tab='shortFormRender'
             hideEditActions={hideEditActions}
           />
-        </Tabs.Contents>
-        <Tabs.Contents id='tab-long'>
+        </div>
+        <div className='nhsuk-tabs__panel' id='tab-long' tabIndex={-1}>
           <LetterRenderTab
             template={template}
             tab='longFormRender'
             hideEditActions={hideEditActions}
           />
-        </Tabs.Contents>
+        </div>
       </Tabs>
     </section>
   );

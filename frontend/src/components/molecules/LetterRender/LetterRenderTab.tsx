@@ -92,7 +92,7 @@ function LetterRenderTabFormInner({
   pdfUrl?: string;
   hideEditActions?: boolean;
 }) {
-  const [state, _dispatch, isPending] = useNHSNotifyForm();
+  const [state] = useNHSNotifyForm();
   const { setLetterRenderErrorState } = useLetterRenderError();
 
   useEffect(() => {
@@ -109,7 +109,7 @@ function LetterRenderTabFormInner({
           template={template}
           mode={tab}
           loadingElement={<p>{loadingText}</p>}
-          forcePolling={isPending}
+          startPollingTimestamp={state.fields?.pollingTimestamp}
         >
           <LetterRenderIframe
             src={pdfUrl}

@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { ErrorCodes } from '@utils/error-codes';
 
+const focusMock = jest.spyOn(window.HTMLElement.prototype, 'focus');
 const scrollIntoViewMock = jest.spyOn(
   window.HTMLElement.prototype,
   'scrollIntoView'
@@ -15,6 +16,7 @@ test('Renders NhsNotifyErrorSummary correctly without errors', async () => {
   const container = render(<NhsNotifyErrorSummary errorState={undefined} />);
 
   expect(container.asFragment()).toMatchSnapshot();
+  expect(focusMock).not.toHaveBeenCalled();
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
@@ -22,6 +24,7 @@ test('Renders NhsNotifyErrorSummary correctly with empty error state', async () 
   const container = render(<NhsNotifyErrorSummary errorState={{}} />);
 
   expect(container.asFragment()).toMatchSnapshot();
+  expect(focusMock).not.toHaveBeenCalled();
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
@@ -36,6 +39,7 @@ test('Renders NhsNotifyErrorSummary correctly with falsey error state', async ()
   );
 
   expect(container.asFragment()).toMatchSnapshot();
+  expect(focusMock).not.toHaveBeenCalled();
   expect(scrollIntoViewMock).not.toHaveBeenCalled();
 });
 
@@ -56,6 +60,7 @@ test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
   );
 
   expect(container.asFragment()).toMatchSnapshot();
+  expect(focusMock).toHaveBeenCalled();
   expect(scrollIntoViewMock).toHaveBeenCalled();
 
   const errorSummaryHeading = await screen.getByTestId('error-summary');

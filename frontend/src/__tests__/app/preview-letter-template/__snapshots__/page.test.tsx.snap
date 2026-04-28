@@ -5060,6 +5060,7 @@ exports[`valid authoring letter template displays the template saved banner when
             class="nhsuk-tabs__panel"
             id="tab-short"
             role="tabpanel"
+            tabindex="-1"
           >
             <div
               class="nhsuk-grid-row tabRow"
@@ -5209,6 +5210,7 @@ exports[`valid authoring letter template displays the template saved banner when
             class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
             id="tab-long"
             role="tabpanel"
+            tabindex="-1"
           >
             <div
               class="nhsuk-grid-row tabRow"
@@ -5382,6 +5384,16 @@ exports[`valid authoring letter template displays the template saved banner when
             name="lockNumber"
             type="hidden"
             value="1"
+          />
+          <input
+            name="shortFormRenderStatus"
+            type="hidden"
+            value=""
+          />
+          <input
+            name="longFormRenderStatus"
+            type="hidden"
+            value=""
           />
           <button
             aria-disabled="false"
@@ -5727,6 +5739,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             class="nhsuk-tabs__panel"
             id="tab-short"
             role="tabpanel"
+            tabindex="-1"
           >
             <div
               class="nhsuk-grid-row tabRow"
@@ -5876,6 +5889,7 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             class="nhsuk-tabs__panel nhsuk-tabs__panel--hidden"
             id="tab-long"
             role="tabpanel"
+            tabindex="-1"
           >
             <div
               class="nhsuk-grid-row tabRow"
@@ -6049,6 +6063,16 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             name="lockNumber"
             type="hidden"
             value="1"
+          />
+          <input
+            name="shortFormRenderStatus"
+            type="hidden"
+            value=""
+          />
+          <input
+            name="longFormRenderStatus"
+            type="hidden"
+            value=""
           />
           <button
             aria-disabled="false"

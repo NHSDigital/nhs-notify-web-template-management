@@ -122,6 +122,9 @@ export async function updateLetterPreview(
   await generateLetterProof(templateId, lockNumber, request);
 
   return {
-    fields,
+    fields: {
+      ...fields,
+      pollingTimestamp: new Date().toISOString(), // return this so we get a state update in the event of a successful call to generateLetterProod
+    },
   };
 }

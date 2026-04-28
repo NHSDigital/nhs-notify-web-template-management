@@ -1744,6 +1744,12 @@ test.describe('Preview Letter template Page', () => {
             'system-personalisation-pack-id-shortFormRender'
           )
         ).toContainText('Choose example recipient');
+
+        await summaryLink.click();
+
+        await expect(
+          previewPage.getTab('shortFormRender').recipientSelect
+        ).toBeFocused();
       });
 
       test('shows error summary and inline error when Update preview is clicked with no recipient selected (long tab)', async ({
@@ -1784,6 +1790,12 @@ test.describe('Preview Letter template Page', () => {
             'system-personalisation-pack-id-longFormRender'
           )
         ).toContainText('Choose example recipient');
+
+        await summaryLink.click();
+
+        await expect(
+          previewPage.getTab('longFormRender').recipientSelect
+        ).toBeFocused();
       });
 
       test('shows error summary and inline error for each empty custom field when Update preview is clicked (short tab)', async ({
@@ -1820,6 +1832,20 @@ test.describe('Preview Letter template Page', () => {
             'custom-clinicName-shortFormRender'
           )
         ).toBeVisible();
+
+        const appointmentDateSummaryLink = previewPage.errorSummaryLinks.filter(
+          {
+            hasText: 'Enter example data for appointmentDate',
+          }
+        );
+
+        await appointmentDateSummaryLink.click();
+
+        await expect(
+          previewPage
+            .getTab('shortFormRender')
+            .getCustomFieldInput('appointmentDate')
+        ).toBeFocused();
       });
 
       test('shows error summary and inline error for empty custom field when Update preview is clicked (long tab)', async ({
@@ -1849,6 +1875,20 @@ test.describe('Preview Letter template Page', () => {
             'custom-appointmentDate-longFormRender'
           )
         ).toBeVisible();
+
+        const appointmentDateSummaryLink = previewPage.errorSummaryLinks.filter(
+          {
+            hasText: 'Enter example data for appointmentDate',
+          }
+        );
+
+        await appointmentDateSummaryLink.click();
+
+        await expect(
+          previewPage
+            .getTab('longFormRender')
+            .getCustomFieldInput('appointmentDate')
+        ).toBeFocused();
       });
 
       test('errors from one tab do not appear on the other tab', async ({
