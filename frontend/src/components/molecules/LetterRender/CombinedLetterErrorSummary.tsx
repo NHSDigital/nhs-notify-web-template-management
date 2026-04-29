@@ -18,12 +18,10 @@ function handleErrorLinkClick(fieldId: string) {
       `#${CSS.escape(fieldId)}`
     );
 
-    console.log(fieldId, target);
     if (!target) return;
 
     const panel = target.closest<HTMLElement>('.nhsuk-tabs__panel');
 
-    console.log(panel);
     if (!panel?.classList.contains('nhsuk-tabs__panel--hidden')) return;
 
     e.preventDefault();
@@ -33,7 +31,6 @@ function handleErrorLinkClick(fieldId: string) {
       `[aria-controls="${panelId}"].nhsuk-tabs__tab`
     );
 
-    console.log(panelId, tabLink);
     tabLink?.click();
 
     requestAnimationFrame(() => {
