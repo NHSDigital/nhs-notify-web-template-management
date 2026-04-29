@@ -45,10 +45,7 @@ export async function createTemplate(
   return data;
 }
 
-export async function uploadDocxTemplate(
-  template: CreateUpdateTemplate,
-  docxTemplate: File
-) {
+export async function uploadDocxTemplate(template: CreateUpdateTemplate) {
   const { accessToken } = await getSessionServer();
 
   if (!accessToken) {
@@ -57,13 +54,32 @@ export async function uploadDocxTemplate(
 
   const { data, error } = await templateApiClient.uploadDocxTemplate(
     template,
-    accessToken,
-    docxTemplate
+    accessToken
   );
 
   if (error) {
     logger.error('Failed to create AUTHORING letter template', error);
     throw new Error('Failed to create new letter template');
+  }
+
+  return data;
+}
+
+export async function uploadDocxTemplateFile(url: string, docxTemplate: File) {
+  const { accessToken } = await getSessionServer();
+
+  if (!accessToken) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateApiClient.uploadDocxTemplateFile(
+    url,
+    docxTemplate
+  );
+
+  if (error) {
+    logger.error('Failed to send file', error);
+    throw new Error('Failed to send file');
   }
 
   return data;

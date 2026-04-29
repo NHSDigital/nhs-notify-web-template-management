@@ -116,8 +116,7 @@ DOCX_PATH="./tests/test-team/fixtures/letters/docx/standard-english-template.doc
 curl -X POST --location "${APIG_STAGE}/v1/docx-letter-template" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN" \
---form "docxTemplate=@${DOCX_PATH};type=application/vnd.openxmlformats-officedocument.wordprocessingml.document;filename=template.docx" \
---form 'template={
+--data '{
   "templateType": "LETTER",
   "name": "example letter",
   "letterType": "x0",

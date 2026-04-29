@@ -496,7 +496,7 @@ export type PostV1DocxLetterTemplateData = {
   /**
    * Letter template to create
    */
-  body: UploadLetterTemplate;
+  body: CreateUpdateTemplate;
   path?: never;
   query?: never;
   url: '/v1/docx-letter-template';

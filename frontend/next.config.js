@@ -25,8 +25,10 @@ const nextConfig = (phase) => {
     experimental: {
       serverActions: {
         allowedOrigins: ['**.nhsnotify.national.nhs.uk', 'notify.nhs.uk'],
-        bodySizeLimit: '6mb',
+        bodySizeLimit: '25mb',
       },
+      // proxyClientMaxBodySize: '25mb',
+      middlewareClientMaxBodySize: '25mb',
     },
 
     async redirects() {

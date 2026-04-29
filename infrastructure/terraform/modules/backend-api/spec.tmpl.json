@@ -1646,9 +1646,9 @@
         "description": "Create a DOCX letter template",
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UploadLetterTemplate"
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
               }
             }
           },

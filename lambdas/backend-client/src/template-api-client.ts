@@ -40,20 +40,34 @@ export const templateApiClient = {
 
   async uploadDocxTemplate(
     template: CreateUpdateTemplate,
-    token: string,
-    docxTemplate: File
+    token: string
   ): Promise<Result<TemplateDto>> {
-    const formData = new FormData();
-    formData.append(LETTER_MULTIPART.TEMPLATE.name, JSON.stringify(template));
-    formData.append(LETTER_MULTIPART.DOCX.name, docxTemplate);
-
     const response = await catchAxiosError(
-      httpClient.post<TemplateSuccess>('/v1/docx-letter-template', formData, {
+      httpClient.post<TemplateSuccess>('/v1/docx-letter-template', template, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           Authorization: token,
         },
       })
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.data,
+    };
+  },
+
+  async uploadDocxTemplateFile(
+    url: string,
+    docxTemplate: File
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      httpClient.put<TemplateSuccess>(url, docxTemplate)
     );
     if (response.error) {
       return {

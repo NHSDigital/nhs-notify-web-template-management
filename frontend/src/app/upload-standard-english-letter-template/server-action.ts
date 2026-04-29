@@ -5,7 +5,10 @@ import { redirect, RedirectType } from 'next/navigation';
 import type { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
-import { uploadDocxTemplate } from '@utils/form-actions';
+import {
+  uploadDocxTemplate,
+  uploadDocxTemplateFile,
+} from '@utils/form-actions';
 import { FormState } from '@utils/types';
 
 const { errors } = copy.components.uploadDocxLetterTemplateForm;
@@ -49,7 +52,10 @@ export async function uploadStandardLetterTemplate(
     letterVersion: 'AUTHORING',
   };
 
-  const savedTemplate = await uploadDocxTemplate(template, file);
+  const savedTemplate = await uploadDocxTemplate(template);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await uploadDocxTemplateFile((savedTemplate as any).uploadUrl, file);
 
   return redirect(
     `/preview-letter-template/${savedTemplate.id}?from=upload`,

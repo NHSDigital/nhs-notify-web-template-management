@@ -1,14 +1,13 @@
-import type { File } from 'node:buffer';
 import { z } from 'zod/v4';
-import { ErrorCase } from 'nhs-notify-backend-client/types';
 import type { FileType, User } from 'nhs-notify-web-template-management-utils';
 import {
   GetObjectCommand,
   NotFound,
   PutObjectCommand,
 } from '@aws-sdk/client-s3';
-import { ApplicationResult, failure, success } from '../utils';
+import { ApplicationResult, success } from '../utils';
 import { LetterFileRepository } from './letter-file-repository';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 export type LetterUploadMetadata = {
   'file-type': FileType;
@@ -37,17 +36,14 @@ export class LetterUploadRepository extends LetterFileRepository {
     templateId: string,
     user: User,
     versionId: string,
-    file: File,
-    fileType: 'pdf-template' | 'docx-template',
-    testDataFile?: File
-  ): Promise<ApplicationResult<null>> {
+    fileType: 'pdf-template' | 'docx-template'
+  ): Promise<ApplicationResult<string>> {
     const pdfKey = this.key(fileType, user.clientId, templateId, versionId);
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
         Bucket: this.quarantineBucketName,
         Key: pdfKey,
-        Body: await file.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
           user.clientId,
@@ -58,40 +54,11 @@ export class LetterUploadRepository extends LetterFileRepository {
       }),
     ];
 
-    if (testDataFile) {
-      const csvKey = this.key(
-        'test-data',
-        user.clientId,
-        templateId,
-        versionId
-      );
+    const presignedUrl = await getSignedUrl(this.client, commands[0], {
+      expiresIn: 300,
+    });
 
-      commands.push(
-        new PutObjectCommand({
-          Bucket: this.quarantineBucketName,
-          Key: csvKey,
-          Body: await testDataFile.bytes(),
-          ChecksumAlgorithm: 'SHA256',
-          Metadata: LetterUploadRepository.metadata(
-            user.clientId,
-            templateId,
-            versionId,
-            'test-data'
-          ),
-        })
-      );
-    }
-
-    try {
-      await Promise.all(commands.map((cmd) => this.client.send(cmd)));
-      return success(null);
-    } catch (error) {
-      return failure(
-        ErrorCase.INTERNAL,
-        'Failed to upload letter files',
-        error
-      );
-    }
+    return success(presignedUrl);
   }
 
   async download(

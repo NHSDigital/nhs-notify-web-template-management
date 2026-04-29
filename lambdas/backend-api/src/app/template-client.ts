@@ -265,8 +265,7 @@ export class TemplateClient {
 
   async uploadDocxTemplate(
     template: unknown,
-    user: User,
-    docxTemplate: File
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       template,
@@ -290,16 +289,6 @@ export class TemplateClient {
     }
 
     const validatedTemplate = templateValidationResult.data;
-
-    if (
-      docxTemplate.type !== LETTER_MULTIPART.DOCX.fileType ||
-      !docxTemplate.name
-    ) {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Failed to identify or validate DOCX data'
-      );
-    }
 
     const clientConfigurationResult = await this.clientConfigRepository.get(
       user.clientId
@@ -337,7 +326,7 @@ export class TemplateClient {
 
     const files: AuthoringLetterFiles = {
       docxTemplate: {
-        fileName: docxTemplate.name,
+        fileName: 'docxTemplate.name',
         currentVersion: versionId,
         virusScanStatus: 'PENDING',
       },
@@ -380,7 +369,6 @@ export class TemplateClient {
       templateDTO.id,
       user,
       versionId,
-      docxTemplate,
       'docx-template'
     );
 
@@ -392,7 +380,7 @@ export class TemplateClient {
       return uploadResult;
     }
 
-    return success(templateDTO);
+    return success({ ...templateDTO, uploadUrl: uploadResult.data });
   }
 
   async updateTemplate(
