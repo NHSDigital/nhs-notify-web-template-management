@@ -179,7 +179,7 @@ function requestProof(
         proofFilenames.map((filename) =>
           templateStorageHelper.getS3Metadata(
             process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-            `proofs/WTMMOCK/${templateKey.templateId}/${filename}`
+            `${process.env.ENVIRONMENT}/proofs/WTMMOCK/${templateKey.templateId}/${filename}`
           )
         )
       );

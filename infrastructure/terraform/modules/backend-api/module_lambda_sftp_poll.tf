@@ -27,6 +27,7 @@ module "lambda_sftp_poll" {
   lambda_env_vars = {
     CREDENTIALS_TTL_SECONDS = 900
     CSI                     = local.csi
+    ENVIRONMENT             = var.environment
     QUARANTINE_BUCKET_NAME  = data.aws_s3_bucket.quarantine.id
     NODE_OPTIONS            = "--enable-source-maps",
     REGION                  = var.region

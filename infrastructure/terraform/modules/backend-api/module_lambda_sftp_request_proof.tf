@@ -27,6 +27,7 @@ module "lambda_sftp_request_proof" {
   lambda_env_vars = {
     CREDENTIALS_TTL_SECONDS              = 900
     CSI                                  = local.csi
+    ENVIRONMENT                          = var.environment
     INTERNAL_BUCKET_NAME                 = module.s3bucket_internal.id
     NODE_OPTIONS                         = "--enable-source-maps",
     REGION                               = var.region
