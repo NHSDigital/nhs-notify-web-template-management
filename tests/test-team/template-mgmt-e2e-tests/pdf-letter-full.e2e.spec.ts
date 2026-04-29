@@ -188,14 +188,17 @@ function requestProof(
         const msg = `Proof ${proofFilenames[i]} does not exist`;
         expect(meta, msg).not.toBeNull();
       }
-    }).toPass({ intervals: [1000], timeout: 40_000 });
+    }, 'Template has been moved from the quarantine bucket').toPass({
+      intervals: [1000],
+      timeout: 40_000,
+    });
 
     await expect(async () => {
       const { templateStatus } =
         await templateStorageHelper.getTemplate(templateKey);
 
       expect(templateStatus).toEqual('PROOF_AVAILABLE');
-    }).toPass({ timeout: 60_000 });
+    }, "Template status is 'PROOF_AVAILABLE'").toPass({ timeout: 60_000 });
 
     await expect(async () => {
       await page.reload();
@@ -238,7 +241,7 @@ function requestProof(
       await page.reload();
 
       await previewTemplatePage.clickContinueButton();
-    }).toPass({ timeout: 60_000 });
+    }, 'Proofs are in download bucket').toPass({ timeout: 60_000 });
 
     return supplierReference;
   });
@@ -307,7 +310,7 @@ function checkEmail(
   });
 }
 
-test.describe('letter complete e2e journey', () => {
+test.describe('pdf letter complete e2e journey', () => {
   const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
 
