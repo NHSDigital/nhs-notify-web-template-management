@@ -5,6 +5,10 @@ export class TemplateMgmtGetReadyToApproveLetterTemplatePage extends TemplateMgm
   static readonly pathTemplate =
     '/get-ready-to-approve-letter-template/:templateId';
 
+  public static readonly urlRegexp = new RegExp(
+    /\/templates\/get-ready-to-approve-letter-template\/[\dA-Fa-f-]+/
+  );
+
   public readonly continueButton: Locator;
   public readonly backButton: Locator;
 
