@@ -6,6 +6,7 @@
     "@aws-sdk/util-dynamodb": "3.995.0",
     "@nhsdigital/nhs-notify-event-schemas-template-management": "*",
     "nhs-notify-backend-client": "^0.0.1",
+    "nhs-notify-event-builder": "^0.0.1",
     "nhs-notify-web-template-management-utils": "^0.0.1",
     "zod": "^4.0.17"
   },

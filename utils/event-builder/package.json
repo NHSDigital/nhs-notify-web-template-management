@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "@nhsdigital/nhs-notify-event-schemas-template-management": "*",
+    "@swc/core": "^1.15.11",
+    "@swc/jest": "^0.2.39",
+    "@tsconfig/node22": "^22.0.5",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "nhs-notify-web-template-management-utils": "*",
+    "typescript": "^5.9.3"
+  },
+  "main": "src/index.ts",
+  "name": "nhs-notify-event-builder",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.0.1"
+}

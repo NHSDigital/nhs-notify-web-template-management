@@ -1,39 +1,14 @@
-import { faker } from '@faker-js/faker';
 import { test, expect } from '@playwright/test';
 import { uuidRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { getTestContext } from 'helpers/context/context';
 import { ContactDetailHelper } from 'helpers/db/contact-details-helper';
-import { makeVerifiedContactDetail } from 'helpers/factories/contact-details-factory';
-
-const generateEmailAddress = () => faker.internet.exampleEmail().toLowerCase();
-
-type Locale = 'GB' | 'GG' | 'IM' | 'JE';
-
-const generateMobileNumber = (locale: Locale = 'GB') => {
-  let regexp = '+4477[0-9]{8}';
-
-  switch (locale) {
-    case 'GG': {
-      regexp = '+447781[0-9]{6}';
-      break;
-    }
-    case 'IM': {
-      regexp = '+447624[2-4]{1}[0-9]{5}';
-      break;
-    }
-    case 'JE': {
-      regexp = '+447509[0-9]{6}';
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
-
-  return faker.helpers.fromRegExp(regexp);
-};
+import {
+  type ContactDetailSMSLocale,
+  generateEmailAddress,
+  generateMobileNumber,
+  makeVerifiedContactDetail,
+} from 'helpers/factories/contact-details-factory';
 
 test.describe('PUT /v1/contact-details', () => {
   let user: TestUser;
@@ -51,9 +26,7 @@ test.describe('PUT /v1/contact-details', () => {
   });
 
   test.describe('email contact details', () => {
-    test('saves normalized email contact detail and sends otp', async ({
-      request,
-    }) => {
+    test('saves normalized email contact detail', async ({ request }) => {
       const email = generateEmailAddress();
       const response = await request.post(
         `${process.env.API_BASE_URL}/v1/contact-details`,
@@ -252,8 +225,8 @@ test.describe('PUT /v1/contact-details', () => {
   });
 
   test.describe('sms contact details', () => {
-    for (const locale of ['GB', 'GG', 'IM', 'JE'] as Locale[]) {
-      test(`saves normalized sms contact detail and sends otp (${locale})`, async ({
+    for (const locale of ['GB', 'GG', 'IM', 'JE'] as ContactDetailSMSLocale[]) {
+      test(`saves normalized sms contact detail (${locale})`, async ({
         request,
       }) => {
         const num = generateMobileNumber(locale);

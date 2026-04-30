@@ -139,10 +139,9 @@ variable "proof_requested_sender_email_address" {
   description = "Proof requested sender email address"
 }
 
-variable "sns_topic_arn" {
+variable "events_sns_topic_arn" {
   type        = string
-  description = "SNS topic ARN"
-  default     = null
+  description = "SNS topic ARN for emitting events to"
 }
 
 variable "enable_api_data_trace" {

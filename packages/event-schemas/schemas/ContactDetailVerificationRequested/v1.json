@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Unique ID for this event"
+    },
+    "time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$",
+      "description": "Time the event was generated"
+    },
+    "type": {
+      "type": "string",
+      "const": "uk.nhs.notify.template-management.ContactDetailVerificationRequested.v1"
+    },
+    "source": {
+      "type": "string",
+      "description": "Source of the event"
+    },
+    "specversion": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Version of the envelope event schema"
+    },
+    "datacontenttype": {
+      "type": "string",
+      "const": "application/json",
+      "description": "Always application/json"
+    },
+    "subject": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+      "description": "Unique identifier for the item in the event data"
+    },
+    "dataschema": {
+      "type": "string",
+      "const": "https://notify.nhs.uk/events/schemas/ContactDetailVerificationRequested/v1.json"
+    },
+    "dataschemaversion": {
+      "type": "string",
+      "pattern": "^1\\..*"
+    },
+    "plane": {
+      "type": "string",
+      "const": "data"
+    },
+    "data": {
+      "$ref": "#/$defs/ContactDetailVerificationRequestedEventData"
+    }
+  },
+  "required": [
+    "id",
+    "time",
+    "type",
+    "source",
+    "specversion",
+    "datacontenttype",
+    "subject",
+    "dataschema",
+    "dataschemaversion",
+    "plane",
+    "data"
+  ],
+  "$defs": {
+    "ContactDetailVerificationRequestedEventData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+          "description": "Unique identifier of the contact detail verification request"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "EMAIL",
+            "SMS"
+          ],
+          "description": "Type of contact detail that requires verification"
+        },
+        "value": {
+          "type": "string",
+          "description": "Contact detail that requires verification"
+        },
+        "otp": {
+          "type": "string",
+          "pattern": "^\\d{6}$",
+          "description": "OTP to include in the contact detail verification message"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "value",
+        "otp"
+      ]
+    }
+  },
+  "$id": "https://notify.nhs.uk/events/schemas/ContactDetailVerificationRequested/v1.json"
+}

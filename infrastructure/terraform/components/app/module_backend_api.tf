@@ -31,7 +31,7 @@ module "backend_api" {
   template_submitted_sender_email_address = "template-submitted@${module.ses.domain}"
   proof_requested_sender_email_address    = "proof-requested@${module.ses.domain}"
 
-  sns_topic_arn = module.eventpub.sns_topic.arn
+  events_sns_topic_arn = module.eventpub.sns_topic.arn
 
   access_logging_bucket = local.acct.s3_buckets["access_logs"]["id"]
 

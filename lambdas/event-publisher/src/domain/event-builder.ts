@@ -1,9 +1,7 @@
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import {
-  MAJOR_VERSION,
-  VERSION,
-} from '@nhsdigital/nhs-notify-event-schemas-template-management';
+import { VERSION } from '@nhsdigital/nhs-notify-event-schemas-template-management';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import { NHSNotifyEventBuilder } from 'nhs-notify-event-builder';
 import {
   $DynamoDBProofRequest,
   $DynamoDBRoutingConfig,
@@ -22,16 +20,18 @@ type EventBuilderOutput =
     }
   | undefined;
 
-export class EventBuilder {
+export class EventBuilder extends NHSNotifyEventBuilder {
   constructor(
     private readonly templatesTableName: string,
     private readonly routingConfigTableName: string,
     private readonly proofRequestsTableName: string,
-    private readonly eventSource: string,
+    readonly eventSource: string,
     private readonly sharedFilesBucket: string,
     private readonly sharedFilesPrefix: string,
     private readonly logger: Logger
-  ) {}
+  ) {
+    super({ source: eventSource, version: VERSION });
+  }
 
   private classifyTemplateSavedEventType(status: string) {
     switch (status) {
@@ -63,26 +63,6 @@ export class EventBuilder {
         return 'RoutingConfigDrafted';
       }
     }
-  }
-
-  private buildEventMetadata(
-    id: string,
-    type: string,
-    subject: string,
-    plane: 'control' | 'data' = 'control'
-  ) {
-    return {
-      id,
-      datacontenttype: 'application/json',
-      time: new Date().toISOString(),
-      source: this.eventSource,
-      specversion: '1.0',
-      plane,
-      subject,
-      type: `uk.nhs.notify.template-management.${type}.v${MAJOR_VERSION}`,
-      dataschema: `https://notify.nhs.uk/events/schemas/${type}/v${MAJOR_VERSION}.json`,
-      dataschemaversion: VERSION,
-    };
   }
 
   private getInternalFilePathForTemplateEvent(
@@ -197,13 +177,14 @@ export class EventBuilder {
     try {
       return {
         event: $Event.parse({
-          ...this.buildEventMetadata(
-            publishableEventRecord.eventID,
-            this.classifyTemplateSavedEventType(
+          ...this.buildEventMetadata({
+            id: publishableEventRecord.eventID,
+            type: this.classifyTemplateSavedEventType(
               databaseTemplateNew.templateStatus
             ),
-            databaseTemplateNew.id
-          ),
+            subject: databaseTemplateNew.id,
+            plane: 'control',
+          }),
           data: {
             ...dynamoRecordNew,
             ...this.getNonDatabaseFieldsForTemplateEvent(
@@ -247,11 +228,14 @@ export class EventBuilder {
     const databaseRoutingConfig = $DynamoDBRoutingConfig.parse(dynamoRecord);
 
     const event = $Event.safeParse({
-      ...this.buildEventMetadata(
-        publishableEventRecord.eventID,
-        this.classifyRoutingConfigSavedEventType(databaseRoutingConfig.status),
-        databaseRoutingConfig.id
-      ),
+      ...this.buildEventMetadata({
+        id: publishableEventRecord.eventID,
+        type: this.classifyRoutingConfigSavedEventType(
+          databaseRoutingConfig.status
+        ),
+        subject: databaseRoutingConfig.id,
+        plane: 'control',
+      }),
       data: dynamoRecord,
     });
 
@@ -290,12 +274,12 @@ export class EventBuilder {
     try {
       return {
         event: $Event.parse({
-          ...this.buildEventMetadata(
-            publishableEventRecord.eventID,
-            'ProofRequested',
-            databaseProofRequest.id,
-            'data'
-          ),
+          ...this.buildEventMetadata({
+            id: publishableEventRecord.eventID,
+            type: 'ProofRequested',
+            subject: databaseProofRequest.id,
+            plane: 'data',
+          }),
           data: dynamoRecord,
         }),
       };
