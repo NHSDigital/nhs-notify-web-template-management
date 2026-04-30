@@ -12,12 +12,16 @@ export class TemplateMgmtUploadLetterBasePage extends TemplateMgmtBasePage {
     });
   }
 
+  // Method not intended for use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async fillForm(input: {
     name: string;
     campaignId: string;
     filePath: string;
     language?: string;
   }) {
-    throw new Error('This method should be overridden');
+    throw new Error(
+      'This method is not intended to be called directly and should be overidden from an inherited class.'
+    );
   }
 }
