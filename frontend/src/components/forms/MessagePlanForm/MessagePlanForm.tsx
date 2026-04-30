@@ -97,9 +97,9 @@ export function MessagePlanForm({
                 className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5'
                 data-testid='campaign-warning-callout'
               >
-                <div className='nhsuk-warning-callout__label nhsuk-heading-m'>
+                <strong className='nhsuk-warning-callout__label'>
                   {formContent.fields.campaignId.warningCallout.heading}
-                </div>
+                </strong>
                 <p id='campaignId--warning'>
                   {formContent.fields.campaignId.warningCallout.content}
                 </p>
@@ -112,7 +112,7 @@ export function MessagePlanForm({
                 id='campaignId'
                 name='campaignId'
                 data-testid='campaign-id-field'
-                aria-describedby='campaignId--hint campaignId--error-message campaignId--warning'
+                aria-describedby='campaignId--hint campaignId--warning'
                 aria-labelledby='campaignId--label'
               >
                 <option />

@@ -172,11 +172,11 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
                   class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
                   data-testid="campaign-warning-callout"
                 >
-                  <div
-                    class="nhsuk-warning-callout__label nhsuk-heading-m"
+                  <strong
+                    class="nhsuk-warning-callout__label"
                   >
                     Important
-                  </div>
+                  </strong>
                   <p
                     id="campaignId--warning"
                   >
@@ -195,7 +195,7 @@ exports[`CreateMessagePlanPage on submit it invokes the server action and render
                   Campaign Id Error
                 </span>
                 <select
-                  aria-describedby="campaignId--hint campaignId--error-message campaignId--warning"
+                  aria-describedby="campaignId--hint campaignId--warning"
                   aria-labelledby="campaignId--label"
                   class="nhsuk-select nhsuk-select--error"
                   data-testid="campaign-id-field"
@@ -377,11 +377,11 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
                   class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
                   data-testid="campaign-warning-callout"
                 >
-                  <div
-                    class="nhsuk-warning-callout__label nhsuk-heading-m"
+                  <strong
+                    class="nhsuk-warning-callout__label"
                   >
                     Important
-                  </div>
+                  </strong>
                   <p
                     id="campaignId--warning"
                   >
@@ -389,7 +389,7 @@ exports[`CreateMessagePlanPage renders the page 1`] = `
                   </p>
                 </div>
                 <select
-                  aria-describedby="campaignId--hint campaignId--error-message campaignId--warning"
+                  aria-describedby="campaignId--hint campaignId--warning"
                   aria-labelledby="campaignId--label"
                   class="nhsuk-select"
                   data-testid="campaign-id-field"
