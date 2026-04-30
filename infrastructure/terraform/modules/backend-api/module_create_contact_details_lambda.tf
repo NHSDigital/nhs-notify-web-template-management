@@ -75,4 +75,17 @@ data "aws_iam_policy_document" "create_contact_details" {
 
     resources = [aws_dynamodb_table.contact_details.arn]
   }
+
+  statement {
+    sid    = "AllowEventPublish"
+    effect = "Allow"
+
+    actions = [
+      "sns:Publish",
+    ]
+
+    resources = [
+      var.events_sns_topic_arn
+    ]
+  }
 }

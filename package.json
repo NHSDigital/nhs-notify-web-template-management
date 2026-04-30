@@ -74,6 +74,7 @@
     "tests/test-team",
     "utils/backend-config",
     "utils/entity-update-command-builder",
+    "utils/event-builder",
     "utils/test-helper-utils",
     "utils/utils"
   ]

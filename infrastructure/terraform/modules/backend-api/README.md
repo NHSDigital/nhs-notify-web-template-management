@@ -21,6 +21,7 @@ No requirements.
 | <a name="input_enable_api_data_trace"></a> [enable\_api\_data\_trace](#input\_enable\_api\_data\_trace) | Enable API Gateway data trace logging | `bool` | `false` | no |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Enable Backups for the DynamoDB table? | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
+| <a name="input_events_sns_topic_arn"></a> [events\_sns\_topic\_arn](#input\_events\_sns\_topic\_arn) | SNS topic ARN for emitting events to | `string` | n/a | yes |
 | <a name="input_function_s3_bucket"></a> [function\_s3\_bucket](#input\_function\_s3\_bucket) | Name of S3 bucket to upload lambda artefacts to | `string` | n/a | yes |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonmous with account short-name) | `string` | n/a | yes |
 | <a name="input_guardduty_protection_plan_quarantine_arn"></a> [guardduty\_protection\_plan\_quarantine\_arn](#input\_guardduty\_protection\_plan\_quarantine\_arn) | ARN of quarantine Guard duty protection plan | `string` | n/a | yes |
@@ -37,7 +38,6 @@ No requirements.
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | `true` | no |
 | <a name="input_shared_files_bucket_arn"></a> [shared\_files\_bucket\_arn](#input\_shared\_files\_bucket\_arn) | ARN of S3 bucket to use for shared files | `string` | n/a | yes |
 | <a name="input_shared_files_bucket_name"></a> [shared\_files\_bucket\_name](#input\_shared\_files\_bucket\_name) | Name of S3 bucket to use for shared files | `string` | n/a | yes |
-| <a name="input_sns_topic_arn"></a> [sns\_topic\_arn](#input\_sns\_topic\_arn) | SNS topic ARN | `string` | `null` | no |
 | <a name="input_template_submitted_sender_email_address"></a> [template\_submitted\_sender\_email\_address](#input\_template\_submitted\_sender\_email\_address) | Template submitted sender email address | `string` | n/a | yes |
 ## Modules
 
