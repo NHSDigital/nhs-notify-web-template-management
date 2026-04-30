@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@nhsdigital/nhs-notify-event-schemas-template-management": [
+        "../../packages/event-schemas/src/index.ts"
+      ]
+    },
+    "types": [
+      "jest"
+    ]
+  },
+  "extends": "@tsconfig/node22/tsconfig.json"
+}

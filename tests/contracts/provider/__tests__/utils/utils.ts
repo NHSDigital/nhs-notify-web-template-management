@@ -109,6 +109,8 @@ export function getMessageProviders() {
   );
 
   const eventTypes = [
+    'ContactDetailVerificationRequested',
+    'ProofRequested',
     'TemplateCompleted',
     'TemplateDeleted',
     'TemplateDrafted',
