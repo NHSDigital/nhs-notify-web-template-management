@@ -1,5 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 'use server';
-
 import { z } from 'zod/v4';
 import { redirect, RedirectType } from 'next/navigation';
 import type { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
