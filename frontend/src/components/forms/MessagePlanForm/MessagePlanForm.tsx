@@ -38,6 +38,7 @@ export function MessagePlanForm({
   );
 
   const nameError = state.errorState?.fieldErrors?.name?.join(',');
+  const campaignIdError = state.errorState?.fieldErrors?.campaignId;
 
   return (
     <NHSNotifyFormWrapper formId='message-plan' action={action}>
@@ -112,7 +113,7 @@ export function MessagePlanForm({
                 id='campaignId'
                 name='campaignId'
                 data-testid='campaign-id-field'
-                aria-describedby='campaignId--hint campaignId--warning'
+                aria-describedby={`campaignId--hint campaignId--warning${campaignIdError ? ' campaignId--error-message' : ''}`}
                 aria-labelledby='campaignId--label'
               >
                 <option />

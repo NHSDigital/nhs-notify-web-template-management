@@ -144,7 +144,7 @@ exports[`Message plan form renders errors 1`] = `
           CampaignId error
         </span>
         <select
-          aria-describedby="campaignId--hint campaignId--warning"
+          aria-describedby="campaignId--hint campaignId--warning campaignId--error-message"
           aria-labelledby="campaignId--label"
           class="nhsuk-select nhsuk-select--error"
           data-testid="campaign-id-field"
