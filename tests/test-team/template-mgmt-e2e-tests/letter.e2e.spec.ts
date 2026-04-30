@@ -51,14 +51,13 @@ const test = base.extend<{
 
 // clear login state from e2e.setup.ts
 test.use({ storageState: { cookies: [], origins: [] } });
+const templateStorageHelper = new TemplateStorageHelper();
+
+test.afterAll(async () => {
+  await templateStorageHelper.deleteAdHocTemplates();
+});
 
 test.describe('Letters complete e2e journey', () => {
-  const templateStorageHelper = new TemplateStorageHelper();
-
-  test.afterAll(async () => {
-    await templateStorageHelper.deleteAdHocTemplates();
-  });
-
   type TestParameter = {
     selectedLetterType: LetterType | 'language';
     expectedLetterType: LetterType;
@@ -353,4 +352,94 @@ test.describe('Letters complete e2e journey', () => {
       });
     });
   }
+});
+
+test('Validation failed (missing address)', async ({
+  page,
+  chooseTemplateTypePage,
+  user,
+}) => {
+  await test.step('Choose standard english letter', async () => {
+    await chooseTemplateTypePage.getLetterTypeRadio('x0').click();
+    await chooseTemplateTypePage.clickContinueButton();
+
+    await expect(page).toHaveURL(
+      TemplateMgmtBasePage.appUrlSegment +
+        TemplateMgmtUploadStandardEnglishLetterTemplatePage.pathTemplate
+    );
+  });
+
+  const campaignId = user.campaignIds?.[0];
+  if (!campaignId) {
+    throw new Error(`Invalid campaign id for test user: ${user.userId}`);
+  }
+
+  const uploadInput = {
+    name: 'Missing address',
+    campaignId,
+    filePath: docxFixtures.incompleteAddress.filepath,
+  };
+
+  await test.step('Fill out upload form', async () => {
+    const uploadPage = new TemplateMgmtUploadStandardEnglishLetterTemplatePage(
+      page
+    );
+    await uploadPage.fillForm(uploadInput);
+
+    await uploadPage.submitButton.click();
+
+    await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+  });
+
+  await test.step('Ensure template is created with expected details', async () => {
+    const maybeTemplateId = TemplateMgmtPreviewLetterPage.getTemplateId(
+      page.url()
+    );
+    expect(maybeTemplateId, 'Template should be defined').not.toBeUndefined();
+    const templateId = maybeTemplateId as string;
+    const key = {
+      templateId,
+      clientId: user.clientId,
+    };
+
+    templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+      expect(template.campaignId).toEqual(campaignId);
+      expect(template.name).toEqual(uploadInput.name);
+      expect(template.clientId).toEqual(user.clientId);
+      expect(template.letterType).toEqual('x0');
+      expect(template.lockNumber).toEqual(1);
+      expect(template.files?.docxTemplate?.fileName).toEqual(
+        docxFixtures.incompleteAddress.filename
+      );
+      expect(template.files?.docxTemplate?.virusScanStatus).toEqual('PASSED');
+      expect(template.templateStatus).toEqual('PENDING_VALIDATION');
+    }).toPass({ timeout: 40_000 });
+  });
+
+  const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+  await test.step('View upload results', async () => {
+    await expect(async () => {
+      await expect(previewTemplatePage.pageSpinner).toBeHidden();
+      await expect(previewTemplatePage.errorSummary).toBeAttached();
+      await expect(previewTemplatePage.errorSummary).toContainText(
+        'Your template is missing address personalisation fields'
+      );
+      await expect(previewTemplatePage.statusTag).toContainText(
+        'Checks failed'
+      );
+    }).toPass({ timeout: 40_000 });
+  });
+
+  await test.step('Go back to upload page', async () => {
+    await previewTemplatePage.uploadDifferentTemplateButton.click();
+
+    await expect(page).toHaveURL(
+      TemplateMgmtBasePage.appUrlSegment +
+        TemplateMgmtUploadStandardEnglishLetterTemplatePage.pathTemplate
+    );
+  });
 });

@@ -198,7 +198,7 @@ function requestProof(
         await templateStorageHelper.getTemplate(templateKey);
 
       expect(templateStatus).toEqual('PROOF_AVAILABLE');
-    }, "Template status is 'PROOF_AVAILABLE'").toPass({ timeout: 60_000 });
+    }).toPass({ timeout: 60_000 });
 
     await expect(async () => {
       await page.reload();
@@ -241,7 +241,7 @@ function requestProof(
       await page.reload();
 
       await previewTemplatePage.clickContinueButton();
-    }, 'Proofs are in download bucket').toPass({ timeout: 60_000 });
+    }).toPass({ timeout: 60_000 });
 
     return supplierReference;
   });
