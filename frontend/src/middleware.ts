@@ -93,7 +93,12 @@ function getContentSecurityPolicy(nonce: string) {
     'font-src': [`'self'`, 'https://assets.nhs.uk'],
     'form-action': [`'self'`],
     'frame-src': [`'self'`],
-    'connect-src': [`'self'`, 'https://cognito-idp.eu-west-2.amazonaws.com'],
+    // env var for this?
+    'connect-src': [
+      // `'self'`,
+      // 'https://cognito-idp.eu-west-2.amazonaws.com',
+      '*',
+    ],
     'img-src': [`'self'`],
     'manifest-src': [`'self'`],
     'object-src': [`'none'`],

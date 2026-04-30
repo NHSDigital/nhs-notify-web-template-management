@@ -1,35 +1,25 @@
 'use server';
 
 import { z } from 'zod/v4';
-import { redirect, RedirectType } from 'next/navigation';
 import type { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import copy from '@content/content';
 import { formDataToFormStateFields } from '@utils/form-data-to-form-state';
-import {
-  uploadDocxTemplate,
-  uploadDocxTemplateFile,
-} from '@utils/form-actions';
-import { FormState } from '@utils/types';
+import { uploadDocxTemplate } from '@utils/form-actions';
 
 const { errors } = copy.components.uploadDocxLetterTemplateForm;
 
 const $FormSchema = z.object({
-  name: z.string(errors.name.empty).nonempty(errors.name.empty),
+  name: z
+    .string(errors.name.empty)
+    .nonempty(errors.name.empty)
+    .default('dname'),
   campaignId: z
     .string(errors.campaignId.empty)
-    .nonempty(errors.campaignId.empty),
-  file: z
-    .file(errors.file.empty)
-    .mime(
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      errors.file.empty
-    ),
+    .nonempty(errors.campaignId.empty)
+    .default('campaign'),
 });
 
-export async function uploadStandardLetterTemplate(
-  _: FormState,
-  form: FormData
-): Promise<FormState> {
+export async function uploadStandardLetterTemplate(form: FormData) {
   const validation = $FormSchema.safeParse(Object.fromEntries(form.entries()));
 
   const fields = formDataToFormStateFields(form);
@@ -41,7 +31,7 @@ export async function uploadStandardLetterTemplate(
     };
   }
 
-  const { name, campaignId, file } = validation.data;
+  const { name, campaignId } = validation.data;
 
   const template: UploadLetterTemplate = {
     name,
@@ -54,11 +44,5 @@ export async function uploadStandardLetterTemplate(
 
   const savedTemplate = await uploadDocxTemplate(template);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await uploadDocxTemplateFile((savedTemplate as any).uploadUrl, file);
-
-  return redirect(
-    `/preview-letter-template/${savedTemplate.id}?from=upload`,
-    RedirectType.push
-  );
+  return savedTemplate;
 }

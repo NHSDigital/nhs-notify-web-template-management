@@ -1,17 +1,12 @@
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
-import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import copy from '@content/content';
-import * as UploadDocxLetterTemplateForm from '@forms/UploadDocxLetterTemplateForm';
 import { NHSNotifyContainer } from '@layouts/container/container';
-import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
-import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { fetchClient } from '@utils/server-features';
 import { getCampaignIds } from '@utils/client-config';
-import { uploadStandardLetterTemplate } from './server-action';
+import { Upload } from '../../components/client-upload';
 
 const content = copy.pages.uploadDocxLetterTemplatePage('x0');
 
@@ -41,32 +36,7 @@ export default async function UploadStandardLetterTemplatePage() {
         {content.backLink.text}
       </NHSNotifyBackLink>
       <NHSNotifyMain>
-        <NHSNotifyFormProvider serverAction={uploadStandardLetterTemplate}>
-          <NHSNotifyForm.ErrorSummary />
-          <div className='nhsuk-grid-row'>
-            <div className='nhsuk-grid-column-two-thirds'>
-              <h1 className='nhsuk-heading-xl'>{content.heading}</h1>
-            </div>
-          </div>
-          <div className='nhsuk-grid-row'>
-            <div className='nhsuk-grid-column-two-thirds'>
-              <NHSNotifyForm.Form formId='upload-standard-english-letter-template'>
-                <UploadDocxLetterTemplateForm.NameField />
-                <UploadDocxLetterTemplateForm.CampaignIdField
-                  campaignIds={campaignIds}
-                />
-                <UploadDocxLetterTemplateForm.FileField />
-                <NHSNotifyButton type='submit'>
-                  {content.submitButton.text}
-                </NHSNotifyButton>
-              </NHSNotifyForm.Form>
-            </div>
-
-            <div className='nhsuk-grid-column-one-third'>
-              <ContentRenderer content={content.sideBar} />
-            </div>
-          </div>
-        </NHSNotifyFormProvider>
+        <Upload />
       </NHSNotifyMain>
     </NHSNotifyContainer>
   );
