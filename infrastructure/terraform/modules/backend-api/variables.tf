@@ -171,3 +171,8 @@ variable "shared_files_bucket_arn" {
   type        = string
   description = "ARN of S3 bucket to use for shared files"
 }
+
+variable "guardduty_protection_plan_quarantine_arn" {
+  type        = string
+  description = "ARN of quarantine Guard duty protection plan"
+}

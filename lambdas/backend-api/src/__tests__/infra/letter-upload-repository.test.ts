@@ -20,7 +20,8 @@ const setup = () => {
   const letterUploadRepository = new LetterUploadRepository(
     quarantineBucketName,
     internalBucketName,
-    'download-bucket'
+    'download-bucket',
+    'test-env'
   );
 
   return { letterUploadRepository, mocks: { s3Client } };
@@ -61,7 +62,7 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
+        Key: `test-env/pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
           'client-id': clientId,
@@ -73,7 +74,7 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `test-data/${clientId}/${templateId}/${versionId}.csv`,
+        Key: `test-env/test-data/${clientId}/${templateId}/${versionId}.csv`,
         Body: new Uint8Array(await csvBytes.arrayBuffer()),
         Metadata: {
           'client-id': clientId,
@@ -98,7 +99,7 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
+        Key: `test-env/pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
           'client-id': clientId,
@@ -197,12 +198,11 @@ describe('LetterUploadRepository', () => {
   });
 
   describe('static parseKey', () => {
-    it('returns metadata from valid pdf key', () => {
-      expect(
-        LetterUploadRepository.parseKey(
-          'pdf-template/owner-id/template-id/version-id.pdf'
-        )
-      ).toEqual({
+    it.each([
+      'pdf-template/owner-id/template-id/version-id.pdf',
+      'test-env/pdf-template/owner-id/template-id/version-id.pdf',
+    ])('returns metadata from valid pdf key: %p', (objectKey) => {
+      expect(LetterUploadRepository.parseKey(objectKey)).toEqual({
         'file-type': 'pdf-template',
         'client-id': 'owner-id',
         'template-id': 'template-id',
@@ -210,12 +210,11 @@ describe('LetterUploadRepository', () => {
       });
     });
 
-    it('returns metadata from valid csv key', () => {
-      expect(
-        LetterUploadRepository.parseKey(
-          'test-data/owner-id/template-id/version-id.csv'
-        )
-      ).toEqual({
+    test.each([
+      'test-data/owner-id/template-id/version-id.csv',
+      'test-env/test-data/owner-id/template-id/version-id.csv',
+    ])('returns metadata from valid csv key: %p', (objectKey) => {
+      expect(LetterUploadRepository.parseKey(objectKey)).toEqual({
         'file-type': 'test-data',
         'client-id': 'owner-id',
         'template-id': 'template-id',
@@ -223,12 +222,11 @@ describe('LetterUploadRepository', () => {
       });
     });
 
-    it('returns metadata from valid docx key', () => {
-      expect(
-        LetterUploadRepository.parseKey(
-          'docx-template/owner-id/template-id/version-id.docx'
-        )
-      ).toEqual({
+    test.each([
+      'docx-template/owner-id/template-id/version-id.docx',
+      'test-env/docx-template/owner-id/template-id/version-id.docx',
+    ])('returns metadata from valid docx key: %p', (objectKey) => {
+      expect(LetterUploadRepository.parseKey(objectKey)).toEqual({
         'file-type': 'docx-template',
         'client-id': 'owner-id',
         'template-id': 'template-id',
@@ -239,7 +237,7 @@ describe('LetterUploadRepository', () => {
     it('errors if key if too long', () => {
       expect(() =>
         LetterUploadRepository.parseKey(
-          'test-data/owner-id/template-id/unexpected-path/version-id.csv'
+          'too-long/test-data/owner-id/template-id/unexpected-path/version-id.csv'
         )
       ).toThrowErrorMatchingSnapshot();
     });
@@ -253,7 +251,7 @@ describe('LetterUploadRepository', () => {
     it('errors if invalid file type segment', () => {
       expect(() =>
         LetterUploadRepository.parseKey(
-          'unexpected/owner-id/template-id/version-id.csv'
+          'unexpected-type/owner-id/template-id/version-id.csv'
         )
       ).toThrowErrorMatchingSnapshot();
     });

@@ -27,7 +27,8 @@ module "lambda_sftp_poll" {
   lambda_env_vars = {
     CREDENTIALS_TTL_SECONDS = 900
     CSI                     = local.csi
-    QUARANTINE_BUCKET_NAME  = module.s3bucket_quarantine.id
+    ENVIRONMENT             = var.environment
+    QUARANTINE_BUCKET_NAME  = data.aws_s3_bucket.quarantine.id
     NODE_OPTIONS            = "--enable-source-maps",
     REGION                  = var.region
     SFTP_ENVIRONMENT        = local.sftp_environment
@@ -57,7 +58,7 @@ data "aws_iam_policy_document" "sftp_poll" {
       "s3:PutObject",
     ]
 
-    resources = ["${module.s3bucket_quarantine.arn}/*"]
+    resources = ["${data.aws_s3_bucket.quarantine.arn}/${var.environment}/*"]
   }
 
   statement {

@@ -4,12 +4,14 @@ import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { templateRepositoryContainer } from './templates-repository';
 
 export const validateLetterTemplateFilesContainer = () => {
-  const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
+  const { quarantineBucket, internalBucket, downloadBucket, environment } =
+    loadConfig();
 
   const letterUploadRepository = new LetterUploadRepository(
     quarantineBucket,
     internalBucket,
-    downloadBucket
+    downloadBucket,
+    environment
   );
 
   return {

@@ -10,6 +10,7 @@ import NodeCache from 'node-cache';
 export function createContainer() {
   const {
     csi,
+    environment,
     quarantineBucketName,
     credentialsTtlSeconds,
     region,
@@ -35,7 +36,8 @@ export function createContainer() {
     sftpSupplierClientRepository,
     logger,
     s3Repository,
-    sftpEnvironment
+    sftpEnvironment,
+    environment
   );
 
   return {

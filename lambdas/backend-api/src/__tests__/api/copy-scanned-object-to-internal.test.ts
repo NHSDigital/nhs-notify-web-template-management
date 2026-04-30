@@ -6,36 +6,41 @@ import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-manag
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 function setup() {
+  const environment = 'test-env';
   const mocks = {
     letterFileRepository: mock<LetterFileRepository>(),
     logger: createMockLogger().logger,
+    environment,
   };
   const handler = createHandler(mocks);
   return { handler, mocks };
 }
 
-it('copies the scanned file to the internal s3 bucket', async () => {
-  const { handler, mocks } = setup();
+it.each(['template.pdf', 'test-env/template.pdf'])(
+  'copies the scanned file %p to the internal s3 bucket',
+  async (objectKey) => {
+    const { handler, mocks } = setup();
 
-  const event = makeGuardDutyMalwareScanResultNotificationEvent({
-    detail: {
-      s3ObjectDetails: {
-        bucketName: 'quarantine-bucket',
-        objectKey: 'template.pdf',
-        versionId: 's3-version-id',
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey,
+          versionId: 's3-version-id',
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
       },
-      scanResultDetails: {
-        scanResultStatus: 'NO_THREATS_FOUND',
-      },
-    },
-  });
+    });
 
-  await handler(event);
+    await handler(event);
 
-  expect(
-    mocks.letterFileRepository.copyFromQuarantineToInternal
-  ).toHaveBeenCalledWith('template.pdf', 's3-version-id');
-});
+    expect(
+      mocks.letterFileRepository.copyFromQuarantineToInternal
+    ).toHaveBeenCalledWith(objectKey, 's3-version-id', 'template.pdf');
+  }
+);
 
 it('errors if the event has no object key', async () => {
   const { handler, mocks } = setup();
