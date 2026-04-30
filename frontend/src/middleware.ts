@@ -93,7 +93,7 @@ function getContentSecurityPolicy(nonce: string) {
     'font-src': [`'self'`, 'https://assets.nhs.uk'],
     'form-action': [`'self'`],
     'frame-src': [`'self'`],
-    // env var for this?
+    // env var for this? e.g. "https://nhs-notify-891377170468-eu-west-2-alnu1-sbx-quarantine.s3.eu-west-2.amazonaws.com"
     'connect-src': [
       // `'self'`,
       // 'https://cognito-idp.eu-west-2.amazonaws.com',

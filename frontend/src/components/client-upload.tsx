@@ -20,6 +20,10 @@ export function Upload() {
 
     console.log(response);
 
+    // if using presigned POST rather presigned PUT (like here)
+    // would need to get 'fields' back from the server action and
+    // add each one as a formdata part, along with the file
+
     await fetch(url, { method: 'PUT', body: file });
 
     router.push(
