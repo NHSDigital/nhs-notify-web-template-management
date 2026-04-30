@@ -326,7 +326,7 @@ export class TemplateClient {
 
     const files: AuthoringLetterFiles = {
       docxTemplate: {
-        fileName: 'docxTemplate.name',
+        fileName: 'template.docx',
         currentVersion: versionId,
         virusScanStatus: 'PENDING',
       },
@@ -380,7 +380,11 @@ export class TemplateClient {
       return uploadResult;
     }
 
-    return success({ ...templateDTO, uploadUrl: uploadResult.data });
+    return success({
+      ...templateDTO,
+      uploadUrl: uploadResult.data.url,
+      uploadFields: uploadResult.data.fields,
+    });
   }
 
   async updateTemplate(

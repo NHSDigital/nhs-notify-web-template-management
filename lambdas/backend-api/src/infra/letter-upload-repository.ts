@@ -1,13 +1,9 @@
 import { z } from 'zod/v4';
 import type { FileType, User } from 'nhs-notify-web-template-management-utils';
-import {
-  GetObjectCommand,
-  NotFound,
-  PutObjectCommand,
-} from '@aws-sdk/client-s3';
+import { GetObjectCommand, NotFound } from '@aws-sdk/client-s3';
 import { ApplicationResult, success } from '../utils';
 import { LetterFileRepository } from './letter-file-repository';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 
 export type LetterUploadMetadata = {
   'file-type': FileType;
@@ -37,28 +33,35 @@ export class LetterUploadRepository extends LetterFileRepository {
     user: User,
     versionId: string,
     fileType: 'pdf-template' | 'docx-template'
-  ): Promise<ApplicationResult<string>> {
-    const pdfKey = this.key(fileType, user.clientId, templateId, versionId);
+  ): Promise<
+    ApplicationResult<{ url: string; fields: Record<string, string> }>
+  > {
+    const objectKey = this.key(fileType, user.clientId, templateId, versionId);
 
-    const commands: PutObjectCommand[] = [
-      new PutObjectCommand({
-        Bucket: this.quarantineBucketName,
-        Key: pdfKey,
-        ChecksumAlgorithm: 'SHA256',
-        Metadata: LetterUploadRepository.metadata(
-          user.clientId,
-          templateId,
-          versionId,
-          fileType
-        ),
-      }),
-    ];
-
-    const presignedUrl = await getSignedUrl(this.client, commands[0], {
-      expiresIn: 300,
+    const { url, fields } = await createPresignedPost(this.client, {
+      Bucket: this.quarantineBucketName,
+      Key: objectKey,
+      Fields: {
+        'Content-Type':
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'x-amz-checksum-algorithm': 'SHA256',
+        'x-amz-meta-file-type': fileType,
+        'x-amz-meta-client-id': user.clientId,
+        'x-amz-meta-template-id': templateId,
+        'x-amz-meta-version-id': versionId,
+      },
+      Conditions: [
+        ['content-length-range', 0, 25 * 1024 * 1024],
+        [
+          'eq',
+          '$Content-Type',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ],
+      ],
+      Expires: 30,
     });
 
-    return success(presignedUrl);
+    return success({ url, fields });
   }
 
   async download(

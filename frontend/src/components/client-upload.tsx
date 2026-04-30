@@ -1,35 +1,34 @@
 'use client';
 
-import { SubmitEventHandler } from 'react';
+import { type FormEvent } from 'react';
 import { uploadStandardLetterTemplate } from '../app/upload-standard-english-letter-template/server-action';
 import { useRouter } from 'next/navigation';
 
 export function Upload() {
   const router = useRouter();
 
-  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.target);
+    const fd = new FormData(e.currentTarget);
     const file = fd.get('file');
     fd.delete('file');
 
     const response = await uploadStandardLetterTemplate(fd);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const url = (response as any).uploadUrl;
+    const { uploadUrl, uploadFields, id } = response as any;
 
-    console.log(response);
+    const s3FormData = new FormData();
+    for (const [key, value] of Object.entries(
+      uploadFields as Record<string, string>
+    )) {
+      s3FormData.append(key, value);
+    }
+    s3FormData.append('file', file!);
 
-    // if using presigned POST rather presigned PUT (like here)
-    // would need to get 'fields' back from the server action and
-    // add each one as a formdata part, along with the file
+    await fetch(uploadUrl, { method: 'POST', body: s3FormData });
 
-    await fetch(url, { method: 'PUT', body: file });
-
-    router.push(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      `/preview-letter-template/${(response as any).id}?from=upload`
-    );
+    router.push(`/preview-letter-template/${id}?from=upload`);
   };
 
   return (

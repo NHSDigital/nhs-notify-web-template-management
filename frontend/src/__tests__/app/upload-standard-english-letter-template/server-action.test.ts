@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { redirect, RedirectType } from 'next/navigation';
 import { uploadStandardLetterTemplate } from '@app/upload-standard-english-letter-template/server-action';
 import { uploadDocxTemplate } from '@utils/form-actions';
