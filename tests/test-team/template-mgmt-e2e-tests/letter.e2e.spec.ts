@@ -11,7 +11,9 @@ import {
   TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtReviewAndApproveLetterTemplatePage,
+  TemplateMgmtUploadBSLLetterTemplatePage,
   TemplateMgmtUploadLargePrintLetterTemplatePage,
+  TemplateMgmtUploadOtherLanguageLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
 } from 'pages/letter';
 import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
@@ -56,17 +58,20 @@ test.describe('Letters complete e2e journey', () => {
   });
 
   type TestParameter = {
-    letterType: LetterType | 'language';
+    selectedLetterType: LetterType | 'language';
+    expectedLetterType: LetterType;
     letterTypeName: string;
     docx: (typeof docxFixtures)[keyof typeof docxFixtures];
     getUploadPage: (page: Page) => TemplateMgmtUploadLetterBasePage;
     personalisationData: Record<string, string>;
     language?: string;
+    expectedLanguageIsoCode?: string;
   };
 
   const t: TestParameter[] = [
     {
-      letterType: 'x0',
+      selectedLetterType: 'x0',
+      expectedLetterType: 'x0',
       letterTypeName: 'Standard English',
       docx: docxFixtures.standard,
       getUploadPage: (page: Page) =>
@@ -78,7 +83,8 @@ test.describe('Letters complete e2e journey', () => {
       },
     },
     {
-      letterType: 'x1',
+      selectedLetterType: 'x1',
+      expectedLetterType: 'x1',
       letterTypeName: 'Large Print',
       docx: docxFixtures.standard,
       getUploadPage: (page: Page) =>
@@ -89,15 +95,45 @@ test.describe('Letters complete e2e journey', () => {
         gpSurgeryPhone: '+44 7293 456 099',
       },
     },
+    {
+      selectedLetterType: 'q4',
+      expectedLetterType: 'q4',
+      letterTypeName: 'British Sign Language',
+      docx: docxFixtures.standard,
+      getUploadPage: (page: Page) =>
+        new TemplateMgmtUploadBSLLetterTemplatePage(page),
+      personalisationData: {
+        gpSurgeryName: 'Test Surgery',
+        gpSurgeryAddress: '123 Timbuktu Lane, Kings Landing, KL19 0JE',
+        gpSurgeryPhone: '+44 7293 456 099',
+      },
+    },
+    {
+      selectedLetterType: 'language',
+      expectedLetterType: 'x0',
+      letterTypeName: 'Other Language (Spanish)',
+      docx: docxFixtures.standard,
+      getUploadPage: (page: Page) =>
+        new TemplateMgmtUploadOtherLanguageLetterTemplatePage(page),
+      personalisationData: {
+        gpSurgeryName: 'Test Surgery',
+        gpSurgeryAddress: '123 Timbuktu Lane, Kings Landing, KL19 0JE',
+        gpSurgeryPhone: '+44 7293 456 099',
+      },
+      language: 'Spanish',
+      expectedLanguageIsoCode: 'es',
+    },
   ];
 
   for (const {
-    letterType,
+    selectedLetterType: letterType,
     letterTypeName,
     docx,
     getUploadPage,
     personalisationData,
     language,
+    expectedLetterType,
+    expectedLanguageIsoCode,
   } of t) {
     test(letterTypeName, async ({ page, chooseTemplateTypePage, user }) => {
       const uploadPage = getUploadPage(page);
@@ -152,7 +188,7 @@ test.describe('Letters complete e2e journey', () => {
             expect(template.campaignId).toEqual(campaignId);
             expect(template.name).toEqual(templateName);
             expect(template.clientId).toEqual(user.clientId);
-            expect(template.letterType).toEqual(letterType);
+            expect(template.letterType).toEqual(expectedLetterType);
             expect(template.lockNumber).toEqual(1);
             expect(template.files?.docxTemplate?.fileName).toEqual(
               docx.filename
@@ -161,268 +197,178 @@ test.describe('Letters complete e2e journey', () => {
               'PASSED'
             );
             expect(template.templateStatus).toEqual('PENDING_VALIDATION');
+            expect(template.language).toEqual(expectedLanguageIsoCode ?? 'en');
           }).toPass({ timeout: 40_000 });
 
           return key;
         });
 
-      const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
-
       await test.step('View upload results', async () => {
         await expect(async () => {
-          // await page.reload();
-
+          const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
           await expect(previewTemplatePage.continueButton).toBeVisible();
           await expect(previewTemplatePage.uploadSuccessBanner).toBeVisible();
           await expect(previewTemplatePage.pageSpinner).toBeHidden();
         }).toPass({ timeout: 40_000 });
       });
-    });
-  }
 
-  test('Standard English Letter', async ({
-    page,
-    chooseTemplateTypePage,
-    user,
-  }) => {
-    const letterType: LetterType = 'x0';
+      const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
 
-    await test.step('Choose standard english letter type', async () => {
-      await chooseTemplateTypePage.getLetterTypeRadio(letterType).click();
-      await chooseTemplateTypePage.clickContinueButton();
+      const choosePrintingAndPostagePage =
+        new TemplateMgmtChoosePrintingAndPostagePage(page);
+      const letterVariants =
+        await context.letterVariants.getGlobalLetterVariants();
 
-      await expect(page).toHaveURL(
-        TemplateMgmtBasePage.appUrlSegment +
-          TemplateMgmtUploadStandardEnglishLetterTemplatePage.pathTemplate
-      );
-    });
+      const [selectedLetterVariant] = letterVariants;
 
-    const templateName = 'E2E Test (Andy)';
-    const campaignId = user.campaignIds?.[0];
-    if (!campaignId) {
-      throw new Error(`Invalid campaign id for test user: ${user.userId}`);
-    }
-
-    const docx = docxFixtures.standard;
-
-    await test.step('Fill upload letter details and submit', async () => {
-      const uploadPage =
-        new TemplateMgmtUploadStandardEnglishLetterTemplatePage(page);
-      await uploadPage.nameInput.fill(templateName);
-
-      await expect(uploadPage.singleCampaignIdText).toBeHidden();
-      await uploadPage.campaignIdInput.selectOption(campaignId);
-
-      await uploadPage.fileInput.click();
-      await uploadPage.fileInput.setInputFiles(docx.filepath);
-
-      await uploadPage.submitButton.click();
-
-      await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
-    });
-
-    const templateKey =
-      await test.step('Ensure template is created with correct details', async () => {
-        const maybeTemplateId = TemplateMgmtPreviewLetterPage.getTemplateId(
-          page.url()
+      await test.step('Select printing and postage', async () => {
+        await previewTemplatePage.printingAndPostageAction.click();
+        await expect(page).toHaveURL(
+          TemplateMgmtChoosePrintingAndPostagePage.urlRegexp
         );
-        expect(
-          maybeTemplateId,
-          'Template should be defined'
-        ).not.toBeUndefined();
-        const templateId = maybeTemplateId as string;
-        const key = {
-          templateId,
-          clientId: user.clientId,
-        };
 
-        templateStorageHelper.addAdHocTemplateKey(key);
+        await choosePrintingAndPostagePage.selectVariant(
+          selectedLetterVariant.name
+        );
+        await choosePrintingAndPostagePage.clickSubmit();
 
-        await expect(async () => {
-          const template = await templateStorageHelper.getTemplate(key);
-          expect(template.campaignId).toEqual(campaignId);
-          expect(template.name).toEqual(templateName);
-          expect(template.clientId).toEqual(user.clientId);
-          expect(template.letterType).toEqual(letterType);
-          expect(template.lockNumber).toEqual(1);
-          expect(template.files?.docxTemplate?.fileName).toEqual(docx.filename);
-          expect(template.files?.docxTemplate?.virusScanStatus).toEqual(
-            'PASSED'
-          );
-          expect(template.templateStatus).toEqual('PENDING_VALIDATION');
-        }).toPass({ timeout: 40_000 });
-
-        return key;
+        await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+        await expect(previewTemplatePage.printingAndPostage).toContainText(
+          selectedLetterVariant.name
+        );
       });
 
-    const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+      const { shortTab, longTab } = previewTemplatePage;
+      const shortExampleRecipient = SHORT_EXAMPLE_RECIPIENTS[2];
+      const longExampleRecipient = LONG_EXAMPLE_RECIPIENTS[2];
 
-    await test.step('View upload results', async () => {
-      await expect(async () => {
-        await page.reload();
+      await test.step('Fill out personalisation fields and update preview', async () => {
+        await expect(shortTab.panel).toBeVisible();
+        await expect(longTab.panel).toBeHidden();
 
-        await expect(previewTemplatePage.continueButton).toBeVisible();
-        await expect(previewTemplatePage.uploadSuccessBanner).toBeVisible();
-        await expect(previewTemplatePage.pageSpinner).toBeHidden();
-      }).toPass({ timeout: 40_000 });
-    });
-
-    const choosePrintingAndPostagePage =
-      new TemplateMgmtChoosePrintingAndPostagePage(page);
-    const letterVariants =
-      await context.letterVariants.getGlobalLetterVariants();
-
-    const [selectedLetterVariant] = letterVariants;
-
-    await test.step('Select printing and postage', async () => {
-      await previewTemplatePage.printingAndPostageAction.click();
-      await expect(page).toHaveURL(
-        TemplateMgmtChoosePrintingAndPostagePage.urlRegexp
-      );
-
-      await choosePrintingAndPostagePage.selectVariant(
-        selectedLetterVariant.name
-      );
-      await choosePrintingAndPostagePage.clickSubmit();
-
-      await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
-      await expect(previewTemplatePage.printingAndPostage).toContainText(
-        selectedLetterVariant.name
-      );
-    });
-
-    const { shortTab, longTab } = previewTemplatePage;
-    const shortExampleRecipient = SHORT_EXAMPLE_RECIPIENTS[2];
-    const longExampleRecipient = LONG_EXAMPLE_RECIPIENTS[2];
-    const personalisationData: Record<string, string> = {
-      gpSurgeryName: 'Test Surgery',
-      gpSurgeryAddress: '123 Timbuktu Lane, Kings Landing, KL19 0JE',
-      gpSurgeryPhone: '+44 7293 456 099',
-    };
-
-    await test.step('Fill out personalisation fields and update preview', async () => {
-      await expect(shortTab.panel).toBeVisible();
-      await expect(longTab.panel).toBeHidden();
-
-      await shortTab.selectRecipient({ value: shortExampleRecipient.id });
-      for (const key in personalisationData) {
-        await shortTab.getCustomFieldInput(key).fill(personalisationData[key]);
-      }
-
-      await shortTab.clickUpdatePreview();
-
-      await expect(async () => {
-        const template = await templateStorageHelper.getTemplate(templateKey);
-        const render = template.files?.shortFormRender;
-        expect(render, 'Render should be defined').not.toBeUndefined();
-        expect(render?.status, 'with correct status').toEqual('RENDERED');
-
-        const completePersonalisationParams = {
-          ...shortExampleRecipient.data,
-          ...personalisationData,
-        };
-
-        for (const key in render?.personalisationParameters) {
-          if (!(key in completePersonalisationParams)) {
-            continue;
-          }
-
-          expect(
-            render?.personalisationParameters[key],
-            `'${key}' should equal '${completePersonalisationParams[key]}'`
-          ).toEqual(completePersonalisationParams[key]);
+        await shortTab.selectRecipient({ value: shortExampleRecipient.id });
+        for (const key in personalisationData) {
+          await shortTab
+            .getCustomFieldInput(key)
+            .fill(personalisationData[key]);
         }
-      }, 'Persisted short form render is updated with correct personalisation details').toPass(
-        { timeout: 40_000 }
-      );
 
-      await longTab.clickTab();
-      await expect(shortTab.panel).toBeHidden();
-      await expect(longTab.panel).toBeVisible();
+        await shortTab.clickUpdatePreview();
 
-      await longTab.selectRecipient({ value: longExampleRecipient.id });
-      for (const key in personalisationData) {
-        await longTab.getCustomFieldInput(key).fill(personalisationData[key]);
-      }
+        await expect(async () => {
+          const template = await templateStorageHelper.getTemplate(templateKey);
+          const render = template.files?.shortFormRender;
+          expect(render, 'Render should be defined').not.toBeUndefined();
+          expect(render?.status, 'with correct status').toEqual('RENDERED');
 
-      await longTab.clickUpdatePreview();
+          const completePersonalisationParams = {
+            ...shortExampleRecipient.data,
+            ...personalisationData,
+          };
 
-      await expect(async () => {
-        const template = await templateStorageHelper.getTemplate(templateKey);
-        const render = template.files?.longFormRender;
-        expect(render, 'Render should be defined').not.toBeUndefined();
-        expect(render?.status, 'with correct status').toEqual('RENDERED');
+          for (const key in render?.personalisationParameters) {
+            if (!(key in completePersonalisationParams)) {
+              continue;
+            }
 
-        const completePersonalisationParams = {
-          ...longExampleRecipient.data,
-          ...personalisationData,
-        };
-
-        for (const key in render?.personalisationParameters) {
-          if (!(key in completePersonalisationParams)) {
-            continue;
+            expect(
+              render?.personalisationParameters[key],
+              `'${key}' should equal '${completePersonalisationParams[key]}'`
+            ).toEqual(completePersonalisationParams[key]);
           }
+        }, 'Persisted short form render is updated with correct personalisation details').toPass(
+          { timeout: 40_000 }
+        );
 
-          expect(
-            render?.personalisationParameters[key],
-            `'${key}' should equal '${completePersonalisationParams[key]}'`
-          ).toEqual(completePersonalisationParams[key]);
+        await longTab.clickTab();
+        await expect(shortTab.panel).toBeHidden();
+        await expect(longTab.panel).toBeVisible();
+
+        await longTab.selectRecipient({ value: longExampleRecipient.id });
+        for (const key in personalisationData) {
+          await longTab.getCustomFieldInput(key).fill(personalisationData[key]);
         }
-      }, 'Persisted long form render is updated with correct personalisation details').toPass(
-        { timeout: 40_000 }
-      );
+
+        await longTab.clickUpdatePreview();
+
+        await expect(async () => {
+          const template = await templateStorageHelper.getTemplate(templateKey);
+          const render = template.files?.longFormRender;
+          expect(render, 'Render should be defined').not.toBeUndefined();
+          expect(render?.status, 'with correct status').toEqual('RENDERED');
+
+          const completePersonalisationParams = {
+            ...longExampleRecipient.data,
+            ...personalisationData,
+          };
+
+          for (const key in render?.personalisationParameters) {
+            if (!(key in completePersonalisationParams)) {
+              continue;
+            }
+
+            expect(
+              render?.personalisationParameters[key],
+              `'${key}' should equal '${completePersonalisationParams[key]}'`
+            ).toEqual(completePersonalisationParams[key]);
+          }
+        }, 'Persisted long form render is updated with correct personalisation details').toPass(
+          { timeout: 40_000 }
+        );
+      });
+
+      await test.step('Get ready to approve', async () => {
+        await previewTemplatePage.continueButton.click();
+
+        await expect(page).toHaveURL(
+          TemplateMgmtGetReadyToApproveLetterTemplatePage.urlRegexp
+        );
+
+        const getReadyToApprovePage =
+          new TemplateMgmtGetReadyToApproveLetterTemplatePage(page);
+
+        await getReadyToApprovePage.continueButton.click();
+      });
+
+      await test.step('Review and approve', async () => {
+        const reviewAndApprovePage =
+          new TemplateMgmtReviewAndApproveLetterTemplatePage(page);
+
+        await expect(page).toHaveURL(
+          TemplateMgmtReviewAndApproveLetterTemplatePage.urlRegexp
+        );
+
+        await expect(reviewAndApprovePage.shortRenderIFrame).toBeAttached();
+        await expect(reviewAndApprovePage.longRenderIFrame).toBeAttached();
+
+        await reviewAndApprovePage.clickApproveButton();
+
+        await expect(page).toHaveURL(
+          TemplateMgmtLetterTemplateApprovedPage.urlRegexp
+        );
+
+        const approvedPage = new TemplateMgmtLetterTemplateApprovedPage(page);
+        await expect(approvedPage.templateName).toContainText(templateName);
+        await approvedPage.templatesLink.click();
+      });
+
+      await test.step('Template is listed and approved', async () => {
+        await expect(page).toHaveURL(
+          `/templates${TemplateMgmtMessageTemplatesPage.pathTemplate}`
+        );
+
+        const templatesPage = new TemplateMgmtMessageTemplatesPage(page);
+        const templateRow =
+          await templatesPage.getTemplatesTableRowByTemplateId(
+            templateKey.templateId
+          );
+        const templateStatus = await templatesPage.getTemplateStatus(
+          templateKey.templateId
+        );
+
+        await expect(templateRow).toBeAttached();
+        expect(templateStatus).toEqual('Approved');
+      });
     });
-
-    await test.step('Get ready to approve', async () => {
-      await previewTemplatePage.continueButton.click();
-
-      await expect(page).toHaveURL(
-        TemplateMgmtGetReadyToApproveLetterTemplatePage.urlRegexp
-      );
-
-      const getReadyToApprovePage =
-        new TemplateMgmtGetReadyToApproveLetterTemplatePage(page);
-
-      await getReadyToApprovePage.continueButton.click();
-    });
-
-    await test.step('Review and approve', async () => {
-      const reviewAndApprovePage =
-        new TemplateMgmtReviewAndApproveLetterTemplatePage(page);
-
-      await expect(page).toHaveURL(
-        TemplateMgmtReviewAndApproveLetterTemplatePage.urlRegexp
-      );
-
-      await expect(reviewAndApprovePage.shortRenderIFrame).toBeAttached();
-      await expect(reviewAndApprovePage.longRenderIFrame).toBeAttached();
-
-      await reviewAndApprovePage.clickApproveButton();
-
-      await expect(page).toHaveURL(
-        TemplateMgmtLetterTemplateApprovedPage.urlRegexp
-      );
-
-      const approvedPage = new TemplateMgmtLetterTemplateApprovedPage(page);
-      await expect(approvedPage.templateName).toContainText(templateName);
-      await approvedPage.templatesLink.click();
-    });
-
-    await test.step('Template is listed and approved', async () => {
-      await expect(page).toHaveURL(
-        `/templates${TemplateMgmtMessageTemplatesPage.pathTemplate}`
-      );
-
-      const templatesPage = new TemplateMgmtMessageTemplatesPage(page);
-      const templateRow = await templatesPage.getTemplatesTableRowByTemplateId(
-        templateKey.templateId
-      );
-      const templateStatus = await templatesPage.getTemplateStatus(
-        templateKey.templateId
-      );
-
-      await expect(templateRow).toBeAttached();
-      expect(templateStatus).toEqual('Approved');
-    });
-  });
+  }
 });
