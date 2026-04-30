@@ -16,6 +16,8 @@ export class RoutingCreateMessagePlanPage extends TemplateMgmtBasePage {
 
   readonly singleCampaignIdElement: Locator;
 
+  readonly warningCalloutElement: Locator;
+
   constructor(page: Page) {
     super(page);
     this.submitButton = page.getByTestId('submit-button');
@@ -26,6 +28,8 @@ export class RoutingCreateMessagePlanPage extends TemplateMgmtBasePage {
     this.nameFieldError = page.locator('#name--error-message');
 
     this.campaignIdFieldError = page.locator('#campaignId--error-message');
+
+    this.warningCalloutElement = page.getByTestId('campaign-warning-callout');
   }
 
   async clickSubmit() {

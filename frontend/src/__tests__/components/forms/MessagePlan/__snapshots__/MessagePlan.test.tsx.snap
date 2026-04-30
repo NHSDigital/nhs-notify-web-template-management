@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders errors 1`] = `
+exports[`Message plan form renders errors 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
@@ -117,6 +117,21 @@ exports[`renders errors 1`] = `
         >
           Choose which campaign this message plan will link to
         </div>
+        <div
+          class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
+          data-testid="campaign-warning-callout"
+        >
+          <strong
+            class="nhsuk-warning-callout__label"
+          >
+            Important
+          </strong>
+          <p
+            id="campaignId--warning"
+          >
+            You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
+          </p>
+        </div>
         <span
           class="nhsuk-error-message"
           id="campaignId--error-message"
@@ -129,15 +144,14 @@ exports[`renders errors 1`] = `
           CampaignId error
         </span>
         <select
-          aria-describedby="campaignId--hint campaignId--error-message"
+          aria-describedby="campaignId--hint campaignId--warning campaignId--error-message"
+          aria-labelledby="campaignId--label"
           class="nhsuk-select nhsuk-select--error"
           data-testid="campaign-id-field"
           id="campaignId"
           name="campaignId"
         >
-          <option
-            selected=""
-          />
+          <option />
           <option
             value="campaign-id"
           >
@@ -174,7 +188,7 @@ exports[`renders errors 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders form with children 1`] = `
+exports[`Message plan form renders form with children 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
@@ -314,7 +328,7 @@ exports[`renders form with children 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders form with select for multiple campaign ids 1`] = `
+exports[`Message plan form renders form with select for multiple campaign ids 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
@@ -419,16 +433,30 @@ exports[`renders form with select for multiple campaign ids 1`] = `
         >
           Choose which campaign this message plan will link to
         </div>
+        <div
+          class="nhsuk-warning-callout nhsuk-u-margin-bottom-5 nhsuk-u-margin-top-5"
+          data-testid="campaign-warning-callout"
+        >
+          <strong
+            class="nhsuk-warning-callout__label"
+          >
+            Important
+          </strong>
+          <p
+            id="campaignId--warning"
+          >
+            You cannot edit the campaign after you create a message plan. If you need to link to a different campaign later, create a new message plan.
+          </p>
+        </div>
         <select
-          aria-describedby="campaignId--hint"
+          aria-describedby="campaignId--hint campaignId--warning"
+          aria-labelledby="campaignId--label"
           class="nhsuk-select"
           data-testid="campaign-id-field"
           id="campaignId"
           name="campaignId"
         >
-          <option
-            selected=""
-          />
+          <option />
           <option
             value="campaign-1"
           >
@@ -465,7 +493,7 @@ exports[`renders form with select for multiple campaign ids 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders form with single campaign id displayed 1`] = `
+exports[`Message plan form renders form with single campaign id displayed 1`] = `
 <DocumentFragment>
   <form
     action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
