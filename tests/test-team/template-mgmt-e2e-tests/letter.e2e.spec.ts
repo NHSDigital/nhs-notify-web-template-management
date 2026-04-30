@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect, Page } from '@playwright/test';
 import { docxFixtures } from 'fixtures/letters';
 import { TestUser, testUsers } from 'helpers/auth/cognito-auth-helper';
 import { loginAsUser } from 'helpers/auth/login-as-user';
@@ -11,6 +11,7 @@ import {
   TemplateMgmtLetterTemplateApprovedPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtReviewAndApproveLetterTemplatePage,
+  TemplateMgmtUploadLargePrintLetterTemplatePage,
   TemplateMgmtUploadStandardEnglishLetterTemplatePage,
 } from 'pages/letter';
 import { TemplateMgmtBasePage } from 'pages/template-mgmt-base-page';
@@ -20,6 +21,7 @@ import {
   LONG_EXAMPLE_RECIPIENTS,
 } from '../../../frontend/src/content/example-recipients';
 import { TemplateMgmtMessageTemplatesPage } from 'pages/template-mgmt-message-templates-page';
+import { TemplateMgmtUploadLetterBasePage } from 'pages/letter/template-mgmt-upload-letter-base-page';
 
 const context = getTestContext();
 const testUser = testUsers.UserWithMultipleCampaigns;
@@ -53,6 +55,131 @@ test.describe('Letters complete e2e journey', () => {
     await templateStorageHelper.deleteAdHocTemplates();
   });
 
+  type TestParameter = {
+    letterType: LetterType | 'language';
+    letterTypeName: string;
+    docx: (typeof docxFixtures)[keyof typeof docxFixtures];
+    getUploadPage: (page: Page) => TemplateMgmtUploadLetterBasePage;
+    personalisationData: Record<string, string>;
+    language?: string;
+  };
+
+  const t: TestParameter[] = [
+    {
+      letterType: 'x0',
+      letterTypeName: 'Standard English',
+      docx: docxFixtures.standard,
+      getUploadPage: (page: Page) =>
+        new TemplateMgmtUploadStandardEnglishLetterTemplatePage(page),
+      personalisationData: {
+        gpSurgeryName: 'Test Surgery',
+        gpSurgeryAddress: '123 Timbuktu Lane, Kings Landing, KL19 0JE',
+        gpSurgeryPhone: '+44 7293 456 099',
+      },
+    },
+    {
+      letterType: 'x1',
+      letterTypeName: 'Large Print',
+      docx: docxFixtures.standard,
+      getUploadPage: (page: Page) =>
+        new TemplateMgmtUploadLargePrintLetterTemplatePage(page),
+      personalisationData: {
+        gpSurgeryName: 'Test Surgery',
+        gpSurgeryAddress: '123 Timbuktu Lane, Kings Landing, KL19 0JE',
+        gpSurgeryPhone: '+44 7293 456 099',
+      },
+    },
+  ];
+
+  for (const {
+    letterType,
+    letterTypeName,
+    docx,
+    getUploadPage,
+    personalisationData,
+    language,
+  } of t) {
+    test(letterTypeName, async ({ page, chooseTemplateTypePage, user }) => {
+      const uploadPage = getUploadPage(page);
+
+      await test.step(`Choose ${letterTypeName} - ${letterType}`, async () => {
+        await chooseTemplateTypePage.getLetterTypeRadio(letterType).click();
+        await chooseTemplateTypePage.clickContinueButton();
+
+        await expect(page).toHaveURL(
+          TemplateMgmtBasePage.appUrlSegment + uploadPage.pathTemplate
+        );
+      });
+
+      const templateName = 'E2E Test (Andy)';
+      const campaignId = user.campaignIds?.[0];
+      if (!campaignId) {
+        throw new Error(`Invalid campaign id for test user: ${user.userId}`);
+      }
+
+      await test.step('Fill upload letter details and submit', async () => {
+        await uploadPage.fillForm({
+          name: templateName,
+          campaignId,
+          filePath: docx.filepath,
+          language,
+        });
+
+        await uploadPage.submitButton.click();
+
+        await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+      });
+
+      const templateKey =
+        await test.step('Ensure template is created with correct details', async () => {
+          const maybeTemplateId = TemplateMgmtPreviewLetterPage.getTemplateId(
+            page.url()
+          );
+          expect(
+            maybeTemplateId,
+            'Template should be defined'
+          ).not.toBeUndefined();
+          const templateId = maybeTemplateId as string;
+          const key = {
+            templateId,
+            clientId: user.clientId,
+          };
+
+          templateStorageHelper.addAdHocTemplateKey(key);
+
+          await expect(async () => {
+            const template = await templateStorageHelper.getTemplate(key);
+            expect(template.campaignId).toEqual(campaignId);
+            expect(template.name).toEqual(templateName);
+            expect(template.clientId).toEqual(user.clientId);
+            expect(template.letterType).toEqual(letterType);
+            expect(template.lockNumber).toEqual(1);
+            expect(template.files?.docxTemplate?.fileName).toEqual(
+              docx.filename
+            );
+            expect(template.files?.docxTemplate?.virusScanStatus).toEqual(
+              'PASSED'
+            );
+            expect(template.templateStatus).toEqual('PENDING_VALIDATION');
+          }).toPass({ timeout: 40_000 });
+
+          return key;
+        });
+
+      const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+      await test.step('View upload results', async () => {
+        await expect(async () => {
+          // await page.reload();
+
+          await expect(previewTemplatePage.continueButton).toBeVisible();
+          await expect(previewTemplatePage.uploadSuccessBanner).toBeVisible();
+          await expect(previewTemplatePage.pageSpinner).toBeHidden();
+        }).toPass({ timeout: 40_000 });
+      });
+    });
+  }
+
   test('Standard English Letter', async ({
     page,
     chooseTemplateTypePage,
@@ -72,16 +199,15 @@ test.describe('Letters complete e2e journey', () => {
 
     const templateName = 'E2E Test (Andy)';
     const campaignId = user.campaignIds?.[0];
+    if (!campaignId) {
+      throw new Error(`Invalid campaign id for test user: ${user.userId}`);
+    }
+
     const docx = docxFixtures.standard;
 
     await test.step('Fill upload letter details and submit', async () => {
       const uploadPage =
         new TemplateMgmtUploadStandardEnglishLetterTemplatePage(page);
-
-      if (!campaignId) {
-        throw new Error(`Invalid campaign id for test user: ${user.userId}`);
-      }
-
       await uploadPage.nameInput.fill(templateName);
 
       await expect(uploadPage.singleCampaignIdText).toBeHidden();
@@ -119,9 +245,7 @@ test.describe('Letters complete e2e journey', () => {
           expect(template.clientId).toEqual(user.clientId);
           expect(template.letterType).toEqual(letterType);
           expect(template.lockNumber).toEqual(1);
-          expect(template.files?.docxTemplate?.fileName).toEqual(
-            'standard-english-template.docx'
-          );
+          expect(template.files?.docxTemplate?.fileName).toEqual(docx.filename);
           expect(template.files?.docxTemplate?.virusScanStatus).toEqual(
             'PASSED'
           );
