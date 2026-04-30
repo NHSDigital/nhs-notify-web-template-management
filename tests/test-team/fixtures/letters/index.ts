@@ -21,6 +21,7 @@ const getFile = (directory: string, filename: string) => {
 
   return {
     filepath,
+    filename,
     open: () => {
       const opened = files.get(filepath);
 
@@ -73,5 +74,6 @@ export const docxFixtures = {
   randomBytes: getFile('docx', 'random-bytes.docx'),
   randomBytesZipped: getFile('docx', 'random-bytes-zipped.docx'),
   standard: getFile('docx', 'standard-english-template.docx'),
+  spanish: getFile('docx', 'spanish-letter-template.docx'),
   unexpectedAddressLines: getFile('docx', 'unexpected-address-lines.docx'),
 };

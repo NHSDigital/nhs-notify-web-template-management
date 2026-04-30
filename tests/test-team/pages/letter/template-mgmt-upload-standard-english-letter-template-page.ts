@@ -1,7 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
+import { TemplateMgmtUploadLetterBasePage } from './template-mgmt-upload-letter-base-page';
 
-export class TemplateMgmtUploadStandardEnglishLetterTemplatePage extends TemplateMgmtBasePage {
+export class TemplateMgmtUploadStandardEnglishLetterTemplatePage extends TemplateMgmtUploadLetterBasePage {
   static readonly pathTemplate = '/upload-standard-english-letter-template';
 
   nameInput: Locator;
@@ -28,5 +28,19 @@ export class TemplateMgmtUploadStandardEnglishLetterTemplatePage extends Templat
     this.submitButton = page.getByRole('button', {
       name: 'Upload letter template file',
     });
+  }
+
+  async fillForm(input: {
+    name: string;
+    campaignId: string;
+    filePath: string;
+    language?: string;
+  }) {
+    await this.nameInput.fill(input.name);
+
+    await this.campaignIdInput.selectOption(input.campaignId);
+
+    await this.fileInput.click();
+    await this.fileInput.setInputFiles(input.filePath);
   }
 }
