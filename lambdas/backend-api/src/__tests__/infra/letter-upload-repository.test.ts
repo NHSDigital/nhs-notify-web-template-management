@@ -198,7 +198,6 @@ describe('LetterUploadRepository', () => {
   });
 
   describe('static parseKey', () => {
-    // TODO: CCM-12777 delete after deploy
     it.each([
       'pdf-template/owner-id/template-id/version-id.pdf',
       'test-env/pdf-template/owner-id/template-id/version-id.pdf',

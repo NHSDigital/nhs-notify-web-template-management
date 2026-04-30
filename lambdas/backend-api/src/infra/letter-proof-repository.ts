@@ -10,7 +10,7 @@ export class LetterProofRepository extends LetterFileRepository {
   static parseQuarantineKey(key: string): LetterProofMetadata {
     const keyParts = key.split('/');
 
-    // TODO: CCM-12777 - Delete post deploy
+    // TODO: CCM-12777 - revert back post release
     let fileType: string;
     let supplier: string;
     let templateId: string;

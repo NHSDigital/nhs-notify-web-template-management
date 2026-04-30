@@ -130,7 +130,7 @@ export class LetterUploadRepository extends LetterFileRepository {
   static parseKey(key: string): LetterUploadMetadata {
     const keyParts = key.split('/');
 
-    // TODO: CCM-12777 - refactor post deploy.
+    // TODO: CCM-12777 - revert back post release
     let type: string;
     let clientId: string;
     let templateId: string;
