@@ -20,8 +20,6 @@ module "s3bucket_quarantine" {
   # ]
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.1.0/terraform-s3bucket.zip"
 
-  # if using presigned PUT rather than presigned POST, need to set a max-content length on all PUTs
-
   name = "quarantine"
 
   aws_account_id = var.aws_account_id
