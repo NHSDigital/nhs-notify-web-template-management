@@ -62,24 +62,6 @@ export const templateApiClient = {
     };
   },
 
-  async uploadDocxTemplateFile(
-    url: string,
-    docxTemplate: File
-  ): Promise<Result<TemplateDto>> {
-    const response = await catchAxiosError(
-      httpClient.put<TemplateSuccess>(url, docxTemplate)
-    );
-    if (response.error) {
-      return {
-        error: response.error,
-      };
-    }
-
-    return {
-      data: response.data.data,
-    };
-  },
-
   async uploadLetterTemplate(
     template: CreateUpdateTemplate,
     token: string,

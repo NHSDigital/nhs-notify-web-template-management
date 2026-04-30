@@ -65,26 +65,6 @@ export async function uploadDocxTemplate(template: CreateUpdateTemplate) {
   return data;
 }
 
-export async function uploadDocxTemplateFile(url: string, docxTemplate: File) {
-  const { accessToken } = await getSessionServer();
-
-  if (!accessToken) {
-    throw new Error('Failed to get access token');
-  }
-
-  const { data, error } = await templateApiClient.uploadDocxTemplateFile(
-    url,
-    docxTemplate
-  );
-
-  if (error) {
-    logger.error('Failed to send file', error);
-    throw new Error('Failed to send file');
-  }
-
-  return data;
-}
-
 export async function uploadLetterTemplate(
   template: CreateUpdateTemplate,
   pdf: File,
