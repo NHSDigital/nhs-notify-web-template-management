@@ -1,4 +1,5 @@
 module "s3bucket_quarantine" {
+  // add CORS policy support
   source = "https://github.com/NHSDigital/nhs-notify-shared-modules/releases/download/3.1.0/terraform-s3bucket.zip"
 
   name = "quarantine"
