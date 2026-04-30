@@ -24,7 +24,7 @@ type LetterRenderFormProps = {
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
   const { isAnyTabPolling } = useLetterRenderPolling();
-  const isPending = useNHSNotifyForm()[2];
+  const [_state, _action, isPending] = useNHSNotifyForm();
   const { setParentErrorState } = useLetterRenderError();
 
   const exampleRecipients =
