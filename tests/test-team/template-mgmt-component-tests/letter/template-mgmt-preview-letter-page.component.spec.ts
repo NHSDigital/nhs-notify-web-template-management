@@ -14,6 +14,11 @@ import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-s
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
 import { loginAsUser } from '../../helpers/auth/login-as-user';
 
+const variantIds = {
+  doubleSided: '9dca541f-ea76-4e14-8c0e-29779f062274',
+  singeSided: '12f2eac5-19d9-4768-88f1-5b52f2ff3b7d',
+};
+
 async function createLetterVariants(clientId: string) {
   const context = getTestContext();
 
@@ -21,12 +26,14 @@ async function createLetterVariants(clientId: string) {
     clientId,
     bothSides: true,
     name: 'Double-sided test variant',
+    id: variantIds.doubleSided,
   });
 
   const singleSided = makeLetterVariant({
     clientId,
     bothSides: false,
     name: 'Single-sided test variant',
+    id: variantIds.singeSided,
   });
 
   await Promise.all([
@@ -194,7 +201,7 @@ function createTemplates(
       'authoring-letter-with-render',
       'NOT_YET_SUBMITTED',
       {
-        letterVariantId: 'variant-render',
+        letterVariantId: variants.doubleSided.id,
         initialRender: { currentVersion: 'v1-test', pageCount: 4 },
       }
     ),
@@ -204,7 +211,7 @@ function createTemplates(
       'authoring-virus-scan-failed',
       'VALIDATION_FAILED',
       {
-        letterVariantId: 'variant-virus',
+        letterVariantId: variants.doubleSided.id,
         validationErrors: [{ name: 'VIRUS_SCAN_FAILED' }],
         initialRender: {
           status: 'PENDING',
@@ -218,7 +225,7 @@ function createTemplates(
       'authoring-missing-address-lines',
       'VALIDATION_FAILED',
       {
-        letterVariantId: 'variant-address',
+        letterVariantId: variants.doubleSided.id,
         validationErrors: [{ name: 'MISSING_ADDRESS_LINES' }],
       }
     ),
@@ -229,7 +236,7 @@ function createTemplates(
         'authoring-unexpected-address-lines',
         'VALIDATION_FAILED',
         {
-          letterVariantId: 'variant-address',
+          letterVariantId: variants.doubleSided.id,
           validationErrors: [{ name: 'UNEXPECTED_ADDRESS_LINES' }],
         }
       ),
@@ -239,7 +246,7 @@ function createTemplates(
       'authoring-invalid-markers',
       'VALIDATION_FAILED',
       {
-        letterVariantId: 'variant-address',
+        letterVariantId: variants.doubleSided.id,
         validationErrors: [
           {
             name: 'INVALID_MARKERS',
@@ -258,7 +265,7 @@ function createTemplates(
         'authoring-unknown-validation-error',
         'VALIDATION_FAILED',
         {
-          letterVariantId: 'variant-address',
+          letterVariantId: variants.doubleSided.id,
           initialRender: { status: 'FAILED' },
         }
       ),
@@ -268,7 +275,7 @@ function createTemplates(
       'authoring-with-custom-fields',
       'NOT_YET_SUBMITTED',
       {
-        letterVariantId: 'variant-custom',
+        letterVariantId: variants.doubleSided.id,
         customPersonalisation: ['appointmentDate', 'clinicName', 'doctorName'],
         initialRender: {
           fileName: 'custom-render.pdf',
@@ -283,7 +290,7 @@ function createTemplates(
       'authoring-with-short-form-render',
       'NOT_YET_SUBMITTED',
       {
-        letterVariantId: 'variant-short-render',
+        letterVariantId: variants.doubleSided.id,
         customPersonalisation: ['appointmentDate'],
         initialRender: {
           fileName: 'initial-render.pdf',
@@ -310,7 +317,7 @@ function createTemplates(
         'authoring-with-failed-personalised-renders',
         'NOT_YET_SUBMITTED',
         {
-          letterVariantId: 'variant-failed-renders',
+          letterVariantId: variants.doubleSided.id,
           customPersonalisation: ['appointmentDate'],
           initialRender: {
             fileName: 'initial-render.pdf',
@@ -351,7 +358,7 @@ function createTemplates(
         'authoring-failed-initial-render',
         'NOT_YET_SUBMITTED',
         {
-          letterVariantId: 'variant-failed-init',
+          letterVariantId: variants.doubleSided.id,
           initialRender: {
             status: 'FAILED',
           },
@@ -437,6 +444,109 @@ function createTemplates(
       {
         letterVariantId: variants.singleSided.id,
         initialRender: { pageCount: 4 },
+      }
+    ),
+    authoringShortRenderTooManyPages:
+      TemplateFactory.createAuthoringLetterTemplate(
+        '6c0224f5-c9a8-40d3-8a3c-0e8c2e875493',
+        user,
+        'authoring-letter-short-render-too-many-pages',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: variants.doubleSided.id,
+          initialRender: { pageCount: 4 },
+          shortFormRender: {
+            fileName: 'short-personalised.pdf',
+            currentVersion: 'v1-short',
+            pageCount: 4000,
+          },
+          longFormRender: {
+            fileName: 'long-personalised.pdf',
+            currentVersion: 'v1-long',
+            pageCount: 4,
+          },
+        }
+      ),
+    authoringLongRenderTooManyPages:
+      TemplateFactory.createAuthoringLetterTemplate(
+        'c0b5c99f-f1de-419d-9607-ed02485fde62',
+        user,
+        'authoring-letter-long-render-too-many-pages',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: variants.doubleSided.id,
+          initialRender: { pageCount: 4 },
+          shortFormRender: {
+            fileName: 'short-personalised.pdf',
+            currentVersion: 'v1-short',
+            pageCount: 4,
+          },
+          longFormRender: {
+            fileName: 'long-personalised.pdf',
+            currentVersion: 'v1-long',
+            pageCount: 4000,
+          },
+        }
+      ),
+    authoringLongAndShortRendersTooManyPages:
+      TemplateFactory.createAuthoringLetterTemplate(
+        'a112846c-507f-4df9-9ce4-764286e601b8',
+        user,
+        'authoring-letter-long-and-short-renders-too-many-pages',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: variants.doubleSided.id,
+          initialRender: { pageCount: 4 },
+          shortFormRender: {
+            fileName: 'short-personalised.pdf',
+            currentVersion: 'v1-short',
+            pageCount: 4000,
+          },
+          longFormRender: {
+            fileName: 'long-personalised.pdf',
+            currentVersion: 'v1-long',
+            pageCount: 4000,
+          },
+        }
+      ),
+    authoringInitialRenderTooManyPages:
+      TemplateFactory.createAuthoringLetterTemplate(
+        '0bd3b4fa-ad9c-4882-83cc-5e74cd173d51',
+        user,
+        'authoring-letter-initial-render-too-many-pages',
+        'NOT_YET_SUBMITTED',
+        {
+          letterVariantId: variants.doubleSided.id,
+          initialRender: { pageCount: 4000 },
+          shortFormRender: {
+            fileName: 'short-personalised.pdf',
+            currentVersion: 'v1-short',
+            pageCount: 4,
+          },
+          longFormRender: {
+            fileName: 'long-personalised.pdf',
+            currentVersion: 'v1-long',
+            pageCount: 4,
+          },
+        }
+      ),
+    authoringMissingVariant: TemplateFactory.createAuthoringLetterTemplate(
+      '9c8d55f8-b80f-47f5-9880-e8f2ee08bd3a',
+      user,
+      'authoring-letter-short-render-too-many-pages',
+      'NOT_YET_SUBMITTED',
+      {
+        initialRender: { pageCount: 4 },
+        shortFormRender: {
+          fileName: 'short-personalised.pdf',
+          currentVersion: 'v1-short',
+          pageCount: 4,
+        },
+        longFormRender: {
+          fileName: 'long-personalised.pdf',
+          currentVersion: 'v1-long',
+          pageCount: 4,
+        },
       }
     ),
   };
@@ -1111,7 +1221,7 @@ test.describe('Preview Letter template Page', () => {
             'authoring-pending-short-render',
             'NOT_YET_SUBMITTED',
             {
-              letterVariantId: 'variant-pending-short',
+              letterVariantId: variantIds.doubleSided,
               initialRender: {
                 fileName: 'initial-render.pdf',
                 currentVersion: 'v1-initial',
@@ -1155,7 +1265,7 @@ test.describe('Preview Letter template Page', () => {
             'authoring-polling-submit-disabled',
             'NOT_YET_SUBMITTED',
             {
-              letterVariantId: 'variant-polling-submit',
+              letterVariantId: variantIds.doubleSided,
               initialRender: {
                 fileName: 'initial-render.pdf',
                 currentVersion: 'v1-initial',
@@ -1197,7 +1307,7 @@ test.describe('Preview Letter template Page', () => {
             'authoring-polling-buttons-disabled',
             'NOT_YET_SUBMITTED',
             {
-              letterVariantId: 'variant-polling-buttons',
+              letterVariantId: variantIds.doubleSided,
               initialRender: {
                 fileName: 'initial-render.pdf',
                 currentVersion: 'v1-initial',
@@ -1659,7 +1769,7 @@ test.describe('Preview Letter template Page', () => {
           'authoring-letter-multi-campaign',
           'NOT_YET_SUBMITTED',
           {
-            letterVariantId: 'variant-789',
+            letterVariantId: variantIds.doubleSided,
             initialRender: {
               fileName: 'multi-campaign-render.pdf',
               pageCount: 4,
@@ -2016,6 +2126,7 @@ test.describe('Preview Letter template Page', () => {
         await previewPage.clickContinueButton();
 
         await expect(previewPage.errorSummary).toBeVisible();
+
         await expect(
           previewPage.errorSummaryLinks.filter({
             hasText: /Enter short example data/,
@@ -2026,6 +2137,126 @@ test.describe('Preview Letter template Page', () => {
             hasText: /Enter long example data/,
           })
         ).toBeVisible();
+      });
+
+      test('shows only the short page count error', async ({ page }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringShortRenderTooManyPages.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummaryLinks).toHaveCount(1);
+
+        await expect(
+          page.getByText(
+            'Your short example data has made the letter go over the maximum number of sheets for your printing and postage option'
+          )
+        ).toBeVisible();
+
+        const errorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Change your printing and postage option/,
+        });
+        await errorLink.click();
+
+        await expect(page).toHaveURL(
+          `templates/preview-letter-template/${templates.authoringShortRenderTooManyPages.id}#printing-and-postage`
+        );
+      });
+
+      test('shows only the long page count error', async ({ page }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringLongRenderTooManyPages.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummaryLinks).toHaveCount(1);
+
+        await expect(
+          page.getByText(
+            'Your long example data has made the letter go over the maximum number of sheets for your printing and postage option'
+          )
+        ).toBeVisible();
+
+        const errorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /Change your printing and postage option/,
+        });
+        await errorLink.click();
+
+        await expect(page).toHaveURL(
+          `templates/preview-letter-template/${templates.authoringLongRenderTooManyPages.id}#printing-and-postage`
+        );
+      });
+
+      test('shows the short and long page count errors', async ({ page }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringLongAndShortRendersTooManyPages.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummaryLinks).toHaveCount(2);
+
+        await expect(
+          page.getByText(
+            'Your short example data has made the letter go over the maximum number of sheets for your printing and postage option'
+          )
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            'Your long example data has made the letter go over the maximum number of sheets for your printing and postage option'
+          )
+        ).toBeVisible();
+      });
+
+      test('shows the initial template page count error', async ({ page }) => {
+        const previewPage = new TemplateMgmtPreviewLetterPage(
+          page
+        ).setPathParam(
+          'templateId',
+          templates.authoringInitialRenderTooManyPages.id
+        );
+
+        await previewPage.loadPage();
+
+        await previewPage.clickContinueButton();
+
+        await expect(previewPage.errorSummary).toBeVisible();
+        await expect(previewPage.errorSummaryLinks).toHaveCount(1);
+
+        await expect(
+          page.getByText(
+            'Your template goes over the maximum number of sheets allowed for your current printing and postage option.'
+          )
+        ).toBeVisible();
+
+        const errorLink = previewPage.errorSummaryLinks.filter({
+          hasText: /change your printing and postage option/,
+        });
+        await errorLink.click();
+
+        await expect(page).toHaveURL(
+          `templates/preview-letter-template/${templates.authoringInitialRenderTooManyPages.id}#printing-and-postage`
+        );
       });
 
       test('clicking an error summary link for a hidden tab activates that tab', async ({

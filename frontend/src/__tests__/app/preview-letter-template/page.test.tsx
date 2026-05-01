@@ -378,6 +378,46 @@ describe('valid authoring letter template', () => {
 
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
+
+  it('sets page count to 0 in hidden inputs when short/long renders are FAILED', async () => {
+    jest.mocked(getTemplate).mockResolvedValue({
+      ...AUTHORING_LETTER_TEMPLATE,
+      files: {
+        ...AUTHORING_LETTER_TEMPLATE.files,
+        shortFormRender: {
+          status: 'FAILED',
+        },
+        longFormRender: {
+          status: 'FAILED',
+        },
+      },
+    });
+
+    jest.mocked(getLetterVariantById).mockResolvedValue(
+      makeLetterVariant({
+        id: AUTHORING_LETTER_TEMPLATE.letterVariantId,
+      })
+    );
+
+    render(
+      await Page({
+        params: Promise.resolve({ templateId: AUTHORING_LETTER_TEMPLATE.id }),
+      })
+    );
+
+    const form = screen
+      .getByTestId('preview-letter-template-cta')
+      .closest('form')!;
+    const shortRenderPageCount = form.querySelector(
+      'input[name="shortRenderPageCount"]'
+    ) as HTMLInputElement;
+    const longRenderPageCount = form.querySelector(
+      'input[name="longRenderPageCount"]'
+    ) as HTMLInputElement;
+
+    expect(shortRenderPageCount.value).toBe('0');
+    expect(longRenderPageCount.value).toBe('0');
+  });
 });
 
 describe('authoring letter template with no letter variant set', () => {

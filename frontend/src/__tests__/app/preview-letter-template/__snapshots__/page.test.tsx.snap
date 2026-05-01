@@ -5395,6 +5395,36 @@ exports[`valid authoring letter template displays the template saved banner when
             type="hidden"
             value=""
           />
+          <input
+            name="letterVariantId"
+            type="hidden"
+            value="variant-123"
+          />
+          <input
+            name="letterVariantMaxSheets"
+            type="hidden"
+            value="5"
+          />
+          <input
+            name="letterVariantBothSidesFlag"
+            type="hidden"
+            value="1"
+          />
+          <input
+            name="templatePageCount"
+            type="hidden"
+            value="2"
+          />
+          <input
+            name="shortRenderPageCount"
+            type="hidden"
+            value="0"
+          />
+          <input
+            name="longRenderPageCount"
+            type="hidden"
+            value="0"
+          />
           <button
             aria-disabled="false"
             class="nhsuk-button"
@@ -6073,6 +6103,36 @@ exports[`valid authoring letter template matches snapshot 1`] = `
             name="longFormRenderStatus"
             type="hidden"
             value=""
+          />
+          <input
+            name="letterVariantId"
+            type="hidden"
+            value="variant-123"
+          />
+          <input
+            name="letterVariantMaxSheets"
+            type="hidden"
+            value="5"
+          />
+          <input
+            name="letterVariantBothSidesFlag"
+            type="hidden"
+            value="1"
+          />
+          <input
+            name="templatePageCount"
+            type="hidden"
+            value="2"
+          />
+          <input
+            name="shortRenderPageCount"
+            type="hidden"
+            value="0"
+          />
+          <input
+            name="longRenderPageCount"
+            type="hidden"
+            value="0"
           />
           <button
             aria-disabled="false"

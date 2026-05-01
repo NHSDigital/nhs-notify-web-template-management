@@ -2,7 +2,10 @@ import { useEffect, useRef } from 'react';
 import type { MouseEventHandler } from 'react';
 import { ErrorSummary, HintText } from 'nhsuk-react-components';
 import content from '@content/content';
-import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
+import {
+  renderErrorSummaryItemFormError,
+  renderErrorSummaryItemFieldError,
+} from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 import { addClassNameToContentBlock } from '@utils/add-classname-to-content-block';
 import { ErrorState } from '@utils/types';
@@ -40,15 +43,9 @@ export const NhsNotifyErrorSummary = ({
   const renderedFieldErrors =
     fieldErrors &&
     Object.entries(fieldErrors).map(([id, errors]) =>
-      errors.map((error) => (
-        <ErrorSummary.Item
-          href={`#${id}`}
-          key={`field-error-summary-${id}-${error.slice(0, 5)}`}
-          onClick={onItemClick?.(id)}
-        >
-          {renderErrorItem(error)}
-        </ErrorSummary.Item>
-      ))
+      errors.map((error) =>
+        renderErrorSummaryItemFieldError(error, id, onItemClick)
+      )
     );
 
   return (
@@ -63,7 +60,7 @@ export const NhsNotifyErrorSummary = ({
           formErrors.map((error, id) => (
             <li key={`form-error-summary-${id}`}>
               {typeof error === 'string' ? (
-                <span className='nhsuk-error-message'>{error}</span>
+                renderErrorSummaryItemFormError(error)
               ) : (
                 <ContentRenderer
                   content={error.map((contentBlock) =>
