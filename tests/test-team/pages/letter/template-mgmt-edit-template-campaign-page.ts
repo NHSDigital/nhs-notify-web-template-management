@@ -4,6 +4,10 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 export class TemplateMgmtEditTemplateCampaignPage extends TemplateMgmtBasePage {
   static readonly pathTemplate = '/edit-template-campaign/:templateId';
 
+  public static readonly urlRegexp = new RegExp(
+    /\/templates\/edit-template-campaign\/([\dA-Fa-f-]+)(?:\?lockNumber=(\d))?$/
+  );
+
   campaignSelect: Locator;
 
   submitButton: Locator;

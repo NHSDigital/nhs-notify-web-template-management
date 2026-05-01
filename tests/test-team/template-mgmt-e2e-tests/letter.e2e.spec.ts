@@ -7,8 +7,11 @@ import { TemplateStorageHelper } from 'helpers/db/template-storage-helper';
 import { LetterType } from 'nhs-notify-web-template-management-types';
 import {
   TemplateMgmtChoosePrintingAndPostagePage,
+  TemplateMgmtEditTemplateCampaignPage,
+  TemplateMgmtEditTemplateNamePage,
   TemplateMgmtGetReadyToApproveLetterTemplatePage,
   TemplateMgmtLetterTemplateApprovedPage,
+  TemplateMgmtPreviewApprovedLetterPage,
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtReviewAndApproveLetterTemplatePage,
   TemplateMgmtUploadBSLLetterTemplatePage,
@@ -130,8 +133,13 @@ test.describe('Letters complete e2e journey', () => {
 
       const templateName = 'E2E Test (Andy)';
       const campaignId = user.campaignIds?.[0];
-      if (!campaignId) {
-        throw new Error(`Invalid campaign id for test user: ${user.userId}`);
+
+      const updatedTemplateName = templateName + '-Updated';
+      const updatedCampaignId = user.campaignIds?.[1];
+      if (!campaignId || !updatedCampaignId) {
+        throw new Error(
+          `Campaign id's are missing for test user: ${user.userId}. At least two campaign id's are needed.`
+        );
       }
 
       await test.step('Fill upload letter details and submit', async () => {
@@ -190,10 +198,62 @@ test.describe('Letters complete e2e journey', () => {
           await expect(previewTemplatePage.continueButton).toBeVisible();
           await expect(previewTemplatePage.uploadSuccessBanner).toBeVisible();
           await expect(previewTemplatePage.pageSpinner).toBeHidden();
+
+          await expect(previewTemplatePage.pageHeading).toHaveText(
+            templateName
+          );
+          await expect(previewTemplatePage.templateId).toContainText(
+            templateKey.templateId
+          );
+          await expect(previewTemplatePage.campaignId).toContainText(
+            campaignId
+          );
+          await expect(previewTemplatePage.statusTag).toContainText(
+            'Approval needed'
+          );
         }).toPass({ timeout: 40_000 });
       });
 
       const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+      await test.step('Edit template name', async () => {
+        await expect(previewTemplatePage.editNameLink).toBeVisible();
+        await previewTemplatePage.editNameLink.click();
+
+        await expect(page).toHaveURL(
+          TemplateMgmtEditTemplateNamePage.urlRegexp
+        );
+
+        const editTemplateNamePage = new TemplateMgmtEditTemplateNamePage(page);
+        await editTemplateNamePage.nameInput.fill(updatedTemplateName);
+        await editTemplateNamePage.submitButton.click();
+
+        await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+        await expect(previewTemplatePage.pageHeading).toHaveText(
+          updatedTemplateName
+        );
+      });
+
+      await test.step('Edit campaign id', async () => {
+        await expect(previewTemplatePage.campaignAction).toBeVisible();
+        await previewTemplatePage.campaignAction.click();
+
+        await expect(page).toHaveURL(
+          TemplateMgmtEditTemplateCampaignPage.urlRegexp
+        );
+
+        const editTemplateCampaignPage =
+          new TemplateMgmtEditTemplateCampaignPage(page);
+        await editTemplateCampaignPage.campaignSelect.selectOption(
+          updatedCampaignId
+        );
+        await editTemplateCampaignPage.submitButton.click();
+
+        await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+        await expect(previewTemplatePage.campaignId).toContainText(
+          updatedCampaignId
+        );
+      });
 
       const choosePrintingAndPostagePage =
         new TemplateMgmtChoosePrintingAndPostagePage(page);
@@ -202,7 +262,10 @@ test.describe('Letters complete e2e journey', () => {
 
       const [selectedLetterVariant] = letterVariants;
 
-      await test.step('Select printing and postage', async () => {
+      await test.step('Edit printing and postage', async () => {
+        await expect(
+          previewTemplatePage.printingAndPostageAction
+        ).toBeVisible();
         await previewTemplatePage.printingAndPostageAction.click();
         await expect(page).toHaveURL(
           TemplateMgmtChoosePrintingAndPostagePage.urlRegexp
@@ -349,6 +412,30 @@ test.describe('Letters complete e2e journey', () => {
 
         await expect(templateRow).toBeAttached();
         expect(templateStatus).toEqual('Approved');
+      });
+
+      await test.step('Approved template cannot be edited', async () => {
+        const templatesPage = new TemplateMgmtMessageTemplatesPage(page);
+        const row = await templatesPage.getTemplatesTableRowByTemplateId(
+          templateKey.templateId
+        );
+        await row
+          .getByRole('link', {
+            name: updatedTemplateName,
+            exact: true,
+          })
+          .click();
+
+        await expect(page).toHaveURL(
+          TemplateMgmtPreviewApprovedLetterPage.urlRegexp
+        );
+
+        const previewPage = new TemplateMgmtPreviewLetterPage(page);
+
+        await expect(previewPage.editNameLink).not.toBeAttached();
+        await expect(previewPage.campaignAction).not.toBeAttached();
+        await expect(previewPage.printingAndPostageAction).not.toBeAttached();
+        await expect(previewPage.statusTag).toContainText('Approved');
       });
     });
   }

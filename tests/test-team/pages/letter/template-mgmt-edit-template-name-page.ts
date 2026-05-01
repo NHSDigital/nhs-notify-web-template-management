@@ -4,6 +4,10 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 export class TemplateMgmtEditTemplateNamePage extends TemplateMgmtBasePage {
   static readonly pathTemplate = '/edit-template-name/:templateId';
 
+  public static readonly urlRegexp = new RegExp(
+    /\/templates\/edit-template-name\/([\dA-Fa-f-]+)(?:\?lockNumber=(\d))?$/
+  );
+
   nameInput: Locator;
 
   submitButton: Locator;

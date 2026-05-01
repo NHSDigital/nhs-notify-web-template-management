@@ -5,6 +5,10 @@ export class TemplateMgmtPreviewApprovedLetterPage extends TemplateMgmtPreviewSu
   static readonly pathTemplate =
     '/preview-approved-letter-template/:templateId';
 
+  public static readonly urlRegexp = new RegExp(
+    /\/templates\/preview-approved-letter-template\/([\dA-Fa-f-]+)$/
+  );
+
   public getTab(name: string) {
     const panel = this.page.getByRole('tabpanel', { name });
     const tab = this.page.getByRole('tab', { name });
