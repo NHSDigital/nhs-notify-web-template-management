@@ -644,7 +644,9 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
       render(
         <PreviewTemplateDetailsAuthoringLetter
           template={baseAuthoringLetter}
-          letterVariantError={ErrorCodes.INITIAL_RENDER_CONTAINS_TOO_MANY_SHEETS}
+          letterVariantError={
+            ErrorCodes.INITIAL_RENDER_CONTAINS_TOO_MANY_SHEETS
+          }
         />
       );
 
