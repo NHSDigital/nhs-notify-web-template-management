@@ -27,6 +27,29 @@ const selectAnOption = 'Select an option';
 export const templateMessageContainsInvalidPersonalisationErrorText =
   'You cannot use the following custom personalisation fields in your message:';
 
+export const initialRenderContainsTooManySheetsError = {
+  labelText:
+    'Your template goes over the maximum number of sheets allowed for your current printing and postage option. To fix this, you can either:',
+  actionText1:
+    'reduce the number of sheets and upload a different letter template file',
+  actionText2: 'change your printing and postage option',
+  fieldText: 'Change your printing and postage option',
+};
+
+export const shortRenderContainsTooManySheetsError = {
+  labelText:
+    'Your short example data has made the letter go over the maximum number of sheets for your printing and postage option',
+  actionText: 'Change your printing and postage option',
+  fieldText: 'Change your printing and postage option',
+};
+
+export const longRenderContainsTooManySheetsError = {
+  labelText:
+    'Your long example data has made the letter go over the maximum number of sheets for your printing and postage option',
+  actionText: 'Change your printing and postage option',
+  fieldText: 'Change your printing and postage option',
+};
+
 const header = {
   serviceName: 'Notify',
   logoLink: {
@@ -653,6 +676,7 @@ const previewLetterTemplate = {
       "Enter short example data and select 'Update preview' to check how your personalisation fields will appear in your letter",
     longExampleRequired:
       "Enter long example data and select 'Update preview' to check how your personalisation fields will appear in your letter",
+    letterVariantRequired: 'Choose how to print and post this letter',
   },
   links: {
     messageTemplates: '/message-templates',

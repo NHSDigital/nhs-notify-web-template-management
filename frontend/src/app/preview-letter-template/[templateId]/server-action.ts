@@ -1,19 +1,14 @@
 'use server';
 
 import { z } from 'zod/v4';
-import { $LockNumber } from 'nhs-notify-backend-client/schemas';
 import type { FormState } from '@utils/types';
 import { redirect } from 'next/navigation';
 import content from '@content/content';
+import { ErrorCodes } from '@utils/error-codes';
+import { $FormSchema } from './server-action-form-schema';
+import { getSheetCount } from '@utils/get-sheet-count';
 
 const { approveErrors } = content.pages.previewLetterTemplate;
-
-const $FormSchema = z.object({
-  templateId: z.string().nonempty(),
-  lockNumber: $LockNumber,
-  shortFormRenderStatus: z.string(),
-  longFormRenderStatus: z.string(),
-});
 
 export async function submitAuthoringLetterAction(
   _: FormState,
@@ -32,6 +27,12 @@ export async function submitAuthoringLetterAction(
     lockNumber,
     shortFormRenderStatus,
     longFormRenderStatus,
+    letterVariantBothSidesFlag,
+    letterVariantMaxSheets,
+    longRenderPageCount,
+    shortRenderPageCount,
+    templatePageCount,
+    letterVariantId,
   } = result.data;
 
   const fieldErrors: Record<string, string[]> = {};
@@ -42,6 +43,43 @@ export async function submitAuthoringLetterAction(
 
   if (longFormRenderStatus !== 'RENDERED') {
     fieldErrors['tab-long'] = [approveErrors.longExampleRequired];
+  }
+
+  if (!letterVariantId) {
+    // if we have this error we do not want to calculate the other letter-variant-related errors
+    fieldErrors['printing-and-postage'] = [approveErrors.letterVariantRequired];
+    return { errorState: { fieldErrors } };
+  }
+
+  if (
+    getSheetCount(templatePageCount, letterVariantBothSidesFlag) >
+    letterVariantMaxSheets
+  ) {
+    // if we have this error we do not want to show the personalised render errors
+    fieldErrors['printing-and-postage'] = [
+      ErrorCodes.INITIAL_RENDER_CONTAINS_TOO_MANY_SHEETS,
+    ];
+    return { errorState: { fieldErrors } };
+  }
+
+  if (
+    getSheetCount(shortRenderPageCount, letterVariantBothSidesFlag) >
+    letterVariantMaxSheets
+  ) {
+    fieldErrors['printing-and-postage'] = [
+      ...(fieldErrors['printing-and-postage'] ?? []),
+      ErrorCodes.SHORT_RENDER_CONTAINS_TOO_MANY_SHEETS,
+    ];
+  }
+
+  if (
+    getSheetCount(longRenderPageCount, letterVariantBothSidesFlag) >
+    letterVariantMaxSheets
+  ) {
+    fieldErrors['printing-and-postage'] = [
+      ...(fieldErrors['printing-and-postage'] ?? []),
+      ErrorCodes.LONG_RENDER_CONTAINS_TOO_MANY_SHEETS,
+    ];
   }
 
   if (Object.keys(fieldErrors).length > 0) {

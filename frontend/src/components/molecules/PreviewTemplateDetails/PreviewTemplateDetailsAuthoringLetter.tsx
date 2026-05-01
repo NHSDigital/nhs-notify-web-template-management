@@ -22,6 +22,9 @@ import { toKebabCase } from '@utils/kebab-case';
 import { DetailSection, DetailsHeader, LockedTemplateWarning } from './common';
 import { ActionLink } from './ActionLink';
 import styles from './PreviewTemplateDetails.module.scss';
+import { useNHSNotifyForm } from '@providers/form-provider';
+import { renderErrorItem } from '@molecules/NhsNotifyErrorItem/NHSNotifyErrorItem';
+import { getSheetCount } from '@utils/get-sheet-count';
 
 type PreviewTemplateDetailsAuthoringLetterProps = {
   template: AuthoringLetterTemplate;
@@ -29,6 +32,7 @@ type PreviewTemplateDetailsAuthoringLetterProps = {
   hideStatus?: boolean;
   hideEditActions?: boolean;
   hideLearnMore?: boolean;
+  letterVariantError?: string;
 };
 
 const {
@@ -40,6 +44,19 @@ const {
   checkingFilesMessage,
 } = content.components.previewTemplateDetails;
 
+const getPostageRowClassName = (
+  letterVariantError: string | undefined,
+  letterVariant: LetterVariant | undefined
+) => {
+  if (letterVariantError) {
+    return 'missing-value-error';
+  }
+
+  if (!letterVariant) {
+    return 'missing-value';
+  }
+};
+
 function pagesAndSheetsCount(
   template: AuthoringLetterTemplate,
   bothSides = true
@@ -49,11 +66,7 @@ function pagesAndSheetsCount(
       ? template.files.initialRender.pageCount
       : 0;
 
-  const pagesPerSheet = bothSides ? 2 : 1;
-
-  const sheets = Math.ceil(pages / pagesPerSheet);
-
-  return { pages, sheets };
+  return { pages, sheets: getSheetCount(pages, bothSides) };
 }
 
 export function PreviewTemplateDetailsAuthoringLetterTable({
@@ -62,6 +75,7 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
   hideStatus,
   hideEditActions,
   hideLearnMore,
+  letterVariantError,
 }: PreviewTemplateDetailsAuthoringLetterProps) {
   const features = useFeatureFlags();
   const campaignIds = useCampaignIds();
@@ -190,12 +204,22 @@ export function PreviewTemplateDetailsAuthoringLetterTable({
           {!hidePostageRow && (
             <SummaryList.Row
               id='printing-and-postage'
-              className={letterVariant ? undefined : 'missing-value'}
+              className={getPostageRowClassName(
+                letterVariantError,
+                letterVariant
+              )}
             >
               <SummaryList.Key>
                 {rowHeadings.printingAndPostage}
               </SummaryList.Key>
-              <SummaryList.Value>{letterVariant?.name}</SummaryList.Value>
+              <SummaryList.Value>
+                {letterVariantError && (
+                  <div className='nhsuk-error-message'>
+                    {renderErrorItem(letterVariantError)}
+                  </div>
+                )}
+                {letterVariant && letterVariant.name}
+              </SummaryList.Value>
               <ActionLink
                 href={interpolate(links.choosePrintingAndPostage, {
                   templateId: template.id,
@@ -256,5 +280,21 @@ export default function PreviewTemplateDetailsAuthoringLetter(
       <DetailsHeader templateName={props.template.name} />
       <PreviewTemplateDetailsAuthoringLetterTable {...props} />
     </>
+  );
+}
+
+export function PreviewTemplateDetailsAuthoringLetterInForm(
+  props: PreviewTemplateDetailsAuthoringLetterProps
+) {
+  const [state] = useNHSNotifyForm();
+
+  const letterVariantError =
+    state.errorState?.fieldErrors?.['printing-and-postage']?.[0];
+
+  return (
+    <PreviewTemplateDetailsAuthoringLetter
+      {...props}
+      letterVariantError={letterVariantError}
+    />
   );
 }

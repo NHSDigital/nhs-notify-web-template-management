@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import type { Metadata } from 'next';
-import type { LetterVariant } from 'nhs-notify-web-template-management-types';
+import type {
+  LetterVariant,
+  RenderDetails,
+} from 'nhs-notify-web-template-management-types';
 import type {
   AuthoringLetterTemplate,
   TemplatePageProps,
@@ -15,7 +18,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyBackLink } from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { LetterRender } from '@molecules/LetterRender';
-import PreviewTemplateDetailsAuthoringLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
+import { PreviewTemplateDetailsAuthoringLetterInForm } from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsAuthoringLetter';
 import { PreviewPdfLetterTemplate } from '@organisms/PreviewPdfLetterTemplate/PreviewPdfLetterTemplate';
 import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
@@ -62,6 +65,18 @@ function getValidationErrors(template: AuthoringLetterTemplate) {
 
   return [defaultValidationErrorMessage];
 }
+
+const getPageCountForRender = (render: RenderDetails | undefined): number => {
+  if (!render) {
+    return 0;
+  }
+
+  if (render.status !== 'RENDERED') {
+    return 0;
+  }
+
+  return render.pageCount;
+};
 
 export default async function PreviewLetterTemplatePage({
   params,
@@ -152,7 +167,7 @@ export default async function PreviewLetterTemplatePage({
                             {uploadSuccessBanner}
                           </section>
                         )}
-                      <PreviewTemplateDetailsAuthoringLetter
+                      <PreviewTemplateDetailsAuthoringLetterInForm
                         template={validatedTemplate}
                         letterVariant={letterVariant}
                       />
@@ -199,6 +214,42 @@ export default async function PreviewLetterTemplatePage({
                         value={
                           validatedTemplate.files.longFormRender?.status ?? ''
                         }
+                      />
+                      <input
+                        type='hidden'
+                        name='letterVariantId'
+                        value={letterVariant?.id ?? ''}
+                      />
+                      <input
+                        type='hidden'
+                        name='letterVariantMaxSheets'
+                        value={letterVariant?.maxSheets ?? Infinity}
+                      />
+                      <input
+                        type='hidden'
+                        name='letterVariantBothSidesFlag'
+                        value={letterVariant?.bothSides ? 1 : 0}
+                      />
+                      <input
+                        type='hidden'
+                        name='templatePageCount'
+                        value={getPageCountForRender(
+                          validatedTemplate.files.initialRender
+                        )}
+                      />
+                      <input
+                        type='hidden'
+                        name='shortRenderPageCount'
+                        value={getPageCountForRender(
+                          validatedTemplate.files.shortFormRender
+                        )}
+                      />
+                      <input
+                        type='hidden'
+                        name='longRenderPageCount'
+                        value={getPageCountForRender(
+                          validatedTemplate.files.longFormRender
+                        )}
                       />
                       <LetterSubmitButton>
                         {approveButtonText}

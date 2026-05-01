@@ -14,6 +14,7 @@ import {
   PdfLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { makeLetterVariant } from '@testhelpers/helpers';
+import { ErrorCodes } from '@utils/error-codes';
 
 jest.mock('@providers/client-config-provider');
 
@@ -636,6 +637,23 @@ describe('PreviewTemplateDetailsAuthoringLetter', () => {
         expect(sheetsRow).toHaveTextContent(String(expectedSheets));
       }
     );
+  });
+
+  describe('letterVariantError', () => {
+    it('shows error styling when letterVariantError is set', () => {
+      render(
+        <PreviewTemplateDetailsAuthoringLetter
+          template={baseAuthoringLetter}
+          letterVariantError={
+            ErrorCodes.INITIAL_RENDER_CONTAINS_TOO_MANY_SHEETS
+          }
+        />
+      );
+
+      expect(
+        screen.getByText('Printing and postage').closest('div')
+      ).toHaveClass('missing-value-error');
+    });
   });
 
   describe('printing and postage action link', () => {

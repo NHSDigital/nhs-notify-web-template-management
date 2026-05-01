@@ -72,6 +72,18 @@ test('Renders NhsNotifyErrorSummary correctly with errors', async () => {
   });
 });
 
+test('renders correctly with known error code as form error', async () => {
+  const container = render(
+    <NhsNotifyErrorSummary
+      errorState={{
+        formErrors: [ErrorCodes.INITIAL_RENDER_CONTAINS_TOO_MANY_SHEETS],
+      }}
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
 test('renders correctly with markdown formatted formErrors', async () => {
   const container = render(
     <NhsNotifyErrorSummary
