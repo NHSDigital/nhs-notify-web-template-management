@@ -68,6 +68,15 @@ test.describe('Letters complete e2e journey', () => {
     getUploadPage: (page: Page) => TemplateMgmtUploadLetterBasePage;
     language?: string;
     expectedLanguageIsoCode?: string;
+    personalisationParameters: Record<string, string>;
+    docx: (typeof docxFixtures)[keyof typeof docxFixtures];
+  };
+
+  const defaultDocx = docxFixtures.standard;
+  const defaultPersonalisationData: Record<string, string> = {
+    gpSurgeryName: 'Test Surgery',
+    gpSurgeryAddress: '123 Timbuktu Lane, Kings Landing, KL19 0JE',
+    gpSurgeryPhone: '+44 7293 456 099',
   };
 
   const testParameters: TestParameter[] = [
@@ -77,6 +86,8 @@ test.describe('Letters complete e2e journey', () => {
       letterTypeName: 'Standard English',
       getUploadPage: (page: Page) =>
         new TemplateMgmtUploadStandardEnglishLetterTemplatePage(page),
+      personalisationParameters: defaultPersonalisationData,
+      docx: defaultDocx,
     },
     {
       selectedLetterType: 'x1',
@@ -84,6 +95,11 @@ test.describe('Letters complete e2e journey', () => {
       letterTypeName: 'Large Print',
       getUploadPage: (page: Page) =>
         new TemplateMgmtUploadLargePrintLetterTemplatePage(page),
+      personalisationParameters: {
+        gpSurgery: 'West Berkshire Proper Poorly Clinic',
+        appointmentDate: '31st January, 2020',
+      },
+      docx: docxFixtures.largePrint,
     },
     {
       selectedLetterType: 'q4',
@@ -91,15 +107,21 @@ test.describe('Letters complete e2e journey', () => {
       letterTypeName: 'British Sign Language',
       getUploadPage: (page: Page) =>
         new TemplateMgmtUploadBSLLetterTemplatePage(page),
+      personalisationParameters: defaultPersonalisationData,
+      docx: defaultDocx,
     },
     {
       selectedLetterType: 'language',
       expectedLetterType: 'x0',
-      letterTypeName: 'Other Language (Spanish)',
+      letterTypeName: 'Other Language (Arabic)',
       getUploadPage: (page: Page) =>
         new TemplateMgmtUploadOtherLanguageLetterTemplatePage(page),
-      language: 'Spanish',
-      expectedLanguageIsoCode: 'es',
+      language: 'Arabic',
+      expectedLanguageIsoCode: 'ar',
+      docx: docxFixtures.arabic,
+      personalisationParameters: {
+        patientNumber: '1233445589',
+      },
     },
   ];
 
@@ -110,15 +132,11 @@ test.describe('Letters complete e2e journey', () => {
     language,
     expectedLetterType,
     expectedLanguageIsoCode,
+    docx,
+    personalisationParameters,
   } of testParameters) {
     test(letterTypeName, async ({ page, chooseTemplateTypePage, user }) => {
       const uploadPage = getUploadPage(page);
-      const docx = docxFixtures.standard;
-      const personalisationData: Record<string, string> = {
-        gpSurgeryName: 'Test Surgery',
-        gpSurgeryAddress: '123 Timbuktu Lane, Kings Landing, KL19 0JE',
-        gpSurgeryPhone: '+44 7293 456 099',
-      };
 
       await test.step(`Choose ${letterTypeName} - ${selectedLetterType}`, async () => {
         await chooseTemplateTypePage
@@ -291,10 +309,10 @@ test.describe('Letters complete e2e journey', () => {
         await expect(longTab.panel).toBeHidden();
 
         await shortTab.selectRecipient({ value: shortExampleRecipient.id });
-        for (const key in personalisationData) {
+        for (const key in personalisationParameters) {
           await shortTab
             .getCustomFieldInput(key)
-            .fill(personalisationData[key]);
+            .fill(personalisationParameters[key]);
         }
 
         await shortTab.clickUpdatePreview();
@@ -307,7 +325,7 @@ test.describe('Letters complete e2e journey', () => {
 
           const completePersonalisationParams = {
             ...shortExampleRecipient.data,
-            ...personalisationData,
+            ...personalisationParameters,
           };
 
           for (const key in render?.personalisationParameters) {
@@ -329,8 +347,10 @@ test.describe('Letters complete e2e journey', () => {
         await expect(longTab.panel).toBeVisible();
 
         await longTab.selectRecipient({ value: longExampleRecipient.id });
-        for (const key in personalisationData) {
-          await longTab.getCustomFieldInput(key).fill(personalisationData[key]);
+        for (const key in personalisationParameters) {
+          await longTab
+            .getCustomFieldInput(key)
+            .fill(personalisationParameters[key]);
         }
 
         await longTab.clickUpdatePreview();
@@ -343,7 +363,7 @@ test.describe('Letters complete e2e journey', () => {
 
           const completePersonalisationParams = {
             ...longExampleRecipient.data,
-            ...personalisationData,
+            ...personalisationParameters,
           };
 
           for (const key in render?.personalisationParameters) {

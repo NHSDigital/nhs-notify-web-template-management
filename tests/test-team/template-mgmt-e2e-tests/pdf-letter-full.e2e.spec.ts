@@ -188,7 +188,7 @@ function requestProof(
         const msg = `Proof ${proofFilenames[i]} does not exist`;
         expect(meta, msg).not.toBeNull();
       }
-    }, 'Template has been moved from the quarantine bucket').toPass({
+    }).toPass({
       intervals: [1000],
       timeout: 40_000,
     });
