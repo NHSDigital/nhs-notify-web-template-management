@@ -289,7 +289,7 @@ export function PreviewTemplateDetailsAuthoringLetterInForm(
   const [state] = useNHSNotifyForm();
 
   const letterVariantError =
-    state.errorState?.fieldErrors?.['printing-and-postage'][0];
+    state.errorState?.fieldErrors?.['printing-and-postage']?.[0];
 
   return (
     <PreviewTemplateDetailsAuthoringLetter
