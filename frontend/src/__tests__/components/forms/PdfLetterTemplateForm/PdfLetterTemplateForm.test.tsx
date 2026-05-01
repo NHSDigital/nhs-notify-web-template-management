@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
 import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
+import { PdfLetterTemplateForm } from '@forms/PdfLetterTemplateForm/PdfLetterTemplateForm';
 import userEvent from '@testing-library/user-event';
 import { validate } from '@utils/client-validate-form';
 import type { ErrorState, TemplateFormState } from '@utils/types';
@@ -45,7 +45,7 @@ afterAll(() => {
 
 test('renders page with preloaded field values', () => {
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: undefined,
@@ -61,7 +61,7 @@ test('renders page with preloaded field values', () => {
 
 test('renders page with multiple campaign ids', () => {
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: undefined,
@@ -80,7 +80,7 @@ test('shows right-to-left language warning when language changes', () => {
   const selectedLanguage = 'fa';
 
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: undefined,
@@ -107,7 +107,7 @@ test('hides right-to-left language warning when language changes', () => {
   const selectedLanguage = 'en';
 
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: undefined,
@@ -131,7 +131,7 @@ test('hides right-to-left language warning when language changes', () => {
 
 test('renders page one error', () => {
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: {
@@ -152,7 +152,7 @@ test('renders page one error', () => {
 
 test('renders page with multiple errors', () => {
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: {
@@ -191,7 +191,7 @@ test('Client-side validation triggers - valid form - with errors', async () => {
     );
 
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: undefined,
@@ -214,7 +214,7 @@ test('Client-side validation triggers - valid form - without errors', async () =
   const validateMock = jest.mocked(validate);
 
   const container = render(
-    <LetterTemplateForm
+    <PdfLetterTemplateForm
       initialState={mockDeep<TemplateFormState<UploadLetterTemplate>>({
         campaignId: 'campaign-id',
         errorState: undefined,

@@ -421,7 +421,7 @@ exports[`Client-side validation triggers - valid form - with errors 1`] = `
               </span>
               <input
                 accept="application/pdf"
-                class="file-upload nhsuk-input"
+                class="file-upload nhsuk-input nhsuk-input--error"
                 data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -2725,7 +2725,7 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 accept="application/pdf"
-                class="file-upload nhsuk-input"
+                class="file-upload nhsuk-input nhsuk-input--error"
                 data-testid="file-selector-letterTemplatePdf"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -2772,7 +2772,7 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 accept="text/csv"
-                class="file-upload nhsuk-input"
+                class="file-upload nhsuk-input nhsuk-input--error"
                 data-testid="file-selector-letterTemplateCsv"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"

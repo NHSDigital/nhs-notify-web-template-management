@@ -8,8 +8,9 @@ import {
   Label,
   Select,
   WarningCallout,
+  ErrorMessage,
 } from 'nhsuk-react-components';
-import { processFormActions } from '@forms/LetterTemplateForm/server-action';
+import { processFormActions } from '@forms/PdfLetterTemplateForm/server-action';
 import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
@@ -23,15 +24,16 @@ import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import FileUpload from '@atoms/FileUpload/FileUpload';
 import { $UploadLetterTemplateForm } from './form-schema';
 import { validate } from '@utils/client-validate-form';
 import type { Language } from 'nhs-notify-web-template-management-types';
 import Link from 'next/link';
 import NotifyBackLink from '@atoms/NHSNotifyBackLink/NHSNotifyBackLink';
+import { FormContext } from '@providers/form-provider';
+import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { ErrorState, PageComponentProps } from '@utils/types';
 
-export const LetterTemplateForm: FC<
+export const PdfLetterTemplateForm: FC<
   PageComponentProps<UploadLetterTemplate> & {
     campaignIds: string[];
   }
@@ -106,7 +108,7 @@ export const LetterTemplateForm: FC<
   ];
 
   return (
-    <>
+    <FormContext.Provider value={[{ errorState }, action, false]}>
       <Link href='/choose-a-template-type' passHref legacyBehavior>
         <NotifyBackLink>{backLinkText}</NotifyBackLink>
       </Link>
@@ -255,11 +257,25 @@ export const LetterTemplateForm: FC<
                     {templatePdfGuidanceLinkText}
                   </a>
                 </p>
-                <FileUpload
-                  accept='application/pdf'
-                  id='letterTemplatePdf'
-                  error={templatePdfError}
-                />
+                <div
+                  className={classNames(
+                    'nhsuk-form-group',
+                    'nhsuk-u-margin-bottom-0',
+                    {
+                      'nhsuk-form-group--error': templatePdfError,
+                    }
+                  )}
+                >
+                  {templatePdfError && (
+                    <ErrorMessage>{templatePdfError}</ErrorMessage>
+                  )}
+                  <NHSNotifyForm.FileUploadInput
+                    accept='application/pdf'
+                    id='letterTemplatePdf'
+                    name='letterTemplatePdf'
+                    data-testid={`file-selector-letterTemplatePdf`}
+                  />
+                </div>
               </div>
               <div
                 className={classNames(
@@ -281,11 +297,25 @@ export const LetterTemplateForm: FC<
                     {templateCsvGuidanceLinkText}
                   </a>
                 </p>
-                <FileUpload
-                  accept='text/csv'
-                  id='letterTemplateCsv'
-                  error={templateCsvError}
-                />
+                <div
+                  className={classNames(
+                    'nhsuk-form-group',
+                    'nhsuk-u-margin-bottom-0',
+                    {
+                      'nhsuk-form-group--error': templateCsvError,
+                    }
+                  )}
+                >
+                  {templateCsvError && (
+                    <ErrorMessage>{templateCsvError}</ErrorMessage>
+                  )}
+                  <NHSNotifyForm.FileUploadInput
+                    accept='text/csv'
+                    id='letterTemplateCsv'
+                    name='letterTemplateCsv'
+                    data-testid={`file-selector-letterTemplateCsv`}
+                  />
+                </div>
               </div>
               <NHSNotifyButton
                 data-testid='submit-button'
@@ -297,6 +327,6 @@ export const LetterTemplateForm: FC<
           </div>
         </div>
       </NHSNotifyMain>
-    </>
+    </FormContext.Provider>
   );
 };

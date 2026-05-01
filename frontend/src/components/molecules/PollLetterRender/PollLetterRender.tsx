@@ -18,27 +18,42 @@ export const POLL_INTERVAL_MS = 2000;
 
 function templateRequiresPolling(
   template: AuthoringLetterTemplate,
-  mode: RenderKey
+  mode: RenderKey,
+  startPollingTimestamp: string | undefined
 ): boolean {
+  const now = Date.now();
   const render = template.files[mode];
 
-  if (
-    render?.status !== 'PENDING' ||
-    template.templateStatus === 'VALIDATION_FAILED'
-  ) {
+  // do not poll if validation failed
+  if (template.templateStatus === 'VALIDATION_FAILED') {
     return false;
   }
 
-  const elapsed = Date.now() - new Date(render.requestedAt).getTime();
+  // poll if render is in a PENDING state and isn't old
+  if (render?.status === 'PENDING') {
+    const elapsed = now - new Date(render.requestedAt).getTime();
 
-  return elapsed < RENDER_TIMEOUT_MS;
+    return elapsed < RENDER_TIMEOUT_MS;
+  }
+
+  // poll if render is not in a PENDING state and hasn't been updated since the last poll start
+  if (
+    startPollingTimestamp &&
+    new Date(startPollingTimestamp).getTime() >
+      new Date(template.updatedAt).getTime() &&
+    now - new Date(startPollingTimestamp).getTime() < RENDER_TIMEOUT_MS
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 type PollLetterRenderProps = PropsWithChildren<{
   template: AuthoringLetterTemplate;
   mode: RenderKey;
   loadingElement: ReactNode;
-  forcePolling?: boolean;
+  startPollingTimestamp?: string;
 }>;
 
 export function PollLetterRender({
@@ -46,53 +61,33 @@ export function PollLetterRender({
   children,
   mode,
   loadingElement,
-  forcePolling = false,
+  startPollingTimestamp,
 }: Readonly<PollLetterRenderProps>) {
   const router = useRouter();
   const { registerPolling } = useLetterRenderPolling();
 
   const [isPolling, setIsPolling] = useState(
-    forcePolling || templateRequiresPolling(template, mode)
+    templateRequiresPolling(template, mode, startPollingTimestamp)
   );
 
-  // was the force flag active on the previous render?
-  const forcedRef = useRef(forcePolling);
-
-  const staleTemplateRef = useRef<AuthoringLetterTemplate | null>(
-    forcePolling ? template : null
-  );
+  const startPollingRef = useRef(startPollingTimestamp);
 
   useEffect(() => {
-    const forcedPollingBegan = !forcedRef.current && forcePolling;
-
-    if (forcedPollingBegan) {
-      // track the template identity from before any updates
-      staleTemplateRef.current = template;
+    if (startPollingRef.current !== startPollingTimestamp) {
+      startPollingRef.current = startPollingTimestamp;
 
       if (!isPolling) {
         setIsPolling(true);
       }
     }
 
-    forcedRef.current = forcePolling;
-
-    const templateHasUpdated =
-      staleTemplateRef.current && staleTemplateRef.current !== template;
-
-    if (templateHasUpdated) {
-      // clear the ref so once the template is RENDERED, polling can end
-      staleTemplateRef.current = null;
-    }
-
     if (
       isPolling &&
-      !forcePolling &&
-      !staleTemplateRef.current &&
-      !templateRequiresPolling(template, mode)
+      !templateRequiresPolling(template, mode, startPollingTimestamp)
     ) {
       setIsPolling(false);
     }
-  }, [template, forcePolling, isPolling, mode]);
+  }, [template, isPolling, mode, startPollingTimestamp]);
 
   useEffect(() => {
     if (!isPolling) return;
@@ -111,17 +106,15 @@ export function PollLetterRender({
     };
   }, [isPolling, router]);
 
-  const pollActive = isPolling || forcePolling;
-
   useEffect(() => {
-    registerPolling(mode, pollActive);
+    registerPolling(mode, isPolling);
 
     return () => {
       registerPolling(mode, false);
     };
-  }, [mode, pollActive, registerPolling]);
+  }, [mode, isPolling, registerPolling]);
 
-  if (pollActive) {
+  if (isPolling) {
     return <LoadingSpinner>{loadingElement}</LoadingSpinner>;
   }
 

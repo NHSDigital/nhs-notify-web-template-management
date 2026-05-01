@@ -266,7 +266,7 @@ exports[`valid template renders errors when blank form is submitted and error st
                 Enter a template name
               </span>
               <input
-                class="nhsuk-input nhsuk-u-margin-bottom-2"
+                class="nhsuk-input nhsuk-input--error nhsuk-u-margin-bottom-2"
                 id="name"
                 name="name"
                 type="text"

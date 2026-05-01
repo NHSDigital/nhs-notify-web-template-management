@@ -14,8 +14,9 @@ import type { LetterProofRequest } from 'nhs-notify-web-template-management-type
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
 import { format as formatDate } from 'date-fns';
 import { $LockNumber } from 'nhs-notify-backend-client/schemas';
+import { interpolate } from '@utils/interpolate';
 
-const { pdsSection } = copy.components.letterRender;
+const { pdsSection, customSection } = copy.components.letterRender;
 
 const $FormSchema = z.object({
   systemPersonalisationPackId: z.enum(EXAMPLE_RECIPIENT_IDS, {
@@ -26,6 +27,9 @@ const $FormSchema = z.object({
   tab: z.enum(['longFormRender', 'shortFormRender']),
 });
 
+const systemPackIdErrorKey = (tab?: string) =>
+  `system-personalisation-pack-id-${tab}`;
+
 export async function updateLetterPreview(
   _: FormState,
   formData: FormData
@@ -33,16 +37,50 @@ export async function updateLetterPreview(
   const result = $FormSchema.safeParse(Object.fromEntries(formData.entries()));
 
   const fields = formDataToFormStateFields(formData);
+  const { tab } = fields;
+
+  const personalisationFieldErrors: Record<string, string[]> = {};
+
+  for (const [key, value] of Object.entries(fields)) {
+    if (key.startsWith(PERSONALISATION_FORMDATA_PREFIX) && !value) {
+      const fieldName = key.slice(PERSONALISATION_FORMDATA_PREFIX.length);
+      personalisationFieldErrors[`custom-${fieldName}-${tab}`] = [
+        interpolate(customSection.error.required, { field: fieldName }),
+      ];
+    }
+  }
 
   if (result.error) {
+    const baseError = z.flattenError(result.error);
+    const { systemPersonalisationPackId, ...otherFieldErrors } =
+      baseError.fieldErrors;
+
     return {
-      errorState: z.flattenError(result.error),
+      errorState: {
+        ...baseError,
+        fieldErrors: {
+          // need to convert to field id so summary link works
+          ...(systemPersonalisationPackId && {
+            [systemPackIdErrorKey(tab)]: systemPersonalisationPackId,
+          }),
+          ...otherFieldErrors,
+          ...personalisationFieldErrors,
+        },
+      },
       fields,
     };
   }
 
-  const { templateId, systemPersonalisationPackId, tab, lockNumber } =
-    result.data;
+  if (Object.keys(personalisationFieldErrors).length > 0) {
+    return {
+      errorState: {
+        fieldErrors: personalisationFieldErrors,
+      },
+      fields,
+    };
+  }
+
+  const { templateId, systemPersonalisationPackId, lockNumber } = result.data;
 
   const customPersonalisation = Object.fromEntries(
     Object.entries(fields).flatMap(([k, v]) =>
@@ -62,7 +100,7 @@ export async function updateLetterPreview(
     return {
       errorState: {
         fieldErrors: {
-          systemPersonalisationPackId: [pdsSection.error.invalid],
+          [systemPackIdErrorKey(tab)]: [pdsSection.error.invalid],
         },
       },
       fields,
@@ -84,6 +122,9 @@ export async function updateLetterPreview(
   await generateLetterProof(templateId, lockNumber, request);
 
   return {
-    fields,
+    fields: {
+      ...fields,
+      pollingTimestamp: new Date().toISOString(), // return this so we get a state update in the event of a successful call to generateLetterProof
+    },
   };
 }

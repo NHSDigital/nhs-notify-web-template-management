@@ -18,6 +18,15 @@ jest.mock('@providers/letter-render-polling-provider', () => {
   };
 });
 
+jest.mock('@providers/letter-render-error-provider', () => ({
+  useLetterRenderError: jest.fn().mockReturnValue({
+    parentErrorState: undefined,
+    setParentErrorState: jest.fn(),
+    letterRenderErrorState: undefined,
+    setLetterRenderErrorState: jest.fn(),
+  }),
+}));
+
 const baseTemplate: AuthoringLetterTemplate = {
   id: 'template-123',
   campaignId: 'campaign',
@@ -261,12 +270,14 @@ describe('LetterRenderForm', () => {
   });
 
   describe('error display', () => {
-    it('displays error message and applies error styling when systemPersonalisationPackId has validation error', () => {
+    it('displays error message and applies error styling when recipient has validation error (short tab)', () => {
       const initialState = createInitialFormState({
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Select an example recipient'],
+            'system-personalisation-pack-id-shortFormRender': [
+              'Choose example recipient',
+            ],
           },
         },
       });
@@ -276,12 +287,10 @@ describe('LetterRenderForm', () => {
         initialState
       );
 
-      expect(
-        screen.getByText('Select an example recipient')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Choose example recipient')).toBeInTheDocument();
 
       const formGroup = screen
-        .getByText('Select an example recipient')
+        .getByText('Choose example recipient')
         .closest('.nhsuk-form-group');
 
       expect(formGroup).toHaveClass('nhsuk-form-group--error');
@@ -291,6 +300,107 @@ describe('LetterRenderForm', () => {
       });
 
       expect(select).toHaveClass('nhsuk-select--error');
+    });
+
+    it('displays error message and applies error styling when recipient has validation error (long tab)', () => {
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            'system-personalisation-pack-id-longFormRender': [
+              'Choose example recipient',
+            ],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={baseTemplate} tab='longFormRender' />,
+        initialState
+      );
+
+      expect(screen.getByText('Choose example recipient')).toBeInTheDocument();
+
+      const formGroup = screen
+        .getByText('Choose example recipient')
+        .closest('.nhsuk-form-group');
+
+      expect(formGroup).toHaveClass('nhsuk-form-group--error');
+
+      const select = screen.getByRole('combobox', {
+        name: 'Example recipient',
+      });
+
+      expect(select).toHaveClass('nhsuk-select--error');
+    });
+
+    it('displays inline error and applies error styling when a custom personalisation field is empty (short tab)', () => {
+      const templateWithCustom: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        customPersonalisation: ['appointmentDate'],
+      };
+
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            'custom-appointmentDate-shortFormRender': [
+              'Enter example data for appointmentDate',
+            ],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm
+          template={templateWithCustom}
+          tab='shortFormRender'
+        />,
+        initialState
+      );
+
+      expect(
+        screen.getByText('Enter example data for appointmentDate')
+      ).toBeInTheDocument();
+
+      const formGroup = screen
+        .getByText('Enter example data for appointmentDate')
+        .closest('.nhsuk-form-group');
+
+      expect(formGroup).toHaveClass('nhsuk-form-group--error');
+    });
+
+    it('displays inline error and applies error styling when a custom personalisation field is empty (long tab)', () => {
+      const templateWithCustom: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        customPersonalisation: ['appointmentDate'],
+      };
+
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            'custom-appointmentDate-longFormRender': [
+              'Enter example data for appointmentDate',
+            ],
+          },
+        },
+      });
+
+      renderWithProvider(
+        <LetterRenderForm template={templateWithCustom} tab='longFormRender' />,
+        initialState
+      );
+
+      expect(
+        screen.getByText('Enter example data for appointmentDate')
+      ).toBeInTheDocument();
+
+      const formGroup = screen
+        .getByText('Enter example data for appointmentDate')
+        .closest('.nhsuk-form-group');
+
+      expect(formGroup).toHaveClass('nhsuk-form-group--error');
     });
   });
 
@@ -329,18 +439,59 @@ describe('LetterRenderForm', () => {
       expect(container.asFragment()).toMatchSnapshot();
     });
 
-    it('matches snapshot with validation error', () => {
+    it('matches snapshot with validation error (short tab)', () => {
+      const templateWithCustom: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        customPersonalisation: ['appointmentDate'],
+      };
+
       const initialState = createInitialFormState({
         errorState: {
           formErrors: [],
           fieldErrors: {
-            systemPersonalisationPackId: ['Select an example recipient'],
+            'system-personalisation-pack-id-shortFormRender': [
+              'Choose example recipient',
+            ],
+            'custom-appointmentDate-shortFormRender': [
+              'Enter example data for appointmentDate',
+            ],
           },
         },
       });
 
       const container = renderWithProvider(
-        <LetterRenderForm template={baseTemplate} tab='shortFormRender' />,
+        <LetterRenderForm
+          template={templateWithCustom}
+          tab='shortFormRender'
+        />,
+        initialState
+      );
+
+      expect(container.asFragment()).toMatchSnapshot();
+    });
+
+    it('matches snapshot with validation error (long tab)', () => {
+      const templateWithCustom: AuthoringLetterTemplate = {
+        ...baseTemplate,
+        customPersonalisation: ['appointmentDate'],
+      };
+
+      const initialState = createInitialFormState({
+        errorState: {
+          formErrors: [],
+          fieldErrors: {
+            'system-personalisation-pack-id-longFormRender': [
+              'Choose example recipient',
+            ],
+            'custom-appointmentDate-longFormRender': [
+              'Enter example data for appointmentDate',
+            ],
+          },
+        },
+      });
+
+      const container = renderWithProvider(
+        <LetterRenderForm template={templateWithCustom} tab='longFormRender' />,
         initialState
       );
 

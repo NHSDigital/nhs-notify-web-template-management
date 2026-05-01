@@ -10,9 +10,11 @@ import {
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import * as NHSNotifyForm from '@atoms/NHSNotifyForm';
 import { useLetterRenderPolling } from '@providers/letter-render-polling-provider';
+import { useLetterRenderError } from '@providers/letter-render-error-provider';
 import type { PersonalisedRenderKey } from '@utils/types';
 import styles from './LetterRenderForm.module.scss';
 import { PERSONALISATION_FORMDATA_PREFIX } from '@utils/constants';
+import { useNHSNotifyForm } from '@providers/form-provider';
 
 type LetterRenderFormProps = {
   template: AuthoringLetterTemplate;
@@ -22,6 +24,8 @@ type LetterRenderFormProps = {
 export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
   const { letterRender: copy } = content.components;
   const { isAnyTabPolling } = useLetterRenderPolling();
+  const [_state, _action, isPending] = useNHSNotifyForm();
+  const { setParentErrorState } = useLetterRenderError();
 
   const exampleRecipients =
     tab === 'shortFormRender'
@@ -36,11 +40,16 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
       <h3 className='nhsuk-heading-s'>{copy.pdsSection.heading}</h3>
       <p className='nhsuk-body-s'>{copy.pdsSection.hint}</p>
 
-      <NHSNotifyForm.FormGroup htmlFor='systemPersonalisationPackId'>
+      <NHSNotifyForm.FormGroup
+        htmlFor={`system-personalisation-pack-id-${tab}`}
+      >
         <Label size='s' htmlFor={`system-personalisation-pack-id-${tab}`}>
           {copy.pdsSection.recipientLabel}
         </Label>
-        <NHSNotifyForm.ErrorMessage htmlFor='systemPersonalisationPackId' />
+        <NHSNotifyForm.ErrorMessage
+          htmlFor={`system-personalisation-pack-id-${tab}`}
+          data-testid={`error-system-personalisation-pack-id-${tab}`}
+        />
         <NHSNotifyForm.Select
           id={`system-personalisation-pack-id-${tab}`}
           name='systemPersonalisationPackId'
@@ -64,10 +73,14 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
             const id = `custom-${field}-${tab}`;
 
             return (
-              <NHSNotifyForm.FormGroup key={field}>
+              <NHSNotifyForm.FormGroup key={field} htmlFor={id}>
                 <Label size='s' htmlFor={id}>
                   {field}
                 </Label>
+                <NHSNotifyForm.ErrorMessage
+                  htmlFor={id}
+                  data-testid={`error-${id}`}
+                />
                 <NHSNotifyForm.Input
                   type='text'
                   id={id}
@@ -89,7 +102,8 @@ export function LetterRenderForm({ template, tab }: LetterRenderFormProps) {
         type='submit'
         secondary
         className='nhsuk-u-margin-top-4'
-        disabled={isAnyTabPolling}
+        disabled={isPending || isAnyTabPolling}
+        onClick={() => setParentErrorState(undefined)}
       >
         {copy.updatePreviewButton}
       </NHSNotifyButton>

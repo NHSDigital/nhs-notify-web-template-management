@@ -21,7 +21,9 @@ import { PollLetterRender } from '@molecules/PollLetterRender/PollLetterRender';
 import { NHSNotifyFormProvider } from '@providers/form-provider';
 import { getLetterVariantById, getTemplate } from '@utils/form-actions';
 import { LetterRenderPollingProvider } from '@providers/letter-render-polling-provider';
+import { LetterRenderErrorProvider } from '@providers/letter-render-error-provider';
 import { LetterSubmitButton } from '@molecules/LetterRender/LetterSubmitButton';
+import { CombinedLetterErrorSummary } from '@molecules/LetterRender/CombinedLetterErrorSummary';
 import { submitAuthoringLetterAction } from './server-action';
 import content from '@content/content';
 import { NHSNotifyContainer } from '@layouts/container/container';
@@ -124,90 +126,108 @@ export default async function PreviewLetterTemplatePage({
         serverAction={submitAuthoringLetterAction}
       >
         <LetterRenderPollingProvider>
-          <PollLetterRender
-            template={validatedTemplate}
-            mode='initialRender'
-            loadingElement={<h1>{loadingText}</h1>}
-          >
-            <NHSNotifyContainer>
-              <NHSNotifyBackLink href={links.messageTemplates}>
-                {backLinkText}
-              </NHSNotifyBackLink>
-            </NHSNotifyContainer>
-            <NHSNotifyMain>
+          <LetterRenderErrorProvider>
+            <PollLetterRender
+              template={validatedTemplate}
+              mode='initialRender'
+              loadingElement={<h1>{loadingText}</h1>}
+            >
               <NHSNotifyContainer>
-                <NHSNotifyForm.ErrorSummary />
-                <div className='nhsuk-grid-row'>
-                  <div className='nhsuk-grid-column-full'>
-                    {isFromUploadPage &&
-                      validatedTemplate.templateStatus ===
-                        'NOT_YET_SUBMITTED' && (
-                        <section
-                          className='notify-confirmation-panel nhsuk-heading-l'
-                          role='status'
-                        >
-                          {uploadSuccessBanner}
-                        </section>
-                      )}
-                    <PreviewTemplateDetailsAuthoringLetter
-                      template={validatedTemplate}
-                      letterVariant={letterVariant}
-                    />
+                <NHSNotifyBackLink href={links.messageTemplates}>
+                  {backLinkText}
+                </NHSNotifyBackLink>
+              </NHSNotifyContainer>
+              <NHSNotifyMain>
+                <NHSNotifyContainer>
+                  <CombinedLetterErrorSummary />
+                  <div className='nhsuk-grid-row'>
+                    <div className='nhsuk-grid-column-full'>
+                      {isFromUploadPage &&
+                        validatedTemplate.templateStatus ===
+                          'NOT_YET_SUBMITTED' && (
+                          <section
+                            className='notify-confirmation-panel nhsuk-heading-l'
+                            role='status'
+                          >
+                            {uploadSuccessBanner}
+                          </section>
+                        )}
+                      <PreviewTemplateDetailsAuthoringLetter
+                        template={validatedTemplate}
+                        letterVariant={letterVariant}
+                      />
+                    </div>
                   </div>
-                </div>
-              </NHSNotifyContainer>
-              {showRenderer &&
-                (showTabbedRenderer ? (
-                  <LetterRender template={validatedTemplate} />
-                ) : (
-                  <LetterRenderIframe
-                    className={concatClassNames(
-                      'letter-render-iframe',
-                      'nhsuk-u-margin-bottom-6'
-                    )}
-                    src={initialRender.src}
-                    title={iframe.title}
-                    aria-label={iframe.ariaLabel}
-                  />
-                ))}
-              <NHSNotifyContainer fullWidth={showTabbedRenderer}>
-                {showSubmitForm && (
-                  <NHSNotifyForm.Form formId='preview-letter-template'>
-                    <input
-                      type='hidden'
-                      name='templateId'
-                      value={validatedTemplate.id}
-                    />
-                    <input
-                      type='hidden'
-                      name='lockNumber'
-                      value={validatedTemplate.lockNumber}
-                    />
-                    <LetterSubmitButton>{approveButtonText}</LetterSubmitButton>
-                  </NHSNotifyForm.Form>
-                )}
-                <p>
-                  {validationErrors.length > 0 ? (
-                    <NHSNotifyButton
-                      href={links.uploadDifferentTemplateFile.href(
-                        validatedTemplate.templateType,
-                        getFrontendLetterTypeForUrl(validatedTemplate)
-                      )}
-                    >
-                      {links.uploadDifferentTemplateFile.text}
-                    </NHSNotifyButton>
+                </NHSNotifyContainer>
+                {showRenderer &&
+                  (showTabbedRenderer ? (
+                    <LetterRender template={validatedTemplate} />
                   ) : (
-                    <Link
-                      data-testid='back-link-bottom'
-                      href={links.messageTemplates}
-                    >
-                      {backLinkText}
-                    </Link>
+                    <LetterRenderIframe
+                      className={concatClassNames(
+                        'letter-render-iframe',
+                        'nhsuk-u-margin-bottom-6'
+                      )}
+                      src={initialRender.src}
+                      title={iframe.title}
+                      aria-label={iframe.ariaLabel}
+                    />
+                  ))}
+                <NHSNotifyContainer fullWidth={showTabbedRenderer}>
+                  {showSubmitForm && (
+                    <NHSNotifyForm.Form formId='preview-letter-template'>
+                      <input
+                        type='hidden'
+                        name='templateId'
+                        value={validatedTemplate.id}
+                      />
+                      <input
+                        type='hidden'
+                        name='lockNumber'
+                        value={validatedTemplate.lockNumber}
+                      />
+                      <input
+                        type='hidden'
+                        name='shortFormRenderStatus'
+                        value={
+                          validatedTemplate.files.shortFormRender?.status ?? ''
+                        }
+                      />
+                      <input
+                        type='hidden'
+                        name='longFormRenderStatus'
+                        value={
+                          validatedTemplate.files.longFormRender?.status ?? ''
+                        }
+                      />
+                      <LetterSubmitButton>
+                        {approveButtonText}
+                      </LetterSubmitButton>
+                    </NHSNotifyForm.Form>
                   )}
-                </p>
-              </NHSNotifyContainer>
-            </NHSNotifyMain>
-          </PollLetterRender>
+                  <p>
+                    {validationErrors.length > 0 ? (
+                      <NHSNotifyButton
+                        href={links.uploadDifferentTemplateFile.href(
+                          validatedTemplate.templateType,
+                          getFrontendLetterTypeForUrl(validatedTemplate)
+                        )}
+                      >
+                        {links.uploadDifferentTemplateFile.text}
+                      </NHSNotifyButton>
+                    ) : (
+                      <Link
+                        data-testid='back-link-bottom'
+                        href={links.messageTemplates}
+                      >
+                        {backLinkText}
+                      </Link>
+                    )}
+                  </p>
+                </NHSNotifyContainer>
+              </NHSNotifyMain>
+            </PollLetterRender>
+          </LetterRenderErrorProvider>
         </LetterRenderPollingProvider>
       </NHSNotifyFormProvider>
     </NHSNotifyContainer>

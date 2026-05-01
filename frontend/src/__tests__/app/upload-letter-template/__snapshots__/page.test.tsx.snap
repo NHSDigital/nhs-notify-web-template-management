@@ -2,7 +2,7 @@
 
 exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage when one campaignId is available 1`] = `
 <NHSNotifyContainer>
-  <LetterTemplateForm
+  <PdfLetterTemplateForm
     campaignIds={
       [
         "campaign-id",
@@ -24,7 +24,7 @@ exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage when on
 
 exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage with multiple campaignIds available 1`] = `
 <NHSNotifyContainer>
-  <LetterTemplateForm
+  <PdfLetterTemplateForm
     campaignIds={
       [
         "campaign-id",

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
+import { PdfLetterTemplateForm } from '@forms/PdfLetterTemplateForm/PdfLetterTemplateForm';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { fetchClient } from '@utils/server-features';
 import { getCampaignIds } from '@utils/client-config';
@@ -38,7 +38,7 @@ const UploadLetterTemplatePage = async () => {
 
   return (
     <NHSNotifyContainer>
-      <LetterTemplateForm
+      <PdfLetterTemplateForm
         initialState={initialState}
         campaignIds={campaignIds}
       />

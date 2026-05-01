@@ -648,6 +648,12 @@ const previewLetterTemplate = {
       'After you submit your template, our service team will send you a proof by email instead.',
     text3: 'This email will tell you what to do next.',
   },
+  approveErrors: {
+    shortExampleRequired:
+      "Enter short example data and select 'Update preview' to check how your personalisation fields will appear in your letter",
+    longExampleRequired:
+      "Enter long example data and select 'Update preview' to check how your personalisation fields will appear in your letter",
+  },
   links: {
     messageTemplates: '/message-templates',
     submitLetterTemplate:
@@ -709,11 +715,14 @@ const letterRender = {
     recipientLabel: 'Example recipient',
     recipientPlaceholder: 'Select a recipient',
     error: {
-      invalid: 'Select an example recipient',
+      invalid: 'Choose example recipient',
     },
   },
   customSection: {
     heading: 'Custom personalisation fields',
+    error: {
+      required: 'Enter example data for {{field}}',
+    },
   },
   updatePreviewButton: 'Update preview',
 };
