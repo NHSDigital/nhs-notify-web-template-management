@@ -7,7 +7,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   static readonly pathTemplate = '/preview-letter-template/:templateId';
 
   public static readonly urlRegexp = new RegExp(
-    /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/
+    /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=(edit|upload))?$/
   );
 
   public readonly continueButton: Locator;
@@ -23,6 +23,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public readonly statusAction: Locator;
   public readonly campaignAction: Locator;
   public readonly printingAndPostage: Locator;
+  public readonly printingAndPostageAction: Locator;
 
   public readonly tabbedRenderSection: Locator;
 
@@ -55,6 +56,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     this.statusAction = page.getByTestId('status-action');
     this.campaignAction = page.getByTestId('campaign-action');
     this.printingAndPostage = page.locator('[id="printing-and-postage"]');
+    this.printingAndPostageAction = page.getByTestId('printing-postage-action');
 
     this.tabbedRenderSection = page.locator('section').filter({
       has: page.getByRole('heading', { name: 'Letter preview' }),

@@ -4,6 +4,10 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 export class TemplateMgmtChoosePrintingAndPostagePage extends TemplateMgmtBasePage {
   static readonly pathTemplate = '/choose-printing-and-postage/:templateId';
 
+  public static readonly urlRegexp = new RegExp(
+    /\/templates\/choose-printing-and-postage\/[\dA-Fa-f-]+/
+  );
+
   variantsTable: Locator;
 
   submitButton: Locator;

@@ -188,7 +188,10 @@ function requestProof(
         const msg = `Proof ${proofFilenames[i]} does not exist`;
         expect(meta, msg).not.toBeNull();
       }
-    }).toPass({ intervals: [1000], timeout: 40_000 });
+    }).toPass({
+      intervals: [1000],
+      timeout: 40_000,
+    });
 
     await expect(async () => {
       const { templateStatus } =
@@ -307,7 +310,7 @@ function checkEmail(
   });
 }
 
-test.describe('letter complete e2e journey', () => {
+test.describe('pdf letter complete e2e journey', () => {
   const context = getTestContext();
   const templateStorageHelper = new TemplateStorageHelper();
 
