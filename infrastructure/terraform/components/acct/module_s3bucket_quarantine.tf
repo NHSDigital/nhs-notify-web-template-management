@@ -6,7 +6,7 @@ module "s3bucket_quarantine" {
   #             "*"
   #         ],
   #         "AllowedMethods": [
-  #             "PUT"
+  #             "POST"
   #         ],
   #         "AllowedOrigins": [
   #             "https://*.nhsnotify.national.nhs.uk",
