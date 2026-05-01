@@ -5,6 +5,7 @@ export function loadConfig() {
     .object({
       CREDENTIALS_TTL_SECONDS: z.string().pipe(z.coerce.number()),
       CSI: z.string(),
+      ENVIRONMENT: z.string(),
       QUARANTINE_BUCKET_NAME: z.string(),
       REGION: z.string(),
       SFTP_ENVIRONMENT: z.string(),
@@ -13,6 +14,7 @@ export function loadConfig() {
       credentialsTtlSeconds: e.CREDENTIALS_TTL_SECONDS,
       csi: e.CSI,
       quarantineBucketName: e.QUARANTINE_BUCKET_NAME,
+      environment: e.ENVIRONMENT,
       region: e.REGION,
       sftpEnvironment: e.SFTP_ENVIRONMENT,
     }))

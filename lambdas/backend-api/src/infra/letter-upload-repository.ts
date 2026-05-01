@@ -33,6 +33,15 @@ const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
 });
 
 export class LetterUploadRepository extends LetterFileRepository {
+  constructor(
+    quarantineBucketName: string,
+    internalBucketName: string,
+    downloadBucketName: string,
+    private readonly environment: string
+  ) {
+    super(quarantineBucketName, internalBucketName, downloadBucketName);
+  }
+
   async upload(
     templateId: string,
     user: User,
@@ -41,12 +50,12 @@ export class LetterUploadRepository extends LetterFileRepository {
     fileType: 'pdf-template' | 'docx-template',
     testDataFile?: File
   ): Promise<ApplicationResult<null>> {
-    const pdfKey = this.key(fileType, user.clientId, templateId, versionId);
+    const templateKey = `${this.environment}/${this.key(fileType, user.clientId, templateId, versionId)}`;
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
         Bucket: this.quarantineBucketName,
-        Key: pdfKey,
+        Key: templateKey,
         Body: await file.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
@@ -59,12 +68,12 @@ export class LetterUploadRepository extends LetterFileRepository {
     ];
 
     if (testDataFile) {
-      const csvKey = this.key(
+      const csvKey = `${this.environment}/${this.key(
         'test-data',
         user.clientId,
         templateId,
         versionId
-      );
+      )}`;
 
       commands.push(
         new PutObjectCommand({
@@ -120,12 +129,30 @@ export class LetterUploadRepository extends LetterFileRepository {
 
   static parseKey(key: string): LetterUploadMetadata {
     const keyParts = key.split('/');
-    const [type, clientId, templateId, filename = ''] = keyParts;
+
+    // TODO: CCM-12777 - revert back post release
+    let type: string;
+    let clientId: string;
+    let templateId: string;
+    let filename: string;
+
+    if (keyParts.length === 5) {
+      [, type, clientId, templateId, filename] = keyParts;
+    } else if (keyParts.length === 4) {
+      [type, clientId, templateId, filename] = keyParts;
+    } else {
+      throw new Error(
+        `Invalid object key "${key}": expected 4 or 5 path segments, got ${keyParts.length}`
+      );
+    }
+
     const filenameParts = filename.split('.');
     const [versionId, extension] = filenameParts;
 
-    if (keyParts.length !== 4 || filenameParts.length !== 2) {
-      throw new Error(`Unexpected object key "${key}"`);
+    if (filenameParts.length !== 2) {
+      throw new Error(
+        `Could not determine filename or extension from key: ${key}`
+      );
     }
 
     const parsed = LetterUploadRepository.metadata(

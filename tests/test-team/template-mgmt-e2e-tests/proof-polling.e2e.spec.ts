@@ -104,7 +104,7 @@ test.describe('Letter Proof Polling', () => {
         const quarantinePdf =
           await templateStorageHelper.getLetterProofMetadata(
             process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-            'proofs',
+            `${process.env.ENVIRONMENT}/proofs`,
             'WTMMOCK',
             templateId,
             fileName,

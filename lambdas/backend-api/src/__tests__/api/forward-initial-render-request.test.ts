@@ -80,7 +80,9 @@ describe('createHandler', () => {
       },
     });
 
-    await expect(handler(event)).rejects.toThrow('Unexpected object key');
+    await expect(handler(event)).rejects.toThrow(
+      'Invalid object key "only/two": expected 4 or 5 path segments, got 2'
+    );
 
     expect(mocks.sqsClient.send).not.toHaveBeenCalled();
   });

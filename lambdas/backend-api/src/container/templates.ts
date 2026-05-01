@@ -35,7 +35,8 @@ export const templatesContainer = () => {
   const letterUploadRepository = new LetterUploadRepository(
     config.quarantineBucket,
     config.internalBucket,
-    config.downloadBucket
+    config.downloadBucket,
+    config.environment
   );
 
   const proofingQueue = new ProofingQueue(

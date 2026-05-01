@@ -46,7 +46,6 @@ export abstract class TemplateMgmtBasePage {
 
   constructor(page: Page) {
     this.page = page;
-
     this.header = page.getByTestId('page-header');
     this.headerLogoLink = page.getByTestId('header-logo-service-link');
 

@@ -131,7 +131,8 @@ test('polls SFTP folder', async () => {
     sftpSupplierClientRepository,
     mockLogger.logger,
     s3Repository,
-    'sftp-environment'
+    'sftp-environment',
+    'test-env'
   );
 
   await app.poll('supplier');
@@ -139,11 +140,11 @@ test('polls SFTP folder', async () => {
   expect(s3Repository.putRawData).toHaveBeenCalledTimes(2);
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/supplier/template-1/proof-1.pdf'
+    'test-env/proofs/supplier/template-1/proof-1.pdf'
   );
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/supplier/template-1/proof-2.pdf'
+    'test-env/proofs/supplier/template-1/proof-2.pdf'
   );
 
   expect(mockLogger.logMessages).toContainEqual(
@@ -152,7 +153,7 @@ test('polls SFTP folder', async () => {
       message: 'PDF file failed validation',
       sftpPath:
         'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/invalid-file.pdf',
-      s3Path: 'proofs/supplier/template-1/invalid-file.pdf',
+      s3Path: 'test-env/proofs/supplier/template-1/invalid-file.pdf',
       timestamp: new Date('2022-01-01 09:00').toISOString(),
     })
   );
@@ -161,7 +162,7 @@ test('polls SFTP folder', async () => {
       level: 'error',
       sftpPath:
         'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/download-error.pdf',
-      s3Path: 'proofs/supplier/template-1/download-error.pdf',
+      s3Path: 'test-env/proofs/supplier/template-1/download-error.pdf',
       timestamp: new Date('2022-01-01 09:00').toISOString(),
       stack: expect.stringContaining('Error: Download error'),
       message: 'Failed to process file Download error',
@@ -195,7 +196,8 @@ test('attempts to poll folder that does not exist', async () => {
     sftpSupplierClientRepository,
     mockLogger.logger,
     s3Repository,
-    'sftp-environment'
+    'sftp-environment',
+    'test-env'
   );
 
   await app.poll('supplier');
